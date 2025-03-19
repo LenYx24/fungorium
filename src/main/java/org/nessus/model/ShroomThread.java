@@ -15,7 +15,7 @@ public class ShroomThread {
 
     public void ValideLife(){}
     public void Remove(){
-        tecto
+
     }
     public void Decay(){}
 }

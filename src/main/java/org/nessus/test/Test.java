@@ -5,4 +5,5 @@ public abstract class Test {
     public Test(String name) {
         this.name = name;
     }
+    public abstract void Run();
 }
