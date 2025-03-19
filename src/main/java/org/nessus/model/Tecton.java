@@ -1,5 +1,7 @@
 package org.nessus.model;
 
+import org.nessus.Skeleton;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -97,6 +99,7 @@ public class Tecton {
 
 
     public void AddNeighbour(Tecton neighbour) {
+        Skeleton.LogFunctionCall(this, "AddNeighbour", neighbour);
         neighbours.add(neighbour);
     }
 }

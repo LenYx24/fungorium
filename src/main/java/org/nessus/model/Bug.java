@@ -1,5 +1,7 @@
 package org.nessus.model;
 
+import org.nessus.Skeleton;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +18,7 @@ public class Bug {
     public void SetCanMove(boolean canMove) {
         this.canMove = canMove;
     }
+
     public void SetCanCut(boolean canCut) {
         this.canMove = canCut;
     }
@@ -24,58 +27,70 @@ public class Bug {
     int eatCost;
     int cutThreadCost;
 
-    public Bug(){
+    public Bug() {
         ResetPoints();
     }
 
-    public void Move(Tecton tecton){
-        if(this.tecton != tecton){
+    public void Move(Tecton tecton) {
+        if (this.tecton != tecton) {
             this.tecton = tecton;
         }
     }
-    public void Eat(Spore spore){
+
+    public void Eat(Spore spore) {
         spore.EatenBy(this);
     }
-    public void CutThread(ShroomThread shroomThread){
+
+    public void CutThread(ShroomThread shroomThread) {
         shroomThread.Remove();
     }
 
-    public void AddMoveCost(int value){
+    public void AddMoveCost(int value) {
         moveCost += value;
     }
-    public void AddCutThreadCost(int value){
+
+    public void AddCutThreadCost(int value) {
         cutThreadCost += value;
     }
 
     // DIGEST HELYETT EZ:
-    public void AddEffect(BugEffect bugEffect){
+    public void AddEffect(BugEffect bugEffect) {
         bugEffects.add(bugEffect);
     }
-    public void AddNutrients(int nutrients){
-        collectedNutrients+=nutrients;
+
+    public void AddNutrients(int nutrients) {
+        collectedNutrients += nutrients;
     }
 
-    public void ClearEffect(BugEffect effect){
+    public void ClearEffect(BugEffect effect) {
         bugEffects.remove(effect);
     }
 
-    public void LoadDefaultCosts(){
+    public void LoadDefaultCosts() {
         moveCost = 1;
         eatCost = 4;
         cutThreadCost = 3;
     }
-    public void ResetPoints(){
+
+    public void ResetPoints() {
         actCatalog.ResetPoints();
     }
-    public void UpdateBug(){
+
+    public void UpdateBug() {
         ResetPoints();
         LoadDefaultCosts();
-        for(BugEffect bugEffect : bugEffects){
+        for (BugEffect bugEffect : bugEffects) {
             bugEffect.Apply(this);
         }
     }
 
-    public int getCollectedNutrients(){
+    public int getCollectedNutrients() {
         return collectedNutrients;
+    }
+
+    public void SetTecton(Tecton tecton) {
+        Skeleton.LogFunctionCall(this, "SetTecton", tecton);
+        this.tecton = tecton;
+        Skeleton.LogReturnCall(this, "SetTecton");
     }
 }

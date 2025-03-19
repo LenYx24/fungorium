@@ -44,4 +44,16 @@ public class Skeleton {
         }
         scanner.close();
     }
+
+    public static void LogFunctionCall(Object object, String method, Object... args) {
+        logger.LogFunctionCall(object, method, args);
+    }
+
+    public static void LogReturnCall(Object object, String method, Object... args) {
+        logger.LogReturnCall(object, method, args);
+    }
+
+    public static void AddObject(Object object) {
+        logger.AddObject(object, object.getClass().getSimpleName());
+    }
 }

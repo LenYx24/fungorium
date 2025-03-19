@@ -1,5 +1,6 @@
 package org.nessus.test;
 
+import org.nessus.Skeleton;
 import org.nessus.model.Bug;
 import org.nessus.model.ShroomThread;
 import org.nessus.model.Tecton;
@@ -21,11 +22,18 @@ public class BugEatTest extends Test {
         tecton2 = new Tecton();
         thread = new ShroomThread(tecton1, tecton2);
 
+        Skeleton.AddObject(bug);
+        Skeleton.AddObject(tecton1);
+        Skeleton.AddObject(tecton2);
+        Skeleton.AddObject(thread);
+
+        bug.SetTecton(tecton1);
         tecton1.AddNeighbour(tecton2);
         tecton2.AddNeighbour(tecton1);
     }
 
     @Override
     public void Run() {
+        bug.Move(tecton2);
     }
 }

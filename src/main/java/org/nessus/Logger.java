@@ -20,4 +20,14 @@ public class Logger {
         indentLevel++;
         System.out.println(builder);
     }
+
+    public void LogReturnCall(Object object, String funcName, Object... args) {
+        StringBuilder builder = new StringBuilder("return ");
+        builder.append(objects.get(object)).append(".").append(funcName);
+        for (Object arg : args) {
+            builder.append(", ").append(arg);
+        }
+        indentLevel--;
+        System.out.println(builder);
+    }
 }
