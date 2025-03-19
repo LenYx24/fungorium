@@ -10,12 +10,11 @@ import org.nessus.test.Test;
 import org.nessus.test.TestsHolder;
 
 public class Skeleton {
-    private static final TestsHolder testsHolder = new TestsHolder("testNames.txt");
+    private final TestsHolder testsHolder = new TestsHolder("testNames.txt");
+    private final Logger logger = new Logger();
+    boolean running = true;
 
-    public static void main(String[] args) {
-        System.out.println("Üdvözlünk a szkeleton programban\n");
-
-        boolean running = true;
+    public void Run() {
         Scanner scanner = new Scanner(System.in);
 
         while (running) {
@@ -43,6 +42,5 @@ public class Skeleton {
             }
         }
         scanner.close();
-        System.out.println("Viszlát");
     }
 }
