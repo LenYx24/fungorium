@@ -13,19 +13,30 @@ public class Logger {
 
     public void LogFunctionCall(Object object, String funcName, Object... args) {
         StringBuilder builder = new StringBuilder();
-        builder.append(objects.get(object)).append(".").append(funcName);
+        builder.append("\t".repeat(Math.max(0, indentLevel)));
+        builder.append(objects.get(object)).append(".").append(funcName).append("(");
         for (Object arg : args) {
-            builder.append(", ").append(arg);
+            if (objects.containsKey(arg))
+                builder.append(objects.get(arg)).append(", ");
+            else
+                builder.append(arg).append(", ");
         }
+        // Az utolsó ", " sztringet ki kell szedni, mert így nézne ki a kiírás: func(a1, a2, )
+        builder.replace(builder.length() - 2, builder.length(), ")");
         indentLevel++;
         System.out.println(builder);
     }
 
     public void LogReturnCall(Object object, String funcName, Object... args) {
-        StringBuilder builder = new StringBuilder("return ");
-        builder.append(objects.get(object)).append(".").append(funcName);
-        for (Object arg : args) {
-            builder.append(", ").append(arg);
+        StringBuilder builder = new StringBuilder();
+        builder.append("\t".repeat(Math.max(0, indentLevel)));
+        builder.append("return ");
+        if (args.length != 0) {
+            Object arg = args[0];
+            if (objects.containsKey(arg))
+                builder.append(objects.get(arg));
+            else
+                builder.append(arg);
         }
         indentLevel--;
         System.out.println(builder);

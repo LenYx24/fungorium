@@ -22,10 +22,10 @@ public class BugEatTest extends Test {
         tecton2 = new Tecton();
         thread = new ShroomThread(tecton1, tecton2);
 
-        Skeleton.AddObject(bug);
-        Skeleton.AddObject(tecton1);
-        Skeleton.AddObject(tecton2);
-        Skeleton.AddObject(thread);
+        Skeleton.AddObject(bug, "bug");
+        Skeleton.AddObject(tecton1, "tecton1");
+        Skeleton.AddObject(tecton2, "tecton2");
+        Skeleton.AddObject(thread, "thread");
 
         bug.SetTecton(tecton1);
         tecton1.AddNeighbour(tecton2);

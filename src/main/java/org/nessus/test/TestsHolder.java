@@ -20,10 +20,13 @@ public class TestsHolder {
     public void DoTest(int number) {
         int index = number - 1;
         if (0 <= index && index < tests.size()) {
-            System.out.println("A " + number + ". teszt inicializálása");
+            String separator = "-".repeat(10);
+            System.out.println("A(Z) " + number + ". TESZT INICIALIZÁLÁSA");
             tests.get(index).Init();
-            System.out.println("A " + number + ". teszt futtatása");
+            System.out.println(separator);
+            System.out.println("A(Z) " + number + ". TESZT FUTTATÁSA");
             tests.get(index).Init();
+            System.out.println(separator);
         }
     }
 

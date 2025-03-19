@@ -19,12 +19,12 @@ public class Skeleton {
 
         while (running) {
             System.out.println("Válassz egy számot: ");
-            System.out.println("------------------");
+            System.out.println("-".repeat(15));
 
             System.out.println("0. Kilépés");
             testsHolder.PrintTests();
 
-            System.out.println("------------------");
+            System.out.println("-".repeat(15));
 
             System.out.print("A választott szám: ");
             String line = scanner.nextLine();
@@ -53,7 +53,7 @@ public class Skeleton {
         logger.LogReturnCall(object, method, args);
     }
 
-    public static void AddObject(Object object) {
-        logger.AddObject(object, object.getClass().getSimpleName());
+    public static void AddObject(Object object, String name) {
+        logger.AddObject(object, name);
     }
 }

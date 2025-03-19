@@ -101,5 +101,6 @@ public class Tecton {
     public void AddNeighbour(Tecton neighbour) {
         Skeleton.LogFunctionCall(this, "AddNeighbour", neighbour);
         neighbours.add(neighbour);
+        Skeleton.LogReturnCall(this, "AddNeighbour");
     }
 }
