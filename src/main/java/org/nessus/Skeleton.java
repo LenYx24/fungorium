@@ -10,11 +10,11 @@ import org.nessus.test.Test;
 import org.nessus.test.TestsHolder;
 
 public class Skeleton {
-    private final TestsHolder testsHolder = new TestsHolder("testNames.txt");
-    private final Logger logger = new Logger();
-    boolean running = true;
+    private static final TestsHolder testsHolder = new TestsHolder("testNames.txt");
+    private static final Logger logger = new Logger();
+    private static boolean running = true;
 
-    public void Run() {
+    public static void Run() {
         Scanner scanner = new Scanner(System.in);
 
         while (running) {
@@ -25,6 +25,7 @@ public class Skeleton {
             testsHolder.PrintTests();
 
             System.out.println("------------------");
+
             System.out.print("A választott szám: ");
             String line = scanner.nextLine();
             int number = -1;

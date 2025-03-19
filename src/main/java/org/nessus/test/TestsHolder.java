@@ -1,5 +1,7 @@
 package org.nessus.test;
 
+import org.nessus.Skeleton;
+
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;

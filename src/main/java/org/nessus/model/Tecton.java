@@ -11,87 +11,92 @@ public class Tecton {
     private List<Bug> bugs = new ArrayList<>();
     private ShroomBody shroomBody = null;
 
-    public void Split(){
+    public void Split() {
         Tecton tecton2 = this.Copy();
     }
 
-    public void GrowThread(ShroomThread thread){
+    public void GrowThread(ShroomThread thread) {
         shroomThreads.add(thread);
     }
-    public void RemoveThread(ShroomThread thread){
+
+    public void RemoveThread(ShroomThread thread) {
         shroomThreads.remove(thread);
     }
 
-    public boolean GrowShroomBody(ShroomBody body){
-        if(shroomBody != null) return false;
+    public boolean GrowShroomBody(ShroomBody body) {
+        if (shroomBody != null) return false;
         shroomBody = body;
         return true;
     }
-    public void ClearShroomBody(){
+
+    public void ClearShroomBody() {
         shroomBody = null;
     }
 
-    public void ThrowSpore(Spore spore){
+    public void ThrowSpore(Spore spore) {
         spores.add(spore);
     }
-    public void RemoveSpore(Spore spore){
+
+    public void RemoveSpore(Spore spore) {
         spores.remove(spore);
     }
 
-    public void AddBug(Bug bug){
+    public void AddBug(Bug bug) {
         bugs.add(bug);
     }
-    public void RemoveBug(Bug bug){
+
+    public void RemoveBug(Bug bug) {
         bugs.remove(bug);
     }
 
-    public Tecton Copy(){
+    public Tecton Copy() {
         Tecton copyTecton = new Tecton();
-        for(Tecton t : neighbours){
+        for (Tecton t : neighbours) {
             copyTecton.AddNeighbour(t);
         }
 
         Random rand = new Random();
 
-        for(Spore spore : spores){
-            if(rand.nextInt(2) == 0){
+        for (Spore spore : spores) {
+            if (rand.nextInt(2) == 0) {
                 copyTecton.ThrowSpore(spore);
                 this.RemoveSpore(spore);
             }
         }
 
-        for(Bug bug : bugs){
-            if(rand.nextInt(2) == 0){
+        for (Bug bug : bugs) {
+            if (rand.nextInt(2) == 0) {
                 copyTecton.AddBug(bug);
                 this.RemoveBug(bug);
             }
         }
-        if(rand.nextInt(2)==0){
+        if (rand.nextInt(2) == 0) {
             copyTecton.GrowShroomBody(shroomBody);
             this.ClearShroomBody();
         }
 
-        for(ShroomThread thread : shroomThreads){
+        for (ShroomThread thread : shroomThreads) {
             thread.Remove();
         }
         shroomThreads.clear();
 
         return copyTecton;
     }
-    public boolean HasThreadTo(Tecton tecton){
-        for(ShroomThread shroomThread : shroomThreads){
-            if(shroomThread.tecton1 == tecton || shroomThread.tecton2 == tecton)
+
+    public boolean HasThreadTo(Tecton tecton) {
+        for (ShroomThread shroomThread : shroomThreads) {
+            if (shroomThread.tecton1 == tecton || shroomThread.tecton2 == tecton)
                 return true;
         }
         return false;
     }
-    public boolean containsThread(ShroomThread thread){
+
+    public boolean containsThread(ShroomThread thread) {
         return shroomThreads.contains(thread);
     }
 
 
-    // SAJAT ÚJ:
-    public void AddNeighbour(Tecton neighbour){
+    public void AddNeighbour(Tecton neighbour) {
         neighbours.add(neighbour);
     }
 }
