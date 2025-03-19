@@ -5,13 +5,13 @@ import org.nessus.model.Bug;
 import org.nessus.model.ShroomThread;
 import org.nessus.model.Tecton;
 
-public class BugEatTest extends Test {
+public class BugMoveTest extends Test {
     Bug bug;
     Tecton tecton1;
     Tecton tecton2;
     ShroomThread thread;
 
-    public BugEatTest(String name) {
+    public BugMoveTest(String name) {
         super(name);
     }
 

@@ -1,12 +1,7 @@
 package org.nessus;
 
-import java.io.*;
-import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
 import java.util.Scanner;
 
-import org.nessus.test.BugEatTest;
-import org.nessus.test.Test;
 import org.nessus.test.TestsHolder;
 
 public class Skeleton {

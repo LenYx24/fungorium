@@ -1,2 +1,2 @@
 Testname;classname
-BugEatTest;org.nessus.test.BugEatTest
+BugEatTest;org.nessus.test.BugMoveTest
