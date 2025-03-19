@@ -7,6 +7,11 @@ public class TemplateTest extends Test {
     }
 
     @Override
+    public void Init() {
+
+    }
+
+    @Override
     public void Run() {
 
     }
