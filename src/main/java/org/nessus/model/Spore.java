@@ -1,0 +1,23 @@
+package org.nessus.model;
+
+import java.util.Random;
+
+public class Spore {
+    Tecton tecton;
+    int nutrient = 3;
+    Random rand = new Random();
+    public Spore(Tecton tecton) {
+        this.tecton = tecton;
+    }
+    public void EatenBy(Bug bug){
+        bug.AddNutrients(nutrient);
+        int randInt = rand.nextInt(4);
+        switch(randInt){
+            case 0:bug.AddEffect(new CoffeeEffect()); break;
+            case 1:bug.AddEffect(new CripplingEffect()); break;
+            case 2:bug.AddEffect(new JawLockEffect()); break;
+            case 3:bug.AddEffect(new SlowEffect()); break;
+        }
+
+    }
+}
