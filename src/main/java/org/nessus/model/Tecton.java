@@ -86,11 +86,15 @@ public class Tecton {
     }
 
     public boolean HasGrownShroomThreadTo(Tecton tecton) {
+        Skeleton.LogFunctionCall(this, "HasGrownShroomThreadTo", tecton);
+        boolean hasGrownShroomThread = false;
         for (ShroomThread shroomThread : shroomThreads) {
-            if (shroomThread.tecton1 == tecton || shroomThread.tecton2 == tecton)
-                return true;
+            if (shroomThread.IsTectonReachable(tecton)) {
+                hasGrownShroomThread = true;
+            }
         }
-        return false;
+        Skeleton.LogReturnCall(this, "HasGrownShroomThreadTo", hasGrownShroomThread);
+        return hasGrownShroomThread;
     }
 
     public boolean HasSporeOfShroom(Shroom shroom) {
@@ -98,7 +102,10 @@ public class Tecton {
     }
 
     public boolean IsNeighbourOf(Tecton tecton) {
-        return true;
+        Skeleton.LogFunctionCall(this, "IsNeighbourOf", tecton);
+        boolean isNeighbourOf = Skeleton.YesNoQuestion("A kiindulási és céltekton azonos?");
+        Skeleton.LogReturnCall(this, "IsNeighbourOf", isNeighbourOf);
+        return isNeighbourOf;
     }
 
     public void UpdateTecton() {

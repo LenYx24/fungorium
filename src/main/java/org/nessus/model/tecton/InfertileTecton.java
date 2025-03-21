@@ -10,6 +10,6 @@ public class InfertileTecton extends Tecton {
 
     @Override
     public boolean GrowShroomBody(ShroomBody body) {
-        return true;
+        return false;
     }
 }

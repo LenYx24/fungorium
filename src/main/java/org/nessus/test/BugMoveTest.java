@@ -23,6 +23,7 @@ public class BugMoveTest extends Test {
         thread = new ShroomThread(tecton1, tecton2);
 
         Skeleton.AddObject(bug, "bug");
+        Skeleton.AddObject(bug.GetActionPointCatalog(), "actCat");
         Skeleton.AddObject(tecton1, "tecton1");
         Skeleton.AddObject(tecton2, "tecton2");
         Skeleton.AddObject(thread, "thread");

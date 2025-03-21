@@ -9,13 +9,21 @@ public class Logger {
     private final HashMap<Object, String> objects = new HashMap<Object, String>();
     private final Scanner scanner = new Scanner(System.in);
 
+    private String GetIndentation() {
+        return "\t".repeat(Math.max(0, indentLevel));
+    }
+
+    private void Indent(StringBuilder builder) {
+        builder.append(GetIndentation());
+    }
+
     public void AddObject(Object object, String name) {
         objects.put(object, name);
     }
 
     public void LogFunctionCall(Object object, String funcName, Object... args) {
         StringBuilder builder = new StringBuilder();
-        builder.append("\t".repeat(Math.max(0, indentLevel)));
+        Indent(builder);
         builder.append(objects.get(object)).append(".").append(funcName).append("(");
         for (Object arg : args) {
             if (objects.containsKey(arg))
@@ -32,7 +40,7 @@ public class Logger {
     public void LogReturnCall(Object object, String funcName, Object... args) {
         StringBuilder builder = new StringBuilder();
         builder.append("\t".repeat(Math.max(0, indentLevel)));
-        builder.append("return ");
+        builder.append(objects.get(object)).append(".").append(funcName).append(" return ");
         if (args.length != 0) {
             Object arg = args[0];
             if (objects.containsKey(arg))
@@ -48,12 +56,19 @@ public class Logger {
         System.out.println(message);
     }
 
+    public void LogNoNewLine(String message) {
+        System.out.print(message);
+    }
+
     public Optional<Integer> AskQuestion(String question, Object... args) {
-        Log("> " + question);
+        StringBuilder builder = new StringBuilder();
+        builder.append(GetIndentation()).append("> ").append(question).append("\n");
         for (int i = 0; i < args.length; i++) {
             int num = i + 1;
-            Log(num + ". " + args[i]);
+            builder.append(GetIndentation()).append(num).append(". ").append(args[i]).append("\n");
         }
+        builder.append(GetIndentation()).append("Válasz: ");
+        LogNoNewLine(builder.toString());
         String answer = scanner.nextLine();
         Optional<Integer> ans = Optional.empty();
         try {

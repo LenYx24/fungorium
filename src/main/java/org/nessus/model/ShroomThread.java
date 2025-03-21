@@ -1,5 +1,7 @@
 package org.nessus.model;
 
+import org.nessus.Skeleton;
+
 public class ShroomThread {
     Tecton tecton1 = null;
     Tecton tecton2 = null;
@@ -7,7 +9,7 @@ public class ShroomThread {
     int evolution = 0;
     int isolationCounter = 0;
     boolean connectedToShroomBody = false;
-    
+
     public ShroomThread(Tecton tecton1, Tecton tecton2) {
         this.tecton1 = tecton1;
         this.tecton2 = tecton2;
@@ -17,7 +19,10 @@ public class ShroomThread {
     }
 
     public boolean IsTectonReachable(Tecton tecton) {
-        return true;
+        Skeleton.LogFunctionCall(this, "IsTectonReachable", tecton);
+        boolean isTectonReachable = Skeleton.YesNoQuestion("A t nevű fonal egyik végpontja a t2 tecton?");
+        Skeleton.LogReturnCall(this, "IsTectonReachable", isTectonReachable);
+        return isTectonReachable;
     }
 
     public void Remove() {

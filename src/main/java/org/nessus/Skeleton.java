@@ -7,8 +7,8 @@ import org.nessus.model.effect.*;
 import org.nessus.test.TestsHolder;
 
 public class Skeleton {
-    private static final TestsHolder testsHolder = new TestsHolder("testNames.txt");
     private static final Logger logger = new Logger();
+    private static final TestsHolder testsHolder = new TestsHolder("testNames.txt", logger);
     private static boolean running = true;
 
     public static void Run() {
@@ -23,7 +23,7 @@ public class Skeleton {
 
             logger.Log("-".repeat(15));
 
-            logger.Log("A választott szám: ");
+            logger.LogNoNewLine("A választott szám: ");
             String line = scanner.nextLine();
             int number = -1;
             try {

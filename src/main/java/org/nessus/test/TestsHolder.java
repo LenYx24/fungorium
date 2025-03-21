@@ -1,5 +1,6 @@
 package org.nessus.test;
 
+import org.nessus.Logger;
 import org.nessus.Skeleton;
 
 import java.io.*;
@@ -8,8 +9,10 @@ import java.util.ArrayList;
 
 public class TestsHolder {
     private ArrayList<Test> tests = new ArrayList<Test>();
+    private Logger logger;
 
-    public TestsHolder(String filename) {
+    public TestsHolder(String filename, Logger logger) {
+        this.logger = logger;
         try {
             LoadTests(filename);
         } catch (Exception e) {
@@ -21,12 +24,12 @@ public class TestsHolder {
         int index = number - 1;
         if (0 <= index && index < tests.size()) {
             String separator = "-".repeat(10);
-            System.out.println("A(Z) " + number + ". TESZT INICIALIZÁLÁSA");
+            logger.Log("A(Z) " + number + ". TESZT INICIALIZÁLÁSA");
             tests.get(index).Init();
-            System.out.println(separator);
-            System.out.println("A(Z) " + number + ". TESZT FUTTATÁSA");
-            tests.get(index).Init();
-            System.out.println(separator);
+            logger.Log(separator);
+            logger.Log("A(Z) " + number + ". TESZT FUTTATÁSA");
+            tests.get(index).Run();
+            logger.Log(separator);
         }
     }
 

@@ -6,6 +6,7 @@ public class TemplateTest extends Test {
         super(name);
     }
 
+    // A kommunikációs
     @Override
     public void Init() {
 

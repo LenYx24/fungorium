@@ -24,10 +24,19 @@ public class Bug {
         ResetPoints();
     }
 
-    public void Move(Tecton tecton) {
-        if (this.tecton != tecton) {
-            this.tecton = tecton;
+    public void Move(Tecton t2) {
+        Skeleton.LogFunctionCall(this, "Move", t2);
+        Tecton t1 = this.tecton;
+        boolean enough = actCatalog.HasEnoughPoints(moveCost);
+        boolean neighbours = t1.IsNeighbourOf(t2);
+        boolean hasGrownShroomThreadTo = t1.HasGrownShroomThreadTo(t2);
+        boolean canmove = Skeleton.YesNoQuestion("Van-e a rovaron bénító effect?");
+        if (enough && neighbours && hasGrownShroomThreadTo && canmove) {
+            t1.RemoveBug(this);
+            t2.AddBug(this);
+            actCatalog.DecreasePoints(moveCost);
         }
+        Skeleton.LogReturnCall(this, "Move");
     }
 
     public void Eat(Spore spore) {
@@ -89,5 +98,9 @@ public class Bug {
 
     public void SetCanCut(boolean canCut) {
         this.canMove = canCut;
+    }
+
+    public ActionPointCatalog GetActionPointCatalog() {
+        return actCatalog;
     }
 }

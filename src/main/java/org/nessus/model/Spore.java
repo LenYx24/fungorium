@@ -9,6 +9,7 @@ import java.util.Random;
 
 public class Spore {
     Tecton tecton;
+
     int nutrient = 3;
     Random rand = new Random();
 
