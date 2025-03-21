@@ -68,11 +68,11 @@ public class Logger {
     }
 
     public Optional<Boolean> AskYesNoQuestion(String question) {
-        int ans = AskQuestion(question, "nem", "igen");
-        return switch (ans) {
+        Optional<Integer> ans = AskQuestion(question, "nem", "igen");
+        return ans.flatMap(num -> switch (num) {
             case 1 -> Optional.of(false);
             case 2 -> Optional.of(true);
             default -> Optional.empty();
-        };
+        });
     }
 }
