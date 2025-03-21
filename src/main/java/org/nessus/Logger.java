@@ -1,6 +1,5 @@
 package org.nessus;
 
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class Logger {
