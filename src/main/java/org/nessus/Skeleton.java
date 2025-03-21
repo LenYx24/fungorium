@@ -1,7 +1,9 @@
 package org.nessus;
 
+import java.util.Optional;
 import java.util.Scanner;
 
+import org.nessus.model.*;
 import org.nessus.test.TestsHolder;
 
 public class Skeleton {
@@ -13,21 +15,21 @@ public class Skeleton {
         Scanner scanner = new Scanner(System.in);
 
         while (running) {
-            System.out.println("Válassz egy számot: ");
-            System.out.println("-".repeat(15));
+            logger.Log("Válassz egy számot: ");
+            logger.Log("-".repeat(15));
 
-            System.out.println("0. Kilépés");
+            logger.Log("0. Kilépés");
             testsHolder.PrintTests();
 
-            System.out.println("-".repeat(15));
+            logger.Log("-".repeat(15));
 
-            System.out.print("A választott szám: ");
+            logger.Log("A választott szám: ");
             String line = scanner.nextLine();
             int number = -1;
             try {
                 number = Integer.parseInt(line);
             } catch (NumberFormatException e) {
-                System.out.println("Nem számot adtál meg");
+                logger.Log("Nem számot adtál meg");
                 continue;
             }
 
@@ -50,5 +52,28 @@ public class Skeleton {
 
     public static void AddObject(Object object, String name) {
         logger.AddObject(object, name);
+    }
+
+    public static BugEffect WhichEffect() {
+        Optional<Integer> ans = Optional.empty();
+        //String[] args = {"Kávé", "Bénító", "Lassító", "Szájzár"};
+        while (ans.isEmpty()) {
+            ans = logger.AskQuestion("Melyik effektet rakjuk a rovarra?", "Kávé", "Bénító", "Lassító", "Szájzár");
+        }
+        return switch (ans.get()) {
+            case 1 -> new CoffeeEffect();
+            case 2 -> new CripplingEffect();
+            case 3 -> new SlowEffect();
+            case 4 -> new JawLockEffect();
+            default -> null;
+        };
+    }
+
+    public static boolean YesNoQuestion(String message) {
+        Optional<Boolean> ans = Optional.empty();
+        while (ans.isEmpty()) {
+            ans = logger.AskYesNoQuestion(message);
+        }
+        return ans.get();
     }
 }
