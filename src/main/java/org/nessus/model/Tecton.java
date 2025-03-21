@@ -17,11 +17,11 @@ public class Tecton {
         Tecton tecton2 = this.Copy();
     }
 
-    public void GrowThread(ShroomThread thread) {
+    public void GrowShroomThread(ShroomThread thread) {
         shroomThreads.add(thread);
     }
 
-    public void RemoveThread(ShroomThread thread) {
+    public void RemoveShroomThread(ShroomThread thread) {
         shroomThreads.remove(thread);
     }
 
@@ -85,7 +85,7 @@ public class Tecton {
         return copyTecton;
     }
 
-    public boolean HasThreadTo(Tecton tecton) {
+    public boolean HasGrownShroomThreadTo(Tecton tecton) {
         for (ShroomThread shroomThread : shroomThreads) {
             if (shroomThread.tecton1 == tecton || shroomThread.tecton2 == tecton)
                 return true;
@@ -93,8 +93,16 @@ public class Tecton {
         return false;
     }
 
-    public boolean containsThread(ShroomThread thread) {
-        return shroomThreads.contains(thread);
+    public boolean HasSporeOfShroom(Shroom shroom) {
+        return true;
+    }
+
+    public boolean IsNeighbourOf(Tecton tecton) {
+        return true;
+    }
+
+    public void UpdateTecton() {
+
     }
 
 
@@ -102,5 +110,9 @@ public class Tecton {
         Skeleton.LogFunctionCall(this, "AddNeighbour", neighbour);
         neighbours.add(neighbour);
         Skeleton.LogReturnCall(this, "AddNeighbour");
+    }
+
+    public boolean containsThread(ShroomThread thread) {
+        return shroomThreads.contains(thread);
     }
 }

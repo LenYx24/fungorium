@@ -15,55 +15,63 @@ public class Shroom {
     private int shroomBodyCost;
     private int shroomUpgradeCost;
     private int sporeCost;
-    public Shroom(){
+
+    public Shroom() {
         ResetPoints();
     }
 
-    public void PlaceThread(Tecton tecton1, Tecton tecton2){
-        if(actCatalog.HasEnoughPoints(shroomThreadCost)){
+    public void PlaceShroomThread(Tecton tecton1, Tecton tecton2) {
+        if (actCatalog.HasEnoughPoints(shroomThreadCost)) {
             ShroomThread thread = new ShroomThread(tecton1, tecton2);
             threads.add(thread);
             actCatalog.DecreasePoints(shroomThreadCost);
         }
 
     }
-    public void PlaceShroomBody(Tecton tecton){
-        if(actCatalog.HasEnoughPoints(shroomBodyCost)){
+
+    public void PlaceShroomBody(Tecton tecton) {
+        if (actCatalog.HasEnoughPoints(shroomBodyCost)) {
             ShroomBody shroomBody = new ShroomBody(tecton);
             boolean success = tecton.GrowShroomBody(shroomBody);
-            if(success){
+            if (success) {
                 grownShroomBodies++;
                 shroomBodies.add(shroomBody);
             }
         }
     }
-    public void UpgradeShroomBody(ShroomBody body){
+
+    public void UpgradeShroomBody(ShroomBody body) {
         body.Upgrade();
     }
-    public void ThrowSpore(ShroomBody body){
+
+    public void ThrowSpore(ShroomBody body) {
 
     }
 
-    public void AddUpgradeCost(int value){
-
+    public void RemoveSpore(Spore spore) {
     }
 
-    public void RemoveSpore(Spore spore){}
-    public void RemoveShroomBody(ShroomBody body){}
-    public void RemoveShroomThread(ShroomThread thread){}
+    public void RemoveShroomBody(ShroomBody body) {
+    }
 
-    public void UpdateShroom(){}
-    public void LoadDefaultCosts(){
+    public void RemoveShroomThread(ShroomThread thread) {
+    }
+
+    public void UpdateShroom() {
+    }
+
+    public void LoadDefaultCosts() {
         shroomThreadCost = 3;
         shroomBodyCost = 3;
         shroomUpgradeCost = 3;
         sporeCost = 3;
     }
-    public void ResetPoints(){
+
+    public void ResetPoints() {
         actCatalog.ResetPoints();
     }
 
-    public int getGrownShroomBodies(){
+    public int getGrownShroomBodies() {
         return grownShroomBodies;
     }
 }

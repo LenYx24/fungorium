@@ -1,6 +1,7 @@
 package org.nessus.model;
 
 import org.nessus.Skeleton;
+import org.nessus.model.effect.BugEffect;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,14 +15,6 @@ public class Bug {
 
     boolean canMove = true;
     boolean canCut = true;
-
-    public void SetCanMove(boolean canMove) {
-        this.canMove = canMove;
-    }
-
-    public void SetCanCut(boolean canCut) {
-        this.canMove = canCut;
-    }
 
     int moveCost;
     int eatCost;
@@ -49,21 +42,24 @@ public class Bug {
         moveCost += value;
     }
 
-    public void AddCutThreadCost(int value) {
-        cutThreadCost += value;
-    }
-
-    // DIGEST HELYETT EZ:
-    public void AddEffect(BugEffect bugEffect) {
-        bugEffects.add(bugEffect);
-    }
-
     public void AddNutrients(int nutrients) {
         collectedNutrients += nutrients;
     }
 
+    public void AddEffect(BugEffect bugEffect) {
+        bugEffects.add(bugEffect);
+    }
+
     public void ClearEffect(BugEffect effect) {
         bugEffects.remove(effect);
+    }
+
+    public void UpdateBug() {
+        ResetPoints();
+        LoadDefaultCosts();
+        for (BugEffect bugEffect : bugEffects) {
+            bugEffect.Apply(this);
+        }
     }
 
     public void LoadDefaultCosts() {
@@ -76,13 +72,6 @@ public class Bug {
         actCatalog.ResetPoints();
     }
 
-    public void UpdateBug() {
-        ResetPoints();
-        LoadDefaultCosts();
-        for (BugEffect bugEffect : bugEffects) {
-            bugEffect.Apply(this);
-        }
-    }
 
     public int getCollectedNutrients() {
         return collectedNutrients;
@@ -92,5 +81,13 @@ public class Bug {
         Skeleton.LogFunctionCall(this, "SetTecton", tecton);
         this.tecton = tecton;
         Skeleton.LogReturnCall(this, "SetTecton");
+    }
+
+    public void SetCanMove(boolean canMove) {
+        this.canMove = canMove;
+    }
+
+    public void SetCanCut(boolean canCut) {
+        this.canMove = canCut;
     }
 }

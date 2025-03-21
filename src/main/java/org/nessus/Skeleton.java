@@ -3,7 +3,7 @@ package org.nessus;
 import java.util.Optional;
 import java.util.Scanner;
 
-import org.nessus.model.*;
+import org.nessus.model.effect.*;
 import org.nessus.test.TestsHolder;
 
 public class Skeleton {
