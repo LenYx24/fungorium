@@ -36,8 +36,8 @@ public class ValidateLifeTest extends Test
         t1.ThrowSpore(spore);
         t1.GrowShroomThread(thread);
         t2.GrowShroomThread(thread);
-        t1.AddNeighbour(t2);
-        t2.AddNeighbour(t1);
+        t1.SetNeighbour(t2);
+        t2.SetNeighbour(t1);
     }
 
     @Override

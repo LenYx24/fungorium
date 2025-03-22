@@ -104,7 +104,7 @@ public class Shroom {
     }
 
     public void RemoveSpore(Spore spore) {
-        Skeleton.LogFunctionCall(this, "RemvoeSpore", spore);
+        Skeleton.LogFunctionCall(this, "RemoveSpore", spore);
         spores.remove(spore);
         Skeleton.LogReturnCall(this, "RemoveSpore");
     }

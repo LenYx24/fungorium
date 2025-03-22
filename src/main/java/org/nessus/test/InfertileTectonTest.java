@@ -39,14 +39,14 @@ public class InfertileTectonTest extends Test
         it.GrowShroomThread(thread2);
         stt.GrowShroomThread(thread2);
 
-        dt.AddNeighbour(it);
-        it.AddNeighbour(dt);
+        dt.SetNeighbour(it);
+        it.SetNeighbour(dt);
 
-        it.AddNeighbour(stt);
-        stt.AddNeighbour(it);
+        it.SetNeighbour(stt);
+        stt.SetNeighbour(it);
 
-        dt.AddNeighbour(stt);
-        stt.AddNeighbour(dt);
+        dt.SetNeighbour(stt);
+        stt.SetNeighbour(dt);
     }
 
     @Override

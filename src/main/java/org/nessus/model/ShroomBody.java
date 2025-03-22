@@ -18,8 +18,6 @@ public class ShroomBody {
     public Tecton GetTecton() {
         return tecton;
     }
-
-    public ShroomBody(Shroom s, Tecton tecton) {this.tecton = tecton; this.shroom = s; }
   
     public Shroom GetShroom() {
         return shroom;

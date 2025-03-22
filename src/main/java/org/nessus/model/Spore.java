@@ -17,7 +17,6 @@ public class Spore {
     public Spore(Shroom shroom, Tecton tecton) {
         this.shroom = shroom;
         this.tecton = tecton;
-        this.shroom = s;
     }
 
     public void EatenBy(Bug bug) {

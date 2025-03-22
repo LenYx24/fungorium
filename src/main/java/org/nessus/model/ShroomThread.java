@@ -16,8 +16,7 @@ public class ShroomThread {
         evolution = Math.min(evolution+n, 3);
     }
 
-    public ShroomThread(Shroom s, Tecton tecton1, Tecton tecton2) {
-        this.shroom = s;
+    public ShroomThread(Tecton tecton1, Tecton tecton2) {
         this.tecton1 = tecton1;
         this.tecton2 = tecton2;
     }
