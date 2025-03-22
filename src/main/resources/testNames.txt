@@ -1,2 +1,7 @@
 Testname;classname
-BugEatTest;org.nessus.test.BugMoveTest
+BugMoveTest;org.nessus.test.BugMoveTest
+SplitTectonTest;org.nessus.test.SplitTectonTest
+DesertTectonTest;org.nessus.test.DesertTectonTest
+SingleThreadTectonTest;org.nessus.test.SingleThreadTectonTest
+InfertileTectonTest;org.nessus.test.InfertileTectonTest
+GrowthBoostTest;org.nessus.test.GrowthBoostTest

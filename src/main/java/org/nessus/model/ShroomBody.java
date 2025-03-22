@@ -1,13 +1,14 @@
 package org.nessus.model;
 
 public class ShroomBody {
+    private Shroom shroom;
     private Tecton tecton = null;
 
     private int level = 1;
     private int remainingThrows = 5;
     private int SporeMaterials = 0;
 
-    public ShroomBody(Tecton tecton) {this.tecton = tecton;}
+    public ShroomBody(Shroom s, Tecton tecton) {this.tecton = tecton; this.shroom = s; }
 
     public void Upgrade(){
         level++;
@@ -17,7 +18,7 @@ public class ShroomBody {
     }
     public void FormSpore(Tecton tecton){
         SporeMaterials -= 2;
-        tecton.ThrowSpore(new Spore(tecton));
+        tecton.ThrowSpore(new Spore(shroom, tecton));
     }
     public void ProduceSpore(){}
 }

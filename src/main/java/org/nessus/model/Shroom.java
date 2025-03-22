@@ -1,5 +1,7 @@
 package org.nessus.model;
 
+import org.nessus.Skeleton;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,18 +22,28 @@ public class Shroom {
         ResetPoints();
     }
 
-    public void PlaceShroomThread(Tecton tecton1, Tecton tecton2) {
-        if (actCatalog.HasEnoughPoints(shroomThreadCost)) {
-            ShroomThread thread = new ShroomThread(tecton1, tecton2);
-            threads.add(thread);
-            actCatalog.DecreasePoints(shroomThreadCost);
+    public void PlaceShroomThread(Tecton tecton1, Tecton tecton2)
+    {
+        Skeleton.LogFunctionCall(this, "PlaceShroomThread", tecton1, tecton2);
+        if (actCatalog.HasEnoughPoints(shroomThreadCost) && tecton1.IsNeighbourOf(tecton2))
+        {
+            boolean connectedToBody = Skeleton.YesNoQuestion("A két tektonra vezet-e olyan fonal amelyik csatlakozik gombatesthez (akár több fonal hálózatán keresztül)?");
+            if (connectedToBody)
+            {
+                ShroomThread thread = new ShroomThread(this, tecton1, tecton2);
+                Skeleton.AddObject(thread, "newThread");
+                tecton1.GrowShroomThread(thread);
+                tecton2.GrowShroomThread(thread);
+                threads.add(thread);
+                actCatalog.DecreasePoints(shroomThreadCost);
+            }
         }
-
+        Skeleton.LogReturnCall(this, "PlaceShroomThread");
     }
 
     public void PlaceShroomBody(Tecton tecton) {
         if (actCatalog.HasEnoughPoints(shroomBodyCost)) {
-            ShroomBody shroomBody = new ShroomBody(tecton);
+            ShroomBody shroomBody = new ShroomBody(this, tecton);
             boolean success = tecton.GrowShroomBody(shroomBody);
             if (success) {
                 grownShroomBodies++;
@@ -54,7 +66,10 @@ public class Shroom {
     public void RemoveShroomBody(ShroomBody body) {
     }
 
-    public void RemoveShroomThread(ShroomThread thread) {
+    public void RemoveShroomThread(ShroomThread thread)
+    {
+        Skeleton.LogFunctionCall(this, "RemoveShroomThread");
+        Skeleton.LogReturnCall(this, "RemoveShroomThread");
     }
 
     public void UpdateShroom() {
@@ -73,5 +88,9 @@ public class Shroom {
 
     public int getGrownShroomBodies() {
         return grownShroomBodies;
+    }
+
+    public ActionPointCatalog GetActionPointCatalog() {
+        return actCatalog;
     }
 }

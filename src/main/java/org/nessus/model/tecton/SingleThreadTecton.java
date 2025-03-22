@@ -1,5 +1,6 @@
 package org.nessus.model.tecton;
 
+import org.nessus.Skeleton;
 import org.nessus.model.ShroomThread;
 import org.nessus.model.Tecton;
 
@@ -9,7 +10,17 @@ public class SingleThreadTecton extends Tecton {
     }
 
     @Override
-    public void GrowShroomThread(ShroomThread thread) {
-        System.out.println("Grow thread 2");
+    public void GrowShroomThread(ShroomThread thread)
+    {
+        Skeleton.LogFunctionCall(this, "GrowShroomThread");
+        if (this.getThreads().isEmpty())
+        {
+            shroomThreads.add(thread);
+        }
+        else
+        {
+            throw new RuntimeException("Az egyfonalú tektonon csak egy fonal lehet!");
+        }
+        Skeleton.LogReturnCall(this, "GrowShroomThread");
     }
 }
