@@ -33,8 +33,8 @@ public class BugMoveTest extends Test {
         Skeleton.AddObject(thread, "thread");
 
         bug.SetTecton(tecton1);
-        tecton1.AddNeighbour(tecton2);
-        tecton2.AddNeighbour(tecton1);
+        tecton1.SetNeighbour(tecton2);
+        tecton2.SetNeighbour(tecton1);
     }
 
     @Override

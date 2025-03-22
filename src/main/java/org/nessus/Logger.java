@@ -1,5 +1,6 @@
 package org.nessus;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.Scanner;
@@ -25,14 +26,18 @@ public class Logger {
         StringBuilder builder = new StringBuilder();
         Indent(builder);
         builder.append(objects.get(object)).append(".").append(funcName).append("(");
+
+        var objNames = new ArrayList<String>();
         for (Object arg : args) {
             if (objects.containsKey(arg))
-                builder.append(objects.get(arg)).append(", ");
+                objNames.add(objects.get(arg));
             else
-                builder.append(arg).append(", ");
+                objNames.add(arg.toString());
         }
-        // Az utolsó ", " sztringet ki kell szedni, mert így nézne ki a kiírás: func(a1, a2, )
-        builder.replace(builder.length() - 2, builder.length(), ")");
+
+        builder.append(String.join(", ", objNames));
+        builder.append(")");
+
         indentLevel++;
         Log(builder.toString());
     }

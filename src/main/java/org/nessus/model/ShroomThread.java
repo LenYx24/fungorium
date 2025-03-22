@@ -21,6 +21,12 @@ public class ShroomThread {
         this.tecton1 = tecton1;
         this.tecton2 = tecton2;
     }
+    
+    // Ez a konstruktor beállítja a gombafajt is
+    public ShroomThread(Shroom shroom, Tecton tecton1, Tecton tecton2) {
+        this(tecton1, tecton2);
+        this.shroom = shroom;
+    }
 
     public void ValidateLife()
     {

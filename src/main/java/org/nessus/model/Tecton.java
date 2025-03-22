@@ -43,21 +43,35 @@ public class Tecton {
         Skeleton.LogReturnCall(this, "RemoveShroomThread");
     }
 
-    public boolean GrowShroomBody(ShroomBody body)
-    {
+    public boolean GrowShroomBody(ShroomBody body) {
         Skeleton.LogFunctionCall(this, "GrowShroomBody", body);
-        if (shroomBody != null)
-        {
+        boolean canGrowShroomBody = Skeleton.YesNoQuestion("Lehet t2-re gombatestet növeszteni?");
+        
+        if (!canGrowShroomBody) {
             Skeleton.LogReturnCall(this, "GrowShroomBody", false);
             return false;
         }
+        
+        // A szekvencia diagramon spore2 van írva, de igazából mindegy,
+        // a lényeg, hogy egy spórát elhasznál a növesztés
+        var consumedSpore = spores.stream()
+                                .filter(spore -> spore.GetShroom() == body.GetShroom())
+                                .findFirst();
+                                
+        consumedSpore.ifPresent(spore -> RemoveSpore(spore));
+        
         shroomBody = body;
         Skeleton.LogReturnCall(this, "GrowShroomBody", true);
         return true;
     }
 
-    public void ClearShroomBody()
-    {
+    public void SetShroomBody(ShroomBody body) {
+        Skeleton.LogFunctionCall(this, "SetShroomBody", body);
+        shroomBody = body;
+        Skeleton.LogReturnCall(this, "SetShroomBody");
+    }
+
+    public void ClearShroomBody() {
         Skeleton.LogFunctionCall(this, "ClearShroomBody");
         shroomBody = null;
         Skeleton.LogReturnCall(this, "ClearShroomBody");
@@ -69,10 +83,10 @@ public class Tecton {
         Skeleton.LogReturnCall(this, "ThrowSpore");
     }
 
-    public void RemoveSpore(Spore spore)
-    {
+    public void RemoveSpore(Spore spore) {
         Skeleton.LogFunctionCall(this, "RemoveSpore", spore);
         spores.remove(spore);
+        spore.GetShroom().RemoveSpore(spore);
         Skeleton.LogReturnCall(this, "RemoveSpore");
     }
 
@@ -179,10 +193,10 @@ public class Tecton {
 
     }
 
-    public void AddNeighbour(Tecton neighbour) {
-        Skeleton.LogFunctionCall(this, "AddNeighbour", neighbour);
+    public void SetNeighbour(Tecton neighbour) {
+        Skeleton.LogFunctionCall(this, "SetNeighbour", neighbour);
         neighbours.add(neighbour);
-        Skeleton.LogReturnCall(this, "AddNeighbour");
+        Skeleton.LogReturnCall(this, "SetNeighbour");
     }
 
     public boolean containsThread(ShroomThread thread) {

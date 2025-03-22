@@ -14,7 +14,8 @@ public class Spore {
     int nutrient = 3;
     Random rand = new Random();
 
-    public Spore(Shroom s, Tecton tecton) {
+    public Spore(Shroom shroom, Tecton tecton) {
+        this.shroom = shroom;
         this.tecton = tecton;
         this.shroom = s;
     }
@@ -36,7 +37,10 @@ public class Spore {
                 bug.AddEffect(new SlowEffect());
                 break;
         }
+    }
 
+    public Shroom GetShroom() {
+        return shroom;
     }
 
     public void SetTecton(Tecton tecton) {
