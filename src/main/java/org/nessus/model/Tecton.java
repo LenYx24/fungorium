@@ -38,7 +38,11 @@ public class Tecton {
         
         // A szekvencia diagramon spore2 van írva, de igazából mindegy,
         // a lényeg, hogy egy spórát elhasznál a növesztés
-        RemoveSpore(spores.get(0));
+        var consumedSpore = spores.stream()
+                                .filter(spore -> spore.GetShroom() == body.GetShroom())
+                                .findFirst();
+                                
+        consumedSpore.ifPresent(spore -> RemoveSpore(spore));
         
         shroomBody = body;
         Skeleton.LogReturnCall(this, "GrowShroomBody", true);

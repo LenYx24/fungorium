@@ -19,6 +19,10 @@ public class ShroomBody {
         return tecton;
     }
 
+    public Shroom GetShroom() {
+        return shroom;
+    }
+
     public void Upgrade(){
         Skeleton.LogFunctionCall(this, "Upgrade");
         level++;
