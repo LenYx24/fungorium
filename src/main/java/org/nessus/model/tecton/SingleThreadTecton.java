@@ -10,17 +10,19 @@ public class SingleThreadTecton extends Tecton {
     }
 
     @Override
-    public void GrowShroomThread(ShroomThread thread)
-    {
+    public boolean GrowShroomThread(ShroomThread thread)  {
         Skeleton.LogFunctionCall(this, "GrowShroomThread");
         if (this.getThreads().isEmpty())
         {
             shroomThreads.add(thread);
+            Skeleton.LogReturnCall(this, "GrowShroomThread", true);
+            return true;
         }
+
         else
         {
-            throw new RuntimeException("Az egyfonalú tektonon csak egy fonal lehet!");
+            Skeleton.LogReturnCall(this, "GrowShroomThread", false);
+            return false;
         }
-        Skeleton.LogReturnCall(this, "GrowShroomThread");
     }
 }

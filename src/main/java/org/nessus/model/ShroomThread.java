@@ -7,12 +7,14 @@ public class ShroomThread {
     private Tecton tecton1;
     private Tecton tecton2;
 
-    private boolean growthBoost1;
-    private boolean growthBoost2;
-
     int evolution = 0;
     int isolationCounter = 0;
     boolean connectedToShroomBody = false;
+
+    private void Evolve(int n)
+    {
+        evolution = Math.min(evolution+n, 3);
+    }
 
     public ShroomThread(Shroom s, Tecton tecton1, Tecton tecton2) {
         this.shroom = s;
@@ -23,24 +25,16 @@ public class ShroomThread {
     public void ValidateLife()
     {
         Skeleton.LogFunctionCall(this, "ValidateLife");
-        if (tecton1.HasSporeOfShroom(this.shroom))
-        {
-            growthBoost1 = true;
-        }
+        boolean growthBoost1 = tecton1.HasSporeOfShroom(this.shroom);
+        boolean growthBoost2 = tecton2.HasSporeOfShroom(this.shroom);
 
-        if (tecton2.HasSporeOfShroom(this.shroom))
-        {
-            growthBoost2 = true;
-        }
+        Evolve((growthBoost1 || growthBoost2) ? 2 : 1);
 
-        boolean decayed = Skeleton.YesNoQuestion("Halott ez a fonál?");
+        boolean decayed = Skeleton.YesNoQuestion("Felszívódott-e a fonal?");
 
         if (decayed)
         {
             this.Remove();
-            tecton1.RemoveShroomThread(this);
-            tecton2.RemoveShroomThread(this);
-            shroom.RemoveShroomThread(this);
         }
         Skeleton.LogReturnCall(this, "ValidateLife");
     }
@@ -54,6 +48,9 @@ public class ShroomThread {
 
     public void Remove() {
         Skeleton.LogFunctionCall(this, "Remove");
+        tecton1.RemoveShroomThread(this);
+        tecton2.RemoveShroomThread(this);
+        shroom.RemoveShroomThread(this);
         Skeleton.LogReturnCall(this, "Remove");
     }
 

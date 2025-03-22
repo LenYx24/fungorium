@@ -4,7 +4,6 @@ import org.nessus.Skeleton;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class Tecton {
     protected List<Tecton> neighbours = new ArrayList<>();
@@ -19,11 +18,11 @@ public class Tecton {
         Skeleton.LogReturnCall(this, "Split");
     }
 
-    public void GrowShroomThread(ShroomThread thread)
-    {
+    public boolean GrowShroomThread(ShroomThread thread)  {
         Skeleton.LogFunctionCall(this, "GrowShroomThread", thread);
         shroomThreads.add(thread);
-        Skeleton.LogReturnCall(this, "GrowShroomThread");
+        Skeleton.LogReturnCall(this, "GrowShroomThread", true);
+        return true;
     }
 
     public void RemoveShroomThread(ShroomThread thread)
@@ -132,14 +131,12 @@ public class Tecton {
             }
         }
 
-        for (ShroomThread thread : this.shroomThreads)
+        //Konkurens Módosítás Kivétel elkerülése érdekében
+        ArrayList<ShroomThread> temp = new ArrayList<>(shroomThreads);
+
+        for (ShroomThread thread : temp)
         {
             thread.Remove();
-
-            for (Tecton t : this.neighbours)
-            {
-                t.RemoveShroomThread(thread);
-            }
         }
 
         shroomThreads.clear();

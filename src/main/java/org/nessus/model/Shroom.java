@@ -25,17 +25,26 @@ public class Shroom {
     public void PlaceShroomThread(Tecton tecton1, Tecton tecton2)
     {
         Skeleton.LogFunctionCall(this, "PlaceShroomThread", tecton1, tecton2);
-        if (actCatalog.HasEnoughPoints(shroomThreadCost) && tecton1.IsNeighbourOf(tecton2))
+
+        boolean enough = actCatalog.HasEnoughPoints(shroomThreadCost);
+        boolean neighbours = tecton1.IsNeighbourOf(tecton2);
+        boolean connectedToBody = Skeleton.YesNoQuestion("A két tektonra vezet-e olyan fonal amelyik csatlakozik gombatesthez (akár több fonal hálózatán keresztül)?");
+
+        if (enough && neighbours && connectedToBody)
         {
-            boolean connectedToBody = Skeleton.YesNoQuestion("A két tektonra vezet-e olyan fonal amelyik csatlakozik gombatesthez (akár több fonal hálózatán keresztül)?");
-            if (connectedToBody)
+            ShroomThread thread = new ShroomThread(this, tecton1, tecton2);
+            Skeleton.AddObject(thread, "thread");
+            boolean t1Success = tecton1.GrowShroomThread(thread);
+            boolean t2Success = tecton2.GrowShroomThread(thread);
+
+            if(t1Success && t2Success)
             {
-                ShroomThread thread = new ShroomThread(this, tecton1, tecton2);
-                Skeleton.AddObject(thread, "newThread");
-                tecton1.GrowShroomThread(thread);
-                tecton2.GrowShroomThread(thread);
                 threads.add(thread);
                 actCatalog.DecreasePoints(shroomThreadCost);
+            }
+            else
+            {
+                thread.Remove();
             }
         }
         Skeleton.LogReturnCall(this, "PlaceShroomThread");
