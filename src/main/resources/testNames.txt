@@ -1,2 +1,5 @@
 Testname;classname
-BugEatTest;org.nessus.test.BugMoveTest
+BugMoveTest;org.nessus.test.BugMoveTest
+PlaceShroomBodyTest;org.nessus.test.PlaceShroomBodyTest
+ShroomBodyDeathTest;org.nessus.test.ShroomBodyDeathTest
+UpgradeShroomBodyTest;org.nessus.test.UpgradeShroomBodyTest
