@@ -91,17 +91,6 @@ public class Tecton {
             copyTecton.AddNeighbour(t);
         }
 
-        for (int i=0; i < spores.size(); i++)
-        {
-            boolean transferSpore = Skeleton.YesNoQuestion("Törés után átkerüljön-e a(z) " + i + ". spóra a copyTecton tektonra?");
-
-            if (transferSpore)
-            {
-                copyTecton.ThrowSpore(spores.get(i));
-                this.RemoveSpore(spores.get(i));
-            }
-        }
-
         for (int i=0; i < bugs.size(); i++)
         {
             boolean transferBug = Skeleton.YesNoQuestion("Törés után átkerüljön-e a(z) " + i + ". rovar a copyTecton tektonra?");
@@ -110,6 +99,17 @@ public class Tecton {
             {
                 copyTecton.AddBug(bugs.get(i));
                 this.RemoveBug(bugs.get(i));
+            }
+        }
+
+        for (int i=0; i < spores.size(); i++)
+        {
+            boolean transferSpore = Skeleton.YesNoQuestion("Törés után átkerüljön-e a(z) " + i + ". spóra a copyTecton tektonra?");
+
+            if (transferSpore)
+            {
+                copyTecton.ThrowSpore(spores.get(i));
+                this.RemoveSpore(spores.get(i));
             }
         }
 
@@ -170,7 +170,6 @@ public class Tecton {
     public void UpdateTecton() {
 
     }
-
 
     public void AddNeighbour(Tecton neighbour) {
         Skeleton.LogFunctionCall(this, "AddNeighbour", neighbour);
