@@ -15,6 +15,17 @@ public class Tecton {
     public void Split() {
         Skeleton.LogFunctionCall(this, "Split");
         Tecton tecton2 = this.Copy();
+        
+        //Konkurens Módosítás Kivétel elkerülése érdekében
+        ArrayList<ShroomThread> temp = new ArrayList<>(shroomThreads);
+
+        for (ShroomThread thread : temp)
+        {
+            thread.Remove();
+        }
+
+        shroomThreads.clear();
+
         Skeleton.LogReturnCall(this, "Split");
     }
 
@@ -132,16 +143,6 @@ public class Tecton {
                 this.ClearShroomBody();
             }
         }
-
-        //Konkurens Módosítás Kivétel elkerülése érdekében
-        ArrayList<ShroomThread> temp = new ArrayList<>(shroomThreads);
-
-        for (ShroomThread thread : temp)
-        {
-            thread.Remove();
-        }
-
-        shroomThreads.clear();
 
         Skeleton.LogReturnCall(this, "Copy");
         return copyTecton;

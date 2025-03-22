@@ -26,13 +26,13 @@ public class DesertTectonTest extends Test
         thread1 = new ShroomThread(shroom, dt, it);
         thread2 = new ShroomThread(shroom, stt, it);
 
-        Skeleton.AddObject(dt, "DesertTecton");
-        Skeleton.AddObject(stt, "SingleThreadTecton");
-        Skeleton.AddObject(it, "InfertileTecton");
-        Skeleton.AddObject(shroom, "Shroom");
+        Skeleton.AddObject(dt, "dt");
+        Skeleton.AddObject(stt, "sst");
+        Skeleton.AddObject(it, "it");
+        Skeleton.AddObject(shroom, "shroom");
         Skeleton.AddObject(shroom.GetActionPointCatalog(), "actCatalog");
-        Skeleton.AddObject(thread1, "ShroomThread1");
-        Skeleton.AddObject(thread2, "ShroomThread2");
+        Skeleton.AddObject(thread1, "thread1");
+        Skeleton.AddObject(thread2, "thread2");
 
         dt.GrowShroomThread(thread1);
         it.GrowShroomThread(thread1);
@@ -53,7 +53,7 @@ public class DesertTectonTest extends Test
     public void Run() {
         shroom.PlaceShroomThread(dt, it);
 
-        for (int i=0; i<3; i++)
+        for (int i = 0; i < 3; i++)
             dt.UpdateTecton();
     }
 }
