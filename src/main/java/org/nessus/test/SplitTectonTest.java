@@ -26,12 +26,12 @@ public class SplitTectonTest extends Test
         spore = new Spore(shroom, t1);
         bug = new Bug();
 
-        Skeleton.AddObject(t1, "tecton1");
-        Skeleton.AddObject(t2, "tecton2");
+        Skeleton.AddObject(t1, "t1");
+        Skeleton.AddObject(t2, "t2");
         Skeleton.AddObject(shroom, "shroom");
         Skeleton.AddObject(shroom.GetActionPointCatalog(), "shroomCat");
-        Skeleton.AddObject(body, "shroombody");
-        Skeleton.AddObject(thread, "shroomthread");
+        Skeleton.AddObject(body, "body");
+        Skeleton.AddObject(thread, "thread");
         Skeleton.AddObject(spore, "spore");
         Skeleton.AddObject(bug, "bug");
         Skeleton.AddObject(bug.GetActionPointCatalog(), "bugCat");

@@ -13,12 +13,19 @@ public class ShroomBody {
     public void Upgrade(){
         level++;
     }
+    
     public boolean IsTectonReachable(Tecton tecton){
         return false;
     }
+    
     public void FormSpore(Tecton tecton){
         SporeMaterials -= 2;
         tecton.ThrowSpore(new Spore(shroom, tecton));
     }
+
     public void ProduceSpore(){}
+
+    public void SetTecton(Tecton tecton) {
+        this.tecton = tecton;
+    }
 }

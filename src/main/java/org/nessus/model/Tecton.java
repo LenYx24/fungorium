@@ -100,6 +100,7 @@ public class Tecton {
             if (transferBug)
             {
                 copyTecton.AddBug(bug);
+                bug.SetTecton(copyTecton);
                 bugIter.remove();
             }
         }
@@ -115,6 +116,7 @@ public class Tecton {
             if (transferSpore)
             {
                 copyTecton.ThrowSpore(spore);
+                spore.SetTecton(copyTecton);
                 sporeIter.remove();
             }
         }
@@ -126,6 +128,7 @@ public class Tecton {
             if (transferBody)
             {
                 copyTecton.GrowShroomBody(shroomBody);
+                shroomBody.SetTecton(copyTecton);
                 this.ClearShroomBody();
             }
         }
@@ -140,7 +143,7 @@ public class Tecton {
 
         shroomThreads.clear();
 
-        Skeleton.LogReturnCall(this, "Copy", copyTecton);
+        Skeleton.LogReturnCall(this, "Copy");
         return copyTecton;
     }
 

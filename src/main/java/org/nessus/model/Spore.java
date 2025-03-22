@@ -38,4 +38,8 @@ public class Spore {
         }
 
     }
+
+    public void SetTecton(Tecton tecton) {
+        this.tecton = tecton;
+    }
 }
