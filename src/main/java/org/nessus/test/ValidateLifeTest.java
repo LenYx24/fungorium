@@ -3,7 +3,7 @@ package org.nessus.test;
 import org.nessus.Skeleton;
 import org.nessus.model.*;
 
-public class GrowthBoostTest extends Test
+public class ValidateLifeTest extends Test
 {
     Tecton t1;
     Tecton t2;
@@ -12,7 +12,7 @@ public class GrowthBoostTest extends Test
     ShroomThread thread;
     Spore spore;
 
-    public GrowthBoostTest(String name) { super(name); }
+    public ValidateLifeTest(String name) { super(name); }
 
     @Override
     public void Init()
@@ -24,12 +24,12 @@ public class GrowthBoostTest extends Test
         thread = new ShroomThread(shroom, t1, t2);
         spore = new Spore(shroom, t1);
 
-        Skeleton.AddObject(t1, "tekton1");
-        Skeleton.AddObject(t2, "tekton2");
+        Skeleton.AddObject(t1, "t1");
+        Skeleton.AddObject(t2, "t2");
         Skeleton.AddObject(shroom, "shroom");
         Skeleton.AddObject(shroom.GetActionPointCatalog(), "actCatalog");
-        Skeleton.AddObject(body, "shroombody");
-        Skeleton.AddObject(thread, "shroomthread");
+        Skeleton.AddObject(body, "body");
+        Skeleton.AddObject(thread, "thread");
         Skeleton.AddObject(spore, "spore");
 
         t1.GrowShroomBody(body);

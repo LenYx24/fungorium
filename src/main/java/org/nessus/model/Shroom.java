@@ -51,6 +51,7 @@ public class Shroom {
     }
 
     public void PlaceShroomBody(Tecton tecton) {
+        Skeleton.LogFunctionCall(this, "PlaceShroomBody", tecton);
         if (actCatalog.HasEnoughPoints(shroomBodyCost)) {
             ShroomBody shroomBody = new ShroomBody(this, tecton);
             boolean success = tecton.GrowShroomBody(shroomBody);
@@ -59,6 +60,7 @@ public class Shroom {
                 shroomBodies.add(shroomBody);
             }
         }
+        Skeleton.LogReturnCall(this, "PlaceShroomBody");
     }
 
     public void UpgradeShroomBody(ShroomBody body) {
