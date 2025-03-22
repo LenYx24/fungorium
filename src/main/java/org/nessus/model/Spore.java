@@ -8,8 +8,8 @@ import org.nessus.model.effect.SlowEffect;
 import java.util.Random;
 
 public class Spore {
-    Shroom shroom;
-    Tecton tecton;
+    private Shroom shroom;
+    private Tecton tecton;
 
     int nutrient = 3;
     Random rand = new Random();
@@ -40,5 +40,9 @@ public class Spore {
 
     public Shroom GetShroom() {
         return shroom;
+    }
+
+    public void SetTecton(Tecton tecton) {
+        this.tecton = tecton;
     }
 }

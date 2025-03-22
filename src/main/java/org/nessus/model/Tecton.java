@@ -4,27 +4,43 @@ import org.nessus.Skeleton;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class Tecton {
-    private List<Tecton> neighbours = new ArrayList<>();
-    private List<Spore> spores = new ArrayList<>();
-    private List<ShroomThread> shroomThreads = new ArrayList<>();
-    private List<Bug> bugs = new ArrayList<>();
-    private ShroomBody shroomBody = null;
+    protected List<Tecton> neighbours = new ArrayList<>();
+    protected List<Spore> spores = new ArrayList<>();
+    protected List<ShroomThread> shroomThreads = new ArrayList<>();
+    protected List<Bug> bugs = new ArrayList<>();
+    protected ShroomBody shroomBody = null;
 
     public void Split() {
+        Skeleton.LogFunctionCall(this, "Split");
         Tecton tecton2 = this.Copy();
+        
+        //Konkurens Módosítás Kivétel elkerülése érdekében
+        ArrayList<ShroomThread> temp = new ArrayList<>(shroomThreads);
+
+        for (ShroomThread thread : temp)
+        {
+            thread.Remove();
+        }
+
+        shroomThreads.clear();
+
+        Skeleton.LogReturnCall(this, "Split");
     }
 
-    public void GrowShroomThread(ShroomThread thread) {
+    public boolean GrowShroomThread(ShroomThread thread)  {
         Skeleton.LogFunctionCall(this, "GrowShroomThread", thread);
         shroomThreads.add(thread);
-        Skeleton.LogReturnCall(this, "GrowShroomThread");
+        Skeleton.LogReturnCall(this, "GrowShroomThread", true);
+        return true;
     }
 
-    public void RemoveShroomThread(ShroomThread thread) {
+    public void RemoveShroomThread(ShroomThread thread)
+    {
+        Skeleton.LogFunctionCall(this, "RemoveShroomThread", thread);
         shroomThreads.remove(thread);
+        Skeleton.LogReturnCall(this, "RemoveShroomThread");
     }
 
     public boolean GrowShroomBody(ShroomBody body) {
@@ -74,45 +90,75 @@ public class Tecton {
         Skeleton.LogReturnCall(this, "RemoveSpore");
     }
 
-    public void AddBug(Bug bug) {
+    public void AddBug(Bug bug)
+    {
+        Skeleton.LogFunctionCall(this, "AddBug", bug);
         bugs.add(bug);
+        Skeleton.LogReturnCall(this, "AddBug");
     }
 
-    public void RemoveBug(Bug bug) {
+    public void RemoveBug(Bug bug)
+    {
+        Skeleton.LogFunctionCall(this, "RemoveBug", bug);
         bugs.remove(bug);
+        Skeleton.LogReturnCall(this, "RemoveBug");
     }
 
-    public Tecton Copy() {
+    public Tecton Copy()
+    {
+        Skeleton.LogFunctionCall(this, "Copy");
+
         Tecton copyTecton = new Tecton();
-        for (Tecton t : neighbours) {
-            copyTecton.SetNeighbour(t);
-        }
+        Skeleton.AddObject(copyTecton, "copyTecton");
 
-        Random rand = new Random();
+        neighbours.forEach(neighbour -> copyTecton.neighbours.add(neighbour));
+        neighbours.add(copyTecton);
 
-        for (Spore spore : spores) {
-            if (rand.nextInt(2) == 0) {
-                copyTecton.ThrowSpore(spore);
-                this.RemoveSpore(spore);
-            }
-        }
+        var bugIter = bugs.iterator();
 
-        for (Bug bug : bugs) {
-            if (rand.nextInt(2) == 0) {
+        while(bugIter.hasNext())
+        {
+            Bug bug = bugIter.next();
+            String name = Skeleton.GetName(bug);
+            boolean transferBug = Skeleton.YesNoQuestion("Törés után átkerüljön-e a(z) " + name + " rovar a copyTecton tektonra?");
+
+            if (transferBug)
+            {
                 copyTecton.AddBug(bug);
-                this.RemoveBug(bug);
+                bug.SetTecton(copyTecton);
+                bugIter.remove();
             }
         }
-        if (rand.nextInt(2) == 0) {
-            copyTecton.GrowShroomBody(shroomBody);
-            this.ClearShroomBody();
+
+        var sporeIter = spores.iterator();
+
+        while(sporeIter.hasNext())
+        {
+            Spore spore = sporeIter.next();
+            String name = Skeleton.GetName(spore);
+            boolean transferSpore = Skeleton.YesNoQuestion("Törés után átkerüljön-e a(z) " + name + " spóra a copyTecton tektonra?");
+
+            if (transferSpore)
+            {
+                copyTecton.ThrowSpore(spore);
+                spore.SetTecton(copyTecton);
+                sporeIter.remove();
+            }
         }
 
-        for (ShroomThread thread : shroomThreads) {
-            thread.Remove();
-        }
-        shroomThreads.clear();
+        if (this.shroomBody != null)
+        {
+            boolean transferBody = Skeleton.YesNoQuestion("Törés után átkerüljön-e a gombatest a copyTecton tektonra?");
 
+            if (transferBody)
+            {
+                copyTecton.GrowShroomBody(shroomBody);
+                shroomBody.SetTecton(copyTecton);
+                this.ClearShroomBody();
+            }
+        }
+
+        Skeleton.LogReturnCall(this, "Copy");
         return copyTecton;
     }
 
@@ -128,13 +174,17 @@ public class Tecton {
         return hasGrownShroomThread;
     }
 
-    public boolean HasSporeOfShroom(Shroom shroom) {
-        return true;
+    public boolean HasSporeOfShroom(Shroom shroom)
+    {
+        Skeleton.LogFunctionCall(this, "HasSporeOfShroom");
+        boolean ret = Skeleton.YesNoQuestion("Van-e ezen a tektonon ehhez a gombafajhoz tartozó spóra?");
+        Skeleton.LogReturnCall(this, "HasSporeOfShroom", ret);
+        return ret;
     }
 
     public boolean IsNeighbourOf(Tecton tecton) {
         Skeleton.LogFunctionCall(this, "IsNeighbourOf", tecton);
-        boolean isNeighbourOf = Skeleton.YesNoQuestion("A kiindulási és céltekton azonos?");
+        boolean isNeighbourOf = Skeleton.YesNoQuestion("Szomszédos a két tekton?");
         Skeleton.LogReturnCall(this, "IsNeighbourOf", isNeighbourOf);
         return isNeighbourOf;
     }
@@ -142,7 +192,6 @@ public class Tecton {
     public void UpdateTecton() {
 
     }
-
 
     public void SetNeighbour(Tecton neighbour) {
         Skeleton.LogFunctionCall(this, "SetNeighbour", neighbour);
@@ -152,5 +201,10 @@ public class Tecton {
 
     public boolean containsThread(ShroomThread thread) {
         return shroomThreads.contains(thread);
+    }
+
+    public List<ShroomThread> getThreads()
+    {
+        return shroomThreads;
     }
 }

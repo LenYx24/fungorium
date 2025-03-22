@@ -1,9 +1,14 @@
 package org.nessus.model.tecton;
 
+import org.nessus.Skeleton;
 import org.nessus.model.ShroomThread;
 import org.nessus.model.Tecton;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 public class DesertTecton extends Tecton {
     private HashMap<ShroomThread, Integer> decayTimers;
@@ -17,15 +22,38 @@ public class DesertTecton extends Tecton {
     }
 
     @Override
-    public void GrowShroomThread(ShroomThread thread) {
-        System.out.println("Grow thread");
+    public boolean GrowShroomThread(ShroomThread thread)
+    {
+        Skeleton.LogFunctionCall(this, "GrowShroomThread");
+        this.shroomThreads.add(thread);
+        this.decayTimers.put(thread, 2);
+        Skeleton.LogReturnCall(this, "GrowShroomThread", true);
+        return true;
     }
 
     @Override
-    public void UpdateTecton() {
-        for (ShroomThread thread : decayTimers.keySet()) {
-            decayTimers.replace(thread, decayTimers.get(thread) - 1);
+    public void UpdateTecton()
+    {
+        Skeleton.LogFunctionCall(this, "UpdateTecton");
+
+        for (ShroomThread thread : List.copyOf(shroomThreads)) {
+            var decayTimer = decayTimers.get(thread);
+
+            if (decayTimer <= 0)
+            {
+                thread.Remove();
+                thread.GetTecton1().RemoveShroomThread(thread);
+                thread.GetTecton2().RemoveShroomThread(thread);
+                thread.GetShroom().RemoveShroomThread(thread);
+
+                decayTimers.remove(thread);
+            }
+            else
+            {
+                decayTimers.replace(thread, decayTimer - 1);
+            }
         }
-        // TODO: Megnézni hogy decayelt-e egy thread és megölni
+
+        Skeleton.LogReturnCall(this, "UpdateTecton");
     }
 }

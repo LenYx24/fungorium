@@ -95,4 +95,9 @@ public class Logger {
             default -> Optional.empty();
         });
     }
+
+    public String GetName(Object o)
+    {
+        return objects.get(o);
+    }
 }

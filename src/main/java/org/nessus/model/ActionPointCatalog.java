@@ -8,7 +8,7 @@ public class ActionPointCatalog {
 
     public boolean HasEnoughPoints(int cost) {
         Skeleton.LogFunctionCall(this, "HasEnoughPoints", cost);
-        boolean hasEnoughPoints = Skeleton.YesNoQuestion("Van elég pontja a rovarásznak a rovar mozgatásához?");
+        boolean hasEnoughPoints = Skeleton.YesNoQuestion("Van elég pont erre a cselekvésre?");
         Skeleton.LogReturnCall(this, "HasEnoughPoints", hasEnoughPoints);
         return hasEnoughPoints;
     }

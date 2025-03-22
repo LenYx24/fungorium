@@ -18,7 +18,7 @@ public class ShroomBody {
     public Tecton GetTecton() {
         return tecton;
     }
-
+  
     public Shroom GetShroom() {
         return shroom;
     }
@@ -62,6 +62,10 @@ public class ShroomBody {
 
     public void ProduceSpore(){}
 
+    public void SetTecton(Tecton tecton) {
+        this.tecton = tecton;
+    }
+  
     public void SetRemainingThrows(int remainingThrows) {
         Skeleton.LogFunctionCall(this, "SetRemainingThrows", remainingThrows);
         this.remainingThrows = remainingThrows;

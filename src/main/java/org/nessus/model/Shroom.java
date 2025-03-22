@@ -1,5 +1,7 @@
 package org.nessus.model;
 
+import org.nessus.Skeleton;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,30 +25,49 @@ public class Shroom {
         ResetPoints();
     }
 
-    public void PlaceShroomThread(Tecton tecton1, Tecton tecton2) {
-        if (actCatalog.HasEnoughPoints(shroomThreadCost)) {
-            ShroomThread thread = new ShroomThread(this, tecton1, tecton2);
-            threads.add(thread);
-            actCatalog.DecreasePoints(shroomThreadCost);
-        }
+    public void PlaceShroomThread(Tecton tecton1, Tecton tecton2)
+    {
+        Skeleton.LogFunctionCall(this, "PlaceShroomThread", tecton1, tecton2);
 
+        boolean enough = actCatalog.HasEnoughPoints(shroomThreadCost);
+        boolean neighbours = tecton1.IsNeighbourOf(tecton2);
+        boolean connectedToBody = Skeleton.YesNoQuestion("A két tektonra vezet-e olyan fonal amelyik csatlakozik gombatesthez (akár több fonal hálózatán keresztül)?");
+
+        if (enough && neighbours && connectedToBody)
+        {
+            ShroomThread thread = new ShroomThread(this, tecton1, tecton2);
+            Skeleton.AddObject(thread, "thread");
+            boolean t1Success = tecton1.GrowShroomThread(thread);
+            boolean t2Success = tecton2.GrowShroomThread(thread);
+
+            if(t1Success && t2Success)
+            {
+                threads.add(thread);
+                actCatalog.DecreasePoints(shroomThreadCost);
+            }
+            else
+            {
+                thread.Remove();
+            }
+        }
+        Skeleton.LogReturnCall(this, "PlaceShroomThread");
     }
 
     public void PlaceShroomBody(Tecton tecton) {
         Skeleton.LogFunctionCall(this, "PlaceShroomBody", tecton);
-
+      
         if (actCatalog.HasEnoughPoints(shroomBodyCost)) {
             ShroomBody newBody = new ShroomBody(this, tecton);
             Skeleton.AddObject(newBody, "newBody");
+          
             boolean success = tecton.GrowShroomBody(newBody);
-        
             if (success) {
                 grownShroomBodies++;
                 shroomBodies.add(newBody);
                 actCatalog.DecreasePoints(shroomBodyCost);
             }
         }
-
+      
         Skeleton.LogReturnCall(this, "PlaceShroomBody");
     }
 
@@ -83,7 +104,7 @@ public class Shroom {
     }
 
     public void RemoveSpore(Spore spore) {
-        Skeleton.LogFunctionCall(this, "RemvoeSpore", spore);
+        Skeleton.LogFunctionCall(this, "RemoveSpore", spore);
         spores.remove(spore);
         Skeleton.LogReturnCall(this, "RemoveSpore");
     }
@@ -94,7 +115,10 @@ public class Shroom {
         Skeleton.LogReturnCall(this, "RemoveShroomBody");
     }
 
-    public void RemoveShroomThread(ShroomThread thread) {
+    public void RemoveShroomThread(ShroomThread thread)
+    {
+        Skeleton.LogFunctionCall(this, "RemoveShroomThread");
+        Skeleton.LogReturnCall(this, "RemoveShroomThread");
     }
 
     public void UpdateShroom() {
@@ -115,6 +139,10 @@ public class Shroom {
         return grownShroomBodies;
     }
 
+    public ActionPointCatalog GetActionPointCatalog() {
+        return actCatalog;
+    }
+  
     public void SetShroomBody(ShroomBody body) {
         Skeleton.LogFunctionCall(this, "SetShroomBody", body);
         shroomBodies.add(body);
