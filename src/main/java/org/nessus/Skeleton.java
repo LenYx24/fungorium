@@ -11,6 +11,11 @@ public class Skeleton {
     private static final TestsHolder testsHolder = new TestsHolder("testNames.txt", logger);
     private static boolean running = true;
 
+    public static String GetName(Object o)
+    {
+        return logger.GetName(o);
+    }
+
     public static void Run() {
         Scanner scanner = new Scanner(System.in);
 

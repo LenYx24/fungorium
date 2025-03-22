@@ -91,25 +91,33 @@ public class Tecton {
             copyTecton.AddNeighbour(t);
         }
 
-        for (int i=0; i < bugs.size(); i++)
+        var bugIter = bugs.iterator();
+
+        while(bugIter.hasNext())
         {
-            boolean transferBug = Skeleton.YesNoQuestion("Törés után átkerüljön-e a(z) " + i + ". rovar a copyTecton tektonra?");
+            Bug bug = bugIter.next();
+            String name = Skeleton.GetName(bug);
+            boolean transferBug = Skeleton.YesNoQuestion("Törés után átkerüljön-e a(z) " + name + " rovar a copyTecton tektonra?");
 
             if (transferBug)
             {
-                copyTecton.AddBug(bugs.get(i));
-                this.RemoveBug(bugs.get(i));
+                copyTecton.AddBug(bug);
+                bugIter.remove();
             }
         }
 
-        for (int i=0; i < spores.size(); i++)
+        var sporeIter = spores.iterator();
+
+        while(sporeIter.hasNext())
         {
-            boolean transferSpore = Skeleton.YesNoQuestion("Törés után átkerüljön-e a(z) " + i + ". spóra a copyTecton tektonra?");
+            Spore spore = sporeIter.next();
+            String name = Skeleton.GetName(spore);
+            boolean transferSpore = Skeleton.YesNoQuestion("Törés után átkerüljön-e a(z) " + name + " spóra a copyTecton tektonra?");
 
             if (transferSpore)
             {
-                copyTecton.ThrowSpore(spores.get(i));
-                this.RemoveSpore(spores.get(i));
+                copyTecton.ThrowSpore(spore);
+                sporeIter.remove();
             }
         }
 

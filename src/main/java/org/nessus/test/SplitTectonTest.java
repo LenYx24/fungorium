@@ -11,7 +11,8 @@ public class SplitTectonTest extends Test
     ShroomBody body;
     ShroomThread thread;
     Spore spore;
-    Bug bug;
+    Bug bug1;
+    Bug bug2;
 
     public SplitTectonTest(String name) { super(name); }
 
@@ -24,7 +25,8 @@ public class SplitTectonTest extends Test
         body = new ShroomBody(shroom, t1);
         thread = new ShroomThread(shroom, t1, t2);
         spore = new Spore(shroom, t1);
-        bug = new Bug();
+        bug1 = new Bug();
+        bug2 = new Bug();
 
         Skeleton.AddObject(t1, "tekton1");
         Skeleton.AddObject(t2, "tekton2");
@@ -33,15 +35,19 @@ public class SplitTectonTest extends Test
         Skeleton.AddObject(body, "shroombody");
         Skeleton.AddObject(thread, "shroomthread");
         Skeleton.AddObject(spore, "spore");
-        Skeleton.AddObject(bug, "bug");
-        Skeleton.AddObject(bug.GetActionPointCatalog(), "bugCat");
+        Skeleton.AddObject(bug1, "bug1");
+        Skeleton.AddObject(bug1.GetActionPointCatalog(), "bugCat");
+        Skeleton.AddObject(bug2, "bug2");
+        Skeleton.AddObject(bug2.GetActionPointCatalog(), "bugCat");
 
-        t1.AddBug(bug);
+        t1.AddBug(bug1);
+        t1.AddBug(bug2);
         t1.GrowShroomBody(body);
         t1.ThrowSpore(spore);
         t1.GrowShroomThread(thread);
         t2.GrowShroomThread(thread);
-        bug.SetTecton(t1);
+        bug1.SetTecton(t1);
+        bug2.SetTecton(t1);
         t1.AddNeighbour(t2);
         t2.AddNeighbour(t1);
     }

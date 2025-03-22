@@ -33,17 +33,18 @@ public class DesertTecton extends Tecton {
     {
         Skeleton.LogFunctionCall(this, "UpdateTecton");
 
-        Iterator<Map.Entry<ShroomThread, Integer>> iter = decayTimers.entrySet().iterator();
+        var iter = decayTimers.entrySet().iterator();
         while (iter.hasNext())
         {
-            Map.Entry<ShroomThread, Integer> entry = iter.next();
+            var entry = iter.next();
+            var key = entry.getKey();
 
             if (entry.getValue()-1 <= 0)
             {
-                entry.getKey().Remove();
-                entry.getKey().GetTecton1().RemoveShroomThread(entry.getKey());
-                entry.getKey().GetTecton2().RemoveShroomThread(entry.getKey());
-                entry.getKey().GetShroom().RemoveShroomThread(entry.getKey());
+                key.Remove();
+                key.GetTecton1().RemoveShroomThread(key);
+                key.GetTecton2().RemoveShroomThread(key);
+                key.GetShroom().RemoveShroomThread(key);
 
                 iter.remove();
             }
