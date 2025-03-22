@@ -86,9 +86,8 @@ public class Tecton {
         Tecton copyTecton = new Tecton();
         Skeleton.AddObject(copyTecton, "copyTecton");
 
-        for (Tecton t : this.neighbours) {
-            copyTecton.AddNeighbour(t);
-        }
+        neighbours.forEach(neighbour -> copyTecton.neighbours.add(neighbour));
+        neighbours.add(copyTecton);
 
         var bugIter = bugs.iterator();
 
