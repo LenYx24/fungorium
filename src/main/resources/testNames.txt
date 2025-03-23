@@ -1,6 +1,5 @@
 Testname;classname
 BugMoveTest;org.nessus.test.BugMoveTest
-BugMoveWithoutThreadTest;org.nessus.test.BugMoveWithoutThreadTest
 CutThreadTest;org.nessus.test.CutThreadTest
 PlaceShroomBodyTest;org.nessus.test.PlaceShroomBodyTest
 ShroomBodyDeathTest;org.nessus.test.ShroomBodyDeathTest
