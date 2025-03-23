@@ -10,8 +10,13 @@ import org.nessus.model.Bug;
  * @see org.nessus.model.Bug
  */
 public abstract class BugEffect {
-    int remainingUses = 3;
+    int remainingUses = 3; // A hatás hátralévő használatainak száma.
 
+    /**
+     * A hatások alkalmazása után a hatások állapotának frissítése.
+     * Ha a hatások használata elfogyott, akkor a hatások eltűnnek.
+     * @param bug
+     */
     protected void UpdateState(Bug bug) {
         remainingUses--;
         if (remainingUses == 0) {
@@ -19,5 +24,9 @@ public abstract class BugEffect {
         }
     }
 
+    /**
+     * A hatások alkalmazása a rovarokra.
+     * @param bug
+     */
     public abstract void Apply(Bug bug);
 }
