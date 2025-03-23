@@ -3,6 +3,8 @@ BugMoveTest;org.nessus.test.BugMoveTest
 PlaceShroomBodyTest;org.nessus.test.PlaceShroomBodyTest
 ShroomBodyDeathTest;org.nessus.test.ShroomBodyDeathTest
 UpgradeShroomBodyTest;org.nessus.test.UpgradeShroomBodyTest
+PlaceNewSporeTest;org.nessus.test.PlaceNewSporeTest
+ProduceSporeMaterialTest;org.nessus.test.ProduceSporeMaterialTest
 SplitTectonTest;org.nessus.test.SplitTectonTest
 DesertTectonTest;org.nessus.test.DesertTectonTest
 SingleThreadTectonTest;org.nessus.test.SingleThreadTectonTest
