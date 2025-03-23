@@ -10,9 +10,9 @@ name: Java CI with Maven (SzoftProjLab)
 
 on:
   push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+    paths:
+      - 'src/**'
+      - '.github/workflows/maven.yml'
 
 jobs:
   build:
