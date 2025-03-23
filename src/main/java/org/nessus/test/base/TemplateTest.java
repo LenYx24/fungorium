@@ -1,4 +1,4 @@
-package org.nessus.test;
+package org.nessus.test.base;
 
 // Ezt lemásolhatod, csak az osztály nevét kell átírni
 public class TemplateTest extends Test {

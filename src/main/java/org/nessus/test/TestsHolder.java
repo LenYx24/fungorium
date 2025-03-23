@@ -1,14 +1,14 @@
 package org.nessus.test;
 
 import org.nessus.Logger;
-import org.nessus.Skeleton;
+import org.nessus.test.base.Test;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 public class TestsHolder {
-    private ArrayList<Test> tests = new ArrayList<Test>();
+    private ArrayList<Test> tests = new ArrayList<>();
     private Logger logger;
 
     public TestsHolder(String filename, Logger logger) {

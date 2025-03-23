@@ -1,11 +1,9 @@
 package org.nessus.model.tecton;
 
 import org.nessus.Skeleton;
-import org.nessus.model.ShroomThread;
-import org.nessus.model.Tecton;
 
-import java.util.HashMap;
-import java.util.List;
+import org.nessus.model.*;
+import java.util.*;
 
 /**
  * A sivatagi tectonokat reprezentáló osztály.
@@ -32,7 +30,14 @@ public class DesertTecton extends Tecton {
      */
     @Override
     public Tecton Copy() {
-        return new DesertTecton();
+        Skeleton.LogFunctionCall(this, "Copy");
+
+        Tecton copyTecton = new DesertTecton();
+        Skeleton.AddObject(copyTecton, "copyTecton");
+        SpreadEntities(copyTecton);
+
+        Skeleton.LogReturnCall(this, "Copy");
+        return copyTecton;
     }
 
     /**
@@ -43,7 +48,7 @@ public class DesertTecton extends Tecton {
      */
     @Override
     public boolean GrowShroomThread(ShroomThread thread) {
-        Skeleton.LogFunctionCall(this, "GrowShroomThread");
+        Skeleton.LogFunctionCall(this, "GrowShroomThread", thread);
         this.shroomThreads.add(thread);
         this.decayTimers.put(thread, 2);
         Skeleton.LogReturnCall(this, "GrowShroomThread", true);

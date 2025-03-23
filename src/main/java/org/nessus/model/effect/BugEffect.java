@@ -28,5 +28,5 @@ public abstract class BugEffect {
      * A hatások alkalmazása a rovarokra.
      * @param bug
      */
-    public abstract void Apply(Bug bug);
+    public abstract void ApplyOn(Bug bug);
 }

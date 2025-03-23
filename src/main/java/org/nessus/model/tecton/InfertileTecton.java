@@ -15,7 +15,14 @@ public class InfertileTecton extends Tecton {
      */
     @Override
     public Tecton Copy() {
-        return new InfertileTecton();
+        Skeleton.LogFunctionCall(this, "Copy");
+
+        Tecton copyTecton = new InfertileTecton();
+        Skeleton.AddObject(copyTecton, "copyTecton");
+        SpreadEntities(copyTecton);
+
+        Skeleton.LogReturnCall(this, "Copy");
+        return copyTecton;
     }
 
     /**
@@ -26,6 +33,7 @@ public class InfertileTecton extends Tecton {
     @Override
     public boolean GrowShroomBody(ShroomBody body) {
         Skeleton.LogFunctionCall(this, "GrowShroomBody");
+        Skeleton.LogFunctionCall(this, "GrowShroomBody", body);
         Skeleton.LogReturnCall(this, "GrowShroomBody", false);
         return false;
     }

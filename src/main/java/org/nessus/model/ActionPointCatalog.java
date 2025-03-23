@@ -38,6 +38,8 @@ public class ActionPointCatalog {
      * @see org.nessus.model.ActionPointCatalog#defaultActionPoints
      */
     public void ResetPoints() {
+        Skeleton.LogFunctionCall(this, "ResetPoints");
         currentActionPoints = defaultActionPoints;
+        Skeleton.LogReturnCall(this, "ResetPoints");
     }
 }

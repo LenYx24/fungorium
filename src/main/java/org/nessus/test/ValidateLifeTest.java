@@ -2,6 +2,7 @@ package org.nessus.test;
 
 import org.nessus.Skeleton;
 import org.nessus.model.*;
+import org.nessus.test.base.Test;
 
 public class ValidateLifeTest extends Test
 {
@@ -32,12 +33,18 @@ public class ValidateLifeTest extends Test
         Skeleton.AddObject(thread, "thread");
         Skeleton.AddObject(spore, "spore");
 
-        t1.GrowShroomBody(body);
-        t1.ThrowSpore(spore);
-        t1.GrowShroomThread(thread);
-        t2.GrowShroomThread(thread);
+        shroom.SetShroomBody(body);
+        shroom.SetShroomThread(thread);
+        shroom.SetSpore(spore);
+
         t1.SetNeighbour(t2);
         t2.SetNeighbour(t1);
+
+        t1.SetShroomBody(body);
+        t1.GrowShroomThread(thread);
+        t1.ThrowSpore(spore);
+        
+        t2.GrowShroomThread(thread);
     }
 
     @Override

@@ -19,7 +19,14 @@ public class SingleThreadTecton extends Tecton {
      */
     @Override
     public Tecton Copy() {
-        return new SingleThreadTecton();
+        Skeleton.LogFunctionCall(this, "Copy");
+
+        Tecton copyTecton = new SingleThreadTecton();
+        Skeleton.AddObject(copyTecton, "copyTecton");
+        SpreadEntities(copyTecton);
+
+        Skeleton.LogReturnCall(this, "Copy");
+        return copyTecton;
     }
 
     /**
@@ -29,7 +36,7 @@ public class SingleThreadTecton extends Tecton {
      */
     @Override
     public boolean GrowShroomThread(ShroomThread thread) {
-        Skeleton.LogFunctionCall(this, "GrowShroomThread");
+        Skeleton.LogFunctionCall(this, "GrowShroomThread", thread);
         if (this.getThreads().isEmpty()) {
             shroomThreads.add(thread);
             Skeleton.LogReturnCall(this, "GrowShroomThread", true);

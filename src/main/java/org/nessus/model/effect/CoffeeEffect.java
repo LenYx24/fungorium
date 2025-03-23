@@ -1,5 +1,6 @@
 package org.nessus.model.effect;
 
+import org.nessus.Skeleton;
 import org.nessus.model.Bug;
 
 /**
@@ -15,8 +16,10 @@ public class CoffeeEffect extends BugEffect {
      * A hatás alkalmazása a rovarokra.
      * @param bug
      */
-    public void Apply(Bug bug) {
+    public void ApplyOn(Bug bug) {
+        Skeleton.LogFunctionCall(this, "ApplyOn", bug);
         bug.AddMoveCost(-2);
         UpdateState(bug);
+        Skeleton.LogReturnCall(this, "ApplyOn");
     }
 }

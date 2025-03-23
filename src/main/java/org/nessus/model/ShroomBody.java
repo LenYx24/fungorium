@@ -97,12 +97,12 @@ public class ShroomBody {
 
     /**
      * Spóra termelése
-     * @apiNote Még nincs implementálva
-     * @throws UnsupportedOperationException
      * @return void
      */
     public void ProduceSpore() {
-        throw new UnsupportedOperationException();
+        Skeleton.LogFunctionCall(this, "ProduceSpore");
+        sporeMaterials++;
+        Skeleton.LogReturnCall(this, "ProduceSpore");
     }
 
     /**

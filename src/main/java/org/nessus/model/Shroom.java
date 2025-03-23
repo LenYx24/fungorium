@@ -61,7 +61,6 @@ public class Shroom {
             boolean t1Success = tecton1.GrowShroomThread(thread);
             boolean t2Success = tecton2.GrowShroomThread(thread);
 
-            // SZEKVENCIA DIAGRAMON PÓTOLNI
             if (t1Success && t2Success) {
                 threads.add(thread);
                 actCatalog.DecreasePoints(shroomThreadCost);
@@ -256,5 +255,12 @@ public class Shroom {
         Skeleton.LogFunctionCall(this, "SetSpore", spore);
         spores.add(spore);
         Skeleton.LogReturnCall(this, "SetSpore");
+    }
+}
+
+    public void SetShroomThread(ShroomThread thread) {
+        Skeleton.LogFunctionCall(this, "SetShroomThread", thread);
+        threads.add(thread);
+        Skeleton.LogReturnCall(this, "SetShroomThread");
     }
 }

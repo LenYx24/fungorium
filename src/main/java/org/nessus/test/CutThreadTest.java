@@ -2,13 +2,13 @@ package org.nessus.test;
 
 import org.nessus.test.base.BugsTest;
 
-public class BugMoveTest extends BugsTest {
-    public BugMoveTest(String name) {
+public class CutThreadTest extends BugsTest {
+    public CutThreadTest(String name) {
         super(name);
     }
 
     @Override
     public void Run() {
-        bug.Move(t2);
+        bug.CutThread(thread);
     }
 }

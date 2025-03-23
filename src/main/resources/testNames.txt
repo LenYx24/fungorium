@@ -1,12 +1,15 @@
 Testname;classname
 BugMoveTest;org.nessus.test.BugMoveTest
+CutThreadTest;org.nessus.test.CutThreadTest
+PlaceShroomThreadTest;org.nessus.test.PlaceShroomThreadTest
 PlaceShroomBodyTest;org.nessus.test.PlaceShroomBodyTest
 ShroomBodyDeathTest;org.nessus.test.ShroomBodyDeathTest
 UpgradeShroomBodyTest;org.nessus.test.UpgradeShroomBodyTest
-PlaceNewSporeTest;org.nessus.test.PlaceNewSporeTest
+ThrowSporeTest;org.nessus.test.ThrowSporeTest
 ProduceSporeMaterialTest;org.nessus.test.ProduceSporeMaterialTest
-SplitTectonTest;org.nessus.test.SplitTectonTest
 DesertTectonTest;org.nessus.test.DesertTectonTest
 SingleThreadTectonTest;org.nessus.test.SingleThreadTectonTest
 InfertileTectonTest;org.nessus.test.InfertileTectonTest
+SplitTectonTest;org.nessus.test.SplitTectonTest
 ValidateLifeTest;org.nessus.test.ValidateLifeTest
+BugEatTest;org.nessus.test.BugEatTest

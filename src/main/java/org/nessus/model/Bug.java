@@ -32,7 +32,14 @@ public class Bug {
      * Alapértelmezetten beállítja a pontokat és a költségeket.
      */
     public Bug() {
+        Skeleton.AddObject(this, "bug");
+        Skeleton.AddObject(actCatalog, "bugCat");
         ResetPoints();
+    }
+
+    public Bug(Tecton tecton) {
+        this();
+        this.tecton = tecton;
     }
 
     /**
@@ -44,23 +51,26 @@ public class Bug {
      * - van gombafonal a két tekton között
      * - a rovaron nincs bénító hatás
      * Ha teljesülnek a feltételek, akkor a rovar átkerül a másik tektonra.
-     * @param t2 - A tekton, amire a rovar mozogni szeretne.
+     * @param destination - A tekton, amire a rovar mozogni szeretne.
      * @see Tecton
      * @see ActionPointCatalog
      * @see BugEffect
      * @see Skeleton
      * @return void
      */
-    public void Move(Tecton t2) {
-        Skeleton.LogFunctionCall(this, "Move", t2);
-        Tecton t1 = this.tecton;
+    public void Move(Tecton destination) {
+        Skeleton.LogFunctionCall(this, "Move", tecton);
+
         boolean enough = actCatalog.HasEnoughPoints(moveCost);
-        boolean neighbours = t1.IsNeighbourOf(t2);
-        boolean hasGrownShroomThreadTo = t1.HasGrownShroomThreadTo(t2);
-        boolean canmove = Skeleton.YesNoQuestion("Van-e a rovaron bénító effect?");
-        if (enough && neighbours && hasGrownShroomThreadTo && canmove) {
-            t1.RemoveBug(this);
-            t2.AddBug(this);
+        boolean neighbours = tecton.IsNeighbourOf(destination);
+        boolean hasGrownShroomThreadTo = tecton.HasGrownShroomThreadTo(destination);
+
+        canMove = !Skeleton.YesNoQuestion("Van-e a rovaron bénító effect?");
+
+        if (enough && neighbours && hasGrownShroomThreadTo && canMove) { //
+            tecton.RemoveBug(this);
+            destination.AddBug(this);
+            tecton = destination;
             actCatalog.DecreasePoints(moveCost);
         }
         Skeleton.LogReturnCall(this, "Move");
@@ -81,7 +91,15 @@ public class Bug {
      * @return void
      */
     public void Eat(Spore spore) {
-        spore.EatenBy(this);
+        Skeleton.LogFunctionCall(this, "Eat", spore);
+        spore.GetTecton();
+        boolean enough = actCatalog.HasEnoughPoints(eatCost);
+        boolean isOnSameTecton = Skeleton.YesNoQuestion("A rovar és a spóra egy tektonon van?");
+        if (isOnSameTecton && enough) {
+            spore.EatenBy(this);
+            actCatalog.DecreasePoints(eatCost);
+        }
+        Skeleton.LogReturnCall(this, "Eat");
     }
 
     /**
@@ -98,8 +116,19 @@ public class Bug {
      * @see Skeleton
      * @return void
      */
-    public void CutThread(ShroomThread shroomThread) {
-        shroomThread.Remove();
+    public void CutThread(ShroomThread thread) {
+        Skeleton.LogFunctionCall(this, "CutThread", thread);
+
+        boolean enough = actCatalog.HasEnoughPoints(cutThreadCost);
+        boolean reachable = thread.IsTectonReachable(tecton);
+        canCut = !Skeleton.YesNoQuestion("Van-e a rovaron szájzár effect?");
+
+        if (canCut && enough && reachable) {
+            thread.Remove();
+            actCatalog.DecreasePoints(cutThreadCost);
+        }
+
+        Skeleton.LogReturnCall(this, "CutThread");
     }
 
     /**
@@ -108,7 +137,9 @@ public class Bug {
      * @return void
      */
     public void AddMoveCost(int value) {
+        Skeleton.LogFunctionCall(this, "AddMoveCost", value);
         moveCost += value;
+        Skeleton.LogReturnCall(this, "AddMoveCost");
     }
 
     /**
@@ -117,7 +148,9 @@ public class Bug {
      * @return void
      */
     public void AddNutrients(int nutrients) {
+        Skeleton.LogFunctionCall(this, "AddNutrients", nutrients);
         collectedNutrients += nutrients;
+        Skeleton.LogReturnCall(this, "AddNutrients");
     }
 
     /**
@@ -126,7 +159,9 @@ public class Bug {
      * @return void
      */
     public void AddEffect(BugEffect bugEffect) {
+        Skeleton.LogFunctionCall(this, "AddEffect", bugEffect);
         bugEffects.add(bugEffect);
+        Skeleton.LogReturnCall(this, "AddEffect");
     }
 
     /**
@@ -145,11 +180,13 @@ public class Bug {
      * @return void
      */
     public void UpdateBug() {
-        ResetPoints();
+        Skeleton.LogFunctionCall(this, "UpdateBug");
         LoadDefaultCosts();
+        actCatalog.ResetPoints();
         for (BugEffect bugEffect : bugEffects) {
-            bugEffect.Apply(this);
+            bugEffect.ApplyOn(this);
         }
+        Skeleton.LogReturnCall(this, "UpdateBug");
     }
 
     /**
@@ -158,9 +195,11 @@ public class Bug {
      * @return void
      */
     public void LoadDefaultCosts() {
+        Skeleton.LogFunctionCall(this, "LoadDefaultCosts");
         moveCost = 1;
         eatCost = 4;
         cutThreadCost = 3;
+        Skeleton.LogReturnCall(this, "LoadDefaultCosts");
     }
 
     /**
@@ -170,7 +209,9 @@ public class Bug {
      * @return void
      */
     public void ResetPoints() {
+        Skeleton.LogFunctionCall(this, "ResetPoints");
         actCatalog.ResetPoints();
+        Skeleton.LogReturnCall(this, "ResetPoints");
     }
 
     /**
@@ -197,7 +238,9 @@ public class Bug {
      * @param canMove - boolean
      */
     public void SetCanMove(boolean canMove) {
+        Skeleton.LogFunctionCall(this, "SetCanMove", canMove);
         this.canMove = canMove;
+        Skeleton.LogReturnCall(this, "SetCanMove");
     }
 
     /**
@@ -206,7 +249,9 @@ public class Bug {
      * @return void
      */
     public void SetCanCut(boolean canCut) {
+        Skeleton.LogFunctionCall(this, "SetCanCut", canCut);
         this.canMove = canCut;
+        Skeleton.LogReturnCall(this, "SetCanCut");
     }
 
     /**

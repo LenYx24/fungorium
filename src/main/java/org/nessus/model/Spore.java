@@ -5,6 +5,7 @@ import org.nessus.model.effect.CoffeeEffect;
 import org.nessus.model.effect.CripplingEffect;
 import org.nessus.model.effect.JawLockEffect;
 import org.nessus.model.effect.SlowEffect;
+import org.nessus.model.effect.BugEffect;
 
 import java.util.Random;
 
@@ -21,7 +22,6 @@ public class Spore {
     private Tecton tecton; // A spóra tecton része
 
     int nutrient = 3; // A spóra tápanyagértéke
-    Random rand = new Random(); // Véletlenszám generátor
 
     /**
      * A spóra konstruktora.
@@ -44,24 +44,14 @@ public class Spore {
      * @return void
      */
     public void EatenBy(Bug bug) {
+        Skeleton.LogFunctionCall(this, "EatenBy", bug);
         bug.AddNutrients(nutrient);
-        int randInt = rand.nextInt(4);
-        switch (randInt) {
-            case 0:
-                bug.AddEffect(new CoffeeEffect());
-                break;
-            case 1:
-                bug.AddEffect(new CripplingEffect());
-                break;
-            case 2:
-                bug.AddEffect(new JawLockEffect());
-                break;
-            case 3:
-                bug.AddEffect(new SlowEffect());
-                break;
-            default:
-                break;
-        }
+
+        BugEffect bg = Skeleton.WhichEffect();
+        Skeleton.AddObject(bg, "bugEffect");
+        bug.AddEffect(bg);
+        tecton.RemoveSpore(this);
+        Skeleton.LogReturnCall(this, "EatenBy");
     }
 
     /**
@@ -77,6 +67,8 @@ public class Spore {
      * @return Tecton - A spóra tektonja
      */
     public Tecton GetTecton() {
+        Skeleton.LogFunctionCall(this, "GetTecton");
+        Skeleton.LogReturnCall(this, "GetTecton", tecton);
         return tecton;
     }
 

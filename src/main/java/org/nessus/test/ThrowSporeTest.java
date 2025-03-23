@@ -2,13 +2,13 @@ package org.nessus.test;
 
 import org.nessus.test.base.ShroomLargeTest;
 
-public class ProduceSporeMaterialTest extends ShroomLargeTest {
-    public ProduceSporeMaterialTest(String name) {
+public class ThrowSporeTest extends ShroomLargeTest {
+    public ThrowSporeTest(String name) {
         super(name);
     }
 
     @Override
     public void Run() {
-        body.ProduceSpore();
+        shroom.ThrowSpore(body, t1);
     }
 }
