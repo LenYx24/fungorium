@@ -5,23 +5,50 @@ import java.util.HashMap;
 import java.util.Optional;
 import java.util.Scanner;
 
+/**
+ * A logolást végző osztály.
+ * A logolás során a program minden függvényhívás előtt és után kiírja a függvény nevét és a paramétereit.
+ * A logolás során lehetőség van a felhasználónak kérdéseket feltenni, amikre a program válaszol.
+ */
 public class Logger {
-    private int indentLevel = 0;
-    private final HashMap<Object, String> objects = new HashMap<>();
-    private final Scanner scanner = new Scanner(System.in);
+    private int indentLevel = 0; // A behúzás szintje
+    private final HashMap<Object, String> objects = new HashMap<>(); // Az objektumok nevei
+    private final Scanner scanner = new Scanner(System.in); // A bemeneti adatok beolvasására szolgáló Scanner
 
+    /**
+     * Az aktuális behúzás szintjének megfelelő behúzást ad vissza.
+     * @return String - A behúzás
+     */
     private String GetIndentation() {
         return "\t".repeat(Math.max(0, indentLevel));
     }
 
+    /**
+     * Behúzást ad a megadott StringBuilderhez.
+     * @param builder - A StringBuilder, amelyhez a behúzást hozzá kell adni
+     * @return void
+     */
     private void Indent(StringBuilder builder) {
         builder.append(GetIndentation());
     }
 
+    /**
+     * Objektum hozzáadása a logoláshoz.
+     * @param object - Az objektum, amelyet hozzá kell adni
+     * @param name - Az objektum neve
+     * @return void
+     */
     public void AddObject(Object object, String name) {
         objects.put(object, name);
     }
 
+    /**
+     * Függvényhívás logolása.
+     * @param object - Az objektum, amelyen a függvény meghívódik
+     * @param funcName - A függvény neve
+     * @param args - A függvény paraméterei
+     * @return void
+     */
     public void LogFunctionCall(Object object, String funcName, Object... args) {
         StringBuilder builder = new StringBuilder();
         Indent(builder);
@@ -42,6 +69,13 @@ public class Logger {
         Log(builder.toString());
     }
 
+    /**
+     * Függvényhívás visszatérésének logolása.
+     * @param object
+     * @param funcName
+     * @param args
+     * @return void
+     */
     public void LogReturnCall(Object object, String funcName, Object... args) {
         StringBuilder builder = new StringBuilder();
         builder.append("\t".repeat(Math.max(0, indentLevel)));
@@ -57,14 +91,30 @@ public class Logger {
         Log(builder.toString());
     }
 
+    /**
+     * Logolás.
+     * @param message
+     * @return void
+     */
     public void Log(String message) {
         System.out.println(message);
     }
 
+    /**
+     * Logolás új sor nélkül.
+     * @param message
+     * @return void
+     */
     public void LogNoNewLine(String message) {
         System.out.print(message);
     }
 
+    /**
+     * Kérdés feltevése a felhasználónak.
+     * @param question
+     * @param args
+     * @return Optional<Integer> - A válasz
+     */
     public Optional<Integer> AskQuestion(String question, Object... args) {
         StringBuilder builder = new StringBuilder();
         builder.append(GetIndentation()).append("> ").append(question).append("\n");
@@ -87,6 +137,11 @@ public class Logger {
         return ans;
     }
 
+    /**
+     * Igen-nem kérdés feltevése a felhasználónak.
+     * @param question
+     * @return Optional<Boolean> - A válasz
+     */
     public Optional<Boolean> AskYesNoQuestion(String question) {
         Optional<Integer> ans = AskQuestion(question, "nem", "igen");
         return ans.flatMap(num -> switch (num) {
@@ -96,8 +151,12 @@ public class Logger {
         });
     }
 
-    public String GetName(Object o)
-    {
+    /**
+     * Objektum nevének lekérdezése.
+     * @param o
+     * @return String - Az objektum neve
+     */
+    public String GetName(Object o) {
         return objects.get(o);
     }
 }
