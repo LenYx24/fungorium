@@ -2,6 +2,7 @@ package org.nessus.test;
 
 import org.nessus.Skeleton;
 import org.nessus.model.*;
+import org.nessus.test.base.Test;
 
 public class BugMoveTest extends Test {
     Tecton t1;

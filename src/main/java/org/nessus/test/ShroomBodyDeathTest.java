@@ -2,6 +2,7 @@ package org.nessus.test;
 
 import org.nessus.Skeleton;
 import org.nessus.model.*;
+import org.nessus.test.base.Test;
 
 public class ShroomBodyDeathTest extends Test {
     Tecton t1;
@@ -12,7 +13,7 @@ public class ShroomBodyDeathTest extends Test {
         super(name);
     }
     
-        @Override
+    @Override
     public void Init() {
         t1 = new Tecton();
         shroom = new Shroom();

@@ -1,9 +1,9 @@
-package org.nessus.test;
+package org.nessus.test.base;
 
 public abstract class Test {
     private String name;
 
-    public Test(String name) {
+    protected Test(String name) {
         this.name = name;
     }
 

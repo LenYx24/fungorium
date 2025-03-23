@@ -1,6 +1,7 @@
 package org.nessus.test;
 
 import org.nessus.Logger;
+import org.nessus.test.base.Test;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;

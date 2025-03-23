@@ -6,6 +6,7 @@ import org.nessus.model.Shroom;
 import org.nessus.model.ShroomThread;
 import org.nessus.model.Spore;
 import org.nessus.model.Tecton;
+import org.nessus.test.base.Test;
 
 public class CutThreadTest extends Test {
     Tecton t1;
