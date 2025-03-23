@@ -25,6 +25,7 @@ public class ShroomBodyDeathTest extends Test {
 
         t1.SetShroomBody(body);
         shroom.SetShroomBody(body);
+        
         body.SetRemainingThrows(1);
         body.SetSporeMaterials(2);
     }

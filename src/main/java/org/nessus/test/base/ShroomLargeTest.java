@@ -62,6 +62,13 @@ public abstract class ShroomLargeTest extends Test {
 
         t2.ThrowSpore(spore2);
         t2.ThrowSpore(spore1);
+
+        shroom.SetShroomBody(body);
+        shroom.SetShroomThread(thread);
+        shroom.SetSpore(spore1);
+        shroom.SetSpore(spore2);
+        shroom.SetSpore(spore3);
+        shroom.SetSpore(spore4);
     }
 
     @Override

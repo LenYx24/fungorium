@@ -25,7 +25,7 @@ public class SplitTectonTest extends Test
         body = new ShroomBody(shroom, t1);
         thread = new ShroomThread(shroom, t1, t2);
         spore = new Spore(shroom, t1);
-        bug = new Bug();
+        bug = new Bug(t1);
 
         Skeleton.AddObject(t1, "t1");
         Skeleton.AddObject(t2, "t2");
@@ -37,14 +37,19 @@ public class SplitTectonTest extends Test
         Skeleton.AddObject(bug, "bug");
         Skeleton.AddObject(bug.GetActionPointCatalog(), "bugCat");
 
-        t1.AddBug(bug);
         t1.SetShroomBody(body);
-        t1.ThrowSpore(spore);
-        t1.GrowShroomThread(thread);
-        t2.GrowShroomThread(thread);
-        bug.SetTecton(t1);
         t1.SetNeighbour(t2);
+        t1.GrowShroomThread(thread);
+        
         t2.SetNeighbour(t1);
+        t2.GrowShroomThread(thread);
+
+        t1.AddBug(bug);
+        t1.ThrowSpore(spore);
+
+        shroom.SetSpore(spore);
+        shroom.SetShroomBody(body);
+        shroom.SetShroomThread(thread);
     }
 
     @Override

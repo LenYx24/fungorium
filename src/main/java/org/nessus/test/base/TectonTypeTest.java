@@ -22,9 +22,9 @@ public abstract class TectonTypeTest extends Test {
     @Override
     public void Init()
     {
-        dt = new DesertTecton();
-        stt = new SingleThreadTecton();
         it = new InfertileTecton();
+        stt = new SingleThreadTecton();
+        dt = new DesertTecton();
         shroom = new Shroom();
         thread1 = new ShroomThread(shroom, dt, it);
         thread2 = new ShroomThread(shroom, stt, it);
@@ -37,19 +37,22 @@ public abstract class TectonTypeTest extends Test {
         Skeleton.AddObject(thread1, "thread1");
         Skeleton.AddObject(thread2, "thread2");
 
+        dt.SetNeighbour(it);
+        dt.SetNeighbour(stt);
+        
+        stt.SetNeighbour(it);
+        stt.SetNeighbour(dt);
+        
+        it.SetNeighbour(dt);
+        it.SetNeighbour(stt);
+
         dt.GrowShroomThread(thread1);
+        stt.GrowShroomThread(thread2);
         it.GrowShroomThread(thread1);
         it.GrowShroomThread(thread2);
-        stt.GrowShroomThread(thread2);
 
-        dt.SetNeighbour(it);
-        it.SetNeighbour(dt);
-
-        it.SetNeighbour(stt);
-        stt.SetNeighbour(it);
-
-        dt.SetNeighbour(stt);
-        stt.SetNeighbour(dt);
+        shroom.SetShroomThread(thread1);
+        shroom.SetShroomThread(thread2);
     }
 
     @Override

@@ -46,15 +46,8 @@ public abstract class BugsTest extends Test {
         t2.GrowShroomThread(thread);
         t1.GrowShroomThread(thread);
 
-        // A komm diagramon van ilyen hívás, viszont fent meg a konstruktornál
-        // már beállítjuk, hogy melyik tektonon legyen. Melyik marad?
-        spore.SetTecton(t1);
         shroom.SetSpore(spore);
-
-        // ShoomThreadnél ugyanez, ott most kellenek a SetTecton hívások???
-        // Ezeket a komm diagramon is javítani kell!!!!!
-        thread.SetTecton1(t1);
-        thread.SetTecton2(t2);
+        shroom.SetShroomThread(thread);
     }
     
     @Override

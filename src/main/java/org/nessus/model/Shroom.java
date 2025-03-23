@@ -161,4 +161,10 @@ public class Shroom {
         spores.add(spore);
         Skeleton.LogReturnCall(this, "SetSpore");
     }
+
+    public void SetShroomThread(ShroomThread thread) {
+        Skeleton.LogFunctionCall(this, "SetShroomThread", thread);
+        threads.add(thread);
+        Skeleton.LogReturnCall(this, "SetShroomThread");
+    }
 }
