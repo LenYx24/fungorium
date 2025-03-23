@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Bug {
-    List<BugEffect> bugEffects = new ArrayList<BugEffect>();
+    List<BugEffect> bugEffects = new ArrayList<>();
     ActionPointCatalog actCatalog = new ActionPointCatalog();
     Tecton tecton;
 
@@ -21,6 +21,8 @@ public class Bug {
     int cutThreadCost;
 
     public Bug() {
+        Skeleton.AddObject(this, "bug");
+        Skeleton.AddObject(actCatalog, "bugCat");
         ResetPoints();
     }
 

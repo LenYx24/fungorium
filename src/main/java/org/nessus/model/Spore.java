@@ -21,7 +21,6 @@ public class Spore {
         Skeleton.AddObject(bg, "bugEffect");
         bug.AddEffect(bg);
         tecton.RemoveSpore(this);
-        shroom.RemoveSpore(this);
         Skeleton.LogReturnCall(this, "EatenBy");
     }
 

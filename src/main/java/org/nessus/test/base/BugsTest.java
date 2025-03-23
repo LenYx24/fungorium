@@ -29,7 +29,6 @@ public abstract class BugsTest extends Test {
         spore = new Spore(shroom, t1);
 
         Skeleton.AddObject(bug, "bug");
-        Skeleton.AddObject(bug.GetActionPointCatalog(), "actCat");
         Skeleton.AddObject(t1, "t1");
         Skeleton.AddObject(t2, "t2");
         Skeleton.AddObject(shroom, "shroom");
