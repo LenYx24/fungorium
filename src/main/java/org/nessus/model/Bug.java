@@ -51,13 +51,15 @@ public class Bug {
         spore.EatenBy(this);
     }
 
-    public void CutThread(ShroomThread shroomThread) {
-        Skeleton.LogFunctionCall(this, "CutThread", shroomThread);
+    public void CutThread(ShroomThread thread) {
+        Skeleton.LogFunctionCall(this, "CutThread", thread);
+        
         boolean enough = actCatalog.HasEnoughPoints(cutThreadCost);
-        boolean canReachThread = shroomThread.IsTectonReachable(this.tecton);
-        boolean canCut = !Skeleton.YesNoQuestion("Van-e a rovaron szájzár effect?");
-        if(enough && canReachThread && canCut) {
-            shroomThread.Remove();
+        boolean reachable = thread.IsTectonReachable(tecton);
+        canCut = !Skeleton.YesNoQuestion("Van-e a rovaron szájzár effect?");
+        
+        if(canCut && enough && reachable) {
+            thread.Remove();
             actCatalog.DecreasePoints(cutThreadCost);
         }
 
