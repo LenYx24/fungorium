@@ -26,7 +26,7 @@ public class DesertTecton extends Tecton {
     @Override
     public boolean GrowShroomThread(ShroomThread thread)
     {
-        Skeleton.LogFunctionCall(this, "GrowShroomThread");
+        Skeleton.LogFunctionCall(this, "GrowShroomThread", thread);
         this.shroomThreads.add(thread);
         this.decayTimers.put(thread, 2);
         Skeleton.LogReturnCall(this, "GrowShroomThread", true);
