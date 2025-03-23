@@ -7,7 +7,14 @@ import org.nessus.model.Tecton;
 public class SingleThreadTecton extends Tecton {
     @Override
     public Tecton Copy() {
-        return new SingleThreadTecton();
+        Skeleton.LogFunctionCall(this, "Copy");
+
+        Tecton copyTecton = new SingleThreadTecton();
+        Skeleton.AddObject(copyTecton, "copyTecton");
+        SpreadEntities(copyTecton);
+
+        Skeleton.LogReturnCall(this, "Copy");
+        return copyTecton;
     }
 
     @Override

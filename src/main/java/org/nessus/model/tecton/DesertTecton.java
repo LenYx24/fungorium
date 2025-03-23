@@ -13,7 +13,14 @@ public class DesertTecton extends Tecton {
 
     @Override
     public Tecton Copy() {
-        return new DesertTecton();
+        Skeleton.LogFunctionCall(this, "Copy");
+
+        Tecton copyTecton = new DesertTecton();
+        Skeleton.AddObject(copyTecton, "copyTecton");
+        SpreadEntities(copyTecton);
+
+        Skeleton.LogReturnCall(this, "Copy");
+        return copyTecton;
     }
 
     @Override

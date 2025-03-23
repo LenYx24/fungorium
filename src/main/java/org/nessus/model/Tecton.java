@@ -12,14 +12,64 @@ public class Tecton {
     protected List<Bug> bugs = new ArrayList<>();
     protected ShroomBody shroomBody = null;
 
+    protected void SpreadEntities(Tecton copyTecton) {
+        neighbours.forEach(neighbour -> copyTecton.neighbours.add(neighbour));
+        neighbours.add(copyTecton);
+
+        var bugIter = bugs.iterator();
+
+        while(bugIter.hasNext())
+        {
+            Bug bug = bugIter.next();
+            String name = Skeleton.GetName(bug);
+            boolean transferBug = Skeleton.YesNoQuestion("Törés után átkerüljön-e a(z) " + name + " rovar a copyTecton tektonra?");
+
+            if (transferBug)
+            {
+                copyTecton.AddBug(bug);
+                bug.SetTecton(copyTecton);
+                bugIter.remove();
+            }
+        }
+
+        var sporeIter = spores.iterator();
+
+        while(sporeIter.hasNext())
+        {
+            Spore spore = sporeIter.next();
+            String name = Skeleton.GetName(spore);
+            boolean transferSpore = Skeleton.YesNoQuestion("Törés után átkerüljön-e a(z) " + name + " spóra a copyTecton tektonra?");
+
+            if (transferSpore)
+            {
+                copyTecton.ThrowSpore(spore);
+                spore.SetTecton(copyTecton);
+                sporeIter.remove();
+            }
+        }
+
+        if (this.shroomBody != null)
+        {
+            boolean transferBody = Skeleton.YesNoQuestion("Törés után átkerüljön-e a gombatest a copyTecton tektonra?");
+
+            if (transferBody)
+            {
+                copyTecton.SetShroomBody(shroomBody);
+                shroomBody.SetTecton(copyTecton);
+                this.ClearShroomBody();
+            }
+        }
+    }
+
     public void Split() {
         Skeleton.LogFunctionCall(this, "Split");
-        Tecton tecton2 = Copy();
+
+        // A későbbiekben lesz egy tárolóosztály, ami majd számontartja a tektonokat, egyelőre csak elvégzünk egy másolást,
+        // a másolatot nem tartjuk meg.
+        Tecton copyTecton = Copy();
         
         //Konkurens Módosítás Kivétel elkerülése érdekében másolat
         List.copyOf(shroomThreads).forEach(ShroomThread::Remove);
-
-        shroomThreads.clear();
 
         Skeleton.LogReturnCall(this, "Split");
     }
@@ -105,53 +155,7 @@ public class Tecton {
 
         Tecton copyTecton = new Tecton();
         Skeleton.AddObject(copyTecton, "copyTecton");
-
-        neighbours.forEach(neighbour -> copyTecton.neighbours.add(neighbour));
-        neighbours.add(copyTecton);
-
-        var bugIter = bugs.iterator();
-
-        while(bugIter.hasNext())
-        {
-            Bug bug = bugIter.next();
-            String name = Skeleton.GetName(bug);
-            boolean transferBug = Skeleton.YesNoQuestion("Törés után átkerüljön-e a(z) " + name + " rovar a copyTecton tektonra?");
-
-            if (transferBug)
-            {
-                copyTecton.AddBug(bug);
-                bug.SetTecton(copyTecton);
-                bugIter.remove();
-            }
-        }
-
-        var sporeIter = spores.iterator();
-
-        while(sporeIter.hasNext())
-        {
-            Spore spore = sporeIter.next();
-            String name = Skeleton.GetName(spore);
-            boolean transferSpore = Skeleton.YesNoQuestion("Törés után átkerüljön-e a(z) " + name + " spóra a copyTecton tektonra?");
-
-            if (transferSpore)
-            {
-                copyTecton.ThrowSpore(spore);
-                spore.SetTecton(copyTecton);
-                sporeIter.remove();
-            }
-        }
-
-        if (this.shroomBody != null)
-        {
-            boolean transferBody = Skeleton.YesNoQuestion("Törés után átkerüljön-e a gombatest a copyTecton tektonra?");
-
-            if (transferBody)
-            {
-                copyTecton.SetShroomBody(shroomBody);
-                shroomBody.SetTecton(copyTecton);
-                this.ClearShroomBody();
-            }
-        }
+        SpreadEntities(copyTecton);
 
         Skeleton.LogReturnCall(this, "Copy");
         return copyTecton;
