@@ -4,6 +4,8 @@ CutThreadTest;org.nessus.test.CutThreadTest
 PlaceShroomBodyTest;org.nessus.test.PlaceShroomBodyTest
 ShroomBodyDeathTest;org.nessus.test.ShroomBodyDeathTest
 UpgradeShroomBodyTest;org.nessus.test.UpgradeShroomBodyTest
+ThrowSporeTest;org.nessus.test.ThrowSporeTest
+ProduceSporeMaterialTest;org.nessus.test.ProduceSporeMaterialTest
 SplitTectonTest;org.nessus.test.SplitTectonTest
 DesertTectonTest;org.nessus.test.DesertTectonTest
 SingleThreadTectonTest;org.nessus.test.SingleThreadTectonTest

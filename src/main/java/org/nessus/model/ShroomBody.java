@@ -60,7 +60,11 @@ public class ShroomBody {
         return spore;
     }
 
-    public void ProduceSpore(){}
+    public void ProduceSpore() {
+        Skeleton.LogFunctionCall(this, "ProduceSpore");
+        sporeMaterials++;
+        Skeleton.LogReturnCall(this, "ProduceSpore");
+    }
 
     public void SetTecton(Tecton tecton) {
         this.tecton = tecton;
