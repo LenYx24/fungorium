@@ -24,16 +24,24 @@ public class Bug {
         ResetPoints();
     }
 
-    public void Move(Tecton t2) {
-        Skeleton.LogFunctionCall(this, "Move", t2);
-        Tecton t1 = this.tecton;
+    public Bug(Tecton tecton) {
+        this();
+        this.tecton = tecton;
+    }
+
+    public void Move(Tecton destination) {
+        Skeleton.LogFunctionCall(this, "Move", tecton);
+        
         boolean enough = actCatalog.HasEnoughPoints(moveCost);
-        boolean neighbours = t1.IsNeighbourOf(t2);
-        boolean hasGrownShroomThreadTo = t1.HasGrownShroomThreadTo(t2);
-        boolean canmove = Skeleton.YesNoQuestion("Van-e a rovaron bénító effect?");
-        if (enough && neighbours && hasGrownShroomThreadTo && canmove) {
-            t1.RemoveBug(this);
-            t2.AddBug(this);
+        boolean neighbours = tecton.IsNeighbourOf(destination);
+        boolean hasGrownShroomThreadTo = tecton.HasGrownShroomThreadTo(destination);
+        
+        canMove = !Skeleton.YesNoQuestion("Van-e a rovaron bénító effect?");
+        
+        if (enough && neighbours && hasGrownShroomThreadTo && canMove) { //
+            tecton.RemoveBug(this);
+            destination.AddBug(this);
+            tecton = destination;
             actCatalog.DecreasePoints(moveCost);
         }
         Skeleton.LogReturnCall(this, "Move");
@@ -43,8 +51,19 @@ public class Bug {
         spore.EatenBy(this);
     }
 
-    public void CutThread(ShroomThread shroomThread) {
-        shroomThread.Remove();
+    public void CutThread(ShroomThread thread) {
+        Skeleton.LogFunctionCall(this, "CutThread", thread);
+        
+        boolean enough = actCatalog.HasEnoughPoints(cutThreadCost);
+        boolean reachable = thread.IsTectonReachable(tecton);
+        canCut = !Skeleton.YesNoQuestion("Van-e a rovaron szájzár effect?");
+        
+        if(canCut && enough && reachable) {
+            thread.Remove();
+            actCatalog.DecreasePoints(cutThreadCost);
+        }
+
+        Skeleton.LogReturnCall(this, "CutThread");
     }
 
     public void AddMoveCost(int value) {

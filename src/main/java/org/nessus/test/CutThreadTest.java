@@ -1,17 +1,23 @@
 package org.nessus.test;
 
 import org.nessus.Skeleton;
-import org.nessus.model.*;
+import org.nessus.model.Bug;
+import org.nessus.model.Shroom;
+import org.nessus.model.ShroomThread;
+import org.nessus.model.Spore;
+import org.nessus.model.Tecton;
 
-public class BugMoveTest extends Test {
+public class CutThreadTest extends Test {
     Tecton t1;
     Tecton t2;
-    Bug bug;
+    
     Shroom shroom;
+    Bug bug;
+    
     ShroomThread thread;
     Spore spore;
 
-    public BugMoveTest(String name) {
+    public CutThreadTest(String name) {
         super(name);
     }
 
@@ -55,6 +61,6 @@ public class BugMoveTest extends Test {
 
     @Override
     public void Run() {
-        bug.Move(t2);
+        bug.CutThread(thread);
     }
 }
