@@ -2,6 +2,9 @@
 
 A BME VIK 4. féléves szoftver projekt laboratórium tárgy "szkeleton elkészítés" fázishoz készült projekt feladat.
 
+A projekt jelenlegi állapota:
+[![Java CI with Maven (SzoftProjLab)](https://github.com/LenYx24/fungorium-skeleton/actions/workflows/maven.yml/badge.svg)](https://github.com/LenYx24/fungorium-skeleton/actions/workflows/maven.yml)
+
 ## Követelmények
 
 java verzió: java 23.0.2 2025-01-21\
