@@ -1,7 +1,7 @@
 package org.nessus.model;
 
 import org.nessus.Skeleton;
-import org.nessus.model.effect.*;
+import org.nessus.model.effect.BugEffect;
 
 public class Spore {
     private Shroom shroom;
@@ -17,7 +17,9 @@ public class Spore {
     public void EatenBy(Bug bug) {
         Skeleton.LogFunctionCall(this, "EatenBy", bug);
         bug.AddNutrients(nutrient);
-        bug.AddEffect(Skeleton.WhichEffect());
+        BugEffect bg = Skeleton.WhichEffect();
+        Skeleton.AddObject(bg, "bugEffect");
+        bug.AddEffect(bg);
         tecton.RemoveSpore(this);
         shroom.RemoveSpore(this);
         Skeleton.LogReturnCall(this, "EatenBy");
