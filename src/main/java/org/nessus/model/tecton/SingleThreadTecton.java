@@ -37,7 +37,7 @@ public class SingleThreadTecton extends Tecton {
     @Override
     public boolean GrowShroomThread(ShroomThread thread) {
         Skeleton.LogFunctionCall(this, "GrowShroomThread", thread);
-        if (this.getThreads().isEmpty()) {
+        if (shroomThreads.isEmpty()) {
             shroomThreads.add(thread);
             Skeleton.LogReturnCall(this, "GrowShroomThread", true);
             return true;

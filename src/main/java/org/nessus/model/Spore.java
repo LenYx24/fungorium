@@ -1,13 +1,7 @@
 package org.nessus.model;
 
 import org.nessus.Skeleton;
-import org.nessus.model.effect.CoffeeEffect;
-import org.nessus.model.effect.CripplingEffect;
-import org.nessus.model.effect.JawLockEffect;
-import org.nessus.model.effect.SlowEffect;
 import org.nessus.model.effect.BugEffect;
-
-import java.util.Random;
 
 /**
  * A spórát reprezentáló osztály.

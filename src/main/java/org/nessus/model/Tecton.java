@@ -83,7 +83,7 @@ public class Tecton {
         // A későbbiekben lesz egy tárolóosztály, ami majd számontartja a tektonokat, egyelőre csak elvégzünk egy másolást,
         // a másolatot nem tartjuk meg.
         Tecton copyTecton = Copy();
-        
+
         //Konkurens Módosítás Kivétel elkerülése érdekében másolat
         List.copyOf(shroomThreads).forEach(ShroomThread::Remove);
 

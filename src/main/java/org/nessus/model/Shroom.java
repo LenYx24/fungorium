@@ -256,8 +256,12 @@ public class Shroom {
         spores.add(spore);
         Skeleton.LogReturnCall(this, "SetSpore");
     }
-}
 
+    /**
+     * Fonal beállítása
+     * @param thread - A beállítandó fonal
+     * @return void
+     */
     public void SetShroomThread(ShroomThread thread) {
         Skeleton.LogFunctionCall(this, "SetShroomThread", thread);
         threads.add(thread);
