@@ -1,19 +1,13 @@
 package org.nessus.model;
 
 import org.nessus.Skeleton;
-import org.nessus.model.effect.CoffeeEffect;
-import org.nessus.model.effect.CripplingEffect;
-import org.nessus.model.effect.JawLockEffect;
-import org.nessus.model.effect.SlowEffect;
-
-import java.util.Random;
+import org.nessus.model.effect.*;
 
 public class Spore {
     private Shroom shroom;
     private Tecton tecton;
 
     int nutrient = 3;
-    Random rand = new Random();
 
     public Spore(Shroom shroom, Tecton tecton) {
         this.shroom = shroom;
@@ -21,24 +15,12 @@ public class Spore {
     }
 
     public void EatenBy(Bug bug) {
+        Skeleton.LogFunctionCall(this, "EatenBy", bug);
         bug.AddNutrients(nutrient);
-        int randInt = rand.nextInt(4);
-        switch (randInt) {
-            case 0:
-                bug.AddEffect(new CoffeeEffect());
-                break;
-            case 1:
-                bug.AddEffect(new CripplingEffect());
-                break;
-            case 2:
-                bug.AddEffect(new JawLockEffect());
-                break;
-            case 3:
-                bug.AddEffect(new SlowEffect());
-                break;
-            default:
-                break;
-        }
+        bug.AddEffect(Skeleton.WhichEffect());
+        tecton.RemoveSpore(this);
+        shroom.RemoveSpore(this);
+        Skeleton.LogReturnCall(this, "EatenBy");
     }
 
     public Shroom GetShroom() {
@@ -46,6 +28,8 @@ public class Spore {
     }
 
     public Tecton GetTecton() {
+        Skeleton.LogFunctionCall(this, "GetTecton");
+        Skeleton.LogReturnCall(this, "GetTecton", tecton);
         return tecton;
     }
 

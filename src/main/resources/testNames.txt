@@ -12,3 +12,4 @@ SingleThreadTectonTest;org.nessus.test.SingleThreadTectonTest
 InfertileTectonTest;org.nessus.test.InfertileTectonTest
 SplitTectonTest;org.nessus.test.SplitTectonTest
 ValidateLifeTest;org.nessus.test.ValidateLifeTest
+BugEatTest;org.nessus.test.BugEatTest

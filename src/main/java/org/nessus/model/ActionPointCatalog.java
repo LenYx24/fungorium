@@ -20,6 +20,8 @@ public class ActionPointCatalog {
     }
 
     public void ResetPoints() {
+        Skeleton.LogFunctionCall(this, "ResetPoints");
         currentActionPoints = defaultActionPoints;
+        Skeleton.LogReturnCall(this, "ResetPoints");
     }
 }

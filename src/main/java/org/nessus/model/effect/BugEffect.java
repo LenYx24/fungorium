@@ -12,5 +12,5 @@ public abstract class BugEffect {
         }
     }
 
-    public abstract void Apply(Bug bug);
+    public abstract void ApplyOn(Bug bug);
 }
