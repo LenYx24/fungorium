@@ -1,5 +1,7 @@
 Testname;classname
 BugMoveTest;org.nessus.test.BugMoveTest
+BugMoveWithoutThreadTest;org.nessus.test.BugMoveWithoutThreadTest
+CutThreadTest;org.nessus.test.CutThreadTest
 PlaceShroomBodyTest;org.nessus.test.PlaceShroomBodyTest
 ShroomBodyDeathTest;org.nessus.test.ShroomBodyDeathTest
 UpgradeShroomBodyTest;org.nessus.test.UpgradeShroomBodyTest
@@ -8,3 +10,4 @@ DesertTectonTest;org.nessus.test.DesertTectonTest
 SingleThreadTectonTest;org.nessus.test.SingleThreadTectonTest
 InfertileTectonTest;org.nessus.test.InfertileTectonTest
 ValidateLifeTest;org.nessus.test.ValidateLifeTest
+PlaceShroomThreadTest;org.nessus.test.PlaceShroomThreadTest

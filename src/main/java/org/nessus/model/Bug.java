@@ -30,8 +30,8 @@ public class Bug {
         boolean enough = actCatalog.HasEnoughPoints(moveCost);
         boolean neighbours = t1.IsNeighbourOf(t2);
         boolean hasGrownShroomThreadTo = t1.HasGrownShroomThreadTo(t2);
-        boolean canmove = Skeleton.YesNoQuestion("Van-e a rovaron bénító effect?");
-        if (enough && neighbours && hasGrownShroomThreadTo && canmove) {
+        boolean canMove = !Skeleton.YesNoQuestion("Van-e a rovaron bénító effect?");
+        if (enough && neighbours && hasGrownShroomThreadTo && canMove) { //
             t1.RemoveBug(this);
             t2.AddBug(this);
             actCatalog.DecreasePoints(moveCost);
@@ -44,7 +44,16 @@ public class Bug {
     }
 
     public void CutThread(ShroomThread shroomThread) {
-        shroomThread.Remove();
+        Skeleton.LogFunctionCall(this, "CutThread", shroomThread);
+        boolean enough = actCatalog.HasEnoughPoints(cutThreadCost);
+        boolean canReachThread = shroomThread.IsTectonReachable(this.tecton);
+        boolean canCut = !Skeleton.YesNoQuestion("Van-e a rovaron szájzár effect?");
+        if(enough && canReachThread && canCut) {
+            shroomThread.Remove();
+            actCatalog.DecreasePoints(cutThreadCost);
+        }
+
+        Skeleton.LogReturnCall(this, "CutThread");
     }
 
     public void AddMoveCost(int value) {

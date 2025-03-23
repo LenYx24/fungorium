@@ -6,14 +6,14 @@ import org.nessus.model.Shroom;
 import org.nessus.model.ShroomThread;
 import org.nessus.model.Tecton;
 
-public class BugMoveTest extends Test {
+public class BugMoveWithoutThreadTest extends Test {
     Bug bug;
     Tecton t1;
     Tecton t2;
     Shroom shroom;
     ShroomThread thread;
 
-    public BugMoveTest(String name) {
+    public BugMoveWithoutThreadTest(String name) {
         super(name);
     }
 
@@ -23,21 +23,17 @@ public class BugMoveTest extends Test {
         t1 = new Tecton();
         t2 = new Tecton();
         shroom = new Shroom();
-        thread = new ShroomThread(shroom, t1, t2);
 
         Skeleton.AddObject(bug, "bug");
         Skeleton.AddObject(bug.GetActionPointCatalog(), "actCat");
         Skeleton.AddObject(t1, "tecton1");
         Skeleton.AddObject(t2, "tecton2");
         Skeleton.AddObject(shroom, "shroom");
-        Skeleton.AddObject(thread, "thread");
 
         bug.SetTecton(t1);
         t1.SetNeighbour(t2);
         t2.SetNeighbour(t1);
 
-        t1.GrowShroomThread(thread);
-        t2.GrowShroomThread(thread);
     }
 
     @Override
