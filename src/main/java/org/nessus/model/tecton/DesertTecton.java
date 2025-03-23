@@ -1,14 +1,8 @@
 package org.nessus.model.tecton;
 
 import org.nessus.Skeleton;
-import org.nessus.model.ShroomThread;
-import org.nessus.model.Tecton;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import org.nessus.model.*;
+import java.util.*;
 
 public class DesertTecton extends Tecton {
     private HashMap<ShroomThread, Integer> decayTimers;
@@ -17,6 +11,7 @@ public class DesertTecton extends Tecton {
         decayTimers = new HashMap<>();
     }
 
+    @Override
     public Tecton Copy() {
         return new DesertTecton();
     }

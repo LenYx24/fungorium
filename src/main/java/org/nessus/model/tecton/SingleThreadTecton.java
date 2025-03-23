@@ -5,14 +5,15 @@ import org.nessus.model.ShroomThread;
 import org.nessus.model.Tecton;
 
 public class SingleThreadTecton extends Tecton {
+    @Override
     public Tecton Copy() {
         return new SingleThreadTecton();
     }
 
     @Override
     public boolean GrowShroomThread(ShroomThread thread)  {
-        Skeleton.LogFunctionCall(this, "GrowShroomThread");
-        if (this.getThreads().isEmpty())
+        Skeleton.LogFunctionCall(this, "GrowShroomThread", thread);
+        if (shroomThreads.isEmpty())
         {
             shroomThreads.add(thread);
             Skeleton.LogReturnCall(this, "GrowShroomThread", true);

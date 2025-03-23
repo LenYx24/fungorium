@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class Logger {
     private int indentLevel = 0;
-    private final HashMap<Object, String> objects = new HashMap<Object, String>();
+    private final HashMap<Object, String> objects = new HashMap<>();
     private final Scanner scanner = new Scanner(System.in);
 
     private String GetIndentation() {

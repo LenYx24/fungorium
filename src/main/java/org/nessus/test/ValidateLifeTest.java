@@ -32,7 +32,7 @@ public class ValidateLifeTest extends Test
         Skeleton.AddObject(thread, "thread");
         Skeleton.AddObject(spore, "spore");
 
-        t1.GrowShroomBody(body);
+        t1.SetShroomBody(body);
         t1.ThrowSpore(spore);
         t1.GrowShroomThread(thread);
         t2.GrowShroomThread(thread);

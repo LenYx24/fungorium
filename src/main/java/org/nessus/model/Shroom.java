@@ -5,8 +5,6 @@ import org.nessus.Skeleton;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.nessus.Skeleton;
-
 public class Shroom {
     private List<Spore> spores = new ArrayList<>();
     private List<ShroomBody> shroomBodies = new ArrayList<>();
@@ -80,8 +78,14 @@ public class Shroom {
         
         if (enough && hasSpore) {
             body.Upgrade();
-            Tecton t = body.GetTecton();
-            // MISSING RemoveSpore(spore3)
+            
+            Tecton tecton = body.GetTecton();
+
+            var consumedSpore = spores.stream()
+                .filter(spore -> spore.GetTecton() == tecton)
+                .findFirst();
+
+            consumedSpore.ifPresent(tecton::RemoveSpore);
             
             actCatalog.DecreasePoints(shroomUpgradeCost);
         }
@@ -118,11 +122,13 @@ public class Shroom {
 
     public void RemoveShroomThread(ShroomThread thread)
     {
-        Skeleton.LogFunctionCall(this, "RemoveShroomThread");
+        Skeleton.LogFunctionCall(this, "RemoveShroomThread", thread);
+        threads.remove(thread);
         Skeleton.LogReturnCall(this, "RemoveShroomThread");
     }
 
     public void UpdateShroom() {
+        // Ez a függvény a kontroller megjelenésével nyer majd értelmet
     }
 
     public void LoadDefaultCosts() {

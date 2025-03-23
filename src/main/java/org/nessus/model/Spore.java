@@ -36,11 +36,17 @@ public class Spore {
             case 3:
                 bug.AddEffect(new SlowEffect());
                 break;
+            default:
+                break;
         }
     }
 
     public Shroom GetShroom() {
         return shroom;
+    }
+
+    public Tecton GetTecton() {
+        return tecton;
     }
 
     public void SetTecton(Tecton tecton) {

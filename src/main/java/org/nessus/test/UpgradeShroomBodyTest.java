@@ -46,6 +46,11 @@ public class UpgradeShroomBodyTest extends Test {
         Skeleton.AddObject(spore3, "spore3");
         Skeleton.AddObject(spore4, "spore4");
 
+        shroom.SetSpore(spore1);
+        shroom.SetSpore(spore2);
+        shroom.SetSpore(spore3);
+        shroom.SetSpore(spore4);
+
         t1.SetShroomBody(body);
         t1.GrowShroomThread(thread);
         t1.SetNeighbour(t2);

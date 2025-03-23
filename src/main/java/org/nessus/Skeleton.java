@@ -11,6 +11,8 @@ public class Skeleton {
     private static final TestsHolder testsHolder = new TestsHolder("testNames.txt", logger);
     private static boolean running = true;
 
+    private Skeleton() {}
+
     public static String GetName(Object o)
     {
         return logger.GetName(o);
@@ -61,7 +63,6 @@ public class Skeleton {
 
     public static BugEffect WhichEffect() {
         Optional<Integer> ans = Optional.empty();
-        //String[] args = {"Kávé", "Bénító", "Lassító", "Szájzár"};
         while (ans.isEmpty()) {
             ans = logger.AskQuestion("Melyik effektet rakjuk a rovarra?", "Kávé", "Bénító", "Lassító", "Szájzár");
         }

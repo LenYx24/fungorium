@@ -37,7 +37,7 @@ public class SplitTectonTest extends Test
         Skeleton.AddObject(bug.GetActionPointCatalog(), "bugCat");
 
         t1.AddBug(bug);
-        t1.GrowShroomBody(body);
+        t1.SetShroomBody(body);
         t1.ThrowSpore(spore);
         t1.GrowShroomThread(thread);
         t2.GrowShroomThread(thread);

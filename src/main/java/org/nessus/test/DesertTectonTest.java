@@ -51,8 +51,6 @@ public class DesertTectonTest extends Test
 
     @Override
     public void Run() {
-        shroom.PlaceShroomThread(dt, it);
-
         for (int i = 0; i < 3; i++)
             dt.UpdateTecton();
     }

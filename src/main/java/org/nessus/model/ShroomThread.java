@@ -46,8 +46,9 @@ public class ShroomThread {
 
     public boolean IsTectonReachable(Tecton tecton) {
         Skeleton.LogFunctionCall(this, "IsTectonReachable", tecton);
-        String name = Skeleton.GetName(this);
-        boolean isTectonReachable = Skeleton.YesNoQuestion("A "+ name + " nevű fonal egyik végpontja a t2 tecton?");
+        String threadName = Skeleton.GetName(this);
+        String tectonName = Skeleton.GetName(tecton);
+        boolean isTectonReachable = Skeleton.YesNoQuestion("A "+ threadName + " nevű fonal egyik végpontja a " + tectonName + " tecton?");
         Skeleton.LogReturnCall(this, "IsTectonReachable", isTectonReachable);
         return isTectonReachable;
     }

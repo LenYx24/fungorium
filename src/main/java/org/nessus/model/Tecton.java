@@ -14,15 +14,10 @@ public class Tecton {
 
     public void Split() {
         Skeleton.LogFunctionCall(this, "Split");
-        Tecton tecton2 = this.Copy();
+        Tecton tecton2 = Copy();
         
-        //Konkurens Módosítás Kivétel elkerülése érdekében
-        ArrayList<ShroomThread> temp = new ArrayList<>(shroomThreads);
-
-        for (ShroomThread thread : temp)
-        {
-            thread.Remove();
-        }
+        //Konkurens Módosítás Kivétel elkerülése érdekében másolat
+        List.copyOf(shroomThreads).forEach(ShroomThread::Remove);
 
         shroomThreads.clear();
 
@@ -58,7 +53,7 @@ public class Tecton {
                                 .filter(spore -> spore.GetShroom() == body.GetShroom())
                                 .findFirst();
                                 
-        consumedSpore.ifPresent(spore -> RemoveSpore(spore));
+        consumedSpore.ifPresent(this::RemoveSpore);
         
         shroomBody = body;
         Skeleton.LogReturnCall(this, "GrowShroomBody", true);
@@ -152,7 +147,7 @@ public class Tecton {
 
             if (transferBody)
             {
-                copyTecton.GrowShroomBody(shroomBody);
+                copyTecton.SetShroomBody(shroomBody);
                 shroomBody.SetTecton(copyTecton);
                 this.ClearShroomBody();
             }
@@ -176,7 +171,7 @@ public class Tecton {
 
     public boolean HasSporeOfShroom(Shroom shroom)
     {
-        Skeleton.LogFunctionCall(this, "HasSporeOfShroom");
+        Skeleton.LogFunctionCall(this, "HasSporeOfShroom", shroom);
         boolean ret = Skeleton.YesNoQuestion("Van-e ezen a tektonon ehhez a gombafajhoz tartozó spóra?");
         Skeleton.LogReturnCall(this, "HasSporeOfShroom", ret);
         return ret;
@@ -199,11 +194,11 @@ public class Tecton {
         Skeleton.LogReturnCall(this, "SetNeighbour");
     }
 
-    public boolean containsThread(ShroomThread thread) {
+    public boolean ContainsThread(ShroomThread thread) {
         return shroomThreads.contains(thread);
     }
 
-    public List<ShroomThread> getThreads()
+    public List<ShroomThread> GetThreads()
     {
         return shroomThreads;
     }
