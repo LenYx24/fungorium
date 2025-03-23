@@ -1,5 +1,6 @@
 package org.nessus.model;
 
+import org.nessus.Skeleton;
 import org.nessus.model.effect.CoffeeEffect;
 import org.nessus.model.effect.CripplingEffect;
 import org.nessus.model.effect.JawLockEffect;
@@ -43,6 +44,8 @@ public class Spore {
     }
 
     public void SetTecton(Tecton tecton) {
+        Skeleton.LogFunctionCall(this, "SetTecton", tecton);
         this.tecton = tecton;
+        Skeleton.LogReturnCall(this, "SetTecton");
     }
 }

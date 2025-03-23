@@ -148,4 +148,10 @@ public class Shroom {
         shroomBodies.add(body);
         Skeleton.LogReturnCall(this, "SetShroomBody");
     }
+
+    public void SetSpore(Spore spore) {
+        Skeleton.LogFunctionCall(this, "SetSpore", spore);
+        spores.add(spore);
+        Skeleton.LogReturnCall(this, "SetSpore");
+    }
 }

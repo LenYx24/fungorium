@@ -24,16 +24,24 @@ public class Bug {
         ResetPoints();
     }
 
-    public void Move(Tecton t2) {
-        Skeleton.LogFunctionCall(this, "Move", t2);
-        Tecton t1 = this.tecton;
+    public Bug(Tecton tecton) {
+        this();
+        this.tecton = tecton;
+    }
+
+    public void Move(Tecton destination) {
+        Skeleton.LogFunctionCall(this, "Move", tecton);
+        
         boolean enough = actCatalog.HasEnoughPoints(moveCost);
-        boolean neighbours = t1.IsNeighbourOf(t2);
-        boolean hasGrownShroomThreadTo = t1.HasGrownShroomThreadTo(t2);
-        boolean canMove = !Skeleton.YesNoQuestion("Van-e a rovaron bénító effect?");
+        boolean neighbours = tecton.IsNeighbourOf(destination);
+        boolean hasGrownShroomThreadTo = tecton.HasGrownShroomThreadTo(destination);
+        
+        canMove = !Skeleton.YesNoQuestion("Van-e a rovaron bénító effect?");
+        
         if (enough && neighbours && hasGrownShroomThreadTo && canMove) { //
-            t1.RemoveBug(this);
-            t2.AddBug(this);
+            tecton.RemoveBug(this);
+            destination.AddBug(this);
+            tecton = destination;
             actCatalog.DecreasePoints(moveCost);
         }
         Skeleton.LogReturnCall(this, "Move");
