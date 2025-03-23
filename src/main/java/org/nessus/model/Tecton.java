@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * A tektonokat reprezentáló osztály.
- * A tektonok tartalmaznak rovarokat, spórákat, gombatestet és gombaszálakat.
+ * A tektonok tartalmaznak rovarokat, spórákat, gombatestet és gombafonalakat.
  * A tektonok szomszédosak lehetnek egymással.
  * @see org.nessus.model.Bug
  * @see org.nessus.model.Spore
@@ -18,7 +18,7 @@ import java.util.List;
 public class Tecton {
     protected List<Tecton> neighbours = new ArrayList<>(); // A szomszédos tektonok listája
     protected List<Spore> spores = new ArrayList<>(); // A tektonon található spórák listája
-    protected List<ShroomThread> shroomThreads = new ArrayList<>(); // A tektonon található gombaszálak listája
+    protected List<ShroomThread> shroomThreads = new ArrayList<>(); // A tektonon található gombafonalak listája
     protected List<Bug> bugs = new ArrayList<>(); // A tektonon található rovarok listája
     protected ShroomBody shroomBody = null; // A tektonon található gombatest
 
@@ -28,8 +28,7 @@ public class Tecton {
 
         var bugIter = bugs.iterator();
 
-        while(bugIter.hasNext())
-        {
+        while(bugIter.hasNext()) {
             Bug bug = bugIter.next();
             String name = Skeleton.GetName(bug);
             boolean transferBug = Skeleton.YesNoQuestion("Törés után átkerüljön-e a(z) " + name + " rovar a copyTecton tektonra?");
@@ -44,8 +43,7 @@ public class Tecton {
 
         var sporeIter = spores.iterator();
 
-        while(sporeIter.hasNext())
-        {
+        while(sporeIter.hasNext()) {
             Spore spore = sporeIter.next();
             String name = Skeleton.GetName(spore);
             boolean transferSpore = Skeleton.YesNoQuestion("Törés után átkerüljön-e a(z) " + name + " spóra a copyTecton tektonra?");
@@ -58,8 +56,7 @@ public class Tecton {
             }
         }
 
-        if (this.shroomBody != null)
-        {
+        if (this.shroomBody != null) {
             boolean transferBody = Skeleton.YesNoQuestion("Törés után átkerüljön-e a gombatest a copyTecton tektonra?");
 
             if (transferBody)
@@ -91,8 +88,8 @@ public class Tecton {
     }
 
     /**
-     * Gombaszál növesztése a tektonon.
-     * @param thread - A növesztendő gombaszál
+     * Gombafonal növesztése a tektonon.
+     * @param thread - A növesztendő gombafonal
      * @return Boolean - Sikeres volt-e a növesztés
      */
     public boolean GrowShroomThread(ShroomThread thread) {
@@ -103,8 +100,8 @@ public class Tecton {
     }
 
     /**
-     * Gombaszál eltávolítása a tektonról.
-     * @param thread - Az eltávolítandó gombaszál
+     * Gombafonal eltávolítása a tektonról.
+     * @param thread - Az eltávolítandó gombafonal
      * @return void
      */
     public void RemoveShroomThread(ShroomThread thread) {
@@ -286,9 +283,9 @@ public class Tecton {
     }
 
     /**
-     * Tartalmaz-e a tekton adott gombaszálat.
-     * @param thread - A vizsgált gombaszál
-     * @return Boolean - Tartalmaz-e a tekton adott gombaszálat
+     * Tartalmaz-e a tekton adott gombafonalat.
+     * @param thread - A vizsgált gombafonal
+     * @return Boolean - Tartalmaz-e a tekton adott gombafonalat
      */
     public boolean ContainsThread(ShroomThread thread) {
         return shroomThreads.contains(thread);

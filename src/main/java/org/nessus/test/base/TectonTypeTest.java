@@ -7,18 +7,33 @@ import org.nessus.model.tecton.DesertTecton;
 import org.nessus.model.tecton.InfertileTecton;
 import org.nessus.model.tecton.SingleThreadTecton;
 
+/**
+ * Alap osztály a tekton teszteléséhez.
+ * A teszteknek implementálniuk kell a Run() metódust.
+ * Minden tesztnek van egy neve, amely megegyezik a szekvenciadiagrammok neveivel. Mindegyik teszt egy szekvenciadiagrammot valósít meg.
+ * A Test osztály alapján, a tektonos tesztek alapjait adja.
+ */
 public abstract class TectonTypeTest extends Test {
-    protected DesertTecton dt;
-    protected SingleThreadTecton stt;
-    protected InfertileTecton it;
-    protected Shroom shroom;
-    protected ShroomThread thread1;
-    protected ShroomThread thread2;
-    
+    protected DesertTecton dt; // A sivatagi tekton
+    protected SingleThreadTecton stt; // Az egyfonalú tekton
+    protected InfertileTecton it; // Az terméketlen tekton
+    protected Shroom shroom; // A gomba
+    protected ShroomThread thread1; // Az egyik gombafonal
+    protected ShroomThread thread2; // A másik gombafonal
+
+    /**
+     * 
+     * @param name
+     */
     protected TectonTypeTest(String name) {
         super(name);
     }
 
+    /**
+     * A teszt inicializálása
+     * A teszteléshez szükséges objektumok inicializálása
+     * @return - void
+     */
     @Override
     public void Init()
     {
@@ -55,6 +70,10 @@ public abstract class TectonTypeTest extends Test {
         shroom.SetShroomThread(thread2);
     }
 
+    /**
+     * A teszt végrehajtása
+     * @return - void
+     */
     @Override
     public abstract void Run();
 }

@@ -7,18 +7,34 @@ import org.nessus.model.ShroomThread;
 import org.nessus.model.Spore;
 import org.nessus.model.Tecton;
 
+/**
+ * Alap osztály a bogarak teszteléséhez.
+ * A teszteknek implementálniuk kell a Run() metódust.
+ * Minden tesztnek van egy neve, amely megegyezik a szekvenciadiagrammok neveivel. Mindegyik teszt egy szekvenciadiagrammot valósít meg.
+ * A Test osztály alapján, a rovaros tesztek alapjait adja.
+ */
 public abstract class BugsTest extends Test {
-    protected Tecton t1;
-    protected Tecton t2;
-    protected Bug bug;
-    protected Shroom shroom;
-    protected ShroomThread thread;
-    protected Spore spore;
+    protected Tecton t1; // Az egyik tekton
+    protected Tecton t2; // A másik tekton
+    protected Bug bug; // A rovar
+    protected Shroom shroom; // A gomba
+    protected ShroomThread thread; // A gomba fonala
+    protected Spore spore; // A spóra
 
+    /**
+     * Konstruktor
+     * @param name - A teszt neve
+     * @return - A teszt objektum
+     */
     protected BugsTest(String name) {
         super(name);
     }
-    
+
+    /**
+     * A teszt inicializálása
+     * A teszteléshez szükséges objektumok inicializálása
+     * @return - void
+     */
     @Override
     public void Init() {
         t1 = new Tecton();
@@ -48,7 +64,11 @@ public abstract class BugsTest extends Test {
         shroom.SetSpore(spore);
         shroom.SetShroomThread(thread);
     }
-    
+
+    /**
+     * A teszt végrehajtása
+     * @return - void
+     */
     @Override
     public abstract void Run();
 }
