@@ -1,0 +1,70 @@
+METHOD SpreadEntities(copyTecton)
+    FOR EACH neighbour IN neighbours DO
+        copyTecton.neighbours.ADD(neighbour)
+    END FOR
+    neighbours.ADD(copyTecton)
+
+    bugIter = bugs.iterator()
+    WHILE bugIter.hasNext() DO
+        bug = bugIter.next()
+        name = Skeleton.GetName(bug)
+        transferBug = Skeleton.YesNoQuestion("Törés után átkerüljön-e a(z) " + name + " rovar a copyTecton tektonra?")
+
+        IF transferBug THEN
+            copyTecton.AddBug(bug)
+            bug.SetTecton(copyTecton)
+            bugIter.remove()
+        END IF
+    END WHILE
+
+    sporeIter = spores.iterator()
+    WHILE sporeIter.hasNext() DO
+        spore = sporeIter.next()
+        name = Skeleton.GetName(spore)
+        transferSpore = Skeleton.YesNoQuestion("Törés után átkerüljön-e a(z) " + name + " spóra a copyTecton tektonra?")
+
+        IF transferSpore THEN
+            copyTecton.ThrowSpore(spore)
+            spore.SetTecton(copyTecton)
+            sporeIter.remove()
+        END IF
+    END WHILE
+
+    IF this.shroomBody ≠ null THEN
+        transferBody = Skeleton.YesNoQuestion("Törés után átkerüljön-e a gombatest a copyTecton tektonra?")
+
+        IF transferBody THEN
+            copyTecton.SetShroomBody(shroomBody)
+            shroomBody.SetTecton(copyTecton)
+            this.ClearShroomBody()
+        END IF
+    END IF
+END METHOD
+
+METHOD GrowShroomBody(body)
+    canGrowShroomBody = Skeleton.YesNoQuestion("Lehet t2-re gombatestet növeszteni?")
+
+    IF NOT canGrowShroomBody THEN
+        RETURN false
+    END IF
+
+    // Egy spóra elhasználása a növesztéshez
+    consumedSpore = spores.stream().filter(spore -> spore.GetShroom() == body.GetShroom()).findFirst()
+
+    consumedSpore.ifPresent(this::RemoveSpore)
+
+    shroomBody = body
+    RETURN true
+END METHOD
+
+METHOD HasGrownShroomThreadTo(tecton)
+    hasGrownShroomThread = false
+
+    FOR EACH shroomThread IN shroomThreads DO
+        IF shroomThread.IsTectonReachable(tecton) THEN
+            hasGrownShroomThread = true
+        END IF
+    END FOR
+
+    RETURN hasGrownShroomThread
+END METHOD

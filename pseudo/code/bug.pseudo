@@ -1,0 +1,48 @@
+METHOD Move(destination)
+    enough = actCatalog.HasEnoughPoints(moveCost)
+    neighbours = tecton.IsNeighbourOf(destination)
+    hasGrownShroomThreadTo = tecton.HasGrownShroomThreadTo(destination)
+    canMove = NOT Skeleton.YesNoQuestion("Van-e a rovaron bénító effect?")
+
+    IF enough AND neighbours AND hasGrownShroomThreadTo AND canMove THEN
+        tecton.RemoveBug(this)
+        destination.AddBug(this)
+        tecton = destination
+        actCatalog.DecreasePoints(moveCost)
+    END IF
+
+END METHOD
+
+METHOD Eat(spore)
+    spore.GetTecton()
+    enough = actCatalog.HasEnoughPoints(eatCost)
+    isOnSameTecton = Skeleton.YesNoQuestion("A rovar és a spóra egy tektonon van?")
+
+    IF isOnSameTecton AND enough THEN
+        spore.EatenBy(this)
+        actCatalog.DecreasePoints(eatCost)
+    END IF
+
+END METHOD
+
+METHOD CutThread(thread)
+    enough = actCatalog.HasEnoughPoints(cutThreadCost)
+    reachable = thread.IsTectonReachable(tecton)
+    canCut = NOT Skeleton.YesNoQuestion("Van-e a rovaron szájzár effect?")
+
+    IF canCut AND enough AND reachable THEN
+        thread.Remove()
+        actCatalog.DecreasePoints(cutThreadCost)
+    END IF
+
+END METHOD
+
+METHOD UpdateBug()
+    LoadDefaultCosts()
+    actCatalog.ResetPoints()
+
+    FOR EACH bugEffect IN bugEffects DO
+        bugEffect.ApplyOn(this)
+    END FOR
+
+END METHOD

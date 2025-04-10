@@ -1,0 +1,17 @@
+METHOD UpdateTecton()
+    FOR EACH thread IN List.copyOf(shroomThreads) DO
+        decayTimer = decayTimers.get(thread)
+
+        IF decayTimer <= 0 THEN
+            thread.Remove()
+            thread.GetTecton1().RemoveShroomThread(thread)
+            thread.GetTecton2().RemoveShroomThread(thread)
+            thread.GetShroom().RemoveShroomThread(thread)
+
+            decayTimers.remove(thread)
+        ELSE
+            decayTimers.replace(thread, decayTimer - 1)
+        END IF
+    END FOR
+
+END METHOD

@@ -1,0 +1,19 @@
+METHOD FormSpore(tecton)
+    IF NOT InRange(tecton) THEN
+        RETURN null
+    END IF
+
+    sporeMaterials -= 2
+    remainingThrows--
+
+    spore = NEW Spore(shroom, tecton)
+    Skeleton.AddObject(spore, "spore")
+    tecton.ThrowSpore(spore)
+
+    IF remainingThrows <= 0 THEN
+        tecton.ClearShroomBody()
+        shroom.RemoveShroomBody(this)
+    END IF
+
+    RETURN spore
+END METHOD
