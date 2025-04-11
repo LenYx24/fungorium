@@ -1,8 +1,8 @@
 METHOD GrowShroomThread(thread)
-    IF shroomThreads.isEmpty() THEN
-        shroomThreads.ADD(thread)
-        RETURN true
+    IF shroomThreads EMPTY THEN
+        shroomThreads.Add(thread)
+        RETURN TRUE
     ELSE
-        RETURN false
+        RETURN FALSE
     END IF
 END METHOD

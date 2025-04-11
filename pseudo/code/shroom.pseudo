@@ -1,20 +1,33 @@
 METHOD PlaceShroomThread(tecton1, tecton2)
-    enough = actCatalog.HasEnoughPoints(shroomThreadCost)
-    neighbours = tecton1.IsNeighbourOf(tecton2)
+    enough := actCatalog.HasEnoughPoints(shroomThreadCost)
+    neighbours := tecton1.IsNeighbourOf(tecton2)
 
-    connectedToBody = Skeleton.YesNoQuestion(
-        "A két tektonra vezet-e olyan fonal amelyik csatlakozik gombatesthez (akár több fonal hálózatán keresztül)?"
-    )
+    connectedToBody := FALSE
 
+    IF tecton1.GetShroomBody().GetShroom() == this THEN
+        connectedToBody := TRUE
+    END IF
+
+    IF tecton2.GetShroomBody().GetShroom() == this THEN
+        connectedToBody := TRUE
+    END IF
+
+    IF NOT connectedToBody THEN
+        FOR EACH thread IN tecton1.GetShroomThreads() UNION tecton2.GetShroomThreads() DO
+            IF thread.GetShroom() == this AND thread.IsConnectedToShroomBody()
+                connectedToBody = TRUE
+            END IF
+        END FOR
+    END IF
+    
     IF enough AND neighbours AND connectedToBody THEN
-        thread = NEW ShroomThread(this, tecton1, tecton2)
-        Skeleton.AddObject(thread, "thread")
+        thread := NEW ShroomThread(this, tecton1, tecton2)
 
-        t1Success = tecton1.GrowShroomThread(thread)
-        t2Success = tecton2.GrowShroomThread(thread)
+        t1Success := tecton1.GrowShroomThread(thread)
+        t2Success := tecton2.GrowShroomThread(thread)
 
         IF t1Success AND t2Success THEN
-            threads.ADD(thread)
+            threads.Add(thread)
             actCatalog.DecreasePoints(shroomThreadCost)
         ELSE
             thread.Remove()
@@ -25,14 +38,12 @@ END METHOD
 
 METHOD PlaceShroomBody(tecton)
     IF actCatalog.HasEnoughPoints(shroomBodyCost) THEN
-        newBody = NEW ShroomBody(this, tecton)
-        Skeleton.AddObject(newBody, "newBody")
-
-        success = tecton.GrowShroomBody(newBody)
+        newBody := NEW ShroomBody(this, tecton)
+        success := tecton.GrowShroomBody(newBody)
 
         IF success THEN
-            grownShroomBodies += 1
-            shroomBodies.ADD(newBody)
+            grownShroomBodies := grownShroomBodies + 1
+            shroomBodies.Add(newBody)
             actCatalog.DecreasePoints(shroomBodyCost)
         END IF
     END IF
@@ -40,13 +51,13 @@ METHOD PlaceShroomBody(tecton)
 END METHOD
 
 METHOD UpgradeShroomBody(body)
-    enough = actCatalog.HasEnoughPoints(shroomUpgradeCost)
-    hasSpore = Skeleton.YesNoQuestion("Van legalább két spóra a tektonon?")
+    enough := actCatalog.HasEnoughPoints(shroomUpgradeCost)
+    hasSpore := body.GetTecton().GetSpores() > 2;
 
     IF enough AND hasSpore THEN
         body.Upgrade()
-        tecton = body.GetTecton()
-        consumedSpore = FIRST spore IN spores WHERE spore.GetTecton() == tecton
+        tecton := body.GetTecton()
+        consumedSpore := FIRST spore IN spores WHERE spore.GetTecton() == tecton
 
         IF consumedSpore EXISTS THEN
             tecton.RemoveSpore(consumedSpore)
@@ -59,12 +70,38 @@ END METHOD
 
 METHOD ThrowSpore(body, tecton)
     IF actCatalog.HasEnoughPoints(sporeCost) THEN
-        spore = body.FormSpore(tecton)
+        spore := body.FormSpore(tecton)
 
         IF spore ≠ null THEN
-            spores.ADD(spore)
+            spores.Add(spore)
             actCatalog.DecreasePoints(sporeCost)
         END IF
     END IF
 
+END METHOD
+
+METHOD UpdateShroom()
+    LoadDefaultCosts()
+    actCatalog.ResetPoints()
+
+    FOR EACH thread IN threads DO
+        thread.SetConnectedToBody(FALSE)
+    END FOR
+
+    FOR EACH body IN shroomBodies DO
+        body.ValidateThreadConnections()
+        body.ProduceSporeMaterial()
+    END FOR
+    
+    FOR EACH thread IN threads DO
+        thread.ValidateLife()
+    END FOR
+
+END METHOD
+
+METHOD LoadDefaultCosts()
+    shroomBodyCost := 3
+    shroomThreadCost := 2
+    shroomUpgradeCost := 3
+    sporeCost := 2
 END METHOD

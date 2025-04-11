@@ -1,13 +1,12 @@
 METHOD FormSpore(tecton)
     IF NOT InRange(tecton) THEN
-        RETURN null
+        RETURN NULL
     END IF
 
-    sporeMaterials -= 2
-    remainingThrows--
+    sporeMaterials := sporeMaterials - 2
+    remainingThrows := remainingThrows - 1
 
     spore = NEW Spore(shroom, tecton)
-    Skeleton.AddObject(spore, "spore")
     tecton.ThrowSpore(spore)
 
     IF remainingThrows <= 0 THEN
@@ -16,4 +15,67 @@ METHOD FormSpore(tecton)
     END IF
 
     RETURN spore
+END METHOD
+
+METHOD InRange(targetTecton)
+    startTecton := this.tecton
+    maxDistance := this.level
+
+    visited := SET []
+    queue := QUEUE []
+    
+    queue.Add((startTecton, 0))
+    visited.Add(startTecton)
+
+    WHILE queue NOT EMPTY DO:
+        (currentTecton, distance) := queue.Poll()
+
+        IF currentTecton == targetTecton THEN
+            RETURN TRUE
+        END IF
+
+        IF distance < maxDistance:
+            FOR neighbour IN currentTecton.GetNeighbours():
+                IF neighbour NOT IN visited:
+                    visited.add(neighbour)
+                    queue.Add((neighbour, distance + 1))
+                END IF
+            END FOR
+        END IF
+    END WHILE
+
+    RETURN FALSE
+END METHOD
+
+METHOD ValidateThreadConnections()
+    visited = SET []
+    queue = QUEUE []
+
+    queue.Add(this.tecton)
+    visited.Add(this.tecton)
+
+    WHILE queue IS NOT EMPTY DO
+        currentTecton = queue.Poll()
+
+        FOR thread IN currentTecton.GetShroomThreads() DO
+            IF thread.GetShroom() ≠ this.shroom THEN
+                CONTINUE
+            END IF
+
+            IF thread.GetTecton1() == currentTecton THEN
+                neighbour := thread.GetTecton2()
+            ELSE
+                neighbour := thread.GetTecton1()
+            END IF
+
+            IF neighbour NOT IN visited THEN
+                thread.SetConnectedToBody(TRUE)
+                visited.Add(neighbour)
+                queue.Add(neighbour)
+            END IF
+        
+        END FOR
+
+    END WHILE
+
 END METHOD

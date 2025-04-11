@@ -1,22 +1,24 @@
 METHOD ValidateLife()
-    growthBoost1 = tecton1.HasSporeOfShroom(this.shroom)
-    growthBoost2 = tecton2.HasSporeOfShroom(this.shroom)
+    growthBoost1 := tecton1.HasSporeOfShroom(this.shroom)
+    growthBoost2 := tecton2.HasSporeOfShroom(this.shroom)
 
-    Evolve(IF (growthBoost1 OR growthBoost2) THEN 2 ELSE 1)
+    IF growthBoost1 OR growthBoost2 THEN
+        growthAmount := 2
+    ELSE
+        growthAmount := 1
+    END IF
+    
+    evolution := MIN(evolution + growthAmount, 3)
 
-    decayed = Skeleton.YesNoQuestion("Felszívódott-e a fonal?")
-
-    IF decayed THEN
-        this.Remove()
+    IF cut THEN
+        cutDamageTimer := cutDamageTimer - 1
     END IF
 
-END METHOD
+    IF NOT connectedToBody AND NOT sustained THEN
+        isolationCounter = isolationCounter - 1
+    END IF
 
-METHOD IsTectonReachable(tecton)
-    threadName = Skeleton.GetName(this)
-    tectonName = Skeleton.GetName(tecton)
-
-    isTectonReachable = Skeleton.YesNoQuestion("A " + threadName + " nevű fonal egyik végpontja a " + tectonName + " tecton?")
-
-    RETURN isTectonReachable
+    IF isolationCounter >= 3 OR cutDamageTimer <= 0 THEN
+        this.Remove()
+    END IF
 END METHOD
