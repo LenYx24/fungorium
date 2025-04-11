@@ -59,7 +59,7 @@ METHOD UpgradeShroomBody(body)
         tecton := body.GetTecton()
         consumedSpore := FIRST spore IN spores WHERE spore.GetTecton() == tecton
 
-        IF consumedSpore EXISTS THEN
+        IF consumedSpore IS NOT NULL THEN
             tecton.RemoveSpore(consumedSpore)
         END IF
 
@@ -72,10 +72,22 @@ METHOD ThrowSpore(body, tecton)
     IF actCatalog.HasEnoughPoints(sporeCost) THEN
         spore := body.FormSpore(tecton)
 
-        IF spore ≠ null THEN
+        IF spore IS NOT NULL THEN
             spores.Add(spore)
             actCatalog.DecreasePoints(sporeCost)
         END IF
+    END IF
+
+END METHOD
+
+METHOD ShroomThreadDevourBug(thread, bug)
+    IF actCatalog.HasEnoughPoints(devourCost) THEN
+        success := thread.DevourCrippledBug(bug)
+
+        IF success THEN
+            actCatalog.DecreasePoints(devourCost)
+        END IF
+        
     END IF
 
 END METHOD
@@ -104,4 +116,5 @@ METHOD LoadDefaultCosts()
     shroomThreadCost := 2
     shroomUpgradeCost := 3
     sporeCost := 2
+    devourCost := 3
 END METHOD

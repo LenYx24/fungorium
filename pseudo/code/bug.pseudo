@@ -27,7 +27,6 @@ METHOD Eat(spore)
 END METHOD
 
 METHOD CutThread(thread)
-    enough := actCatalog.HasEnoughPoints(cutThreadCost)
     reachable := thread.IsTectonReachable(tecton)
 
     IF canCut AND reachable THEN
@@ -40,9 +39,19 @@ METHOD CutThread(thread)
 
 END METHOD
 
+METHOD Split()
+    newBug := NEW Bug
+
+    FOR EACH effect IN effects
+        newBug.AddEffect(effect)
+    END FOR
+
+    newBug.SetTecton(tecton)
+    bugOwner.AddBug(newBug)
+END METHOD
+
 METHOD UpdateBug()
     LoadDefaultCosts()
-    actCatalog.ResetPoints()
 
     FOR EACH bugEffect IN bugEffects DO
         bugEffect.ApplyOn(this)

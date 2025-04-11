@@ -24,7 +24,7 @@ METHOD SpreadEntities(copyTecton)
         END IF
     END WHILE
 
-    IF this.shroomBody ≠ NULL THEN
+    IF this.shroomBody IS NOT NULL THEN
         transferBody := RANDOM OF [ TRUE, FALSE ]
 
         IF transferBody THEN
@@ -36,13 +36,13 @@ METHOD SpreadEntities(copyTecton)
 END METHOD
 
 METHOD GrowShroomBody(body)
-    IF shroomBody == NULL THEN
+    IF shroomBody IS NULL THEN
         RETURN FALSE
     END IF
 
     consumedSpore := FIRST spore IN spores WHERE spore.GetShroom() == body.GetShroom()
 
-    IF consumedSpore ≠ NULL
+    IF consumedSpore IS NOT NULL
         RemoveSpore(consumedSpore)
     END IF
 

@@ -22,3 +22,17 @@ METHOD ValidateLife()
         this.Remove()
     END IF
 END METHOD
+
+METHOD DevourCrippledBug(bug)
+    canMove := bug.GetCanMove()
+    currentTecton := bug.GetTecton()
+
+    IF NOT canMove AND currentTecton IN [tecton1, tecton2] THEN
+        shroom.AddShroomBodyCost(-3)
+        bug.Remove()
+
+        RETURN TRUE
+    END IF
+
+    RETURN FALSE
+END METHOD

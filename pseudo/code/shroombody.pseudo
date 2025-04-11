@@ -1,5 +1,5 @@
 METHOD FormSpore(tecton)
-    IF NOT InRange(tecton) THEN
+    IF sporeMaterials <= 2 OR NOT InRange(tecton) THEN
         RETURN NULL
     END IF
 
@@ -40,8 +40,11 @@ METHOD InRange(targetTecton)
                     visited.add(neighbour)
                     queue.Add((neighbour, distance + 1))
                 END IF
+        
             END FOR
+        
         END IF
+
     END WHILE
 
     RETURN FALSE
@@ -58,7 +61,7 @@ METHOD ValidateThreadConnections()
         currentTecton = queue.Poll()
 
         FOR thread IN currentTecton.GetShroomThreads() DO
-            IF thread.GetShroom() ≠ this.shroom THEN
+            IF thread.GetShroom() IS NOT this.shroom THEN
                 CONTINUE
             END IF
 
