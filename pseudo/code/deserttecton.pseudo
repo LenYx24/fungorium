@@ -1,0 +1,10 @@
+METHOD UpdateTecton()
+    FOR EACH (thread, decayTimer) IN decayTimers DO
+        IF decayTimer <= 0 THEN
+            thread.Remove()
+            decayTimers.Remove(thread)
+        ELSE
+            decayTimer := decayTimer - 1
+        END IF
+    END FOR
+END METHOD

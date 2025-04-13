@@ -1,9 +1,0 @@
-METHOD UpdateState(bug)
-    // Csökkenti a remainingUses értékét eggyel
-    remainingUses = remainingUses - 1
-
-    // Ha remainingUses eléri a 0-t, eltávolítja a hatást a bug-ról
-    IF remainingUses == 0 THEN
-        bug.ClearEffect(this)
-    END IF
-END METHOD
