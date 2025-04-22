@@ -1,0 +1,45 @@
+package org.nessus;
+
+import java.util.Scanner;
+
+public class View {
+    private static final Logger logger = new Logger(); // Logger osztály példányosítása
+    private static boolean running = true; // A program futását jelző változó
+
+    /**
+     * A {@code View} osztály konstruktora.
+     * A konstruktor privát, mert nem szükséges példányosítani az osztályt.
+     */
+    private View() {}
+    
+    /**
+     * A program futását megvalósító metódus.
+     * @return void
+     */
+    public static void Run() {
+        Scanner scanner = new Scanner(System.in);
+        
+        while (running) {
+            // TODO
+        }
+        scanner.close();
+    }
+
+    /**
+     * Ezzel a metódussal adhatunk hozzá objektumot a loghoz.
+     * @param object
+     * @param name
+     */
+    public static void AddObject(Object object, String name) {
+        logger.AddObject(object, name);
+    }
+
+    /**
+     * Visszaadja a paraméterként kapott objektum nevét.
+     * @param o
+     * @return String - Az objektum neve
+     */
+    public static String GetName(Object o) {
+        return logger.GetName(o);
+    }
+}
