@@ -33,7 +33,7 @@ public class DesertTecton extends Tecton {
     @Override
     public Tecton Copy() {
         Tecton copyTecton = new DesertTecton();
-        View.AddObject(copyTecton, "copyTecton");
+        View.AddObject( "copyTecton", copyTecton);
         SpreadEntities(copyTecton);
         return copyTecton;
     }

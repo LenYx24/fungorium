@@ -1,54 +1,241 @@
 package org.nessus;
 
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
 
+import org.nessus.command.BaseCommand;
+import org.nessus.command.HelpCmd;
+import org.nessus.command.arrangecmd.CreateCmd;
+import org.nessus.command.arrangecmd.SetRefCmd;
+import org.nessus.command.arrangecmd.SetValCmd;
+import org.nessus.command.assertcmd.ShowCmd;
+import org.nessus.model.effect.BugEffect;
 import org.nessus.model.shroom.*;
 import org.nessus.model.tecton.*;
 import org.nessus.model.bug.*;
 
-public class View {
-    private static final CommandProcessor commandProcessor = new CommandProcessor(); // Logger osztály példányosítása
-    private static boolean running = true; // A program futását jelző változó
+import static java.lang.System.in;
 
+public class View {
+    private static boolean running = true; // A program futását jelző változó
+    private static Map<String,Object> objects = new LinkedHashMap<>();
+
+    private static BugOwner currentBugOwner = null;
+    private static Shroom currentShroom = null;
+    private static Random rand = new Random();
+    private enum CmdMode{
+        ARRANGE,
+        ACT,
+        ASSERT
+    }
+    private static CmdMode mode = CmdMode.ARRANGE;
+    private static HashMap<String, BaseCommand> normalCmds = new HashMap<>();
+
+    private static HashMap<String, BaseCommand> arrangeCmds = new HashMap<>();
+    private static HashMap<String, BaseCommand> actCmds = new HashMap<>();
+    private static HashMap<String, BaseCommand> assertCmds = new HashMap<>();
+    private static List<String> order = new LinkedList<>();
+    static{
+        normalCmds.put("hi", new BaseCommand() {
+            @Override
+            public void Run(String[] args) {
+                System.out.println("hi");
+            }
+        });
+        normalCmds.put("arrange", new BaseCommand() {
+            @Override
+            public void Run(String[] args) {
+                mode = CmdMode.ARRANGE;
+            }
+        });
+        normalCmds.put("assert", new BaseCommand() {
+            @Override
+            public void Run(String[] args) {
+                mode = CmdMode.ASSERT;
+            }
+        });
+        normalCmds.put("act", new BaseCommand() {
+            @Override
+            public void Run(String[] args) {
+                mode = CmdMode.ACT;
+            }
+        });
+        normalCmds.put("exit", new BaseCommand() {
+            @Override
+            public void Run(String[] args) {
+                running = false;
+            }
+        });
+        normalCmds.put("help",new HelpCmd());
+        // ARRANGE
+        arrangeCmds.put("create",new CreateCmd());
+        arrangeCmds.put("setval",new SetValCmd());
+        arrangeCmds.put("setref",new SetRefCmd());
+        arrangeCmds.put("seed", new BaseCommand() {
+            @Override
+            public void Run(String[] args) {
+                GetNum(args[0]).ifPresent(seed -> {rand = new Random(seed);});
+            }
+        });
+        arrangeCmds.put("neighbour", new BaseCommand() {
+            @Override
+            public void Run(String[] args) {
+                if(NotEnoughArgs(args,2))return;
+                Tecton t1 = (Tecton)GetObject(args[0]);
+                Tecton t2 = (Tecton)GetObject(args[1]);
+                t1.SetNeighbour(t2);
+                t2.SetNeighbour(t1);
+            }
+        });
+        arrangeCmds.put("place", new BaseCommand() {
+            @Override
+            public void Run(String[] args) {
+                if(NotEnoughArgs(args,2))return;
+                Object obj = GetObject(args[0]);
+                Tecton tecton = (Tecton)GetObject(args[1]);
+                if(obj instanceof Bug) {
+                    tecton.AddBug((Bug)obj);
+                }
+                else if(obj instanceof ShroomBody) {
+                    tecton.SetShroomBody((ShroomBody)obj);
+                }
+                else if(obj instanceof Spore) {
+                    tecton.ThrowSpore((Spore)obj);
+                }
+            }
+        });
+        arrangeCmds.put("placethread", new BaseCommand() {
+            @Override
+            public void Run(String[] args) {
+                if(NotEnoughArgs(args,3))return;
+                Object obj = GetObject(args[0]);
+                Tecton tecton1 = (Tecton)GetObject(args[1]);
+                Tecton tecton2 = (Tecton)GetObject(args[2]);
+                if(obj instanceof ShroomThread) {
+                    ShroomThread thread = (ShroomThread)obj;
+                    tecton1.GrowShroomThread(thread);
+                    tecton2.GrowShroomThread(thread);
+                }
+            }
+        });
+
+        arrangeCmds.put("run", new BaseCommand() {
+            @Override
+            public void Run(String[] args) {
+                if(NotEnoughArgs(args,1))return;
+                // todo
+            }
+        });
+        arrangeCmds.put("currentplayer", new BaseCommand() {
+            @Override
+            public void Run(String[] args) {
+                if(NotEnoughArgs(args,1))return;
+                String name = args[0];
+                Object obj = GetObject(name);
+                if(obj instanceof BugOwner) {
+                    currentBugOwner = (BugOwner)obj;
+                    currentShroom = null;
+                }
+                if(obj instanceof Shroom) {
+                    currentBugOwner = null;
+                    currentShroom = (Shroom)obj;
+                }
+            }
+        });
+        // ACT
+        actCmds.put("placeshroomthread", new BaseCommand() {
+            @Override
+            public void Run(String[] args) {
+                if(NotEnoughArgs(args,3))return;
+                ShroomThread thread = (ShroomThread)GetObject(args[1]);
+                Tecton tecton1 = (Tecton)GetObject(args[1]);
+                Tecton tecton2 = (Tecton)GetObject(args[2]);
+
+
+            }
+        });
+        // ASSERT
+        assertCmds.put("show",new ShowCmd());
+        assertCmds.put("showall", new BaseCommand() {
+            @Override
+            public void Run(String[] args) {
+                BaseCommand show = assertCmds.get("show");
+                for (String name : objects.keySet()) {
+                    show.Run(new String[]{name});
+                }
+            }
+        });
+        assertCmds.put("save",new ShowCmd());
+    }
     /**
      * A {@code View} osztály konstruktora.
      * A konstruktor privát, mert nem szükséges példányosítani az osztályt.
      */
     private View() {}
-    
+    private static Map<String, BaseCommand> GetCurrentModesCommands(CmdMode mode) {
+        return switch (mode) {
+            case ARRANGE -> arrangeCmds;
+            case ACT -> actCmds;
+            case ASSERT -> assertCmds;
+        };
+    }
     /**
      * A program futását megvalósító metódus.
      * @return void
      */
     public static void Run() {
-        Scanner scanner = new Scanner(System.in);
-        
+        Scanner scanner = new Scanner(in);
+        System.out.println("Üdv a prototípus fázisban");
         while (running) {
-            // TODO
+            String prompt = "";
+            switch(mode){
+                case ARRANGE:{prompt="arrange";break;}
+                case ACT:{prompt="act";break;}
+                case ASSERT:{prompt="assert";break;}
+            }
+            System.out.print(prompt+">");
+            String line = scanner.nextLine();
+            String[] parts = line.split(" ");
+            String cmd = parts[0];
+            String[] params = Arrays.copyOfRange(parts, 1, parts.length);
+            BaseCommand command = normalCmds.get(cmd);
+            if(command != null) {
+                command.Run(params);
+                continue;
+            }
+
+            Map<String,BaseCommand> currentCmds = GetCurrentModesCommands(mode);
+            command = currentCmds.get(cmd);
+            if(command != null) {
+                command.Run(params);
+            }
+            if(command == null){
+                System.out.println("A parancs nem található");
+            }
         }
         scanner.close();
     }
 
     /**
      * Ezzel a metódussal adhatunk hozzá objektumot a loghoz.
-     * @param object
      * @param name
+     * @param object
      */
-    public static void AddObject(Object object, String name) {
-        throw new UnsupportedOperationException();
+    public static void AddObject(String name, Object object) {
+        objects.put(name,object);
     }
 
     /**
      * Visszaadja a paraméterként kapott objektum nevét.
-     * @param o
+     * @param object
      * @return String - Az objektum neve
      */
-    public static String GetName(Object o) {
-        throw new UnsupportedOperationException();
+    public static String GetName(Object object) {
+        return "null";
     }
-
+    public static Object GetObject(String name) {
+        return objects.get(name);
+    }
     public static void main(String[] args) {
-
+        Run();
     }
 }

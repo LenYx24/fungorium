@@ -19,7 +19,7 @@ public class SingleThreadTecton extends Tecton {
     @Override
     public Tecton Copy() {
         Tecton copyTecton = new SingleThreadTecton();
-        View.AddObject(copyTecton, "copyTecton");
+        View.AddObject( "copyTecton", copyTecton);
         SpreadEntities(copyTecton);
         return copyTecton;
     }

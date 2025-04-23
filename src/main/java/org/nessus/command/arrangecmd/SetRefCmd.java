@@ -1,0 +1,47 @@
+package org.nessus.command.arrangecmd;
+
+import org.nessus.View;
+import org.nessus.command.BaseCommand;
+
+import java.lang.reflect.Field;
+
+public class SetRefCmd extends BaseCommand {
+    @Override
+    public void Run(String[] args) {
+        if (NotEnoughArgs(args,3)) {
+            return;
+        }
+
+        String targetName = args[0];
+        String fieldName = args[1];
+        String referenceName = args[2];
+
+        Object targetObject = View.GetObject(targetName);
+        Object referenceObject = View.GetObject(referenceName);
+
+        if (targetObject == null) {
+            System.out.println("Nincs ilyen célobjektum: " + targetName);
+            return;
+        }
+        if (referenceObject == null) {
+            System.out.println("Nincs ilyen hivatkozott objektum: " + referenceName);
+            return;
+        }
+
+        try {
+            Field field = targetObject.getClass().getDeclaredField(fieldName);
+            field.setAccessible(true);
+
+            if (!field.getType().isAssignableFrom(referenceObject.getClass())) {
+                System.out.println("Típusinkompatibilis hivatkozás: " + field.getType().getSimpleName() +
+                        " <- " + referenceObject.getClass().getSimpleName());
+                return;
+            }
+
+            field.set(targetObject, referenceObject);
+            System.out.println("Referencia sikeresen beállítva.");
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            System.out.println("Hiba a referencia beállításánál: " + e.getMessage());
+        }
+    }
+}

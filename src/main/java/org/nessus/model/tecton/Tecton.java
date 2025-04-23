@@ -191,7 +191,7 @@ public class Tecton {
      */
     public Tecton Copy() {
         Tecton copyTecton = new Tecton();
-        View.AddObject(copyTecton, "copyTecton");
+        View.AddObject( "copyTecton", copyTecton);
         SpreadEntities(copyTecton);
         return copyTecton;
     }

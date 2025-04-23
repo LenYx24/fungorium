@@ -35,7 +35,7 @@ public class Shroom {
      * A pontokat alaphelyzetbe állítja
      */
     public Shroom() {
-        View.AddObject(actCatalog, "actCatalog");
+        View.AddObject( "actCatalog",actCatalog);
         ResetPoints();
     }
 
@@ -84,7 +84,7 @@ public class Shroom {
     public void PlaceShroomBody(Tecton tecton) {
         if (actCatalog.HasEnoughPoints(shroomBodyCost)) {
             ShroomBody newBody = new ShroomBody(this, tecton);
-            View.AddObject(newBody, "newBody");
+            View.AddObject("newBody", newBody);
 
             boolean success = tecton.GrowShroomBody(newBody);
             if (success) {
