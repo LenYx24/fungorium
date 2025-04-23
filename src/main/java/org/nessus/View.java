@@ -1,9 +1,14 @@
 package org.nessus;
 
+import java.util.HashMap;
 import java.util.Scanner;
 
+import org.nessus.model.shroom.*;
+import org.nessus.model.tecton.*;
+import org.nessus.model.bug.*;
+
 public class View {
-    private static final Logger logger = new Logger(); // Logger osztály példányosítása
+    private static final CommandProcessor commandProcessor = new CommandProcessor(); // Logger osztály példányosítása
     private static boolean running = true; // A program futását jelző változó
 
     /**
@@ -31,7 +36,7 @@ public class View {
      * @param name
      */
     public static void AddObject(Object object, String name) {
-        logger.AddObject(object, name);
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -40,6 +45,10 @@ public class View {
      * @return String - Az objektum neve
      */
     public static String GetName(Object o) {
-        return logger.GetName(o);
+        throw new UnsupportedOperationException();
+    }
+
+    public static void main(String[] args) {
+
     }
 }
