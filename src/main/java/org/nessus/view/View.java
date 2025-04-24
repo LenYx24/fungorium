@@ -5,6 +5,9 @@ import java.util.*;
 import org.nessus.model.effect.BugEffect;
 import org.nessus.model.shroom.*;
 import org.nessus.model.tecton.*;
+import org.nessus.controller.IBugController;
+import org.nessus.controller.IShroomController;
+import org.nessus.controller.ITectonController;
 import org.nessus.controller.command.BaseCommand;
 import org.nessus.controller.command.HelpCmd;
 import org.nessus.controller.command.arrangecmd.CreateCmd;
@@ -14,13 +17,14 @@ import org.nessus.controller.command.assertcmd.ShowCmd;
 import org.nessus.model.bug.*;
 
 import static java.lang.System.in;
+import static java.lang.System.out;
 
 public class View {
     private static boolean running = true; // A program futását jelző változó
     private static Map<String,Object> objects = new LinkedHashMap<>();
 
-    private static BugOwner currentBugOwner = null;
-    private static Shroom currentShroom = null;
+    private static IBugController currentBugOwner = null;
+    private static IShroomController currentShroom = null;
     private static Random rand = new Random();
     private enum CmdMode{
         ARRANGE,
@@ -33,7 +37,9 @@ public class View {
     private static HashMap<String, BaseCommand> arrangeCmds = new HashMap<>();
     private static HashMap<String, BaseCommand> actCmds = new HashMap<>();
     private static HashMap<String, BaseCommand> assertCmds = new HashMap<>();
+
     private static List<String> order = new LinkedList<>();
+    
     static{
         normalCmds.put("hi", new BaseCommand() {
             @Override
@@ -145,14 +151,145 @@ public class View {
         actCmds.put("placeshroomthread", new BaseCommand() {
             @Override
             public void Run(String[] args) {
-                if(NotEnoughArgs(args,3))return;
-                ShroomThread thread = (ShroomThread)GetObject(args[1]);
+                if(NotEnoughArgs(args,3))
+                    return;
+
                 Tecton tecton1 = (Tecton)GetObject(args[1]);
                 Tecton tecton2 = (Tecton)GetObject(args[2]);
 
-
+                currentShroom.PlaceShroomThread(tecton1, tecton2);
             }
         });
+
+        actCmds.put("placeshroombody", new BaseCommand() {
+            @Override
+            public void Run(String[] args) {
+                if(NotEnoughArgs(args,3))
+                    return;
+
+                Tecton tecton = (Tecton)GetObject(args[1]);
+                currentShroom.PlaceShroomBody(tecton);
+            }
+        });
+
+        actCmds.put("upgradeshroombody", new BaseCommand() {
+            @Override
+            public void Run(String[] args) {
+                if(NotEnoughArgs(args,3))
+                    return;
+
+                ShroomBody body = (ShroomBody)GetObject(args[1]);
+                currentShroom.UpgradeShroomBody(body);
+            }
+        });
+
+        actCmds.put("throwspore", new BaseCommand() {
+            @Override
+            public void Run(String[] args) {
+                if(NotEnoughArgs(args,3))
+                    return;
+
+                ShroomBody body = (ShroomBody)GetObject(args[1]);
+                Tecton tecton = (Tecton)GetObject(args[2]);
+                currentShroom.ThrowSpore(body, tecton);
+            }
+        });
+        
+        actCmds.put("devour", new BaseCommand() {
+            @Override
+            public void Run(String[] args) {
+                if(NotEnoughArgs(args,3))
+                    return;
+
+                ShroomThread thread = (ShroomThread)GetObject(args[1]);
+                Bug bug = (Bug)GetObject(args[2]);
+                currentShroom.ShroomThreadDevourBug(thread, bug);
+            }
+        });
+        
+        actCmds.put("move", new BaseCommand() {
+            @Override
+            public void Run(String[] args) {
+                if(NotEnoughArgs(args,3))
+                    return;
+
+                Bug bug = (Bug)GetObject(args[1]);
+                Tecton tecton = (Tecton)GetObject(args[2]);
+                currentBugOwner.Move(bug, tecton);
+            }
+        });
+        
+        actCmds.put("eatspore", new BaseCommand() {
+            @Override
+            public void Run(String[] args) {
+                if(NotEnoughArgs(args,3))
+                    return;
+
+                Bug bug = (Bug)GetObject(args[1]);
+                Spore spore = (Spore)GetObject(args[2]);
+                currentBugOwner.Eat(bug, spore);
+            }
+        });
+
+        actCmds.put("cutthread", new BaseCommand() {
+            @Override
+            public void Run(String[] args) {
+                if(NotEnoughArgs(args,3))
+                    return;
+
+                Bug bug = (Bug)GetObject(args[1]);
+                ShroomThread thread = (ShroomThread)GetObject(args[2]);
+                currentBugOwner.CutThread(bug, thread);
+            }
+        });
+
+        actCmds.put("updatebugs", new BaseCommand() {
+            @Override
+            public void Run(String[] args) {
+                if(NotEnoughArgs(args,3))
+                    return;
+                currentBugOwner.UpdateBugOwner();
+            }
+        });
+        
+        actCmds.put("updateshroom", new BaseCommand() {
+            @Override
+            public void Run(String[] args) {
+                if(NotEnoughArgs(args,3))
+                    return;
+                currentShroom.UpdateShroom();
+            }
+        });
+
+        actCmds.put("updatetecton", new BaseCommand() {
+            @Override
+            public void Run(String[] args) {
+                if(NotEnoughArgs(args,3))
+                    return;
+                ITectonController tecton = (ITectonController)GetObject(args[1]);
+                tecton.UpdateTecton();
+            }
+        });
+
+        actCmds.put("split", new BaseCommand() {
+            @Override
+            public void Run(String[] args) {
+                if(NotEnoughArgs(args,3))
+                    return;
+                ITectonController tecton = (ITectonController)GetObject(args[1]);
+                tecton.Split();
+            }
+        });
+
+        actCmds.put("nextplayer", new BaseCommand() {
+            @Override
+            public void Run(String[] args) {
+                if(NotEnoughArgs(args,3))
+                    return;
+                System.out.println("unimplemented");
+            }
+        });
+
         // ASSERT
         assertCmds.put("show",new ShowCmd());
         assertCmds.put("showall", new BaseCommand() {
@@ -186,12 +323,12 @@ public class View {
         Scanner scanner = new Scanner(in);
         System.out.println("Üdv a prototípus fázisban");
         while (running) {
-            String prompt = "";
-            switch(mode){
-                case ARRANGE:{prompt="arrange";break;}
-                case ACT:{prompt="act";break;}
-                case ASSERT:{prompt="assert";break;}
-            }
+            String prompt = switch(mode) {
+                case ARRANGE -> "arrange";
+                case ACT -> "act";
+                case ASSERT -> "assert";
+            };
+
             System.out.print(prompt+">");
             String line = scanner.nextLine();
             String[] parts = line.split(" ");

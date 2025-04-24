@@ -1,5 +1,6 @@
 package org.nessus.model.tecton;
 
+import org.nessus.controller.ITectonController;
 import org.nessus.model.bug.Bug;
 import org.nessus.model.shroom.Shroom;
 import org.nessus.model.shroom.ShroomBody;
@@ -20,7 +21,7 @@ import java.util.List;
  * @see org.nessus.model.shroom.ShroomBody
  * @see org.nessus.model.shroom.Shroom
  */
-public class Tecton {
+public class Tecton implements ITectonController {
     protected List<Tecton> neighbours = new ArrayList<>(); // A szomszédos tektonok listája
     protected List<Spore> spores = new ArrayList<>(); // A tektonon található spórák listája
     protected List<ShroomThread> shroomThreads = new ArrayList<>(); // A tektonon található gombafonalak listája
@@ -240,6 +241,7 @@ public class Tecton {
      * @throws UnsupportedOperationException
      * @return void
      */
+    @Override
     public void UpdateTecton() {
         throw new UnsupportedOperationException();
     }
