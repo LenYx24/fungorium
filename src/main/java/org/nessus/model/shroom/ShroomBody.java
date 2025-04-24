@@ -77,7 +77,7 @@ public class ShroomBody {
         remainingThrows--;
         
         Spore spore = new Spore(shroom, tecton);
-        View.AddObject( "spore",spore);
+        View.GetObjectStore().AddObject( "spore",spore);
         tecton.ThrowSpore(spore);
         
         if (remainingThrows <= 0) {

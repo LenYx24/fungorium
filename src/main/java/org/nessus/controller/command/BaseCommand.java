@@ -7,6 +7,7 @@ import java.util.Optional;
 
 public abstract class BaseCommand {
     public abstract void Run(String[] args);
+
     protected Optional<Integer> GetNum(String arg){
         try {
             return Optional.of(Integer.parseInt(arg));
@@ -15,6 +16,7 @@ public abstract class BaseCommand {
             return Optional.empty();
         }
     }
+
     protected Object InferType(String s) {
         // Try Integer
         try {
@@ -32,10 +34,12 @@ public abstract class BaseCommand {
         }
         // Check if it's a name of an object
         System.out.println("s: "+s);
-        Object obj = View.GetObject(s);
-        if(obj != null){
+
+        var view = View.GetObjectStore();
+        Object obj = view.GetObject(s);
+        if(obj != null)
             return obj;
-        }
+
         // Default: String
         return s;
     }
@@ -48,8 +52,9 @@ public abstract class BaseCommand {
         if (o instanceof Tecton) return Tecton.class;
         return String.class;
     }
+    
     protected boolean NotEnoughArgs(Object[] args, int minlength){
-        if(args.length < minlength){
+        if(args.length < minlength) {
             System.out.println("Nincs elegendő számú paraméter");
             return true;
         }

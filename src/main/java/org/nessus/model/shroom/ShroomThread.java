@@ -74,8 +74,9 @@ public class ShroomThread {
      * @return boolean - Az eredmény
      */
     public boolean IsTectonReachable(Tecton tecton) {
-        String threadName = View.GetName(this);
-        String tectonName = View.GetName(tecton);
+        var view = View.GetObjectStore();
+        String threadName = view.GetName(this);
+        String tectonName = view.GetName(tecton);
         // TODO
         return false;
     }

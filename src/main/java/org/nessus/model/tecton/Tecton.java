@@ -36,7 +36,7 @@ public class Tecton implements ITectonController {
 
         while(bugIter.hasNext()) {
             Bug bug = bugIter.next();
-            String name = View.GetName(bug);
+            String name = View.GetObjectStore().GetName(bug);
 
             // TODO
             // if (transferBug)
@@ -51,7 +51,7 @@ public class Tecton implements ITectonController {
 
         while(sporeIter.hasNext()) {
             Spore spore = sporeIter.next();
-            String name = View.GetName(spore);
+            String name = View.GetObjectStore().GetName(spore);
 
             // TODO
             // if (transferSpore)
@@ -116,7 +116,7 @@ public class Tecton implements ITectonController {
     public boolean GrowShroomBody(ShroomBody body) {
         // TODO
         // if (!canGrowShroomBody) {
-        //     View.LogReturnCall(this, "GrowShroomBody", false);
+        //     View.GetInstance().LogReturnCall(this, "GrowShroomBody", false);
         //     return false;
         // }
 
@@ -192,7 +192,7 @@ public class Tecton implements ITectonController {
      */
     public Tecton Copy() {
         Tecton copyTecton = new Tecton();
-        View.AddObject( "copyTecton", copyTecton);
+        View.GetObjectStore().AddObject( "copyTecton", copyTecton);
         SpreadEntities(copyTecton);
         return copyTecton;
     }
@@ -230,7 +230,7 @@ public class Tecton implements ITectonController {
      * @return Boolean - Szomszédos-e a két tekton
      */
     public boolean IsNeighbourOf(Tecton tecton) {
-        // boolean isNeighbourOf = View.YesNoQuestion("Szomszédos a két tekton?");
+        // boolean isNeighbourOf = View.GetInstance().YesNoQuestion("Szomszédos a két tekton?");
         // TODO
         return false;
     }

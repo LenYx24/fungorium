@@ -37,7 +37,7 @@ public class Bug {
      */
     public Bug() {
         //View.AddObject("bug", this);
-        View.AddObject("bugCat",actCatalog);
+        View.GetObjectStore().AddObject("bugCat",actCatalog);
         ResetPoints();
     }
 

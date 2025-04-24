@@ -37,7 +37,7 @@ public class Shroom implements IShroomController {
      * A pontokat alaphelyzetbe állítja
      */
     public Shroom() {
-        View.AddObject( "actCatalog",actCatalog);
+        View.GetObjectStore().AddObject( "actCatalog",actCatalog);
         ResetPoints();
     }
 
@@ -61,7 +61,7 @@ public class Shroom implements IShroomController {
         // TODO
         // if (enough && neighbours && connectedToBody) {
         //     ShroomThread thread = new ShroomThread(this, tecton1, tecton2);
-        //     View.AddObject(thread, "thread");
+        //     View.GetInstance().AddObject(thread, "thread");
         //     boolean t1Success = tecton1.GrowShroomThread(thread);
         //     boolean t2Success = tecton2.GrowShroomThread(thread);
 
@@ -88,7 +88,7 @@ public class Shroom implements IShroomController {
     public void PlaceShroomBody(Tecton tecton) {
         if (actCatalog.HasEnoughPoints(shroomBodyCost)) {
             ShroomBody newBody = new ShroomBody(this, tecton);
-            View.AddObject("newBody", newBody);
+            View.GetObjectStore().AddObject("newBody", newBody);
 
             boolean success = tecton.GrowShroomBody(newBody);
             if (success) {

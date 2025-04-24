@@ -66,7 +66,8 @@ public class CreateCmd extends BaseCommand {
             // Instantiate the object
             Object instance = constructor.newInstance(inferredArgs);
 
-            View.AddObject(objectName, instance);
+            var view = View.GetObjectStore();
+            view.AddObject(objectName, instance);
 
         } catch (Exception e) {
             System.out.println("Rossz parancsformátum: " + e.getMessage());

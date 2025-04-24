@@ -16,8 +16,9 @@ public class SetRefCmd extends BaseCommand {
         String fieldName = args[1];
         String referenceName = args[2];
 
-        Object targetObject = View.GetObject(targetName);
-        Object referenceObject = View.GetObject(referenceName);
+        var view = View.GetObjectStore();
+        Object targetObject = view.GetObject(targetName);
+        Object referenceObject = view.GetObject(referenceName);
 
         if (targetObject == null) {
             System.out.println("Nincs ilyen célobjektum: " + targetName);

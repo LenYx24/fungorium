@@ -27,7 +27,8 @@ public class SetValCmd extends BaseCommand {
         String fieldName = args[1];
         String valueString = args[2];
 
-        Object targetObject = View.GetObject(objectName);
+        var view = View.GetObjectStore();
+        Object targetObject = view.GetObject(objectName);
         if (targetObject == null) {
             System.out.println("Nincs ilyen objektum: " + objectName);
             return;
