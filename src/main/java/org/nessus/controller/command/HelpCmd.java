@@ -1,4 +1,4 @@
-package org.nessus.command;
+package org.nessus.controller.command;
 
 public class HelpCmd extends BaseCommand{
     @Override

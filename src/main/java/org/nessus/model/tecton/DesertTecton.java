@@ -1,9 +1,8 @@
 package org.nessus.model.tecton;
 
-import org.nessus.View;
-
 import org.nessus.model.*;
 import org.nessus.model.shroom.ShroomThread;
+import org.nessus.view.View;
 
 import java.util.*;
 

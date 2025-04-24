@@ -1,10 +1,10 @@
 package org.nessus.model.shroom;
 
-import org.nessus.View;
 import org.nessus.controller.IShroomController;
 import org.nessus.model.ActionPointCatalog;
 import org.nessus.model.bug.Bug;
 import org.nessus.model.tecton.Tecton;
+import org.nessus.view.View;
 
 import java.util.ArrayList;
 import java.util.List;

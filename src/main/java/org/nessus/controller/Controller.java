@@ -1,4 +1,4 @@
-package org.nessus;
+package org.nessus.controller;
 
 public class Controller {
     

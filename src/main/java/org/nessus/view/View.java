@@ -1,16 +1,16 @@
-package org.nessus;
+package org.nessus.view;
 
 import java.util.*;
 
-import org.nessus.command.BaseCommand;
-import org.nessus.command.HelpCmd;
-import org.nessus.command.arrangecmd.CreateCmd;
-import org.nessus.command.arrangecmd.SetRefCmd;
-import org.nessus.command.arrangecmd.SetValCmd;
-import org.nessus.command.assertcmd.ShowCmd;
 import org.nessus.model.effect.BugEffect;
 import org.nessus.model.shroom.*;
 import org.nessus.model.tecton.*;
+import org.nessus.controller.command.BaseCommand;
+import org.nessus.controller.command.HelpCmd;
+import org.nessus.controller.command.arrangecmd.CreateCmd;
+import org.nessus.controller.command.arrangecmd.SetRefCmd;
+import org.nessus.controller.command.arrangecmd.SetValCmd;
+import org.nessus.controller.command.assertcmd.ShowCmd;
 import org.nessus.model.bug.*;
 
 import static java.lang.System.in;

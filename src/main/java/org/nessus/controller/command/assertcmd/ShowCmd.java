@@ -1,7 +1,7 @@
-package org.nessus.command.assertcmd;
+package org.nessus.controller.command.assertcmd;
 
-import org.nessus.View;
-import org.nessus.command.BaseCommand;
+import org.nessus.controller.command.BaseCommand;
+import org.nessus.view.View;
 
 import java.lang.reflect.Field;
 

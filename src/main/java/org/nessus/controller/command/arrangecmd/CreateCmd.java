@@ -1,7 +1,7 @@
-package org.nessus.command.arrangecmd;
+package org.nessus.controller.command.arrangecmd;
 
-import org.nessus.View;
-import org.nessus.command.BaseCommand;
+import org.nessus.controller.command.BaseCommand;
+import org.nessus.view.View;
 
 import java.lang.reflect.Constructor;
 import java.util.Arrays;

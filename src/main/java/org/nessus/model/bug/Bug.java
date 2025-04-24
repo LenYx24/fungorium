@@ -1,11 +1,11 @@
 package org.nessus.model.bug;
 
-import org.nessus.View;
 import org.nessus.model.ActionPointCatalog;
 import org.nessus.model.effect.BugEffect;
 import org.nessus.model.shroom.ShroomThread;
 import org.nessus.model.shroom.Spore;
 import org.nessus.model.tecton.Tecton;
+import org.nessus.view.View;
 
 import java.util.ArrayList;
 import java.util.List;

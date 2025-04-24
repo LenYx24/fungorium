@@ -1,7 +1,7 @@
 package org.nessus.model.tecton;
 
-import org.nessus.View;
 import org.nessus.model.shroom.ShroomBody;
+import org.nessus.view.View;
 
 /**
  * Ezen a tektontípuson nem lehet gombatestet növeszteni.

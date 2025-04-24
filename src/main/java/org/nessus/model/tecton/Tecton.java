@@ -1,11 +1,11 @@
 package org.nessus.model.tecton;
 
-import org.nessus.View;
 import org.nessus.model.bug.Bug;
 import org.nessus.model.shroom.Shroom;
 import org.nessus.model.shroom.ShroomBody;
 import org.nessus.model.shroom.ShroomThread;
 import org.nessus.model.shroom.Spore;
+import org.nessus.view.View;
 
 import java.util.ArrayList;
 import java.util.List;

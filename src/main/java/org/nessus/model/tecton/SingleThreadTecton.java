@@ -1,7 +1,7 @@
 package org.nessus.model.tecton;
 
-import org.nessus.View;
 import org.nessus.model.shroom.ShroomThread;
+import org.nessus.view.View;
 
 /**
  * Egyfonál tekton, azaz ezen a tektonfajtán csak egy fonál lehet.

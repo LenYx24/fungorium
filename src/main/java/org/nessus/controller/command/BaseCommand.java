@@ -1,7 +1,7 @@
-package org.nessus.command;
+package org.nessus.controller.command;
 
-import org.nessus.View;
 import org.nessus.model.tecton.Tecton;
+import org.nessus.view.View;
 
 import java.util.Optional;
 
