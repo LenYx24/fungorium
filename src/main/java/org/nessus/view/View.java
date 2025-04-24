@@ -151,11 +151,11 @@ public class View {
         actCmds.put("placeshroomthread", new BaseCommand() {
             @Override
             public void Run(String[] args) {
-                if(NotEnoughArgs(args,3))
+                if(NotEnoughArgs(args,2))
                     return;
 
-                Tecton tecton1 = (Tecton)GetObject(args[1]);
-                Tecton tecton2 = (Tecton)GetObject(args[2]);
+                Tecton tecton1 = (Tecton)GetObject(args[0]);
+                Tecton tecton2 = (Tecton)GetObject(args[1]);
 
                 currentShroom.PlaceShroomThread(tecton1, tecton2);
             }
@@ -164,10 +164,10 @@ public class View {
         actCmds.put("placeshroombody", new BaseCommand() {
             @Override
             public void Run(String[] args) {
-                if(NotEnoughArgs(args,3))
+                if(NotEnoughArgs(args,1))
                     return;
 
-                Tecton tecton = (Tecton)GetObject(args[1]);
+                Tecton tecton = (Tecton)GetObject(args[0]);
                 currentShroom.PlaceShroomBody(tecton);
             }
         });
@@ -175,10 +175,10 @@ public class View {
         actCmds.put("upgradeshroombody", new BaseCommand() {
             @Override
             public void Run(String[] args) {
-                if(NotEnoughArgs(args,3))
+                if(NotEnoughArgs(args,1))
                     return;
 
-                ShroomBody body = (ShroomBody)GetObject(args[1]);
+                ShroomBody body = (ShroomBody)GetObject(args[0]);
                 currentShroom.UpgradeShroomBody(body);
             }
         });
@@ -186,11 +186,11 @@ public class View {
         actCmds.put("throwspore", new BaseCommand() {
             @Override
             public void Run(String[] args) {
-                if(NotEnoughArgs(args,3))
+                if(NotEnoughArgs(args,2))
                     return;
 
-                ShroomBody body = (ShroomBody)GetObject(args[1]);
-                Tecton tecton = (Tecton)GetObject(args[2]);
+                ShroomBody body = (ShroomBody)GetObject(args[0]);
+                Tecton tecton = (Tecton)GetObject(args[1]);
                 currentShroom.ThrowSpore(body, tecton);
             }
         });
@@ -198,11 +198,11 @@ public class View {
         actCmds.put("devour", new BaseCommand() {
             @Override
             public void Run(String[] args) {
-                if(NotEnoughArgs(args,3))
+                if(NotEnoughArgs(args,2))
                     return;
 
-                ShroomThread thread = (ShroomThread)GetObject(args[1]);
-                Bug bug = (Bug)GetObject(args[2]);
+                ShroomThread thread = (ShroomThread)GetObject(args[0]);
+                Bug bug = (Bug)GetObject(args[1]);
                 currentShroom.ShroomThreadDevourBug(thread, bug);
             }
         });
@@ -210,11 +210,11 @@ public class View {
         actCmds.put("move", new BaseCommand() {
             @Override
             public void Run(String[] args) {
-                if(NotEnoughArgs(args,3))
+                if(NotEnoughArgs(args,2))
                     return;
 
-                Bug bug = (Bug)GetObject(args[1]);
-                Tecton tecton = (Tecton)GetObject(args[2]);
+                Bug bug = (Bug)GetObject(args[0]);
+                Tecton tecton = (Tecton)GetObject(args[1]);
                 currentBugOwner.Move(bug, tecton);
             }
         });
@@ -222,11 +222,11 @@ public class View {
         actCmds.put("eatspore", new BaseCommand() {
             @Override
             public void Run(String[] args) {
-                if(NotEnoughArgs(args,3))
+                if(NotEnoughArgs(args,2))
                     return;
 
-                Bug bug = (Bug)GetObject(args[1]);
-                Spore spore = (Spore)GetObject(args[2]);
+                Bug bug = (Bug)GetObject(args[0]);
+                Spore spore = (Spore)GetObject(args[1]);
                 currentBugOwner.Eat(bug, spore);
             }
         });
@@ -234,11 +234,11 @@ public class View {
         actCmds.put("cutthread", new BaseCommand() {
             @Override
             public void Run(String[] args) {
-                if(NotEnoughArgs(args,3))
+                if(NotEnoughArgs(args,2))
                     return;
 
-                Bug bug = (Bug)GetObject(args[1]);
-                ShroomThread thread = (ShroomThread)GetObject(args[2]);
+                Bug bug = (Bug)GetObject(args[0]);
+                ShroomThread thread = (ShroomThread)GetObject(args[1]);
                 currentBugOwner.CutThread(bug, thread);
             }
         });
@@ -246,8 +246,6 @@ public class View {
         actCmds.put("updatebugs", new BaseCommand() {
             @Override
             public void Run(String[] args) {
-                if(NotEnoughArgs(args,3))
-                    return;
                 currentBugOwner.UpdateBugOwner();
             }
         });
@@ -255,8 +253,6 @@ public class View {
         actCmds.put("updateshroom", new BaseCommand() {
             @Override
             public void Run(String[] args) {
-                if(NotEnoughArgs(args,3))
-                    return;
                 currentShroom.UpdateShroom();
             }
         });
@@ -264,9 +260,9 @@ public class View {
         actCmds.put("updatetecton", new BaseCommand() {
             @Override
             public void Run(String[] args) {
-                if(NotEnoughArgs(args,3))
+                if(NotEnoughArgs(args,1))
                     return;
-                ITectonController tecton = (ITectonController)GetObject(args[1]);
+                ITectonController tecton = (ITectonController)GetObject(args[0]);
                 tecton.UpdateTecton();
             }
         });
@@ -274,9 +270,9 @@ public class View {
         actCmds.put("split", new BaseCommand() {
             @Override
             public void Run(String[] args) {
-                if(NotEnoughArgs(args,3))
+                if(NotEnoughArgs(args,1))
                     return;
-                ITectonController tecton = (ITectonController)GetObject(args[1]);
+                ITectonController tecton = (ITectonController)GetObject(args[0]);
                 tecton.Split();
             }
         });
@@ -284,8 +280,6 @@ public class View {
         actCmds.put("nextplayer", new BaseCommand() {
             @Override
             public void Run(String[] args) {
-                if(NotEnoughArgs(args,3))
-                    return;
                 System.out.println("unimplemented");
             }
         });
