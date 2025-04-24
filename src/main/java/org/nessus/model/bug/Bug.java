@@ -123,6 +123,17 @@ public class Bug {
         }
     }
 
+    public void Split() {
+        Bug newBug = new Bug();
+
+        for (BugEffect bugEffect : bugEffects) {
+            newBug.AddEffect(bugEffect);
+        }
+
+        newBug.SetTecton(tecton);
+        //TODO: set bug owner -> kelleni fog egy getOwner() a bugnak
+    }
+
     /**
      * Mozgás költségének növelése
      * @param value - A növelés mértéke
