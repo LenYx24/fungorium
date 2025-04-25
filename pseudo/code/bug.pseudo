@@ -1,4 +1,4 @@
-METHOD Move(destination)
+METHOD Move(destination) -> implemented
     neighbours := tecton.IsNeighbourOf(destination)
     hasGrownShroomThreadTo := tecton.HasGrownShroomThreadTo(destination)
 
@@ -14,7 +14,7 @@ METHOD Move(destination)
 
 END METHOD
 
-METHOD Eat(spore)
+METHOD Eat(spore) -> implemented
     isOnSameTecton := tecton == spore.GetTecton()
 
     IF isOnSameTecton THEN
@@ -26,7 +26,7 @@ METHOD Eat(spore)
 
 END METHOD
 
-METHOD CutThread(thread)
+METHOD CutThread(thread) -> implemented
     reachable := thread.IsTectonReachable(tecton)
 
     IF canCut AND reachable THEN
@@ -39,7 +39,7 @@ METHOD CutThread(thread)
 
 END METHOD
 
-METHOD Split()
+METHOD Split() -> implemented
     newBug := NEW Bug
 
     FOR EACH effect IN effects
@@ -50,7 +50,7 @@ METHOD Split()
     bugOwner.AddBug(newBug)
 END METHOD
 
-METHOD UpdateBug()
+METHOD UpdateBug() -> implemented
     LoadDefaultCosts()
 
     FOR EACH bugEffect IN bugEffects DO
@@ -59,7 +59,7 @@ METHOD UpdateBug()
 
 END METHOD
 
-METHOD LoadDefaultCosts()
+METHOD LoadDefaultCosts() -> implemented
     moveCost := 1
     eatCost := 2
     cutcost := 2

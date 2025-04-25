@@ -31,6 +31,8 @@ public class Bug {
     int eatCost; // táplálkozás költsége
     int cutThreadCost; // gombafonal vágás költsége
 
+    BugOwner owner; // rovar tulajdonosa
+
     /**
      * Konstruktor
      * Alapértelmezetten beállítja a pontokat és a költségeket.
@@ -41,9 +43,45 @@ public class Bug {
         ResetPoints();
     }
 
+    /**
+     * Konstruktor
+     * A rovar tektonját beállítja.
+     * @param tecton
+     */
     public Bug(Tecton tecton) {
         this();
         this.tecton = tecton;
+    }
+
+
+    /**
+     * Konstruktor
+     * A rovar tektonját és tulajdonosát beállítja.
+     * @param tecton
+     * @param owner
+     */
+    public Bug(Tecton tecton, BugOwner owner) {
+        this(tecton);
+        this.owner = owner;
+    }
+
+    /**
+     * Rovar tulajdonosának beállítása
+     * @param owner - A rovar tulajdonosa
+     * @see BugOwner
+     * @return void
+     */
+    void SetOwner(BugOwner owner) {
+        this.owner = owner;
+    }
+
+    /**
+     * Rovar tulajdonosának lekérdezése
+     * @see BugOwner
+     * @return BugOwner - A rovar tulajdonosa
+     */
+    public BugOwner GetOwner() {
+        return owner;
     }
 
     /**
@@ -60,9 +98,9 @@ public class Bug {
      * @see ActionPointCatalog
      * @see BugEffect
      * @see View
-     * @return void
+     * @return boolean - true, ha a rovar átkerült a másik tektonra, false, ha nem
      */
-    public void Move(Tecton destination) {
+    public boolean Move(Tecton destination) {
         boolean enough = actCatalog.HasEnoughPoints(moveCost);
         boolean neighbours = tecton.IsNeighbourOf(destination);
         boolean hasGrownShroomThreadTo = tecton.HasGrownShroomThreadTo(destination);
@@ -72,7 +110,9 @@ public class Bug {
             destination.AddBug(this);
             tecton = destination;
             actCatalog.DecreasePoints(moveCost);
+            return true;
         }
+        return false; // nincs elég pont, vagy nem szomszédos a két tekton
     }
 
     /**
@@ -87,16 +127,25 @@ public class Bug {
      * @see ActionPointCatalog
      * @see BugEffect
      * @see View
-     * @return void
+     * @return boolean - true, ha a rovar megeszi a spórát, false, ha nem
      */
-    public void Eat(Spore spore) {
-        spore.GetTecton();
-        boolean enough = actCatalog.HasEnoughPoints(eatCost);
-        // TODO
-        // if (isOnSameTecton && enough) {
-        //     spore.EatenBy(this);
-        //     actCatalog.DecreasePoints(eatCost);
-        // }
+    public boolean Eat(Spore spore) {
+        if (spore != null) {
+            if (this.tecton == spore.GetTecton()) { // isOnSameTecton
+                boolean enough = actCatalog.HasEnoughPoints(eatCost);
+
+                if (enough && canMove) {
+                    collectedNutrients += spore.GetNutrient();
+                    spore.EatenBy(this);
+                    actCatalog.DecreasePoints(eatCost);
+                    return true;
+                }
+                return false; // nincs elég pont, vagy bénító hatás van a rovaron
+            } else {
+                return false; // nem a rovar tektonján van
+            }
+        }
+        return false; // a spóra null
     }
 
     /**
@@ -111,27 +160,34 @@ public class Bug {
      * @see ActionPointCatalog
      * @see BugEffect
      * @see View
-     * @return void
+     * @return boolean - true, ha a rovar levágta a gombafonalat, false, ha nem
      */
-    public void CutThread(ShroomThread thread) {
+    public boolean CutThread(ShroomThread thread) {
         boolean enough = actCatalog.HasEnoughPoints(cutThreadCost);
         boolean reachable = thread.IsTectonReachable(tecton);
 
         if (canCut && enough && reachable) {
             thread.Remove();
             actCatalog.DecreasePoints(cutThreadCost);
+            return true;
         }
+        return false; // nincs elég pont, vagy nem érhető el a gombafonal, vagy bénító hatás van a rovaron
     }
 
+    /**
+     * Tekton széttörése esetén rovar lekezelése
+     * @see Tecton#Split()
+     * @return void
+     */
     public void Split() {
         Bug newBug = new Bug();
 
-        for (BugEffect bugEffect : bugEffects) {
+        for (BugEffect bugEffect : this.bugEffects) {
             newBug.AddEffect(bugEffect);
         }
 
-        newBug.SetTecton(tecton);
-        //TODO: set bug owner -> kelleni fog egy getOwner() a bugnak
+        newBug.SetTecton(this.tecton);
+        newBug.SetOwner(this.owner);
     }
 
     /**
@@ -189,8 +245,8 @@ public class Bug {
      */
     public void LoadDefaultCosts() {
         moveCost = 1;
-        eatCost = 4;
-        cutThreadCost = 3;
+        eatCost = 2;
+        cutThreadCost = 2;
     }
 
     /**

@@ -48,6 +48,10 @@ public class Spore {
         tecton.RemoveSpore(this);
     }
 
+    public int GetNutrient() {
+        return nutrient;
+    }
+
     /**
      * A gomba lekérdezése.
      * @return Shroom - A spóra gombája
