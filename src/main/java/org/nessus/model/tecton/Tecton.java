@@ -1,11 +1,12 @@
 package org.nessus.model.tecton;
 
-import org.nessus.View;
+import org.nessus.controller.ITectonController;
 import org.nessus.model.bug.Bug;
 import org.nessus.model.shroom.Shroom;
 import org.nessus.model.shroom.ShroomBody;
 import org.nessus.model.shroom.ShroomThread;
 import org.nessus.model.shroom.Spore;
+import org.nessus.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ import java.util.List;
  * @see org.nessus.model.shroom.ShroomBody
  * @see org.nessus.model.shroom.Shroom
  */
-public class Tecton {
+public class Tecton implements ITectonController {
     protected List<Tecton> neighbours = new ArrayList<>(); // A szomszédos tektonok listája
     protected List<Spore> spores = new ArrayList<>(); // A tektonon található spórák listája
     protected List<ShroomThread> shroomThreads = new ArrayList<>(); // A tektonon található gombafonalak listája
@@ -35,7 +36,7 @@ public class Tecton {
 
         while(bugIter.hasNext()) {
             Bug bug = bugIter.next();
-            String name = View.GetName(bug);
+            String name = View.GetObjectStore().GetName(bug);
 
             // TODO
             // if (transferBug)
@@ -50,7 +51,7 @@ public class Tecton {
 
         while(sporeIter.hasNext()) {
             Spore spore = sporeIter.next();
-            String name = View.GetName(spore);
+            String name = View.GetObjectStore().GetName(spore);
 
             // TODO
             // if (transferSpore)
@@ -115,7 +116,7 @@ public class Tecton {
     public boolean GrowShroomBody(ShroomBody body) {
         // TODO
         // if (!canGrowShroomBody) {
-        //     View.LogReturnCall(this, "GrowShroomBody", false);
+        //     View.GetInstance().LogReturnCall(this, "GrowShroomBody", false);
         //     return false;
         // }
 
@@ -191,7 +192,7 @@ public class Tecton {
      */
     public Tecton Copy() {
         Tecton copyTecton = new Tecton();
-        View.AddObject(copyTecton, "copyTecton");
+        View.GetObjectStore().AddObject( "copyTecton", copyTecton);
         SpreadEntities(copyTecton);
         return copyTecton;
     }
@@ -229,7 +230,7 @@ public class Tecton {
      * @return Boolean - Szomszédos-e a két tekton
      */
     public boolean IsNeighbourOf(Tecton tecton) {
-        // boolean isNeighbourOf = View.YesNoQuestion("Szomszédos a két tekton?");
+        // boolean isNeighbourOf = View.GetInstance().YesNoQuestion("Szomszédos a két tekton?");
         // TODO
         return false;
     }
@@ -240,6 +241,7 @@ public class Tecton {
      * @throws UnsupportedOperationException
      * @return void
      */
+    @Override
     public void UpdateTecton() {
         throw new UnsupportedOperationException();
     }

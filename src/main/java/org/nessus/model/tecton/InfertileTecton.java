@@ -1,7 +1,7 @@
 package org.nessus.model.tecton;
 
-import org.nessus.View;
 import org.nessus.model.shroom.ShroomBody;
+import org.nessus.view.View;
 
 /**
  * Ezen a tektontípuson nem lehet gombatestet növeszteni.
@@ -15,7 +15,7 @@ public class InfertileTecton extends Tecton {
     @Override
     public Tecton Copy() {
         Tecton copyTecton = new InfertileTecton();
-        View.AddObject(copyTecton, "copyTecton");
+        View.GetObjectStore().AddObject( "copyTecton", copyTecton);
         SpreadEntities(copyTecton);
         return copyTecton;
     }
