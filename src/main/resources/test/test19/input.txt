@@ -1,0 +1,21 @@
+arrange
+create Tecton tecton
+
+create Shroom shroom
+
+create ShroomBody shroomBody
+
+create Spore spore1 shroom
+create Spore spore2 shroom
+
+place shroomBody tecton
+place spore1 tecton
+place spore2 tecton
+
+currentplayer shroom
+
+act
+upgradeshroombody shroomBody
+
+assert
+save output.txt

@@ -1,0 +1,20 @@
+arrange
+create Tecton tecton1
+create Tecton tecton2
+neighbour tecton1 tecton2
+
+create Bug bug
+setval bug canMove false
+create Shroom shroom
+create ShroomThread thread
+setval thread evolution 3
+
+placethread thread tecton1 tecton2
+
+currentplayer shroom
+
+act
+devour thread bug
+
+arrange
+save output.txt

@@ -1,0 +1,16 @@
+arrange
+create Tecton tecton
+
+create Shroom shroom
+
+create ShroomBody shroomBody
+
+place shroomBody tecton
+
+currentplayer shroom
+
+act
+upgradeshroombody shroomBody
+
+assert
+save output.txt

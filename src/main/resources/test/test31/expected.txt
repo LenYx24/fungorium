@@ -1,0 +1,40 @@
+tecton1:
+    neighbours:{
+        tecton2
+    }
+    body: null
+    threads:{ }
+    bugs:{ }
+    spores:{ }
+tecton2:
+    neighbours:{
+        tecton1
+    }
+    body: null
+    threads:{ }
+    bugs:{ }
+    spores:{ }
+shroom:
+    spores:{ }
+    shroomBodies:{ }
+    threads:{ }
+    actCatalog: shroom_actCat
+    grownShroomBodies: 0
+    shroomThreadCost: 2
+    shroomBodyCost: 3
+    shroomUpgradeCost: 3
+    sporeCost: 2
+    devourCost: 2
+shroom_actCat:
+    defaultActionPoints: 5
+    currentActionPoints: 5
+thread:
+    shroom: shroom
+    tecton1: tecton1
+    tecton2: tecton2
+    evolution: 3
+    connectedToShroomBody: false
+    isolationCounter: 3
+    cut: false
+    cutDamageTimer: 3
+    sustained: false
