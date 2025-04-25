@@ -187,7 +187,7 @@ public class Bug {
 
         newBug.tecton = tecton;
         newBug.owner = owner;
-        
+
         owner.AddBug(newBug);
     }
 
@@ -247,6 +247,10 @@ public class Bug {
      */
     public void UpdateBug() {
         LoadDefaultCosts();
+        
+        canCut = true;
+        canMove = true;
+
         bugEffects.forEach(effect -> effect.ApplyOn(this));
     }
 
@@ -302,11 +306,9 @@ public class Bug {
      * @return void
      */
     public void Remove() {
-        if (tecton != null) {
+        if (tecton != null)
             tecton.RemoveBug(this);
-        }
-        if (owner != null) {
-            // owner.RemoveBug(this); //TODO: RemoveBug implementálása a BugOwner osztályban
-        }
+        if (owner != null)
+            owner.RemoveBug(this);
     }
 }

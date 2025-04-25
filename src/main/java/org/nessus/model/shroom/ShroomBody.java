@@ -104,9 +104,8 @@ public class ShroomBody {
      * @return Spore - A kialakított spóra
      */
     public Spore FormSpore(Tecton tecton) {
-        if (sporeMaterials <= 2 || !InRange(tecton)) {
+        if (sporeMaterials <= 2 || !InRange(tecton))
             return null;
-        }
 
         sporeMaterials -= 2;
         remainingThrows--;
@@ -162,14 +161,6 @@ public class ShroomBody {
      * @return void
      */
     public void ProduceSporeMaterial() {
-        sporeMaterials++;
-    }
-
-    /**
-     * Spóra termelése
-     * @return void
-     */
-    public void ProduceSpore() {
         sporeMaterials++;
     }
 

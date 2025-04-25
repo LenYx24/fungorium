@@ -55,6 +55,7 @@ public class Spore {
         // tecton.RemoveSpore(this)
         // shroom.RemoveSpore(this)
 
+        // TODO use IRandomProvider
         int effectId = (int) (Math.random() * 5) + 1;
         BugEffect effect = null;
 

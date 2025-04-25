@@ -58,11 +58,14 @@ public class Shroom {
 
         boolean connectedToBody = false;
 
-        if (tecton1.GetShroomBody().GetShroom() == this || tecton2.GetShroomBody().GetShroom() == this) {
+        Shroom shroom1 = tecton1.GetShroomBody().GetShroom();
+        Shroom shroom2 = tecton2.GetShroomBody().GetShroom();
+
+        if (shroom1 == this || shroom2 == this)
             connectedToBody = true;
-        }
 
         List<ShroomThread> funcThreads = new ArrayList<>();
+
         funcThreads.addAll(tecton1.GetThreads());
         funcThreads.addAll(tecton2.GetThreads());
 
@@ -85,8 +88,7 @@ public class Shroom {
             if (t1success && t2success) {
                 threads.add(newThread);
                 actCatalog.DecreasePoints(shroomThreadCost);
-            }
-            if (!t1success || !t2success) {
+            } else {
                 newThread.Remove();
             }
         }
@@ -126,21 +128,22 @@ public class Shroom {
      * @return void
      */
     public void UpgradeShroomBody(ShroomBody body) {
-        boolean enough = actCatalog.HasEnoughPoints(shroomUpgradeCost);
-        boolean enoughSpore = body.GetTecton().GetSporeCount() > 2;
+        Tecton bodyTecton = body.GetTecton();
+        Shroom bodyShroom = body.GetShroom();
 
+        List<Spore> usableSpores = bodyTecton.GetSporesOfShroom(bodyShroom);
+        
+        boolean enough = actCatalog.HasEnoughPoints(shroomUpgradeCost);
+        boolean enoughSpore = usableSpores.size() > 2;
+        
         if (enough && enoughSpore) {
             body.Upgrade();
-            Tecton t = body.GetTecton();
-            actCatalog.DecreasePoints(shroomUpgradeCost);
             
-            Spore consumedSpore = body.GetTecton().GetFirstSpore();
+            Spore consumedSpore = usableSpores.getFirst();
 
-            if (consumedSpore != null) {
-                consumedSpore.GetShroom().RemoveSpore(consumedSpore);
-                t.RemoveSpore(consumedSpore);
-                body.GetTecton().RemoveSpore(consumedSpore);
-            }
+            bodyShroom.RemoveSpore(consumedSpore);
+            bodyTecton.RemoveSpore(consumedSpore);
+            actCatalog.DecreasePoints(shroomUpgradeCost);
         }
     }
 
@@ -173,10 +176,8 @@ public class Shroom {
     public void ShroomThreadDevourBug(ShroomThread thread, Bug bug) {
         if (actCatalog.HasEnoughPoints(devourCost)) {
             boolean success = thread.DevourCrippledBug(bug);
-
-            if (success) {
+            if (success)
                 actCatalog.DecreasePoints(devourCost);
-            }
         }
     }
 
@@ -215,18 +216,16 @@ public class Shroom {
         LoadDefaultCosts();
         actCatalog.ResetPoints();
 
-        for (ShroomThread thread : threads) {
+        for (ShroomThread thread : threads)
             thread.SetConnectedToShroomBody(false);
-        }
 
         for (ShroomBody body : shroomBodies) {
             body.ValidateThreadConnections();
             body.ProduceSporeMaterial();
         }
 
-        for (ShroomThread thread : threads) {
+        for (ShroomThread thread : threads)
             thread.ValidateLife();
-        }
     }
 
     /**

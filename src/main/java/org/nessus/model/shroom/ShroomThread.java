@@ -25,15 +25,6 @@ public class ShroomThread {
     boolean sustained = false; // Megadja, hogy a fonált épp életben tartja-e egy ThreadSustainerTecton. Ilyenkor nem szívódik fel.
 
     /**
-     * A fonal fejlődési szintjét növeli a paraméterben kapott értékkel.
-     * @param n - A fejlődési szint növelésére szolgáló érték
-     * @see ShroomThread#evolution
-     */
-    private void Evolve(int n) {
-        evolution = Math.min(evolution+n, 3);
-    }
-
-    /**
      * Az osztály konstruktora.
      * @param tecton1
      * @param tecton2
@@ -68,25 +59,21 @@ public class ShroomThread {
 
         int growthAmount = 0;
 
-        if(growthBoost1 || growthBoost2) {
+        if (growthBoost1 || growthBoost2)
             growthAmount += 2;
-        } else {
+        else
             growthAmount += 1;
-        }
 
         evolution = Math.min(evolution + growthAmount, 3);
 
-        if(cut) {
+        if (cut)
             cutDamageTimer -= 1;
-        }
 
-        if(!connectedToShroomBody && !sustained) {
+        if (!connectedToShroomBody && !sustained)
             isolationCounter -= 1;
-        }
 
-        if(isolationCounter >= 3 || cutDamageTimer <= 0) {
+        if (isolationCounter >= 3 || cutDamageTimer <= 0)
             Remove();
-        }
     }
 
     /**
@@ -101,8 +88,8 @@ public class ShroomThread {
     public boolean DevourCrippledBug(Bug bug) {
         boolean canMove = bug.GetCanMove();
         Tecton currentTecton = bug.GetTecton();
-
-        if(!canMove && (currentTecton.equals(tecton1) || currentTecton.equals(tecton2))) {
+    
+        if(!canMove && (currentTecton == tecton1 || currentTecton == tecton2)) {
             shroom.AddShroomBodyCost(-3);
             bug.Remove();
 
@@ -179,5 +166,9 @@ public class ShroomThread {
      */
     public void SetConnectedToShroomBody(boolean connectedToShroomBody) {
         this.connectedToShroomBody = connectedToShroomBody;
+    }
+
+    public void SetSustained() {
+        sustained = true;
     }
 }
