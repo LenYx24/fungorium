@@ -131,4 +131,21 @@ public class ShroomThread {
     public void SetTecton2(Tecton tecton) {
         tecton2 = tecton;
     }
+
+    /**
+     * Visszaadja, hogy a fonal kapcsolódik-e a gomba testéhez.
+     * @return boolean - A válasz
+     */
+    public boolean GetConnectedToShroomBody() {
+        return connectedToShroomBody;
+    }
+
+    /**
+     * Beállítja, hogy a fonal kapcsolódik-e a gomba testéhez.
+     * @param connectedToShroomBody - Igaz vagy hamis
+     * @return void
+     */
+    public void SetConnectedToShroomBody(boolean connectedToShroomBody) {
+        this.connectedToShroomBody = connectedToShroomBody;
+    }
 }

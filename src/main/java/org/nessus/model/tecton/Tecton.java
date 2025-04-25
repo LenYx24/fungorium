@@ -148,6 +148,15 @@ public class Tecton {
     }
 
     /**
+     * Visszaadja a tektonon található gombatestet.
+     * @see ShroomBody
+     * @return ShroomBody - A tektonon található gombatest
+     */
+    public ShroomBody GetShroomBody() {
+        return shroomBody;
+    }
+
+    /**
      * Spóra dobása a tektonon.
      * @param spore - A dobott spóra
      * @return void
@@ -164,6 +173,22 @@ public class Tecton {
     public void RemoveSpore(Spore spore) {
         spores.remove(spore);
         spore.GetShroom().RemoveSpore(spore);
+    }
+
+    /**
+     * Visszaadja a tektonon található spórák számát.
+     * @return int - A tektonon található spórák száma
+     */
+    public int GetSporeCount() {
+        return spores.size();
+    }
+
+    /**
+     * Visszaadja a tektonon található rovarok számát.
+     * @return int - A tektonon található rovarok száma
+     */
+    public Spore GetFirstSpore() {
+        return spores.isEmpty() ? null : spores.get(0);
     }
 
     /**

@@ -1,4 +1,4 @@
-METHOD UpdateTecton()
+METHOD UpdateTecton() -> implemented
     FOR EACH (thread, decayTimer) IN decayTimers DO
         IF decayTimer <= 0 THEN
             thread.Remove()
