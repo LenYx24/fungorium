@@ -1,5 +1,11 @@
 package org.nessus.controller;
 
+import java.io.BufferedReader;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -141,10 +147,22 @@ public class Controller implements IRandomProvider {
         arrangeCmds.put("run", new BaseCommand() {
             @Override
             public void Run(String[] args) {
-                if(NotEnoughArgs(args,1))return;
-                // todo
+                if(NotEnoughArgs(args,1))
+                    return;
+                
+                var path = Paths.get("src", "main", "resources", "test", args[0], "input.txt");
+                try (BufferedReader reader = Files.newBufferedReader(path)) {
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        System.err.println(line);
+                        ProcessCommand(line);
+                    }
+                } catch (IOException e) {
+                    System.out.println("Hiba a fájl olvasása közben: " + e.getMessage());
+                }
             }
         });
+
         arrangeCmds.put("currentplayer", new BaseCommand() {
             @Override
             public void Run(String[] args) {
@@ -311,15 +329,28 @@ public class Controller implements IRandomProvider {
         });
 
         // ASSERT
-        assertCmds.put("show",new ShowCmd());
+        assertCmds.put("show",new ShowCmd(System.out));
         assertCmds.put("showall", new BaseCommand() {
             @Override
             public void Run(String[] args) {
                 BaseCommand show = assertCmds.get("show");
-                view.GetObjects().forEach(name -> show.Run(new String[] {name}));
+                view.GetObjects().forEach(name -> show.Run(new String[] { name }));
             }
         });
-        assertCmds.put("save",new ShowCmd());
+
+        assertCmds.put("save",new BaseCommand() {
+            @Override
+            public void Run(String[] args) {
+                var p = Paths.get("target", args[0]);
+
+                try (FileOutputStream fstream = new FileOutputStream(p.toFile())) {
+                    var save = new ShowCmd(fstream);
+                    view.GetObjects().forEach(name -> save.Run(new String[] { name }));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     public String GetPrompt() {
@@ -331,7 +362,10 @@ public class Controller implements IRandomProvider {
     }
 
     public void ProcessCommand(String cmd) {
-        String[] cmdParts = cmd.split(" ");
+        if (cmd.isEmpty())
+            return;
+
+        String[] cmdParts = cmd.trim().split(" ");
         String cmdName = cmdParts[0];
         String[] params = Arrays.copyOfRange(cmdParts, 1, cmdParts.length);
 

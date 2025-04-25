@@ -23,9 +23,7 @@ public class View implements IGameObjectStore {
      * A {@code View} osztály konstruktora.
      * A konstruktor privát, mert nem szükséges példányosítani az osztályt.
      */
-    private View() {
-        
-    }
+    private View() {}
 
     static View GetInstance() {
         if (instance == null)
