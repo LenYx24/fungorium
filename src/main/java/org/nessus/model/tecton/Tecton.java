@@ -237,6 +237,15 @@ public class Tecton {
     }
 
     /**
+     * Visszaadja a tektonon található gombafonalakat.
+     * @see ShroomThread
+     * @return List<ShroomThread> - A tektonon található gombafonalak listája
+     */
+    public List<ShroomThread> GetShroomThreads() {
+        return shroomThreads;
+    }
+
+    /**
      * Van-e ezen a tektonon ehhez a gombafajhoz tartozó spóra.
      * @param shroom
      * @return Boolean - Van-e a tektonon ehhez a gombafajhoz tartozó spóra
@@ -276,6 +285,14 @@ public class Tecton {
      */
     public void SetNeighbour(Tecton neighbour) {
         neighbours.add(neighbour);
+    }
+
+    /**
+     * Szomszédos tektonok listájának visszaadása.
+     * @return List<Tecton> - A szomszédos tektonok listája
+     */
+    public List<Tecton> GetNeighbours() {
+        return neighbours;
     }
 
     /**

@@ -1,4 +1,4 @@
-METHOD FormSpore(tecton)
+METHOD FormSpore(tecton) -> implemented
     IF sporeMaterials <= 2 OR NOT InRange(tecton) THEN
         RETURN NULL
     END IF
@@ -17,7 +17,7 @@ METHOD FormSpore(tecton)
     RETURN spore
 END METHOD
 
-METHOD InRange(targetTecton)
+METHOD InRange(targetTecton) -> implemented
     startTecton := this.tecton
     maxDistance := this.level
 
@@ -50,7 +50,7 @@ METHOD InRange(targetTecton)
     RETURN FALSE
 END METHOD
 
-METHOD ValidateThreadConnections()
+METHOD ValidateThreadConnections() -> implemented
     visited = SET []
     queue = QUEUE []
 

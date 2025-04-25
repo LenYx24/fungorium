@@ -220,8 +220,8 @@ public class Shroom {
         }
 
         for (ShroomBody body : shroomBodies) {
-            body.ValidateThreadConnections(); //TODO: ValidateThreadConnections implementálása ShroomBody osztályba
-            body.ProduceSporeMaterial(); //TODO: ProduceSporeMaterial implementálása ShroomBody osztályba
+            body.ValidateThreadConnections();
+            body.ProduceSporeMaterial();
         }
 
         for (ShroomThread thread : threads) {
