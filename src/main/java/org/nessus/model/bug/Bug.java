@@ -36,7 +36,6 @@ public class Bug {
      * Alapértelmezetten beállítja a pontokat és a költségeket.
      */
     public Bug() {
-        //View.AddObject("bug", this);
         View.GetObjectStore().AddObject("bugCat",actCatalog);
         ResetPoints();
     }

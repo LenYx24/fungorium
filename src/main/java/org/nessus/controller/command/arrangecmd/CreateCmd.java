@@ -63,11 +63,16 @@ public class CreateCmd extends BaseCommand {
             // Get matching constructor
             Constructor<?> constructor = clazz.getConstructor(paramTypes);
 
+            // Beállítjuk hogy a viewhoz olyan objektumok adódnak most hozzá amelyek egy creation alatt álló objektum
+            // által lesznek hozzáadva, erre a sorrend megtartása miatt van szükség
+
+            var view = View.GetObjectStore();
+            view.SetPending();
+
             // Instantiate the object
             Object instance = constructor.newInstance(inferredArgs);
 
-            var view = View.GetObjectStore();
-            view.AddObject(objectName, instance);
+            view.EndPending(objectName, instance);
 
         } catch (Exception e) {
             System.out.println("Rossz parancsformátum: " + e.getMessage());

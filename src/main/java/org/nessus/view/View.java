@@ -23,6 +23,9 @@ public class View implements IGameObjectStore {
     private boolean running = true; // A program futását jelző változó
     private Map<String,Object> objects = new LinkedHashMap<>();
 
+    private boolean pending = false;
+    private Map<String,Object> pendingObjects = new LinkedHashMap<>();
+
     private IBugController currentBugOwner = null;
     private IShroomController currentShroom = null;
     private IRandomProvider rand = new Controller();
@@ -378,7 +381,12 @@ public class View implements IGameObjectStore {
      * @param object
      */
     public void AddObject(String name, Object object) {
-        objects.put(name,object);
+        if(pending){
+            pendingObjects.put(name, object);
+        }
+        else{
+            objects.put(name,object);
+        }
     }
 
     /**
@@ -387,11 +395,30 @@ public class View implements IGameObjectStore {
      * @return String - Az objektum neve
      */
     public String GetName(Object object) {
-        return "null";
+        for (Map.Entry<String, Object> entry : objects.entrySet()) {
+            if (entry.getValue() == object) {
+                return entry.getKey();
+            }
+        }
+        return null;
     }
 
     public Object GetObject(String name) {
         return objects.get(name);
+    }
+
+    @Override
+    public void SetPending() {
+        pending = true;
+    }
+
+    @Override
+    public void EndPending(String name, Object object) {
+        // Belerakjuk a legelső objektumot amely létre lett hozva a lista elé
+        objects.put(name, object);
+        objects.putAll(pendingObjects);
+        pending = false;
+        pendingObjects.clear();
     }
 
     public static void main(String[] args) {
