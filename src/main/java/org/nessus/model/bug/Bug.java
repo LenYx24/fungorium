@@ -187,6 +187,8 @@ public class Bug {
 
         newBug.tecton = tecton;
         newBug.owner = owner;
+        
+        owner.AddBug(newBug);
     }
 
     /**

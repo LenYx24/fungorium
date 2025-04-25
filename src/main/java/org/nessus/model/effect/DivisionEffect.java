@@ -4,6 +4,7 @@ import org.nessus.model.bug.Bug;
 
 public class DivisionEffect extends BugEffect {
     public void ApplyOn(Bug bug) {
-        //TODO
+        bug.ClearEffect(this);
+        bug.Split();
     }
 }
