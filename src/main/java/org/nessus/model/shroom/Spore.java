@@ -1,7 +1,7 @@
 package org.nessus.model.shroom;
 
+import org.nessus.controller.IRandomProvider;
 import org.nessus.model.bug.Bug;
-import org.nessus.model.effect.*;
 import org.nessus.model.tecton.Tecton;
 import org.nessus.view.View;
 
@@ -40,48 +40,10 @@ public class Spore {
      * @return void
      */
     public void EatenBy(Bug bug) {
-        // effectId = RANDOM OF [1, 2, 3, 4, 5]
-
-        // CASE effectId OF
-        //     1: effect := CoffeEffect
-        //     2: effect := SlowEffect
-        //     3: effect := JawLockEffect
-        //     4: effect := CripplingEffect
-        //     5: effect := DivisionEffect
-        // END CASE
-
-        // bug.AddNutrients(nutrients)
-        // bug.AddEffect(effect)
-
-        // tecton.RemoveSpore(this)
-        // shroom.RemoveSpore(this)
-
-        // TODO use IRandomProvider
-        int effectId = (int) (Math.random() * 5) + 1;
-        BugEffect effect = null;
-
-        switch (effectId) {
-            case 1:
-                effect = new CoffeeEffect();
-                break;
-            case 2:
-                effect = new SlowEffect();
-                break;
-            case 3:
-                effect = new JawLockEffect();
-                break;
-            case 4:
-                effect = new CripplingEffect();
-                break;
-            case 5:
-                effect = new DivisionEffect();
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid effect ID when creating a random effect at Spore.EatenBy(Bug bug): " + effectId);
-        }
+        IRandomProvider rand = View.GetObjectStore().GetRandomProvider();
 
         bug.AddNutrients(nutrient);
-        bug.AddEffect(effect);
+        bug.AddEffect(rand.RandomBugEffect());
 
         tecton.RemoveSpore(this);
         shroom.RemoveSpore(this);

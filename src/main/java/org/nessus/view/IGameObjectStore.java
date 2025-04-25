@@ -1,5 +1,7 @@
 package org.nessus.view;
 
+import org.nessus.controller.IRandomProvider;
+
 public interface IGameObjectStore {
     public void AddObject(String name, Object object);
 
@@ -21,4 +23,6 @@ public interface IGameObjectStore {
     public void SetPending(String name);
 
     public void EndPending(Object object);
+
+    public IRandomProvider GetRandomProvider();
 }

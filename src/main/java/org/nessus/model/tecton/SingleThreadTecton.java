@@ -19,7 +19,6 @@ public class SingleThreadTecton extends Tecton {
     @Override
     public Tecton Copy() {
         Tecton copyTecton = new SingleThreadTecton();
-        View.GetObjectStore().AddObject( "copyTecton", copyTecton);
         return copyTecton;
     }
 
@@ -32,7 +31,6 @@ public class SingleThreadTecton extends Tecton {
     public boolean GrowShroomThread(ShroomThread thread) {
         if (shroomThreads.isEmpty()) {
             shroomThreads.add(thread);
-            View.GetObjectStore().AddObject("shroomThread", thread);
             return true;
         }
         

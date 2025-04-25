@@ -1,5 +1,6 @@
 package org.nessus.model.tecton;
 
+import org.nessus.controller.IRandomProvider;
 import org.nessus.controller.ITectonController;
 import org.nessus.model.bug.Bug;
 import org.nessus.model.shroom.Shroom;
@@ -45,10 +46,10 @@ public class Tecton implements ITectonController {
         neighbours.add(copyTecton);
 
         // TODO Use random provider
-        Random rand = new Random();
+        IRandomProvider randProvider = View.GetObjectStore().GetRandomProvider();
 
         for (Bug bug : bugs) {
-            boolean transferBug = rand.nextBoolean();
+            boolean transferBug = randProvider.RandomBoolean();
             if (transferBug) {
                 copyTecton.AddBug(bug);
                 bug.SetTecton(copyTecton);
@@ -57,7 +58,7 @@ public class Tecton implements ITectonController {
         }
 
         for (Spore spore : spores) {
-            boolean transferSpore = rand.nextBoolean();
+            boolean transferSpore = randProvider.RandomBoolean();
             if (transferSpore) {
                 copyTecton.ThrowSpore(spore);
                 spore.SetTecton(copyTecton);
@@ -66,7 +67,7 @@ public class Tecton implements ITectonController {
         }
 
         if (this.shroomBody != null) {
-            boolean transferShroomBody = rand.nextBoolean();
+            boolean transferShroomBody = randProvider.RandomBoolean();
             if(transferShroomBody) {
                 copyTecton.SetShroomBody(shroomBody);
                 shroomBody.SetTecton(copyTecton);
@@ -82,9 +83,9 @@ public class Tecton implements ITectonController {
      * @see org.nessus.model.shroom.Shroom
      */
     public void Split() {
-        // TODO hozzáadás az objektumtárhoz
         Tecton copyTecton = Copy();
         SpreadEntities(copyTecton);
+        View.GetObjectStore().AddObject("copyTecton", copyTecton);
 
         //Konkurens Módosítás Kivétel elkerülése érdekében másolat
         List.copyOf(shroomThreads).forEach(ShroomThread::Remove);

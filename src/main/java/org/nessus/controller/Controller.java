@@ -1,17 +1,8 @@
 package org.nessus.controller;
 
-import java.io.BufferedReader;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.io.*;
+import java.nio.file.*;
+import java.util.*;
 
 import org.nessus.controller.command.*;
 import org.nessus.controller.command.arrangecmd.*;
@@ -400,13 +391,13 @@ public class Controller implements IRandomProvider {
     }
 
     @Override
-    public int GetNumber(int min, int max) {
+    public int RandomNumber(int min, int max) {
         return rand.nextInt(min, max + 1);
     }
 
     @Override
-    public BugEffect GetBugEffect() {
-        return switch (GetNumber(1, 5)) {
+    public BugEffect RandomBugEffect() {
+        return switch (RandomNumber(1, 5)) {
             case 1 -> new CoffeeEffect();
             case 2 -> new SlowEffect();
             case 3 -> new JawLockEffect();
@@ -416,7 +407,13 @@ public class Controller implements IRandomProvider {
     }
 
     @Override
+    public boolean RandomBoolean() {
+        return rand.nextBoolean();
+    }
+
+    @Override
     public void SetSeed(long seed) {
         rand.setSeed(seed);
-    }
+}
+
 }
