@@ -328,7 +328,7 @@ public class Bug {
             tecton.RemoveBug(this);
         }
         if (owner != null) {
-            owner.RemoveBug(this); //TODO: RemoveBug implementálása a BugOwner osztályban
+            // owner.RemoveBug(this); //TODO: RemoveBug implementálása a BugOwner osztályban
         }
     }
 }

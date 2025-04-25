@@ -9,6 +9,7 @@ import org.nessus.model.shroom.Spore;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * A tektonokat reprezentáló osztály.
@@ -27,48 +28,46 @@ public class Tecton {
     protected List<Bug> bugs = new ArrayList<>(); // A tektonon található rovarok listája
     protected ShroomBody shroomBody = null; // A tektonon található gombatest
 
+    /**
+     * Törés közben a tekton szomszédos tektonjaira átkerülnek a rovarok és spórák.
+     * @see Tecton#Split()
+     * @param copyTecton
+     */
     protected void SpreadEntities(Tecton copyTecton) {
-        neighbours.forEach(neighbour -> copyTecton.neighbours.add(neighbour));
-        neighbours.add(copyTecton);
-
-        var bugIter = bugs.iterator();
-
-        while(bugIter.hasNext()) {
-            Bug bug = bugIter.next();
-            String name = View.GetName(bug);
-
-            // TODO
-            // if (transferBug)
-            // {
-            //     copyTecton.AddBug(bug);
-            //     bug.SetTecton(copyTecton);
-            //     bugIter.remove();
-            // }
+        for (Tecton neighbour : neighbours) {
+            copyTecton.neighbours.add(neighbour);
+            neighbour.neighbours.add(copyTecton);
         }
 
-        var sporeIter = spores.iterator();
+        neighbours.add(copyTecton);
 
-        while(sporeIter.hasNext()) {
-            Spore spore = sporeIter.next();
-            String name = View.GetName(spore);
+        Random rand = new Random();
 
-            // TODO
-            // if (transferSpore)
-            // {
-            //     copyTecton.ThrowSpore(spore);
-            //     spore.SetTecton(copyTecton);
-            //     sporeIter.remove();
-            // }
+        for (Bug bug : bugs) {
+            boolean transferBug = rand.nextBoolean();
+            if(transferBug) {
+                copyTecton.AddBug(bug);
+                bug.SetTecton(copyTecton);
+                bugs.remove(bug);
+            }
+        }
+
+        for (Spore spore : spores) {
+            boolean transferSpore = rand.nextBoolean();
+            if(transferSpore) {
+                copyTecton.ThrowSpore(spore);
+                spore.SetTecton(copyTecton);
+                spores.remove(spore);
+            }
         }
 
         if (this.shroomBody != null) {
-            // TODO
-            // if (transferBody)
-            // {
-            //     copyTecton.SetShroomBody(shroomBody);
-            //     shroomBody.SetTecton(copyTecton);
-            //     this.ClearShroomBody();
-            // }
+            boolean transferShroomBody = rand.nextBoolean();
+            if(transferShroomBody) {
+                copyTecton.SetShroomBody(shroomBody);
+                shroomBody.SetTecton(copyTecton);
+                this.ClearShroomBody();
+            }
         }
     }
 
@@ -113,21 +112,23 @@ public class Tecton {
      * @return Boolean - Sikeres volt-e a növesztés
      */
     public boolean GrowShroomBody(ShroomBody body) {
-        // TODO
-        // if (!canGrowShroomBody) {
-        //     View.LogReturnCall(this, "GrowShroomBody", false);
-        //     return false;
-        // }
+        if (shroomBody == null) {
+            return false;
+        }
 
-        // A szekvencia diagramon spore2 van írva, de igazából mindegy,
-        // a lényeg, hogy egy spórát elhasznál a növesztés
-        var consumedSpore = spores.stream()
-                                .filter(spore -> spore.GetShroom() == body.GetShroom())
-                                .findFirst();
-                                
-        consumedSpore.ifPresent(this::RemoveSpore);
+        Spore consumedSpore = null;
+        for (Spore spore : spores) {
+            if (spore.GetShroom() == body.GetShroom()) {
+                consumedSpore = spore;
+                break;
+            }
+        }
 
-        shroomBody = body;
+        if (consumedSpore != null) {
+            RemoveSpore(consumedSpore);
+        }
+
+        this.shroomBody = body;
         return true;
     }
 
@@ -227,13 +228,13 @@ public class Tecton {
      * @return Boolean - Szomszédos-e a két tekton
      */
     public boolean HasGrownShroomThreadTo(Tecton tecton) {
-        boolean hasGrownShroomThread = false;
         for (ShroomThread shroomThread : shroomThreads) {
             if (shroomThread.IsTectonReachable(tecton)) {
-                hasGrownShroomThread = true;
+                return true;
             }
         }
-        return hasGrownShroomThread;
+
+        return false;
     }
 
     /**
