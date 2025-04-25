@@ -1,4 +1,4 @@
-METHOD GrowShroomThread(thread)
+METHOD GrowShroomThread(thread) -> implemented
     IF shroomThreads EMPTY THEN
         shroomThreads.Add(thread)
         RETURN TRUE

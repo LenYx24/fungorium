@@ -1,4 +1,4 @@
-METHOD SpreadEntities(copyTecton)
+METHOD SpreadEntities(copyTecton) -> implemented
     FOR EACH neighbour IN neighbours DO
         copyTecton.neighbours.Add(neighbour)
         neighbour.neighbours.Add(copyTecton)
@@ -35,7 +35,7 @@ METHOD SpreadEntities(copyTecton)
     END IF
 END METHOD
 
-METHOD GrowShroomBody(body)
+METHOD GrowShroomBody(body) -> implemented
     IF shroomBody IS NULL THEN
         RETURN FALSE
     END IF
@@ -50,7 +50,7 @@ METHOD GrowShroomBody(body)
     RETURN TRUE
 END METHOD
 
-METHOD HasGrownShroomThreadTo(tecton)
+METHOD HasGrownShroomThreadTo(tecton) -> implemented
     FOR EACH thread IN shroomThreads DO
         IF thread.IsTectonReachable(tecton) THEN
             RETURN TRUE

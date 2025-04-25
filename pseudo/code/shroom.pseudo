@@ -1,4 +1,4 @@
-METHOD PlaceShroomThread(tecton1, tecton2)
+METHOD PlaceShroomThread(tecton1, tecton2) -> implemented
     enough := actCatalog.HasEnoughPoints(shroomThreadCost)
     neighbours := tecton1.IsNeighbourOf(tecton2)
 
@@ -36,7 +36,7 @@ METHOD PlaceShroomThread(tecton1, tecton2)
 
 END METHOD
 
-METHOD PlaceShroomBody(tecton)
+METHOD PlaceShroomBody(tecton) -> implemented
     IF actCatalog.HasEnoughPoints(shroomBodyCost) THEN
         newBody := NEW ShroomBody(this, tecton)
         success := tecton.GrowShroomBody(newBody)
@@ -50,7 +50,7 @@ METHOD PlaceShroomBody(tecton)
 
 END METHOD
 
-METHOD UpgradeShroomBody(body)
+METHOD UpgradeShroomBody(body) -> implemented
     enough := actCatalog.HasEnoughPoints(shroomUpgradeCost)
     hasSpore := body.GetTecton().GetSpores() > 2;
 
@@ -68,7 +68,7 @@ METHOD UpgradeShroomBody(body)
 
 END METHOD
 
-METHOD ThrowSpore(body, tecton)
+METHOD ThrowSpore(body, tecton) -> implemented
     IF actCatalog.HasEnoughPoints(sporeCost) THEN
         spore := body.FormSpore(tecton)
 
@@ -80,7 +80,7 @@ METHOD ThrowSpore(body, tecton)
 
 END METHOD
 
-METHOD ShroomThreadDevourBug(thread, bug)
+METHOD ShroomThreadDevourBug(thread, bug) -> implemented
     IF actCatalog.HasEnoughPoints(devourCost) THEN
         success := thread.DevourCrippledBug(bug)
 
@@ -92,7 +92,7 @@ METHOD ShroomThreadDevourBug(thread, bug)
 
 END METHOD
 
-METHOD UpdateShroom()
+METHOD UpdateShroom() -> implemented
     LoadDefaultCosts()
     actCatalog.ResetPoints()
 
@@ -111,7 +111,7 @@ METHOD UpdateShroom()
 
 END METHOD
 
-METHOD LoadDefaultCosts()
+METHOD LoadDefaultCosts() -> implemented
     shroomBodyCost := 3
     shroomThreadCost := 2
     shroomUpgradeCost := 3

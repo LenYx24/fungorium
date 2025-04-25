@@ -1,5 +1,6 @@
 package org.nessus.model.tecton;
 
+import org.nessus.controller.IRandomProvider;
 import org.nessus.controller.ITectonController;
 import org.nessus.model.bug.Bug;
 import org.nessus.model.shroom.Shroom;
@@ -8,8 +9,11 @@ import org.nessus.model.shroom.ShroomThread;
 import org.nessus.model.shroom.Spore;
 import org.nessus.view.View;
 
+import java.lang.classfile.ClassFile.Option;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.Random;
 
 /**
  * A tektonokat reprezentáló osztály.
@@ -28,48 +32,47 @@ public class Tecton implements ITectonController {
     protected List<Bug> bugs = new ArrayList<>(); // A tektonon található rovarok listája
     protected ShroomBody shroomBody = null; // A tektonon található gombatest
 
+    /**
+     * Törés közben a tekton szomszédos tektonjaira átkerülnek a rovarok és spórák.
+     * @see Tecton#Split()
+     * @param copyTecton
+     */
     protected void SpreadEntities(Tecton copyTecton) {
-        neighbours.forEach(neighbour -> copyTecton.neighbours.add(neighbour));
-        neighbours.add(copyTecton);
-
-        var bugIter = bugs.iterator();
-
-        while(bugIter.hasNext()) {
-            Bug bug = bugIter.next();
-            String name = View.GetObjectStore().GetName(bug);
-
-            // TODO
-            // if (transferBug)
-            // {
-            //     copyTecton.AddBug(bug);
-            //     bug.SetTecton(copyTecton);
-            //     bugIter.remove();
-            // }
+        for (Tecton neighbour : neighbours) {
+            copyTecton.neighbours.add(neighbour);
+            neighbour.neighbours.add(copyTecton);
         }
 
-        var sporeIter = spores.iterator();
+        neighbours.add(copyTecton);
 
-        while(sporeIter.hasNext()) {
-            Spore spore = sporeIter.next();
-            String name = View.GetObjectStore().GetName(spore);
+        // TODO Use random provider
+        IRandomProvider randProvider = View.GetObjectStore().GetRandomProvider();
 
-            // TODO
-            // if (transferSpore)
-            // {
-            //     copyTecton.ThrowSpore(spore);
-            //     spore.SetTecton(copyTecton);
-            //     sporeIter.remove();
-            // }
+        for (Bug bug : bugs) {
+            boolean transferBug = randProvider.RandomBoolean();
+            if (transferBug) {
+                copyTecton.AddBug(bug);
+                bug.SetTecton(copyTecton);
+                bugs.remove(bug);
+            }
+        }
+
+        for (Spore spore : spores) {
+            boolean transferSpore = randProvider.RandomBoolean();
+            if (transferSpore) {
+                copyTecton.ThrowSpore(spore);
+                spore.SetTecton(copyTecton);
+                spores.remove(spore);
+            }
         }
 
         if (this.shroomBody != null) {
-            // TODO
-            // if (transferBody)
-            // {
-            //     copyTecton.SetShroomBody(shroomBody);
-            //     shroomBody.SetTecton(copyTecton);
-            //     this.ClearShroomBody();
-            // }
+            boolean transferShroomBody = randProvider.RandomBoolean();
+            if(transferShroomBody) {
+                copyTecton.SetShroomBody(shroomBody);
+                shroomBody.SetTecton(copyTecton);
+                this.ClearShroomBody();
+            }
         }
     }
 
@@ -80,9 +83,9 @@ public class Tecton implements ITectonController {
      * @see org.nessus.model.shroom.Shroom
      */
     public void Split() {
-        // A későbbiekben lesz egy tárolóosztály, ami majd számontartja a tektonokat, egyelőre csak elvégzünk egy másolást,
-        // a másolatot nem tartjuk meg.
         Tecton copyTecton = Copy();
+        SpreadEntities(copyTecton);
+        View.GetObjectStore().AddObject("copyTecton", copyTecton);
 
         //Konkurens Módosítás Kivétel elkerülése érdekében másolat
         List.copyOf(shroomThreads).forEach(ShroomThread::Remove);
@@ -109,26 +112,27 @@ public class Tecton implements ITectonController {
 
     /**
      * Gombatest növesztése a tektonon.
-     * A gombatest növesztéséhez szükséges egy spóra, amit a tektonon található spórák közül kell kiválasztani.
+     * A gombatest növesztéséhez szükséges két spóra, amit a tektonon található spórák közül kell kiválasztani.
      * @param body - A növesztendő gombatest
      * @return Boolean - Sikeres volt-e a növesztés
      */
     public boolean GrowShroomBody(ShroomBody body) {
-        // TODO
-        // if (!canGrowShroomBody) {
-        //     View.GetInstance().LogReturnCall(this, "GrowShroomBody", false);
-        //     return false;
-        // }
+        if (shroomBody != null)
+            return false;
 
-        // A szekvencia diagramon spore2 van írva, de igazából mindegy,
-        // a lényeg, hogy egy spórát elhasznál a növesztés
-        var consumedSpore = spores.stream()
-                                .filter(spore -> spore.GetShroom() == body.GetShroom())
-                                .findFirst();
-                                
-        consumedSpore.ifPresent(this::RemoveSpore);
+        var usableSpores = spores.stream()
+            .filter(x -> x.GetShroom() == body.GetShroom())
+            .toList();
 
+        if (usableSpores.size() < 2)
+            return false;
+        
+        var spore = usableSpores.getFirst();
+        RemoveSpore(spore);
+        
         shroomBody = body;
+        body.SetTecton(this);
+
         return true;
     }
 
@@ -149,6 +153,15 @@ public class Tecton implements ITectonController {
     }
 
     /**
+     * Visszaadja a tektonon található gombatestet.
+     * @see ShroomBody
+     * @return ShroomBody - A tektonon található gombatest
+     */
+    public ShroomBody GetShroomBody() {
+        return shroomBody;
+    }
+
+    /**
      * Spóra dobása a tektonon.
      * @param spore - A dobott spóra
      * @return void
@@ -165,6 +178,14 @@ public class Tecton implements ITectonController {
     public void RemoveSpore(Spore spore) {
         spores.remove(spore);
         spore.GetShroom().RemoveSpore(spore);
+    }
+
+    /**
+     * Visszaadja a tektonon található rovarok számát.
+     * @return int - A tektonon található rovarok száma
+     */
+    public List<Spore> GetSporesOfShroom(Shroom shroom) {
+        return spores.stream().filter(x -> x.GetShroom() == shroom).toList();
     }
 
     /**
@@ -193,7 +214,6 @@ public class Tecton implements ITectonController {
     public Tecton Copy() {
         Tecton copyTecton = new Tecton();
         View.GetObjectStore().AddObject( "copyTecton", copyTecton);
-        SpreadEntities(copyTecton);
         return copyTecton;
     }
 
@@ -203,13 +223,22 @@ public class Tecton implements ITectonController {
      * @return Boolean - Szomszédos-e a két tekton
      */
     public boolean HasGrownShroomThreadTo(Tecton tecton) {
-        boolean hasGrownShroomThread = false;
         for (ShroomThread shroomThread : shroomThreads) {
             if (shroomThread.IsTectonReachable(tecton)) {
-                hasGrownShroomThread = true;
+                return true;
             }
         }
-        return hasGrownShroomThread;
+
+        return false;
+    }
+
+    /**
+     * Visszaadja a tektonon található gombafonalakat.
+     * @see ShroomThread
+     * @return List<ShroomThread> - A tektonon található gombafonalak listája
+     */
+    public List<ShroomThread> GetShroomThreads() {
+        return shroomThreads;
     }
 
     /**
@@ -219,9 +248,7 @@ public class Tecton implements ITectonController {
      */
     public boolean HasSporeOfShroom(Shroom shroom)
     {
-        // TODO
-        // return ret;
-        return false;
+        return !GetSporesOfShroom(shroom).isEmpty();
     }
 
     /**
@@ -230,20 +257,18 @@ public class Tecton implements ITectonController {
      * @return Boolean - Szomszédos-e a két tekton
      */
     public boolean IsNeighbourOf(Tecton tecton) {
-        // boolean isNeighbourOf = View.GetInstance().YesNoQuestion("Szomszédos a két tekton?");
-        // TODO
-        return false;
+        return neighbours.contains(tecton);
     }
 
     /**
      * A tekton frissítése.
-     * @apiNote A metódus implementációja hiányzik.
-     * @throws UnsupportedOperationException
      * @return void
      */
     @Override
     public void UpdateTecton() {
-        throw new UnsupportedOperationException();
+        /*
+         * Az alaposztályon nem hajt végre műveletet
+         */
     }
 
     /**
@@ -253,6 +278,14 @@ public class Tecton implements ITectonController {
      */
     public void SetNeighbour(Tecton neighbour) {
         neighbours.add(neighbour);
+    }
+
+    /**
+     * Szomszédos tektonok listájának visszaadása.
+     * @return List<Tecton> - A szomszédos tektonok listája
+     */
+    public List<Tecton> GetNeighbours() {
+        return neighbours;
     }
 
     /**

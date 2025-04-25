@@ -15,8 +15,7 @@ public class InfertileTecton extends Tecton {
     @Override
     public Tecton Copy() {
         Tecton copyTecton = new InfertileTecton();
-        View.GetObjectStore().AddObject( "copyTecton", copyTecton);
-        SpreadEntities(copyTecton);
+        View.GetObjectStore().AddObject("copyTecton", copyTecton);
         return copyTecton;
     }
 

@@ -4,6 +4,7 @@ import java.util.*;
 
 import org.nessus.model.shroom.*;
 import org.nessus.controller.Controller;
+import org.nessus.controller.IRandomProvider;
 import org.nessus.model.bug.*;
 
 import static java.lang.System.in;
@@ -117,10 +118,14 @@ public class View implements IGameObjectStore {
     public String GetPendingObjectName() {
         return pendingObjectName;
     }
+    
+    @Override
+    public IRandomProvider GetRandomProvider() {
+        return controller;
+    }
 
     public static void main(String[] args) {
         View view = View.GetInstance();
         view.Run();
     }
-
 }
