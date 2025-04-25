@@ -1,14 +1,13 @@
 package org.nessus.model.tecton;
 
-import org.nessus.View;
+import org.nessus.view.View;
 import org.nessus.model.shroom.ShroomThread;
 
 public class ThreadSustainerTecton extends Tecton {
     @Override
     public Tecton Copy() {
         Tecton copyTecton = new ThreadSustainerTecton();
-        View.AddObject(copyTecton, "copyTecton");
-        SpreadEntities(copyTecton);
+        View.GetObjectStore().AddObject("copyTecton", copyTecton);
         return copyTecton;
     }
 

@@ -1,9 +1,11 @@
 package org.nessus.model.shroom;
 
-import org.nessus.View;
+import org.nessus.controller.IShroomController;
 import org.nessus.model.ActionPointCatalog;
+import org.nessus.model.bug.Bug;
 import org.nessus.model.tecton.Tecton;
 import org.nessus.model.bug.Bug;
+import org.nessus.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +19,7 @@ import java.util.List;
  * @see ShroomBody
  * @see ShroomThread
  */
-public class Shroom {
+public class Shroom implements IShroomController {
     private List<Spore> spores = new ArrayList<>(); // Spórák listája
     private List<ShroomBody> shroomBodies = new ArrayList<>(); // Gombatestek listája
     private List<ShroomThread> threads = new ArrayList<>(); // Fonalak listája
@@ -37,7 +39,7 @@ public class Shroom {
      * A pontokat alaphelyzetbe állítja
      */
     public Shroom() {
-        View.AddObject(actCatalog, "actCatalog");
+        View.GetObjectStore().AddObject( "actCatalog",actCatalog);
         ResetPoints();
     }
 
@@ -52,6 +54,7 @@ public class Shroom {
      * @see ActionPointCatalog
      * @return void
      */
+    @Override
     public void PlaceShroomThread(Tecton tecton1, Tecton tecton2) {
         boolean enough = actCatalog.HasEnoughPoints(shroomThreadCost);
         boolean neighbours = tecton1.IsNeighbourOf(tecton2);
@@ -80,7 +83,7 @@ public class Shroom {
 
         if (enough && neighbours && connectedToBody) {
             ShroomThread newThread = new ShroomThread(this, tecton1, tecton2);
-            View.AddObject(newThread, "newThread");
+            View.GetObjectStore().AddObject("newThread", newThread);
 
             boolean t1success = tecton1.GrowShroomThread(newThread);
             boolean t2success = tecton2.GrowShroomThread(newThread);
@@ -103,10 +106,11 @@ public class Shroom {
      * @see ShroomBody
      * @return void
      */
+    @Override
     public void PlaceShroomBody(Tecton tecton) {
         if (actCatalog.HasEnoughPoints(shroomBodyCost)) {
             ShroomBody newBody = new ShroomBody(this, tecton);
-            View.AddObject(newBody, "newBody");
+            View.GetObjectStore().AddObject("newBody", newBody);
 
             boolean success = tecton.GrowShroomBody(newBody);
             if (success) {
@@ -127,6 +131,7 @@ public class Shroom {
      * @param body
      * @return void
      */
+    @Override
     public void UpgradeShroomBody(ShroomBody body) {
         Tecton bodyTecton = body.GetTecton();
         Shroom bodyShroom = body.GetShroom();
@@ -156,6 +161,7 @@ public class Shroom {
      * @param tecton
      * @return void
      */
+    @Override
     public void ThrowSpore(ShroomBody body, Tecton tecton) {
         if (actCatalog.HasEnoughPoints(sporeCost)) {
             Spore spore = body.FormSpore(tecton);

@@ -1,9 +1,9 @@
 package org.nessus.model.shroom;
 
-import org.nessus.View;
 import org.nessus.model.tecton.Tecton;
 import org.nessus.model.bug.Bug;
 import org.nessus.model.tecton.ThreadSustainerTecton;
+import org.nessus.view.View;
 
 /**
  * A fonalat reprezentáló osztály.

@@ -5,13 +5,14 @@ import java.util.List;
 import java.util.function.BooleanSupplier;
 import java.util.function.IntSupplier;
 
-import org.nessus.View;
+import org.nessus.controller.IBugOwnerController;
 import org.nessus.model.ActionPointCatalog;
 import org.nessus.model.shroom.ShroomThread;
 import org.nessus.model.shroom.Spore;
 import org.nessus.model.tecton.Tecton;
+import org.nessus.view.View;
 
-public class BugOwner {
+public class BugOwner implements IBugOwnerController {
     private ActionPointCatalog actCatalog;
     private List<Bug> bugs = new ArrayList<>();
 
@@ -30,7 +31,7 @@ public class BugOwner {
 
     public BugOwner() {
         actCatalog = new ActionPointCatalog();
-        View.AddObject(actCatalog, "actCatalog");
+        View.GetObjectStore().AddObject("actCatalog", actCatalog);
     }
 
     public void Move(Bug bug, Tecton tecton) {

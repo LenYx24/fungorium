@@ -3,6 +3,7 @@ package org.nessus.model.shroom;
 import org.nessus.model.bug.Bug;
 import org.nessus.model.effect.*;
 import org.nessus.model.tecton.Tecton;
+import org.nessus.view.View;
 
 /**
  * A spórát reprezentáló osztály.

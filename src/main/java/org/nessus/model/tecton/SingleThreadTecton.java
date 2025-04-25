@@ -1,7 +1,7 @@
 package org.nessus.model.tecton;
 
-import org.nessus.View;
 import org.nessus.model.shroom.ShroomThread;
+import org.nessus.view.View;
 
 /**
  * Egyfonál tekton, azaz ezen a tektonfajtán csak egy fonál lehet.
@@ -19,7 +19,7 @@ public class SingleThreadTecton extends Tecton {
     @Override
     public Tecton Copy() {
         Tecton copyTecton = new SingleThreadTecton();
-        View.AddObject(copyTecton, "copyTecton");
+        View.GetObjectStore().AddObject( "copyTecton", copyTecton);
         return copyTecton;
     }
 
@@ -32,7 +32,7 @@ public class SingleThreadTecton extends Tecton {
     public boolean GrowShroomThread(ShroomThread thread) {
         if (shroomThreads.isEmpty()) {
             shroomThreads.add(thread);
-            View.AddObject(thread, "shroomThread");
+            View.GetObjectStore().AddObject("shroomThread", thread);
             return true;
         }
         

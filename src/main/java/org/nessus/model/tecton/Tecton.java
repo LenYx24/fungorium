@@ -1,11 +1,12 @@
 package org.nessus.model.tecton;
 
-import org.nessus.View;
+import org.nessus.controller.ITectonController;
 import org.nessus.model.bug.Bug;
 import org.nessus.model.shroom.Shroom;
 import org.nessus.model.shroom.ShroomBody;
 import org.nessus.model.shroom.ShroomThread;
 import org.nessus.model.shroom.Spore;
+import org.nessus.view.View;
 
 import java.lang.classfile.ClassFile.Option;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ import java.util.Random;
  * @see org.nessus.model.shroom.ShroomBody
  * @see org.nessus.model.shroom.Shroom
  */
-public class Tecton {
+public class Tecton implements ITectonController {
     protected List<Tecton> neighbours = new ArrayList<>(); // A szomszédos tektonok listája
     protected List<Spore> spores = new ArrayList<>(); // A tektonon található spórák listája
     protected List<ShroomThread> shroomThreads = new ArrayList<>(); // A tektonon található gombafonalak listája
@@ -211,7 +212,7 @@ public class Tecton {
      */
     public Tecton Copy() {
         Tecton copyTecton = new Tecton();
-        View.AddObject(copyTecton, "copyTecton");
+        View.GetObjectStore().AddObject( "copyTecton", copyTecton);
         return copyTecton;
     }
 
@@ -262,6 +263,7 @@ public class Tecton {
      * A tekton frissítése.
      * @return void
      */
+    @Override
     public void UpdateTecton() {
         /*
          * Az alaposztályon nem hajt végre műveletet

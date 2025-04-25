@@ -1,6 +1,6 @@
 package org.nessus.model;
 
-import org.nessus.View;
+import org.nessus.view.View;
 
 /**
  * A cselekvési pontokat reprezentáló osztály.

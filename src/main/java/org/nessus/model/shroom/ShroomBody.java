@@ -8,8 +8,8 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
-import org.nessus.View;
 import org.nessus.model.tecton.Tecton;
+import org.nessus.view.View;
 
 /**
  * A gombatestet reprezentáló osztály.
@@ -111,6 +111,7 @@ public class ShroomBody {
         remainingThrows--;
 
         Spore spore = new Spore(shroom, tecton);
+        View.GetObjectStore().AddObject( "spore",spore);
         tecton.ThrowSpore(spore);
 
         if (remainingThrows <= 0) {
