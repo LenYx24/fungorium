@@ -1,5 +1,9 @@
 package org.nessus.model.effect;
 
-public class DivisionEffect {
-    
+import org.nessus.model.bug.Bug;
+
+public class DivisionEffect extends BugEffect {
+    public void ApplyOn(Bug bug) {
+        //TODO
+    }
 }
