@@ -19,7 +19,6 @@ import java.util.List;
  */
 public class Bug {
     List<BugEffect> bugEffects = new ArrayList<>(); // hatások
-    ActionPointCatalog actCatalog = new ActionPointCatalog(); // pontok
     Tecton tecton; // tekton, amin a rovar tartózkodik
 
     int collectedNutrients = 0; // összegyűjtött tápanyagok
@@ -39,8 +38,6 @@ public class Bug {
      */
     public Bug() {
         View.AddObject(this, "bug");
-        View.AddObject(actCatalog, "bugCat");
-        ResetPoints();
     }
 
     /**
@@ -117,15 +114,13 @@ public class Bug {
      * @return boolean - true, ha a rovar átkerült a másik tektonra, false, ha nem
      */
     public boolean Move(Tecton destination) {
-        boolean enough = actCatalog.HasEnoughPoints(moveCost);
         boolean neighbours = tecton.IsNeighbourOf(destination);
         boolean hasGrownShroomThreadTo = tecton.HasGrownShroomThreadTo(destination);
 
-        if (enough && neighbours && hasGrownShroomThreadTo && canMove) {
+        if (neighbours && hasGrownShroomThreadTo && canMove) {
             tecton.RemoveBug(this);
             destination.AddBug(this);
             tecton = destination;
-            actCatalog.DecreasePoints(moveCost);
             return true;
         }
         return false; // nincs elég pont, vagy nem szomszédos a két tekton
@@ -146,22 +141,11 @@ public class Bug {
      * @return boolean - true, ha a rovar megeszi a spórát, false, ha nem
      */
     public boolean Eat(Spore spore) {
-        if (spore != null) {
-            if (this.tecton == spore.GetTecton()) { // isOnSameTecton
-                boolean enough = actCatalog.HasEnoughPoints(eatCost);
-
-                if (enough && canMove) {
-                    collectedNutrients += spore.GetNutrient();
-                    spore.EatenBy(this);
-                    actCatalog.DecreasePoints(eatCost);
-                    return true;
-                }
-                return false; // nincs elég pont, vagy bénító hatás van a rovaron
-            } else {
-                return false; // nem a rovar tektonján van
-            }
+        if (tecton == spore.GetTecton()) {
+            spore.EatenBy(this);
+            return true;
         }
-        return false; // a spóra null
+        return false;
     }
 
     /**
@@ -179,15 +163,14 @@ public class Bug {
      * @return boolean - true, ha a rovar levágta a gombafonalat, false, ha nem
      */
     public boolean CutThread(ShroomThread thread) {
-        boolean enough = actCatalog.HasEnoughPoints(cutThreadCost);
         boolean reachable = thread.IsTectonReachable(tecton);
 
-        if (canCut && enough && reachable) {
+        if (canCut && reachable) {
             thread.Remove();
-            actCatalog.DecreasePoints(cutThreadCost);
             return true;
         }
-        return false; // nincs elég pont, vagy nem érhető el a gombafonal, vagy bénító hatás van a rovaron
+
+        return false;
     }
 
     /**
@@ -199,11 +182,11 @@ public class Bug {
         Bug newBug = new Bug();
 
         for (BugEffect bugEffect : this.bugEffects) {
-            newBug.AddEffect(bugEffect);
+            newBug.bugEffects.add(bugEffect);
         }
 
-        newBug.SetTecton(this.tecton);
-        newBug.SetOwner(this.owner);
+        newBug.tecton = tecton;
+        newBug.owner = owner;
     }
 
     /**
@@ -213,6 +196,18 @@ public class Bug {
      */
     public void AddMoveCost(int value) {
         moveCost += value;
+    }
+
+    public int GetMoveCost() {
+        return moveCost;
+    }
+
+    public int GetEatCost() {
+        return eatCost;
+    }
+
+    public int GetCutCost() {
+        return cutThreadCost;
     }
 
     /**
@@ -250,7 +245,6 @@ public class Bug {
      */
     public void UpdateBug() {
         LoadDefaultCosts();
-        actCatalog.ResetPoints();
         bugEffects.forEach(effect -> effect.ApplyOn(this));
     }
 
@@ -263,16 +257,6 @@ public class Bug {
         moveCost = 1;
         eatCost = 2;
         cutThreadCost = 2;
-    }
-
-    /**
-     * Pontok visszaállítása
-     * Az ActionPointCatalog pontjainak visszaállítása.
-     * @see ActionPointCatalog#defaultActionPoints
-     * @return void
-     */
-    public void ResetPoints() {
-        actCatalog.ResetPoints();
     }
 
     /**
@@ -307,14 +291,6 @@ public class Bug {
      */
     public void SetCanCut(boolean canCut) {
         this.canMove = canCut;
-    }
-
-    /**
-     * A rovar ActionPointCatalogjának lekérése
-     * @return {@link ActionPointCatalog#ActionPointCatalog()}
-     */
-    public ActionPointCatalog GetActionPointCatalog() {
-        return actCatalog;
     }
 
     /**
