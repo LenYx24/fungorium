@@ -29,8 +29,9 @@ public class SetRefCmd extends BaseCommand {
             return;
         }
 
+        Field field = null;
         try {
-            Field field = targetObject.getClass().getDeclaredField(fieldName);
+            field = targetObject.getClass().getDeclaredField(fieldName);
             field.setAccessible(true);
 
             if (!field.getType().isAssignableFrom(referenceObject.getClass())) {
@@ -43,6 +44,9 @@ public class SetRefCmd extends BaseCommand {
             System.out.println("Referencia sikeresen beállítva.");
         } catch (NoSuchFieldException | IllegalAccessException e) {
             System.out.println("Hiba a referencia beállításánál: " + e.getMessage());
+        } finally {
+            if (field != null)
+                field.setAccessible(false);
         }
     }
 }

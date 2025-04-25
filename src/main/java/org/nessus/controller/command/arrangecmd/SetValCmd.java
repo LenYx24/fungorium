@@ -11,6 +11,7 @@ public class SetValCmd extends BaseCommand {
             if (type == int.class || type == Integer.class) return Integer.parseInt(value);
             if (type == double.class || type == Double.class) return Double.parseDouble(value);
             if (type == char.class || type == Character.class) return value.charAt(0);
+            if (type == boolean.class || type == Boolean.class) return Boolean.parseBoolean(value);
             if (type == String.class) return value;
         } catch (Exception e) {
             return null;

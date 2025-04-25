@@ -1,11 +1,11 @@
 package org.nessus.model.bug;
 
-import org.nessus.controller.IBugController;
+import org.nessus.controller.IBugOwnerController;
 import org.nessus.model.shroom.ShroomThread;
 import org.nessus.model.shroom.Spore;
 import org.nessus.model.tecton.Tecton;
 
-public class BugOwner implements IBugController {
+public class BugOwner implements IBugOwnerController {
 
     @Override
     public void Move(Bug bug, Tecton tecton) {

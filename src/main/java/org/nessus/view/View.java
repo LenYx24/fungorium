@@ -5,7 +5,7 @@ import java.util.*;
 import org.nessus.model.shroom.*;
 import org.nessus.model.tecton.*;
 import org.nessus.controller.Controller;
-import org.nessus.controller.IBugController;
+import org.nessus.controller.IBugOwnerController;
 import org.nessus.controller.IRandomProvider;
 import org.nessus.controller.IShroomController;
 import org.nessus.controller.ITectonController;
@@ -21,13 +21,19 @@ public class View implements IGameObjectStore {
     private static View instance;
 
     private boolean running = true; // A program futását jelző változó
+    
+    private String pendingObjectName;
     private Map<String,Object> objects = new LinkedHashMap<>();
-
-    private boolean pending = false;
     private Map<String,Object> pendingObjects = new LinkedHashMap<>();
 
-    private IBugController currentBugOwner = null;
+    private boolean bugOwnerRound = false;
+    
+    private IBugOwnerController currentBugOwner = null;
     private IShroomController currentShroom = null;
+
+    private List<IBugOwnerController> bugOwners = new ArrayList<>();
+    private List<IShroomController> shrooms = new ArrayList<>();
+
     private IRandomProvider rand = new Controller();
 
     private enum CmdMode{
@@ -42,8 +48,6 @@ public class View implements IGameObjectStore {
     private HashMap<String, BaseCommand> arrangeCmds = new HashMap<>();
     private HashMap<String, BaseCommand> actCmds = new HashMap<>();
     private HashMap<String, BaseCommand> assertCmds = new HashMap<>();
-
-    private List<String> order = new LinkedList<>();
 
     /**
      * A {@code View} osztály konstruktora.
@@ -95,7 +99,7 @@ public class View implements IGameObjectStore {
         arrangeCmds.put("seed", new BaseCommand() {
             @Override
             public void Run(String[] args) {
-                GetNum(args[0]).ifPresent(rand::SetSeed);
+                ConvertToInteger(args[0]).ifPresent(rand::SetSeed);
             }
         });
         arrangeCmds.put("neighbour", new BaseCommand() {
@@ -161,12 +165,12 @@ public class View implements IGameObjectStore {
                 if(NotEnoughArgs(args,1))return;
                 String name = args[0];
                 Object obj = GetObject(name);
+
                 if(obj instanceof BugOwner) {
                     currentBugOwner = (BugOwner)obj;
-                    currentShroom = null;
                 }
+
                 if(obj instanceof Shroom) {
-                    currentBugOwner = null;
                     currentShroom = (Shroom)obj;
                 }
             }
@@ -304,7 +308,19 @@ public class View implements IGameObjectStore {
         actCmds.put("nextplayer", new BaseCommand() {
             @Override
             public void Run(String[] args) {
-                System.out.println("unimplemented");
+                if (bugOwnerRound) {
+                    int idx = bugOwners.indexOf(currentBugOwner);
+                    if (idx == bugOwners.size() - 1) {
+                        bugOwnerRound = false;
+                        currentShroom = shrooms.getFirst();
+                    }
+                } else {
+                    int idx = shrooms.indexOf(currentShroom);
+                    if (idx == shrooms.size() - 1) {
+                        bugOwnerRound = true;
+                        currentBugOwner = bugOwners.getFirst();
+                    }
+                }
             }
         });
 
@@ -354,9 +370,9 @@ public class View implements IGameObjectStore {
 
             System.out.print(prompt + ">");
 
-            String[] cmd_parts = scanner.nextLine().split(" ");
-            String cmd = cmd_parts[0];
-            String[] params = Arrays.copyOfRange(cmd_parts, 1, cmd_parts.length);
+            String[] cmdParts = scanner.nextLine().split(" ");
+            String cmd = cmdParts[0];
+            String[] params = Arrays.copyOfRange(cmdParts, 1, cmdParts.length);
             
             BaseCommand command = normalCmds.get(cmd);
             if(command != null) {
@@ -381,11 +397,16 @@ public class View implements IGameObjectStore {
      * @param object
      */
     public void AddObject(String name, Object object) {
-        if(pending){
+        if (pendingObjectName != null) {
             pendingObjects.put(name, object);
         }
-        else{
-            objects.put(name,object);
+        else {
+            if (object instanceof BugOwner bugOwner)
+                bugOwners.add(bugOwner);
+            else if (object instanceof Shroom shroom)
+                shrooms.add(shroom);
+                
+            objects.put(name, object);
         }
     }
 
@@ -408,21 +429,35 @@ public class View implements IGameObjectStore {
     }
 
     @Override
-    public void SetPending() {
-        pending = true;
+    public void SetPending(String name) {
+        pendingObjectName = name;
     }
 
     @Override
-    public void EndPending(String name, Object object) {
+    public void EndPending(Object object) {
         // Belerakjuk a legelső objektumot amely létre lett hozva a lista elé
-        objects.put(name, object);
+        objects.put(pendingObjectName, object);
         objects.putAll(pendingObjects);
-        pending = false;
         pendingObjects.clear();
+        pendingObjectName = null;
+    }
+    
+    @Override
+    public String GetPendingObjectName() {
+        return pendingObjectName;
+    }
+
+    public void AddBugOwner(IBugOwnerController bugOwner) {
+        bugOwners.add(bugOwner);
+    }
+
+    public void AddShroom(IShroomController shroom) {
+        shrooms.add(shroom);
     }
 
     public static void main(String[] args) {
         View view = View.GetInstance();
         view.Run();
     }
+
 }

@@ -8,7 +8,7 @@ import java.util.Optional;
 public abstract class BaseCommand {
     public abstract void Run(String[] args);
 
-    protected Optional<Integer> GetNum(String arg){
+    protected Optional<Integer> ConvertToInteger(String arg){
         try {
             return Optional.of(Integer.parseInt(arg));
         } catch (NumberFormatException e) {

@@ -6,29 +6,15 @@ import org.nessus.view.View;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.Collection;
+import java.util.List;
 
 public class ShowCmd extends BaseCommand {
-    private String GetValueName(Object value){
+    private String GetValueOfObject(Object value){
         if(value == null) return null;
         String valuename = View.GetObjectStore().GetName(value);
         return valuename == null ? value.toString() : valuename;
     }
-    private void PrintArrayRecursive(Object array) {
-        if (!array.getClass().isArray()) {
-            String name = GetValueName(array);
-            System.out.print(name != null ? name : array);
-            return;
-        }
-
-        int length = Array.getLength(array);
-        System.out.println("\t" + GetValueName(array) + ": {");
-        for (int i = 0; i < length; i++) {
-            Object element = Array.get(array, i);
-            PrintArrayRecursive(element);
-            if (i < length - 1) System.out.print(", ");
-        }
-        System.out.print("}");
-    }
+    
     @Override
     public void Run(String[] args) {
         if(NotEnoughArgs(args,1))
@@ -37,30 +23,43 @@ public class ShowCmd extends BaseCommand {
         String name = args[0];
 
         var view = View.GetObjectStore();
-        Object obj = view.GetObject(name);
+        Object gameObject = view.GetObject(name);
 
-        if(obj == null){
+        if(gameObject == null){
             System.out.println("Nincs ilyen objektum");
             return;
         }
 
-        Class<?> clazz = obj.getClass();
+        Class<?> clazz = gameObject.getClass();
         System.out.println(name + ":");
 
         Field[] fields = clazz.getDeclaredFields();
         
         for (Field field : fields) {
-            field.setAccessible(true); // allow access to private fields
-
             try {
-                Object value = field.get(obj);
-                //if(field instanceof Collection<?>){
-                //    PrintArrayRecursive(value);
-                //}else{
-                    System.out.println("\t" + field.getName() + ": " + GetValueName(value));
-                //}
+                field.setAccessible(true); // allow access to private fields
+                var fieldObject = field.get(gameObject);
+
+                if (fieldObject instanceof Collection<?> valueList) {
+                    System.out.print("\t" + field.getName() + ": {");
+                    
+                    if (valueList.isEmpty()) {
+                        System.out.println(" }");
+                    } else {
+                        System.out.println();
+
+                        var values = valueList.stream().map(x -> "\t\t" + GetValueOfObject(x)).toList();
+                        var formatted = String.join(",\n", values);
+
+                        System.out.println(formatted + "\n\t}");
+                    }
+                } else {
+                    System.out.println("\t" + field.getName() + ": " + GetValueOfObject(fieldObject));
+                }
             } catch (IllegalAccessException e) {
                 System.out.println("\t" + field.getName() + ": <access denied>");
+            } finally {
+                field.setAccessible(false);
             }
         }
     }

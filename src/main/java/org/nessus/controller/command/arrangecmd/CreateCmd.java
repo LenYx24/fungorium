@@ -67,12 +67,12 @@ public class CreateCmd extends BaseCommand {
             // által lesznek hozzáadva, erre a sorrend megtartása miatt van szükség
 
             var view = View.GetObjectStore();
-            view.SetPending();
+            view.SetPending(objectName);
 
             // Instantiate the object
             Object instance = constructor.newInstance(inferredArgs);
 
-            view.EndPending(objectName, instance);
+            view.EndPending(instance);
 
         } catch (Exception e) {
             System.out.println("Rossz parancsformátum: " + e.getMessage());
