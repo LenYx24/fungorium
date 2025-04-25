@@ -1,6 +1,5 @@
 package org.nessus.controller.command;
 
-import org.nessus.model.tecton.Tecton;
 import org.nessus.view.View;
 
 import java.util.Optional;
@@ -27,11 +26,6 @@ public abstract class BaseCommand {
         try {
             return Double.parseDouble(s);
         } catch (NumberFormatException ignored) {}
-
-        // Try Character (length == 1)
-        if (s.length() == 1) {
-            return s.charAt(0);
-        }
 
         var view = View.GetObjectStore();
         Object obj = view.GetObject(s);

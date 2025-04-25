@@ -1,6 +1,8 @@
 package org.nessus.controller.command.assertcmd;
 
 import org.nessus.controller.command.BaseCommand;
+import org.nessus.model.tecton.DesertTecton;
+import org.nessus.model.tecton.Tecton;
 import org.nessus.view.View;
 
 import java.io.OutputStream;
@@ -38,6 +40,10 @@ public class ShowCmd extends BaseCommand {
         }
 
         Class<?> clazz = gameObject.getClass();
+        Class<?> zuper = clazz.getSuperclass();
+        if (!zuper.equals(Object.class))
+            clazz = zuper;
+
         writer.println(name + ":");
 
         Field[] fields = clazz.getDeclaredFields();
