@@ -172,7 +172,7 @@ public class Shroom {
      */
     public void ShroomThreadDevourBug(ShroomThread thread, Bug bug) {
         if (actCatalog.HasEnoughPoints(devourCost)) {
-            boolean success = thread.DevourCrippledBug(bug); //TODO: DevourCrippledBug implementálása ShroomThread osztályba
+            boolean success = thread.DevourCrippledBug(bug);
 
             if (success) {
                 actCatalog.DecreasePoints(devourCost);
@@ -227,6 +227,15 @@ public class Shroom {
         for (ShroomThread thread : threads) {
             thread.ValidateLife();
         }
+    }
+
+    /**
+     * Megnöveli a “gombatest elhelyezése” cselekvés akciópont költségét cost-nyival.
+     * @param cost - A költség, amelyet hozzáadunk
+     * @return void
+     */
+    public void AddShroomBodyCost(int cost) {
+        shroomBodyCost += cost;
     }
 
     /**

@@ -85,6 +85,22 @@ public class Bug {
     }
 
     /**
+     * Lekérdezi, hogy a rovar tud-e mozogni
+     * @return boolean - true, ha a rovar tud mozogni, false, ha nem
+     */
+    public boolean GetCanMove() {
+        return canMove;
+    }
+
+    /**
+     * Megadja a rovar tektonját
+     * @return Tecton - A rovar tektonja
+     */
+    public Tecton GetTecton() {
+        return tecton;
+    }
+
+    /**
      * Mozgás
      * A rovar mozgatása egy másik tektonra.
      * A mozgás feltételei:
@@ -299,5 +315,20 @@ public class Bug {
      */
     public ActionPointCatalog GetActionPointCatalog() {
         return actCatalog;
+    }
+
+    /**
+     * Törli a bogarat a tektonról és a hozzá tartozó BugOwner listájából
+     * @see BugOwner#RemoveBug(Bug)
+     * @see Tecton#RemoveBug(Bug)
+     * @return void
+     */
+    public void Remove() {
+        if (tecton != null) {
+            tecton.RemoveBug(this);
+        }
+        if (owner != null) {
+            owner.RemoveBug(this); //TODO: RemoveBug implementálása a BugOwner osztályban
+        }
     }
 }
