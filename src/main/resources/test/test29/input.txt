@@ -4,10 +4,10 @@ create Tecton tecton2
 neighbour sustainerTecton tecton2
 
 create Shroom shroom
-create ShroomThread thread
+create ShroomThread thread shroom
 setval thread evolution 3
 
-placethread thread tecton1 tecton2
+placethread thread sustainerTecton tecton2
 
 currentplayer shroom
 
@@ -16,5 +16,5 @@ updateshroom shroom
 updateshroom shroom
 updateshroom shroom
 
-arrange
+assert
 save output.txt
