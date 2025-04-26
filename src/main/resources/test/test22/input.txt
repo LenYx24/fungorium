@@ -8,7 +8,7 @@ neighbour tecton2 tecton3
 
 create Shroom shroom
 
-create ShroomBody shroomBody
+create ShroomBody shroomBody shroom
 setval shroomBody level 2
 setval shroomBody sporeMaterials 2
 place shroomBody tecton1
@@ -16,7 +16,7 @@ place shroomBody tecton1
 currentplayer shroom
 
 act
-throwspore shroomBody tecton2
+throwspore shroomBody tecton3
 
-arrange
+assert
 save output.txt

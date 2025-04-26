@@ -21,13 +21,11 @@ shroom:
 		spore1
 	}
 	shroomBodies: {
-		shroombody
+		shroomBody
 	}
-	threads: {
-		thread
-	}
+	threads: { }
 	actCatalog: shroom_actCat
-	grownShroomBodies: 1
+	grownShroomBodies: 0
 	shroomThreadCost: 2
 	shroomBodyCost: 3
 	shroomUpgradeCost: 3
@@ -37,11 +35,12 @@ shroom_actCat:
 	defaultActionPoints: 5
 	currentActionPoints: 3
 shroomBody:
-	tecton: tecton
+	shroom: shroom
+	tecton: tecton1
 	level: 1
 	remainingThrows: 4
 	sporeMaterials: 0
 spore1:
 	shroom: shroom
 	tecton: tecton2
-	nutrient: 2
+	nutrients: 3
