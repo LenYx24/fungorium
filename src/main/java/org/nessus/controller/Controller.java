@@ -172,10 +172,12 @@ public class Controller implements IRandomProvider {
 
                 if(obj instanceof BugOwner) {
                     currentBugOwner = (BugOwner)obj;
+                    bugOwnerRound = true;
                 }
 
                 if(obj instanceof Shroom) {
                     currentShroom = (Shroom)obj;
+                    bugOwnerRound = false;
                 }
             }
         });
@@ -354,9 +356,10 @@ public class Controller implements IRandomProvider {
     }
 
     public String GetPrompt() {
+        var objStore = View.GetObjectStore();
         return switch(mode) {
             case ARRANGE -> "arrange";
-            case ACT -> "act";
+            case ACT -> "act#" + objStore.GetName(bugOwnerRound ? currentBugOwner : currentShroom);
             case ASSERT -> "assert";
         };
     }
