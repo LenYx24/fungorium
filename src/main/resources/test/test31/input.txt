@@ -11,6 +11,8 @@ setval thread evolution 3
 
 placethread thread tecton1 tecton2
 
+currentplayer shroom
+
 act
 updateshroom shroom
 updateshroom shroom

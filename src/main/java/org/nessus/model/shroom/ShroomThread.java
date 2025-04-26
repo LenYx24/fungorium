@@ -74,7 +74,7 @@ public class ShroomThread {
             cutDamageTimer -= 1;
 
         if (!connectedToShroomBody && !sustained)
-            isolationCounter -= 1;
+            isolationCounter += 1;
 
         if (isolationCounter >= 3 || cutDamageTimer <= 0)
             Remove();
