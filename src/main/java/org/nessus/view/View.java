@@ -5,6 +5,7 @@ import java.util.*;
 import org.nessus.model.shroom.*;
 import org.nessus.controller.Controller;
 import org.nessus.controller.IRandomProvider;
+import org.nessus.controller.NameGenerator;
 import org.nessus.model.bug.*;
 
 import static java.lang.System.in;
@@ -77,7 +78,28 @@ public class View implements IGameObjectStore {
                 controller.AddBugOwner(bugOwner);
             else if (object instanceof Shroom shroom)
                 controller.AddShroom(shroom);
-                
+
+            objects.put(name, object);
+            NameGenerator.AddName(name);
+        }
+    }
+
+    /**
+     * Ezzel a metódussal adhatunk hozzá objektumot a loghoz.
+     * @param prefix
+     * @param object
+     */
+    public void AddObjectWithNameGen(String prefix, Object object) {
+        String name = NameGenerator.GenerateName(prefix);
+        if (pendingObjectName != null) {
+            pendingObjects.put(name, object);
+        }
+        else {
+            if (object instanceof BugOwner bugOwner)
+                controller.AddBugOwner(bugOwner);
+            else if (object instanceof Shroom shroom)
+                controller.AddShroom(shroom);
+
             objects.put(name, object);
         }
     }

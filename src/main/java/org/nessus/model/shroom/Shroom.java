@@ -86,13 +86,12 @@ public class Shroom implements IShroomController {
 
         if (enough && neighbours && connectedToBody) {
             ShroomThread newThread = new ShroomThread(this, tecton1, tecton2);
-            View.GetObjectStore().AddObject("newThread", newThread);
 
             boolean t1success = tecton1.GrowShroomThread(newThread);
             boolean t2success = tecton2.GrowShroomThread(newThread);
 
             if (t1success && t2success) {
-                View.GetObjectStore().AddObject("newThread", newThread);
+                View.GetObjectStore().AddObjectWithNameGen("thread", newThread);
                 threads.add(newThread);
                 actCatalog.DecreasePoints(shroomThreadCost);
             } else {
@@ -117,7 +116,7 @@ public class Shroom implements IShroomController {
 
             boolean success = tecton.GrowShroomBody(newBody);
             if (success) {
-                View.GetObjectStore().AddObject("newBody", newBody);
+                View.GetObjectStore().AddObjectWithNameGen("shroomBody", newBody);
                 grownShroomBodies++;
                 shroomBodies.add(newBody);
                 actCatalog.DecreasePoints(shroomBodyCost);

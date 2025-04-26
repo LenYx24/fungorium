@@ -170,6 +170,7 @@ public class Bug {
 
         newBug.tecton = tecton;
         bugOwner.AddBug(newBug);
+        View.GetObjectStore().AddObjectWithNameGen("bug", newBug);
     }
 
     /**
