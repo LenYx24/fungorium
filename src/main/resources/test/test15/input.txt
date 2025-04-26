@@ -1,7 +1,7 @@
 arrange
 create Tecton tecton1
 create Tecton tecton2
-neighbours tecton1 tecton2
+neighbour tecton1 tecton2
 
 create Shroom shroom
 create ShroomThread thread shroom
