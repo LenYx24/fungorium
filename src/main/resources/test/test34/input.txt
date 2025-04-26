@@ -22,7 +22,7 @@ setval thread1 evolution 3
 setval thread2 evolution 3
 
 create SlowEffect slowEffect
-setref bug effects slowEffect
+addeffect bug slowEffect
 
 currentplayer bugOwner
 
