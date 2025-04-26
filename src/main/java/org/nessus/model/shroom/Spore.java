@@ -1,7 +1,5 @@
 package org.nessus.model.shroom;
 
-import java.lang.classfile.BufWriter;
-
 import org.nessus.controller.IRandomProvider;
 import org.nessus.model.bug.Bug;
 import org.nessus.model.effect.BugEffect;
