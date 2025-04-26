@@ -24,8 +24,12 @@ public class ShroomThread {
 
     /**
      * Az osztály konstruktora.
-     * @param tecton1
-     * @param tecton2
+     */
+    public ShroomThread() {
+    }
+    /**
+     * Az osztály konstruktora.
+     * @param shroom
      */
     public ShroomThread(Shroom shroom) {
         this.shroom = shroom;

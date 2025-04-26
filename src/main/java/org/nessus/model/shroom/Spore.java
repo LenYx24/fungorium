@@ -17,8 +17,21 @@ public class Spore {
     private Shroom shroom; // A spóra gomba része
     private Tecton tecton; // A spóra tecton része
 
-    int nutrient = 3; // A spóra tápanyagértéke
+    int nutrients = 3; // A spóra tápanyagértéke
 
+    /**
+     * A spóra konstruktora.
+     */
+    public Spore() {
+    }
+    /**
+     * A spóra konstruktora.
+     * @param shroom
+     */
+    public Spore(Shroom shroom) {
+        this.shroom = shroom;
+        shroom.SetSpore(this);
+    }
     /**
      * A spóra konstruktora.
      * @param shroom
@@ -42,7 +55,7 @@ public class Spore {
     public void EatenBy(Bug bug) {
         IRandomProvider rand = View.GetObjectStore().GetRandomProvider();
 
-        bug.AddNutrients(nutrient);
+        bug.AddNutrients(nutrients);
         bug.AddEffect(rand.RandomBugEffect());
 
         tecton.RemoveSpore(this);
@@ -50,7 +63,7 @@ public class Spore {
     }
 
     public int GetNutrient() {
-        return nutrient;
+        return nutrients;
     }
 
     /**
