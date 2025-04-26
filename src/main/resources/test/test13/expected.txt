@@ -22,7 +22,7 @@ grownShroomBodies: 1,
 	shroomBodyCost: 3
 	shroomUpgradeCost: 3
 	sporeCost: 2
-	devourCost: 2
+	devourCost: 3
 shroombody:
 	tecton: tecton1
 	level: 1

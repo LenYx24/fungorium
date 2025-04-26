@@ -1,7 +1,7 @@
 arrange
 create Tecton tecton1
 create Tecton tecton2
-neighbours tecton1 tecton2
+neighbour tecton1 tecton2
 
 create Shroom shroom
 create ShroomThread thread shroom
@@ -12,8 +12,8 @@ create Spore spore2 shroom
 place spore1 tecton1
 place spore2 tecton1
 
-create ActionPointCatalog actCat
-setref shroom actCatalog actCat
+
+
 
 currentplayer shroom
 

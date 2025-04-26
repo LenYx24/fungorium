@@ -8,31 +8,16 @@ tecton1:
 	spores: { }
 tecton2:
 	neighbours: {
-		tecton1,
-		tecton3
+		tecton1
 	}
-	body: shroomBody
+	body: null
 	threads: { }
 	bugs: { }
 	spores: { }
-tecton3:
-	neighbours: {
-		tecton2
-	}
-	body: shroomBody
-	threads: { }
-	bugs: { }
-	spores: {
-		spore1
-	}
 shroom:
 	spores: { }
-	shroomBodies: {
-		shroombody
-	}
-	threads: {
-		thread
-	}
+	shroomBodies: { }
+	threads: { }
 	actCatalog: shroom_actCat
 	grownShroomBodies: 0
 	shroomThreadCost: 2
@@ -42,13 +27,10 @@ shroom:
 	devourCost: 3
 shroom_actCat:
 	defaultActionPoints: 5
-	currentActionPoints: 3
+	currentActionPoints: 5
 shroomBody:
-	tecton: tecton
-	level: 2
-	remainingThrows: 4
-	sporeMaterials: 0
-spore1:
-	shroom: shroom
-	tecton: tecton3
-	nutrient: 2
+	shroom: null
+	tecton: tecton1
+	level: 1
+	remainingThrows: 5
+	sporeMaterials: 2

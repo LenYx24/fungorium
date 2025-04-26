@@ -9,8 +9,8 @@ create Shroom shroom
 create ShroomBody shroomBody shroom
 place shroomBody tecton1
 
-create ActionPointCatalog actCat
-setref shroom actCatalog actCat
+
+
 
 placethread thread tecton1 tecton2
 

@@ -31,12 +31,12 @@ shroom:
 		thread
 	}
 	actCatalog: actCat
-grownShroomBodies: 2,
+grownShroomBodies: 0,
 	shroomThreadCost: 2
 	shroomBodyCost: 3
 	shroomUpgradeCost: 3
 	sporeCost: 2
-	devourCost: 2
+	devourCost: 3
 thread:
 	shroom: shroom
 	tecton1: tecton1
