@@ -108,10 +108,13 @@ public class View implements IGameObjectStore {
     @Override
     public void EndPending(Object object) {
         // Belerakjuk a legelső objektumot amely létre lett hozva a lista elé
-        objects.put(pendingObjectName, object);
-        objects.putAll(pendingObjects);
-        pendingObjects.clear();
+        var tmp = pendingObjectName;
         pendingObjectName = null;
+        
+        AddObject(tmp, object);
+        pendingObjects.forEach(this::AddObject);
+
+        pendingObjects.clear();
     }
     
     @Override

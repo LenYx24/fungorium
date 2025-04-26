@@ -149,7 +149,7 @@ public class Bug {
         boolean reachable = thread.IsTectonReachable(tecton);
 
         if (canCut && reachable) {
-            thread.Remove();
+            thread.SetCut();
             return true;
         }
 

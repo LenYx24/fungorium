@@ -234,7 +234,8 @@ public class Shroom implements IShroomController {
             body.ProduceSporeMaterial();
         }
 
-        for (ShroomThread thread : threads)
+        // A fonalak törlődhetnek bejárás közben, ezért másolaton iterálunk
+        for (ShroomThread thread : List.copyOf(threads))
             thread.ValidateLife();
     }
 

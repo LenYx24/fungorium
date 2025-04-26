@@ -174,4 +174,8 @@ public class ShroomThread {
     public void SetSustained() {
         sustained = true;
     }
+
+    public void SetCut() {
+        cut = true;
+    }
 }
