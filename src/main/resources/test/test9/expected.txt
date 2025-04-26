@@ -1,11 +1,11 @@
 tecton:
-	neighbours:{ }
+	neighbours: { }
 	body: null
-	threads:{ }
-	bugs:{
+	threads: { }
+	bugs: {
 		bug
 	}
-	spores:{ }
+	spores: { }
 bugOwner:
 	bugs: {
 		bug
@@ -13,7 +13,7 @@ bugOwner:
 	actCatalog: actCat
 bug:
 	tecton: tecton
-	effects:{
+	effects: {
 		jawLockEffect1
 	}
 	bugOwner: bugOwner

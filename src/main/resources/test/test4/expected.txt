@@ -1,5 +1,5 @@
 tecton1:
-	neighbours:{
+	neighbours: {
 		tecton2
 	}
 	body: null
@@ -9,10 +9,10 @@ tecton1:
 	bugs: {
 		bug
 	}
-	spores: {}
+	spores: { }
 
 tecton2:
-	neighbours:{
+	neighbours: {
 		tecton1
 	}
 	body: null
@@ -20,7 +20,7 @@ tecton2:
 		thread
 	}
 	bugs: { }
-	spores: {}
+	spores: { }
 actCat:
 	defaultActionPoints: 5
 	currentActionPoints: 5
@@ -31,7 +31,7 @@ bugOwner:
 	actCatalog: actCat
 bug:
 	tecton: tecton1
-	effects: {}
+	effects: { }
 	bugOwner: bugOwner
 	collectedNutrients: 0
 	canMove: false

@@ -1,36 +1,36 @@
 tecton1:
-    neighbours:{
+    neighbours: {
         tecton2
     }
     body: shroomBody
-    threads:{ }
-    bugs:{ }
-    spores:{ }
+    threads: { }
+    bugs: { }
+    spores: { }
 tecton2:
-    neighbours:{
+    neighbours: {
         tecton1,
         tecton3
     }
     body: shroomBody
-    threads:{ }
-    bugs:{ }
-    spores:{ }
+    threads: { }
+    bugs: { }
+    spores: { }
 tecton3:
-    neighbours:{
+    neighbours: {
         tecton2
     }
     body: shroomBody
-    threads:{ }
-    bugs:{ }
-    spores:{
+    threads: { }
+    bugs: { }
+    spores: {
         spore1
     }
 shroom:
-    spores:{ }
-    shroomBodies:{
+    spores: { }
+    shroomBodies: {
         shroombody
     }
-    threads:{
+    threads: {
         thread
     }
     actCatalog: shroom_actCat

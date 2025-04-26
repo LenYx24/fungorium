@@ -1,5 +1,5 @@
 tecton1:
-	neighbours:{
+	neighbours: {
 		tecton2
 	}
 	body: null
@@ -10,7 +10,7 @@ tecton1:
 		bug
 	}
 tecton2:
-	neighbours:{
+	neighbours: {
 		tecton1
 	}
 	body: null
@@ -38,8 +38,8 @@ bug:
 	cutThreadCost: 2
 shroom:
 	spores: { }
-	shroomBodies:{ }
-	threads:{
+	shroomBodies: { }
+	threads: {
 		thread
 	}
 	actCatalog: null

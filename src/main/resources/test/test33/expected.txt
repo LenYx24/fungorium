@@ -1,47 +1,47 @@
 tecton1:
-    neighbours:{
+    neighbours: {
         tecton2
     }
     body: null
-    threads:{
+    threads: {
         thread1
     }
-    bugs:{ }
+    bugs: { }
 tecton2:
-    neighbours:{
+    neighbours: {
         tecton1,
         tecton3
     }
     body: null
-    threads:{
+    threads: {
         thread1,
         thread2
     }
-    bugs:{ }
+    bugs: { }
 tecton3:
-    neighbours:{
+    neighbours: {
         tecton2,
         tecton4
     }
     body: null
-    threads:{
+    threads: {
         thread2,
         thread3
     }
-    bugs:{ }
+    bugs: { }
 tecton4:
-    neighbours:{
+    neighbours: {
         tecton3
     }
     body: null
-    threads:{
+    threads: {
         thread3
     }
-    bugs:{
+    bugs: {
         bug
     }
 bugOwner:
-    bugs:{
+    bugs: {
         bug
     }
     actCatalog: bugOwner_actCat
@@ -50,7 +50,7 @@ bugOwner_actCat:
     currentActionPoints: 1
 bug:
     tecton: tecton2
-    effects:{
+    effects: {
         coffeeEffect
     }
     bugOwner: bugOwner
@@ -61,9 +61,9 @@ bug:
     eatCost: 2
     cutThreadCost: 2
 shroom:
-    spores:{ }
-    shroomBodies:{ }
-    threads:{
+    spores: { }
+    shroomBodies: { }
+    threads: {
         thread1,
         thread2,
         thread3

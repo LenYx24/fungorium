@@ -1,29 +1,29 @@
 tecton1:
-	neighbours:{
+	neighbours: {
 		tecton2
 	}
 	body: null
-	threads:{
+	threads: {
 		thread
 	}
-	bugs:{
+	bugs: {
 		bug
 	}
-	spores:{ }
+	spores: { }
 tecton2:
-	neighbours:{
+	neighbours: {
 		tecton1
 	}
 	body: null
 	threads: {
 		thread
 	}
-	bugs:{ }
-	spores:{ }
+	bugs: { }
+	spores: { }
 shroom:
-	spores:{ }
-	shroomBodies:{ }
-	threads:{
+	spores: { }
+	shroomBodies: { }
+	threads: {
 		thread
 	}
 	actCatalog: null
@@ -50,7 +50,7 @@ bugOwner:
 	actCatalog: bugCat
 bug:
 	tecton: tecton1
-	effects:{
+	effects: {
 		effect
 	}
 	bugOwner: bugOwner

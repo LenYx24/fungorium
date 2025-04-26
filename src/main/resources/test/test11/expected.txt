@@ -1,11 +1,11 @@
 tecton:
-	neighbours:{ }
+	neighbours: { }
 	body: null
-	threads:{ }
-	bugs:{
+	threads: { }
+	bugs: {
 		bug1
 	}
-	spores:{ }
+	spores: { }
 bugOwner:
 	bugs: {
 		bug1
@@ -13,7 +13,7 @@ bugOwner:
 	actCatalog: actCat
 bug1:
 	tecton: tecton
-	effects:{ }
+	effects: { }
 	bugOwner: bugOwner
 	collectedNutrients: 2
 	canMove: true
@@ -32,7 +32,7 @@ divisionEffect:
 	remainingUses: 0
 bug2:
 	tecton: tecton
-	effects:{}
+	effects: { }
 	bugOwner: bugOwner
 	collectedNutrients: 2
 	canMove: true
