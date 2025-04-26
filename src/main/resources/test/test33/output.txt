@@ -30,7 +30,9 @@ tecton3:
 		thread2,
 		thread3
 	}
-	bugs: { }
+	bugs: {
+		bug
+	}
 	spores: { }
 tecton4:
 	neighbours: {
@@ -40,9 +42,7 @@ tecton4:
 	threads: {
 		thread3
 	}
-	bugs: {
-		bug
-	}
+	bugs: { }
 	spores: { }
 bugOwner:
 	bugs: {
@@ -53,15 +53,13 @@ bugOwner_actCat:
 	defaultActionPoints: 5
 	currentActionPoints: 1
 bug:
-	tecton: tecton2
-	effects: {
-		coffeeEffect
-	}
+	tecton: tecton3
+	effects: { }
 	bugOwner: bugOwner
 	collectedNutrients: 0
 	canMove: true
 	canCut: true
-	moveCost: 1
+	moveCost: 2
 	eatCost: 2
 	cutThreadCost: 2
 shroom:
@@ -113,4 +111,4 @@ thread3:
 	cutDamageTimer: 3
 	sustained: false
 coffeeEffect:
-	remainingUses: 2
+	remainingUses: 3

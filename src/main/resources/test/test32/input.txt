@@ -16,6 +16,7 @@ create Bug bug bugOwner
 placethread thread tecton1 tecton2
 place shroomBody tecton1
 place bug tecton1
+place spore tecton1
 
 seed 0
 

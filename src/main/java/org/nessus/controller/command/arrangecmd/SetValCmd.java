@@ -49,7 +49,6 @@ public class SetValCmd extends BaseCommand {
             }
 
             field.set(targetObject, value);
-            System.out.println("Paraméter beállítva");
         } catch (NoSuchFieldException | IllegalAccessException e) {
             System.out.println("Hiba: " + e.getMessage());
         }

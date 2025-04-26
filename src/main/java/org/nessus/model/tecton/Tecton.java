@@ -6,6 +6,7 @@ import org.nessus.model.shroom.*;
 import org.nessus.view.View;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -31,6 +32,7 @@ public class Tecton implements ITectonController {
      * @param copyTecton
      */
     protected void SpreadEntities(Tecton copyTecton) {
+        copyTecton.SetNeighbour(this);
         for (Tecton neighbour : neighbours) {
             copyTecton.neighbours.add(neighbour);
             neighbour.neighbours.add(copyTecton);
@@ -40,32 +42,38 @@ public class Tecton implements ITectonController {
 
         IRandomProvider randProvider = View.GetObjectStore().GetRandomProvider();
 
-        for (Bug bug : bugs) {
+        Iterator<Bug> bugIterator = bugs.iterator();
+        while (bugIterator.hasNext()) {
+            Bug bug = bugIterator.next();
             boolean transferBug = randProvider.RandomBoolean();
+            System.out.println("átrakás: "+ transferBug);
             if (transferBug) {
                 copyTecton.AddBug(bug);
                 bug.SetTecton(copyTecton);
-                bugs.remove(bug);
+                bugIterator.remove();
             }
         }
 
-        for (Spore spore : spores) {
+        Iterator<Spore> sporeIterator = spores.iterator();
+        while (sporeIterator.hasNext()) {
+            Spore spore = sporeIterator.next();
             boolean transferSpore = randProvider.RandomBoolean();
             if (transferSpore) {
                 copyTecton.ThrowSpore(spore);
                 spore.SetTecton(copyTecton);
-                spores.remove(spore);
+                sporeIterator.remove();
             }
         }
 
         if (this.body != null) {
             boolean transferShroomBody = randProvider.RandomBoolean();
-            if(transferShroomBody) {
+            if (transferShroomBody) {
                 copyTecton.SetShroomBody(body);
                 body.SetTecton(copyTecton);
                 this.ClearShroomBody();
             }
         }
+
     }
 
     /**
@@ -204,9 +212,7 @@ public class Tecton implements ITectonController {
      * @return Tecton - A másolat
      */
     public Tecton Copy() {
-        Tecton copyTecton = new Tecton();
-        View.GetObjectStore().AddObjectWithNameGen("tecton", copyTecton);
-        return copyTecton;
+        return new Tecton();
     }
 
     /**
