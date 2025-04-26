@@ -1,0 +1,42 @@
+tecton1:
+	neighbours:{
+		tecton2
+	}
+	body: null
+	threads: {
+		thread
+	}
+	bugs: {
+		bug
+	}
+	spores: {}
+
+tecton2:
+	neighbours:{
+		tecton1
+	}
+	body: null
+	threads: {
+		thread
+	}
+	bugs: { }
+	spores: {}
+actCat:
+	defaultActionPoints: 5
+	currentActionPoints: 5
+bugOwner:
+	bugs: {
+		bug
+	}
+	actCatalog: actCat
+bug:
+	tecton: tecton1
+	effects: {}
+	bugOwner: bugOwner
+	collectedNutrients: 0
+	canMove: false
+	canCut: true
+	moveCost: 2
+	eatCost: 2
+	cutThreadCost: 2
+
