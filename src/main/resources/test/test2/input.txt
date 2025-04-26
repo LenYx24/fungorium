@@ -1,12 +1,10 @@
 arrange
 create Tecton tecton1
 create Tecton tecton2
-create ActionPointCatalog actCat
 
 neighbour tecton1 tecton2
 
 create BugOwner bugOwner
-setref bugOwner actCatalog actCat
 create Bug bug bugOwner
 create Shroom shroom
 create ShroomThread thread shroom
