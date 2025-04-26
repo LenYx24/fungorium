@@ -21,7 +21,7 @@ public class ShroomThread {
     int isolationCounter = 0; // Az izoláció számlálója
     boolean cut = false; // A fonal el van-e vágva
 
-    int cutDamageTimer = 0; // Megadja, a fonál hány kör után szívódik fel miután elvágták
+    int cutDamageTimer = 3; // Megadja, a fonál hány kör után szívódik fel miután elvágták
     boolean sustained = false; // Megadja, hogy a fonált épp életben tartja-e egy ThreadSustainerTecton. Ilyenkor nem szívódik fel.
 
     /**
@@ -29,9 +29,8 @@ public class ShroomThread {
      * @param tecton1
      * @param tecton2
      */
-    public ShroomThread(Tecton tecton1, Tecton tecton2) {
-        this.tecton1 = tecton1;
-        this.tecton2 = tecton2;
+    public ShroomThread(Shroom shroom) {
+        this.shroom = shroom;
     }
     
     /**
@@ -41,8 +40,9 @@ public class ShroomThread {
      * @param tecton2
      */
     public ShroomThread(Shroom shroom, Tecton tecton1, Tecton tecton2) {
-        this(tecton1, tecton2);
         this.shroom = shroom;
+        this.tecton1 = tecton1;
+        this.tecton2 = tecton2;
     }
 
     /**

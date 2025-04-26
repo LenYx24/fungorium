@@ -29,8 +29,8 @@ public class SingleThreadTecton extends Tecton {
      */
     @Override
     public boolean GrowShroomThread(ShroomThread thread) {
-        if (shroomThreads.isEmpty()) {
-            shroomThreads.add(thread);
+        if (threads.isEmpty()) {
+            threads.add(thread);
             return true;
         }
         

@@ -36,7 +36,7 @@ public class DesertTecton extends Tecton {
      */
     @Override
     public boolean GrowShroomThread(ShroomThread thread) {
-        this.shroomThreads.add(thread);
+        this.threads.add(thread);
         this.decayTimers.put(thread, 2);
         return true;
     }
@@ -51,7 +51,7 @@ public class DesertTecton extends Tecton {
      */
     @Override
     public void UpdateTecton() {
-        for (ShroomThread thread : List.copyOf(shroomThreads)) {
+        for (ShroomThread thread : List.copyOf(threads)) {
             var decayTimer = decayTimers.get(thread);
 
             if (decayTimer <= 0) {

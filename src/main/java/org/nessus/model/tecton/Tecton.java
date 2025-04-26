@@ -27,10 +27,10 @@ import java.util.Random;
  */
 public class Tecton implements ITectonController {
     protected List<Tecton> neighbours = new ArrayList<>(); // A szomszédos tektonok listája
-    protected List<Spore> spores = new ArrayList<>(); // A tektonon található spórák listája
-    protected List<ShroomThread> shroomThreads = new ArrayList<>(); // A tektonon található gombafonalak listája
+    protected ShroomBody body = null; // A tektonon található gombatest
+    protected List<ShroomThread> threads = new ArrayList<>(); // A tektonon található gombafonalak listája
     protected List<Bug> bugs = new ArrayList<>(); // A tektonon található rovarok listája
-    protected ShroomBody shroomBody = null; // A tektonon található gombatest
+    protected List<Spore> spores = new ArrayList<>(); // A tektonon található spórák listája
 
     /**
      * Törés közben a tekton szomszédos tektonjaira átkerülnek a rovarok és spórák.
@@ -66,11 +66,11 @@ public class Tecton implements ITectonController {
             }
         }
 
-        if (this.shroomBody != null) {
+        if (this.body != null) {
             boolean transferShroomBody = randProvider.RandomBoolean();
             if(transferShroomBody) {
-                copyTecton.SetShroomBody(shroomBody);
-                shroomBody.SetTecton(copyTecton);
+                copyTecton.SetShroomBody(body);
+                body.SetTecton(copyTecton);
                 this.ClearShroomBody();
             }
         }
@@ -88,7 +88,7 @@ public class Tecton implements ITectonController {
         View.GetObjectStore().AddObject("copyTecton", copyTecton);
 
         //Konkurens Módosítás Kivétel elkerülése érdekében másolat
-        List.copyOf(shroomThreads).forEach(ShroomThread::Remove);
+        List.copyOf(threads).forEach(ShroomThread::Remove);
     }
 
     /**
@@ -97,7 +97,7 @@ public class Tecton implements ITectonController {
      * @return Boolean - Sikeres volt-e a növesztés
      */
     public boolean GrowShroomThread(ShroomThread thread) {
-        shroomThreads.add(thread);
+        threads.add(thread);
         return true;
     }
 
@@ -107,7 +107,7 @@ public class Tecton implements ITectonController {
      * @return void
      */
     public void RemoveShroomThread(ShroomThread thread) {
-        shroomThreads.remove(thread);
+        threads.remove(thread);
     }
 
     /**
@@ -117,7 +117,7 @@ public class Tecton implements ITectonController {
      * @return Boolean - Sikeres volt-e a növesztés
      */
     public boolean GrowShroomBody(ShroomBody body) {
-        if (shroomBody != null)
+        if (this.body != null)
             return false;
 
         var usableSpores = spores.stream()
@@ -130,7 +130,7 @@ public class Tecton implements ITectonController {
         var spore = usableSpores.getFirst();
         RemoveSpore(spore);
         
-        shroomBody = body;
+        this.body = body;
         body.SetTecton(this);
 
         return true;
@@ -142,14 +142,14 @@ public class Tecton implements ITectonController {
      * @return void
      */
     public void SetShroomBody(ShroomBody body) {
-        shroomBody = body;
+        body = body;
     }
 
     /**
      * Gombatest eltávolítása a tektonról.
      */
     public void ClearShroomBody() {
-        shroomBody = null;
+        body = null;
     }
 
     /**
@@ -158,7 +158,7 @@ public class Tecton implements ITectonController {
      * @return ShroomBody - A tektonon található gombatest
      */
     public ShroomBody GetShroomBody() {
-        return shroomBody;
+        return body;
     }
 
     /**
@@ -223,7 +223,7 @@ public class Tecton implements ITectonController {
      * @return Boolean - Szomszédos-e a két tekton
      */
     public boolean HasGrownShroomThreadTo(Tecton tecton) {
-        for (ShroomThread shroomThread : shroomThreads) {
+        for (ShroomThread shroomThread : threads) {
             if (shroomThread.IsTectonReachable(tecton)) {
                 return true;
             }
@@ -238,7 +238,7 @@ public class Tecton implements ITectonController {
      * @return List<ShroomThread> - A tektonon található gombafonalak listája
      */
     public List<ShroomThread> GetShroomThreads() {
-        return shroomThreads;
+        return threads;
     }
 
     /**
@@ -294,7 +294,7 @@ public class Tecton implements ITectonController {
      * @return Boolean - Tartalmaz-e a tekton adott gombafonalat
      */
     public boolean ContainsThread(ShroomThread thread) {
-        return shroomThreads.contains(thread);
+        return threads.contains(thread);
     }
 
     /**
@@ -302,6 +302,6 @@ public class Tecton implements ITectonController {
      * @return List<ShroomBody> - A tektonon található gombatestek listája
      */
     public List<ShroomThread> GetThreads() {
-        return shroomThreads;
+        return threads;
     }
 }

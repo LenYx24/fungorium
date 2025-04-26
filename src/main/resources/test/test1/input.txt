@@ -5,9 +5,6 @@ neighbour tecton1 tecton2
 
 create BugOwner bugOwner
 
-create ActionPointCatalog actCat
-setref bugOwner actCatalog actCat
-
 create Bug bug bugOwner
 create Shroom shroom
 create ShroomThread thread shroom

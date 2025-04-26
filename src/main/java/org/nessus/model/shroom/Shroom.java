@@ -23,7 +23,7 @@ public class Shroom implements IShroomController {
     private List<Spore> spores = new ArrayList<>(); // Spórák listája
     private List<ShroomBody> shroomBodies = new ArrayList<>(); // Gombatestek listája
     private List<ShroomThread> threads = new ArrayList<>(); // Fonalak listája
-    private ActionPointCatalog actCatalog = new ActionPointCatalog(); // A gombákhoz tartozó pontokat tároló objektum
+    private ActionPointCatalog actCatalog; // A gombákhoz tartozó pontokat tároló objektum
 
     private int grownShroomBodies = 0; // A nőtt gombatestek száma
 
@@ -39,8 +39,12 @@ public class Shroom implements IShroomController {
      * A pontokat alaphelyzetbe állítja
      */
     public Shroom() {
-        View.GetObjectStore().AddObject( "actCatalog",actCatalog);
+        actCatalog = new ActionPointCatalog();
+        var objStore = View.GetObjectStore();
+        var name = objStore.GetPendingObjectName() + "_actCat";
+        View.GetObjectStore().AddObject(name, actCatalog);
         ResetPoints();
+        LoadDefaultCosts();
     }
 
     /**

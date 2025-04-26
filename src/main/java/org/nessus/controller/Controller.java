@@ -104,15 +104,21 @@ public class Controller implements IRandomProvider {
                 if(NotEnoughArgs(args,2))
                     return;
                 
-                    Object obj = view.GetObject(args[0]);
+                Object obj = view.GetObject(args[0]);
                 Tecton tecton = (Tecton)view.GetObject(args[1]);
 
-                if(obj instanceof Bug)
-                    tecton.AddBug((Bug)obj);
-                else if(obj instanceof ShroomBody)
-                    tecton.SetShroomBody((ShroomBody)obj);
-                else if(obj instanceof Spore)
-                    tecton.ThrowSpore((Spore)obj);
+                if(obj instanceof Bug bug) {
+                    tecton.AddBug(bug);
+                    bug.SetTecton(tecton);
+                }
+                else if(obj instanceof ShroomBody body) {
+                    tecton.SetShroomBody(body);
+                    body.SetTecton(tecton);
+                }
+                else if(obj instanceof Spore spore) {
+                    tecton.ThrowSpore(spore);
+                    spore.SetTecton(tecton);
+                }
             }
         });
         arrangeCmds.put("placethread", new BaseCommand() {
@@ -131,6 +137,9 @@ public class Controller implements IRandomProvider {
 
                     tecton1.GrowShroomThread(thread);
                     tecton2.GrowShroomThread(thread);
+
+                    thread.SetTecton1(tecton1);
+                    thread.SetTecton2(tecton2);
                 }
             }
         });
