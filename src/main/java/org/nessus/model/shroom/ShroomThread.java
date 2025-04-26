@@ -44,6 +44,7 @@ public class ShroomThread {
      */
     public ShroomThread(Shroom shroom, Tecton tecton1, Tecton tecton2) {
         this.shroom = shroom;
+        shroom.SetShroomThread(this);
         this.tecton1 = tecton1;
         this.tecton2 = tecton2;
     }

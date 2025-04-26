@@ -35,7 +35,13 @@ public class Bug {
     /**
      * Konstruktor
      * A rovar tektonját és tulajdonosát beállítja.
-     * @param tecton
+     */
+    public Bug() {
+        LoadDefaultCosts();
+    }
+    /**
+     * Konstruktor
+     * A rovar tektonját és tulajdonosát beállítja.
      * @param owner
      */
     public Bug(BugOwner owner) {

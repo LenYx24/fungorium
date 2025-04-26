@@ -6,15 +6,16 @@ neighbour tecton1 tecton2
 create Bug bug
 setval bug canMove false
 create Shroom shroom
-create ShroomThread thread
+create ShroomThread thread shroom
 setval thread evolution 3
 
 placethread thread tecton1 tecton2
+place bug tecton2
 
 currentplayer shroom
 
 act
 devour thread bug
 
-arrange
+assert
 save output.txt

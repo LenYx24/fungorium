@@ -5,7 +5,7 @@ neighbour tecton1 tecton2
 
 create Shroom shroom
 
-create ShroomBody shroomBody
+create ShroomBody shroomBody shroom
 setval shroomBody sporeMaterials 2
 
 place shroomBody tecton1

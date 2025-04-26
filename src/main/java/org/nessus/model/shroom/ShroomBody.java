@@ -112,7 +112,8 @@ public class ShroomBody {
      * @return Spore - A kialakított spóra
      */
     public Spore FormSpore(Tecton tecton) {
-        if (sporeMaterials <= 2 || !InRange(tecton))
+        System.out.println("sporemat: "+sporeMaterials);
+        if (sporeMaterials < 2 || !InRange(tecton))
             return null;
 
         sporeMaterials -= 2;

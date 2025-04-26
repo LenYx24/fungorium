@@ -13,10 +13,16 @@ tecton2:
 	body: null
 	threads: { }
 	bugs: { }
-	spores: { }
+	spores: {
+		spore1
+	}
 shroom:
-	spores: { }
-	shroomBodies: { }
+	spores: {
+		spore1
+	}
+	shroomBodies: {
+		shroomBody
+	}
 	threads: { }
 	actCatalog: shroom_actCat
 	grownShroomBodies: 0
@@ -27,10 +33,14 @@ shroom:
 	devourCost: 3
 shroom_actCat:
 	defaultActionPoints: 5
-	currentActionPoints: 5
+	currentActionPoints: 3
 shroomBody:
-	shroom: null
+	shroom: shroom
 	tecton: tecton1
 	level: 1
-	remainingThrows: 5
-	sporeMaterials: 2
+	remainingThrows: 4
+	sporeMaterials: 0
+spore1:
+	shroom: shroom
+	tecton: tecton2
+	nutrients: 3

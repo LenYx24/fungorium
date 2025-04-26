@@ -168,6 +168,7 @@ public class Shroom implements IShroomController {
         if (actCatalog.HasEnoughPoints(sporeCost)) {
             Spore spore = body.FormSpore(tecton);
 
+            System.out.println("nemnull: " + spore != null);
             if (spore != null) {
                 spores.add(spore);
                 actCatalog.DecreasePoints(sporeCost);
@@ -183,9 +184,13 @@ public class Shroom implements IShroomController {
      */
     public void ShroomThreadDevourBug(ShroomThread thread, Bug bug) {
         if (actCatalog.HasEnoughPoints(devourCost)) {
+            // Ez azért kell mert a shroomBodyCost nullára csökken ha sikeresen elfogyasztja a fonal a rovart
+            int originalShroomBodyCost = shroomBodyCost;
             boolean success = thread.DevourCrippledBug(bug);
-            if (success)
+            if (success){
                 actCatalog.DecreasePoints(devourCost);
+                actCatalog.IncreasePoints(originalShroomBodyCost);
+            }
         }
     }
 
