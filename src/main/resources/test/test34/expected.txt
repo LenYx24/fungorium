@@ -1,90 +1,90 @@
 tecton1:
-    neighbours: {
-        tecton2
-    }
-    body: null
-    threads: {
-        thread1
-    }
-    bugs: { }
+	neighbours: {
+		tecton2
+	}
+	body: null
+	threads: {
+		thread1
+	}
+	bugs: { }
 tecton2:
-    neighbours: {
-        tecton1,
-        tecton3
-    }
-    body: null
-    threads: {
-        thread1,
-        thread2
-    }
-    bugs: {
-        bug
-    }
+	neighbours: {
+		tecton1,
+		tecton3
+	}
+	body: null
+	threads: {
+		thread1,
+		thread2
+	}
+	bugs: {
+		bug
+	}
 tecton3:
-    neighbours: {
-        tecton2
-    }
-    body: null
-    threads: {
-        thread2
-    }
-    bugs: { }
+	neighbours: {
+		tecton2
+	}
+	body: null
+	threads: {
+		thread2
+	}
+	bugs: { }
 bugOwner:
-    bugs: {
-        bug
-    }
-    actCatalog: bugOwner_actCat
+	bugs: {
+		bug
+	}
+	actCatalog: bugOwner_actCat
 bugOwner_actCat:
-    defaultActionPoints: 5
-    currentActionPoints: 3
+	defaultActionPoints: 5
+	currentActionPoints: 3
 bug:
-    tecton: tecton2
-    effects: {
-        slowEffect
-    }
-    bugOwner: bugOwner
-    collectedNutrients: 0
-    canMove: true
-    canCut: true
-    moveCost: 2
-    eatCost: 2
-    cutThreadCost: 2
+	tecton: tecton2
+	effects: {
+		slowEffect
+	}
+	bugOwner: bugOwner
+	collectedNutrients: 0
+	canMove: true
+	canCut: true
+	moveCost: 2
+	eatCost: 2
+	cutThreadCost: 2
 shroom:
-    spores: { }
-    shroomBodies: { }
-    threads: {
-        thread1,
-        thread2
-    }
-    actCatalog: shroom_actCat
-    grownShroomBodies: 1,
-    shroomThreadCost: 2
-    shroomBodyCost: 3
-    shroomUpgradeCost: 3
-    sporeCost: 2
-    devourCost: 2
+	spores: { }
+	shroomBodies: { }
+	threads: {
+		thread1,
+		thread2
+	}
+	actCatalog: shroom_actCat
+	grownShroomBodies: 1,
+	shroomThreadCost: 2
+	shroomBodyCost: 3
+	shroomUpgradeCost: 3
+	sporeCost: 2
+	devourCost: 2
 shroom_actCat:
-    defaultActionPoints: 5
-    currentActionPoints: 5
+	defaultActionPoints: 5
+	currentActionPoints: 5
 thread1:
-    shroom: shroom
-    tecton1: tecton1
-    tecton2: tecton2
-    evolution: 3
-    connectedToShroomBody: true
-    isolationCounter: 0
-    cut: false
-    cutDamageTimer: 3
-    sustained: false
+	shroom: shroom
+	tecton1: tecton1
+	tecton2: tecton2
+	evolution: 3
+	connectedToShroomBody: true
+	isolationCounter: 0
+	cut: false
+	cutDamageTimer: 3
+	sustained: false
 thread2:
-    shroom: shroom
-    tecton1: tecton2
-    tecton2: tecton3
-    evolution: 3
-    connectedToShroomBody: true
-    isolationCounter: 0
-    cut: false
-    cutDamageTimer: 3
-    sustained: false
+	shroom: shroom
+	tecton1: tecton2
+	tecton2: tecton3
+	evolution: 3
+	connectedToShroomBody: true
+	isolationCounter: 0
+	cut: false
+	cutDamageTimer: 3
+	sustained: false
 slowEffect:
-    remainingUses: 2
+	remainingUses: 2

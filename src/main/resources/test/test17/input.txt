@@ -9,9 +9,6 @@ create ShroomThread thread shroom
 
 placethread thread tecton1 tecton2
 
-create ActionPointCatalog actCat
-setref shroom actCatalog actCat
-
 currentplayer shroom
 
 act

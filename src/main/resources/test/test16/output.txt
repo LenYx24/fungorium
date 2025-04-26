@@ -1,7 +1,5 @@
 tecton1:
-	neighbours: {
-		tecton2
-	}
+	neighbours: { }
 	body: null
 	threads: {
 		thread
@@ -9,9 +7,7 @@ tecton1:
 	bugs: { }
 	spores: { }
 tecton2:
-	neighbours: {
-		tecton1
-	}
+	neighbours: { }
 	body: null
 	threads: {
 		thread
@@ -24,7 +20,7 @@ shroom:
 	threads: {
 		thread
 	}
-	actCatalog: shroom_actCat
+	actCatalog: actCat
 	grownShroomBodies: 0
 	shroomThreadCost: 2
 	shroomBodyCost: 3
@@ -44,6 +40,9 @@ thread:
 	cut: false
 	cutDamageTimer: 3
 	sustained: false
+actCat:
+	defaultActionPoints: 5
+	currentActionPoints: 5
 newBody:
 	shroom: shroom
 	tecton: tecton1
