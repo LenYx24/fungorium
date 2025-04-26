@@ -6,9 +6,6 @@ create Shroom shroom
 create ShroomBody shroomBody shroom
 place shroomBody tecton1
 
-
-
-
 currentplayer shroom
 
 act

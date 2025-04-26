@@ -62,13 +62,12 @@ public class Shroom implements IShroomController {
         boolean enough = actCatalog.HasEnoughPoints(shroomThreadCost);
         boolean neighbours = tecton1.IsNeighbourOf(tecton2);
 
-        boolean connectedToBody = false;
-
-        Shroom shroom1 = tecton1.GetShroomBody().GetShroom();
-        Shroom shroom2 = tecton2.GetShroomBody().GetShroom();
-
-        if (shroom1 == this || shroom2 == this)
-            connectedToBody = true;
+        
+        ShroomBody body1 = tecton1.GetShroomBody();
+        ShroomBody body2 = tecton2.GetShroomBody();
+        
+        boolean connectedToBody = (body1 != null && body1.GetShroom() == this) ||
+                                  (body2 != null && body2.GetShroom() == this);
 
         List<ShroomThread> funcThreads = new ArrayList<>();
 
@@ -86,13 +85,13 @@ public class Shroom implements IShroomController {
 
         if (enough && neighbours && connectedToBody) {
             ShroomThread newThread = new ShroomThread(this, tecton1, tecton2);
+            newThread.SetConnectedToShroomBody(connectedToBody);
 
             boolean t1success = tecton1.GrowShroomThread(newThread);
             boolean t2success = tecton2.GrowShroomThread(newThread);
 
             if (t1success && t2success) {
                 View.GetObjectStore().AddObjectWithNameGen("thread", newThread);
-                threads.add(newThread);
                 actCatalog.DecreasePoints(shroomThreadCost);
             } else {
                 newThread.Remove();
