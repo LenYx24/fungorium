@@ -41,7 +41,9 @@ bug:
 shroom:
 	spores: { }
 	shroomBodies: { }
-	threads: { }
+	threads: {
+		thread
+	}
 	actCatalog: shroom_actCat
 	grownShroomBodies: 0
 	shroomThreadCost: 2

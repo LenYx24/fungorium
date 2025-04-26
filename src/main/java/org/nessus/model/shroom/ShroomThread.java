@@ -15,7 +15,7 @@ public class ShroomThread {
     private Tecton tecton2; // A másik tecton, amelyhez a fonal kapcsolódik
 
     int evolution = 0; // A fonal fejlődési szintje
-    boolean connectedToShroomBody = true; // A fonal kapcsolódik-e a gomba testéhez
+    boolean connectedToShroomBody = false; // A fonal kapcsolódik-e a gomba testéhez
     int isolationCounter = 0; // Az izoláció számlálója
     boolean cut = false; // A fonal el van-e vágva
 
