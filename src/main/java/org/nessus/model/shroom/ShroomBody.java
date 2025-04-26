@@ -32,6 +32,14 @@ public class ShroomBody {
     }
 
     /**
+     * Az osztály konstruktora.
+     * @param shroom
+     */
+    public ShroomBody(Shroom shroom) {
+        this.shroom = shroom;
+    }
+
+    /**
      * A gombatest tektonjának lekérdezése
      * @return A gombatest tektonja
      */

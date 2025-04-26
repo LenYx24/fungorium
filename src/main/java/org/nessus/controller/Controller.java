@@ -36,6 +36,8 @@ public class Controller implements IRandomProvider {
     private HashMap<String, BaseCommand> actCmds = new HashMap<>();
     private HashMap<String, BaseCommand> assertCmds = new HashMap<>();
 
+    Path runpath = null;
+
     public Controller(View view) {
         normalCmds.put("hi", new BaseCommand() {
             @Override
@@ -149,8 +151,9 @@ public class Controller implements IRandomProvider {
             public void Run(String[] args) {
                 if(NotEnoughArgs(args,1))
                     return;
-                
+
                 var path = Paths.get("src", "main", "resources", "test", args[0], "input.txt");
+                runpath = Paths.get("src", "main", "resources", "test", args[0]);
                 try (BufferedReader reader = Files.newBufferedReader(path)) {
                     String line;
                     while ((line = reader.readLine()) != null) {
@@ -344,6 +347,9 @@ public class Controller implements IRandomProvider {
             @Override
             public void Run(String[] args) {
                 var p = Paths.get("target", args[0]);
+                if(runpath != null){
+                    p = runpath.resolve(args[0]);
+                }
 
                 try (FileOutputStream fstream = new FileOutputStream(p.toFile())) {
                     var save = new ShowCmd(fstream);
