@@ -4,8 +4,8 @@ create Tecton tecton
 create BugOwner bugOwner
 create Bug bug1 bugOwner
 
-create ActionPointCatalog actCat
-setref bugOwner actCatalog actCat
+
+
 
 create Spore spore
 setval spore nutrients 2

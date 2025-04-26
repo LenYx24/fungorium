@@ -6,8 +6,8 @@ create Shroom shroom
 create ShroomBody shroomBody shroom
 place shroomBody tecton1
 
-create ActionPointCatalog actCat
-setref shroom actCatalog actCat
+
+
 
 currentplayer shroom
 

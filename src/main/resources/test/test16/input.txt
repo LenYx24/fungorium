@@ -12,8 +12,8 @@ create Spore spore2 shroom
 place spore1 tecton1
 place spore2 tecton1
 
-create ActionPointCatalog actCat
-setref shroom actCatalog actCat
+
+
 
 currentplayer shroom
 
