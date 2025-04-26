@@ -6,7 +6,9 @@ tecton:
 	spores: { }
 shroom:
 	spores: { }
-	shroomBodies: { }
+	shroomBodies: {
+		shroomBody
+	}
 	threads: { }
 	actCatalog: shroom_actCat
 	grownShroomBodies: 0
@@ -19,7 +21,7 @@ shroom_actCat:
 	defaultActionPoints: 5
 	currentActionPoints: 5
 shroomBody:
-	shroom: null
+	shroom: shroom
 	tecton: tecton
 	level: 1
 	remainingThrows: 5

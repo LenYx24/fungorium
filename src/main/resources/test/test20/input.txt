@@ -3,7 +3,7 @@ create Tecton tecton
 
 create Shroom shroom
 
-create ShroomBody shroomBody
+create ShroomBody shroomBody shroom
 
 place shroomBody tecton
 

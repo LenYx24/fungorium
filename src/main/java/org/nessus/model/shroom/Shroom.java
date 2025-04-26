@@ -144,7 +144,6 @@ public class Shroom implements IShroomController {
         
         boolean enough = actCatalog.HasEnoughPoints(shroomUpgradeCost);
         boolean enoughSpore = usableSpores.size() >= 2;
-        System.out.println(usableSpores.size() + " spores enough");
         if (enough && enoughSpore) {
             body.Upgrade();
             
