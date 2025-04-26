@@ -24,3 +24,5 @@ cutthread bug thread
 
 assert
 save output.txt
+
+resetobjects

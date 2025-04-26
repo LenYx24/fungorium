@@ -33,3 +33,5 @@ move bug tecton3
 
 assert
 save output.txt
+
+resetobjects

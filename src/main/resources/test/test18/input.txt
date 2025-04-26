@@ -21,3 +21,5 @@ placeshroombody tecton1
 
 assert
 save output.txt
+
+resetobjects

@@ -44,4 +44,3 @@ thread:
 	cut: false
 	cutDamageTimer: 3
 	sustained: false
-

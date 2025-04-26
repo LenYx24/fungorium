@@ -14,3 +14,5 @@ upgradeshroombody shroomBody
 
 assert
 save output.txt
+
+resetobjects

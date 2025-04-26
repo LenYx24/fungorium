@@ -22,3 +22,5 @@ updatebugs bugOwner
 assert
 save output.txt
 
+resetobjects
+

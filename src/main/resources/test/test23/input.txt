@@ -16,3 +16,5 @@ throwspore shroomBody tecton2
 
 assert
 save output.txt
+
+resetobjects

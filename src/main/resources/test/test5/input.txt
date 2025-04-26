@@ -30,3 +30,5 @@ updateshroom
 assert
 save output.txt
 
+resetobjects
+

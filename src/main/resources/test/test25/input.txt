@@ -19,3 +19,5 @@ devour thread bug
 
 assert
 save output.txt
+
+resetobjects

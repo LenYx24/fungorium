@@ -18,3 +18,5 @@ updateshroom shroom
 
 assert
 save output.txt
+
+resetobjects
