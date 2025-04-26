@@ -45,7 +45,7 @@ public class Controller implements IRandomProvider {
                 System.out.println("hi");
             }
         });
-        
+
         normalCmds.put("arrange", new BaseCommand() {
             @Override
             public void Run(String[] args) {
@@ -67,6 +67,13 @@ public class Controller implements IRandomProvider {
             }
         });
 
+        normalCmds.put("resetobjects", new BaseCommand() {
+            @Override
+            public void Run(String[] args) {
+                view.ResetObjects();
+            }
+        });
+
         normalCmds.put("exit", new BaseCommand() {
             @Override
             public void Run(String[] args) {
@@ -77,7 +84,7 @@ public class Controller implements IRandomProvider {
         normalCmds.put("help",new HelpCmd());
         // ARRANGE
         arrangeCmds.put("create",new CreateCmd());
-        
+
         arrangeCmds.put("setval",new SetValCmd());
         arrangeCmds.put("setref",new SetRefCmd());
 
@@ -87,6 +94,7 @@ public class Controller implements IRandomProvider {
                 ConvertToInteger(args[0]).ifPresent(x -> SetSeed(x));
             }
         });
+
         arrangeCmds.put("neighbour", new BaseCommand() {
             @Override
             public void Run(String[] args) {

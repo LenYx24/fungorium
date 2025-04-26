@@ -1,6 +1,7 @@
 package org.nessus.view;
 
 import java.util.*;
+import java.util.jar.Attributes.Name;
 
 import org.nessus.model.shroom.*;
 import org.nessus.controller.Controller;
@@ -102,6 +103,12 @@ public class View implements IGameObjectStore {
 
             objects.put(name, object);
         }
+    }
+
+    public void ResetObjects() {
+        objects.clear();
+        pendingObjects.clear();
+        NameGenerator.ResetNames();
     }
 
     /**

@@ -30,4 +30,8 @@ public class NameGenerator {
             }
         }
     }
+
+    public static void ResetNames() {
+        nameCounters.clear();
+    }
 }
