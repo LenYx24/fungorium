@@ -321,13 +321,13 @@ public class Controller implements IRandomProvider {
                     int idx = bugOwners.indexOf(currentBugOwner);
                     if (idx == bugOwners.size() - 1) {
                         bugOwnerRound = false;
-                        currentShroom = shrooms.getFirst();
+                        currentShroom = shrooms.get(0);
                     }
                 } else {
                     int idx = shrooms.indexOf(currentShroom);
                     if (idx == shrooms.size() - 1) {
                         bugOwnerRound = true;
-                        currentBugOwner = bugOwners.getFirst();
+                        currentBugOwner = bugOwners.get(0);
                     }
                 }
             }

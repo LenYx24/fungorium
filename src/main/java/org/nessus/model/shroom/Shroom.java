@@ -148,7 +148,7 @@ public class Shroom implements IShroomController {
         if (enough && enoughSpore) {
             body.Upgrade();
             
-            Spore consumedSpore = usableSpores.getFirst();
+            Spore consumedSpore = usableSpores.get(0);
 
             bodyShroom.RemoveSpore(consumedSpore);
             bodyTecton.RemoveSpore(consumedSpore);

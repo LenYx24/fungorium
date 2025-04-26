@@ -119,7 +119,7 @@ public class Tecton implements ITectonController {
         if (usableSpores.size() < 2)
             return false;
         
-        var spore = usableSpores.getFirst();
+        var spore = usableSpores.get(0);
         RemoveSpore(spore);
         
         this.body = body;
