@@ -50,7 +50,9 @@ public class BugOwner implements IBugOwnerController {
 
     public void UpdateBugOwner() {
         ResetPoints();
-        bugs.forEach(Bug::UpdateBug);
+        // Ha osztódás effekt van a rovaron, akkor előfordulhat, hogy a rovar állapotának frissítése után új
+        // rovar keletkezik, ezért a rovarlista egy másolatán iterálunk, hogy ne legyen konkurens módosítás
+        List.copyOf(bugs).forEach(Bug::UpdateBug);
     }
 
     public void AddBug(Bug bug) {

@@ -4,10 +4,8 @@ create Tecton tecton
 create BugOwner bugOwner
 create Bug bug1 bugOwner
 
-
-
-
-create Spore spore
+create Shroom shroom
+create Spore spore shroom
 setval spore nutrients 2
 
 place bug1 tecton
@@ -23,4 +21,3 @@ updatebugs bugOwner
 
 assert
 save output.txt
-

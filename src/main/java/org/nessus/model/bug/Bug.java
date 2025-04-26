@@ -174,7 +174,7 @@ public class Bug {
         }
 
         newBug.tecton = tecton;
-        bugOwner.AddBug(newBug);
+        tecton.AddBug(newBug);
         View.GetObjectStore().AddObjectWithNameGen("bug", newBug);
     }
 
@@ -238,7 +238,8 @@ public class Bug {
         canCut = true;
         canMove = true;
 
-        effects.forEach(effect -> effect.ApplyOn(this));
+        // Az effektek törlődhetnek ha lejárt az idejük, ezért másolaton iterálunk végig
+        List.copyOf(effects).forEach(effect -> effect.ApplyOn(this));
     }
 
     /**
