@@ -1,9 +1,8 @@
 package org.nessus.model.tecton;
 
-import org.nessus.View;
-
 import org.nessus.model.*;
 import org.nessus.model.shroom.ShroomThread;
+import org.nessus.view.View;
 
 import java.util.*;
 
@@ -16,15 +15,7 @@ import java.util.*;
  * @see org.nessus.model.tecton.Tecton
  */
 public class DesertTecton extends Tecton {
-    private HashMap<ShroomThread, Integer> decayTimers; // A shroomThreadek elpusztítására szolgáló időzítő.
-
-    /**
-     * Az osztály konstruktora.
-     * Az osztály inicializálja a decayTimers-t.
-     */
-    public DesertTecton() {
-        decayTimers = new HashMap<>();
-    }
+    private HashMap<ShroomThread, Integer> decayTimers = new HashMap<>(); // A shroomThreadek elpusztítására szolgáló időzítő.
 
     /**
      * Az osztály másoló konstruktora.
@@ -33,8 +24,7 @@ public class DesertTecton extends Tecton {
     @Override
     public Tecton Copy() {
         Tecton copyTecton = new DesertTecton();
-        View.AddObject(copyTecton, "copyTecton");
-        SpreadEntities(copyTecton);
+        View.GetObjectStore().AddObject( "copyTecton", copyTecton);
         return copyTecton;
     }
 

@@ -1,4 +1,4 @@
-METHOD ValidateLife()
+METHOD ValidateLife() -> implemented
     growthBoost1 := tecton1.HasSporeOfShroom(this.shroom)
     growthBoost2 := tecton2.HasSporeOfShroom(this.shroom)
 
@@ -23,7 +23,7 @@ METHOD ValidateLife()
     END IF
 END METHOD
 
-METHOD DevourCrippledBug(bug)
+METHOD DevourCrippledBug(bug) -> implemented
     canMove := bug.GetCanMove()
     currentTecton := bug.GetTecton()
 

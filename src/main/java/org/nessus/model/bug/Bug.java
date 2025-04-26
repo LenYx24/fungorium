@@ -1,11 +1,11 @@
 package org.nessus.model.bug;
 
-import org.nessus.View;
 import org.nessus.model.ActionPointCatalog;
 import org.nessus.model.effect.BugEffect;
 import org.nessus.model.shroom.ShroomThread;
 import org.nessus.model.shroom.Spore;
 import org.nessus.model.tecton.Tecton;
+import org.nessus.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,6 @@ import java.util.List;
  */
 public class Bug {
     List<BugEffect> bugEffects = new ArrayList<>(); // hatások
-    ActionPointCatalog actCatalog = new ActionPointCatalog(); // pontok
     Tecton tecton; // tekton, amin a rovar tartózkodik
 
     int collectedNutrients = 0; // összegyűjtött tápanyagok
@@ -31,19 +30,71 @@ public class Bug {
     int eatCost; // táplálkozás költsége
     int cutThreadCost; // gombafonal vágás költsége
 
+    BugOwner owner; // rovar tulajdonosa
+
     /**
      * Konstruktor
      * Alapértelmezetten beállítja a pontokat és a költségeket.
      */
     public Bug() {
-        View.AddObject(this, "bug");
-        View.AddObject(actCatalog, "bugCat");
-        ResetPoints();
+        LoadDefaultCosts();
     }
 
+    /**
+     * Konstruktor
+     * A rovar tektonját beállítja.
+     * @param tecton
+     */
     public Bug(Tecton tecton) {
         this();
         this.tecton = tecton;
+    }
+
+
+    /**
+     * Konstruktor
+     * A rovar tektonját és tulajdonosát beállítja.
+     * @param tecton
+     * @param owner
+     */
+    public Bug(Tecton tecton, BugOwner owner) {
+        this(tecton);
+        this.owner = owner;
+    }
+
+    /**
+     * Rovar tulajdonosának beállítása
+     * @param owner - A rovar tulajdonosa
+     * @see BugOwner
+     * @return void
+     */
+    void SetOwner(BugOwner owner) {
+        this.owner = owner;
+    }
+
+    /**
+     * Rovar tulajdonosának lekérdezése
+     * @see BugOwner
+     * @return BugOwner - A rovar tulajdonosa
+     */
+    public BugOwner GetOwner() {
+        return owner;
+    }
+
+    /**
+     * Lekérdezi, hogy a rovar tud-e mozogni
+     * @return boolean - true, ha a rovar tud mozogni, false, ha nem
+     */
+    public boolean GetCanMove() {
+        return canMove;
+    }
+
+    /**
+     * Megadja a rovar tektonját
+     * @return Tecton - A rovar tektonja
+     */
+    public Tecton GetTecton() {
+        return tecton;
     }
 
     /**
@@ -60,19 +111,19 @@ public class Bug {
      * @see ActionPointCatalog
      * @see BugEffect
      * @see View
-     * @return void
+     * @return boolean - true, ha a rovar átkerült a másik tektonra, false, ha nem
      */
-    public void Move(Tecton destination) {
-        boolean enough = actCatalog.HasEnoughPoints(moveCost);
+    public boolean Move(Tecton destination) {
         boolean neighbours = tecton.IsNeighbourOf(destination);
         boolean hasGrownShroomThreadTo = tecton.HasGrownShroomThreadTo(destination);
 
-        if (enough && neighbours && hasGrownShroomThreadTo && canMove) {
+        if (neighbours && hasGrownShroomThreadTo && canMove) {
             tecton.RemoveBug(this);
             destination.AddBug(this);
             tecton = destination;
-            actCatalog.DecreasePoints(moveCost);
+            return true;
         }
+        return false; // nincs elég pont, vagy nem szomszédos a két tekton
     }
 
     /**
@@ -87,16 +138,14 @@ public class Bug {
      * @see ActionPointCatalog
      * @see BugEffect
      * @see View
-     * @return void
+     * @return boolean - true, ha a rovar megeszi a spórát, false, ha nem
      */
-    public void Eat(Spore spore) {
-        spore.GetTecton();
-        boolean enough = actCatalog.HasEnoughPoints(eatCost);
-        // TODO
-        // if (isOnSameTecton && enough) {
-        //     spore.EatenBy(this);
-        //     actCatalog.DecreasePoints(eatCost);
-        // }
+    public boolean Eat(Spore spore) {
+        if (tecton == spore.GetTecton()) {
+            spore.EatenBy(this);
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -111,16 +160,35 @@ public class Bug {
      * @see ActionPointCatalog
      * @see BugEffect
      * @see View
-     * @return void
+     * @return boolean - true, ha a rovar levágta a gombafonalat, false, ha nem
      */
-    public void CutThread(ShroomThread thread) {
-        boolean enough = actCatalog.HasEnoughPoints(cutThreadCost);
+    public boolean CutThread(ShroomThread thread) {
         boolean reachable = thread.IsTectonReachable(tecton);
 
-        if (canCut && enough && reachable) {
+        if (canCut && reachable) {
             thread.Remove();
-            actCatalog.DecreasePoints(cutThreadCost);
+            return true;
         }
+
+        return false;
+    }
+
+    /**
+     * Tekton széttörése esetén rovar lekezelése
+     * @see Tecton#Split()
+     * @return void
+     */
+    public void Split() {
+        Bug newBug = new Bug();
+
+        for (BugEffect bugEffect : this.bugEffects) {
+            newBug.bugEffects.add(bugEffect);
+        }
+
+        newBug.tecton = tecton;
+        newBug.owner = owner;
+
+        owner.AddBug(newBug);
     }
 
     /**
@@ -130,6 +198,18 @@ public class Bug {
      */
     public void AddMoveCost(int value) {
         moveCost += value;
+    }
+
+    public int GetMoveCost() {
+        return moveCost;
+    }
+
+    public int GetEatCost() {
+        return eatCost;
+    }
+
+    public int GetCutCost() {
+        return cutThreadCost;
     }
 
     /**
@@ -167,7 +247,10 @@ public class Bug {
      */
     public void UpdateBug() {
         LoadDefaultCosts();
-        actCatalog.ResetPoints();
+        
+        canCut = true;
+        canMove = true;
+
         bugEffects.forEach(effect -> effect.ApplyOn(this));
     }
 
@@ -178,18 +261,8 @@ public class Bug {
      */
     public void LoadDefaultCosts() {
         moveCost = 1;
-        eatCost = 4;
-        cutThreadCost = 3;
-    }
-
-    /**
-     * Pontok visszaállítása
-     * Az ActionPointCatalog pontjainak visszaállítása.
-     * @see ActionPointCatalog#defaultActionPoints
-     * @return void
-     */
-    public void ResetPoints() {
-        actCatalog.ResetPoints();
+        eatCost = 2;
+        cutThreadCost = 2;
     }
 
     /**
@@ -227,10 +300,15 @@ public class Bug {
     }
 
     /**
-     * A rovar ActionPointCatalogjának lekérése
-     * @return {@link ActionPointCatalog#ActionPointCatalog()}
+     * Törli a bogarat a tektonról és a hozzá tartozó BugOwner listájából
+     * @see BugOwner#RemoveBug(Bug)
+     * @see Tecton#RemoveBug(Bug)
+     * @return void
      */
-    public ActionPointCatalog GetActionPointCatalog() {
-        return actCatalog;
+    public void Remove() {
+        if (tecton != null)
+            tecton.RemoveBug(this);
+        if (owner != null)
+            owner.RemoveBug(this);
     }
 }

@@ -1,7 +1,9 @@
 package org.nessus.model.shroom;
 
-import org.nessus.View;
 import org.nessus.model.tecton.Tecton;
+import org.nessus.model.bug.Bug;
+import org.nessus.model.tecton.ThreadSustainerTecton;
+import org.nessus.view.View;
 
 /**
  * A fonalat reprezentáló osztály.
@@ -15,17 +17,12 @@ public class ShroomThread {
     private Tecton tecton2; // A másik tecton, amelyhez a fonal kapcsolódik
 
     int evolution = 0; // A fonal fejlődési szintje
-    int isolationCounter = 0; // Az izoláció számlálója
     boolean connectedToShroomBody = false; // A fonal kapcsolódik-e a gomba testéhez
+    int isolationCounter = 0; // Az izoláció számlálója
+    boolean cut = false; // A fonal el van-e vágva
 
-    /**
-     * A fonal fejlődési szintjét növeli a paraméterben kapott értékkel.
-     * @param n - A fejlődési szint növelésére szolgáló érték
-     * @see ShroomThread#evolution
-     */
-    private void Evolve(int n) {
-        evolution = Math.min(evolution+n, 3);
-    }
+    int cutDamageTimer = 0; // Megadja, a fonál hány kör után szívódik fel miután elvágták
+    boolean sustained = false; // Megadja, hogy a fonált épp életben tartja-e egy ThreadSustainerTecton. Ilyenkor nem szívódik fel.
 
     /**
      * Az osztály konstruktora.
@@ -60,12 +57,23 @@ public class ShroomThread {
         boolean growthBoost1 = tecton1.HasSporeOfShroom(this.shroom);
         boolean growthBoost2 = tecton2.HasSporeOfShroom(this.shroom);
 
-        Evolve((growthBoost1 || growthBoost2) ? 2 : 1);
+        int growthAmount = 0;
 
-        // TODO
-        // if (decayed) {
-        //     this.Remove();
-        // }
+        if (growthBoost1 || growthBoost2)
+            growthAmount += 2;
+        else
+            growthAmount += 1;
+
+        evolution = Math.min(evolution + growthAmount, 3);
+
+        if (cut)
+            cutDamageTimer -= 1;
+
+        if (!connectedToShroomBody && !sustained)
+            isolationCounter -= 1;
+
+        if (isolationCounter >= 3 || cutDamageTimer <= 0)
+            Remove();
     }
 
     /**
@@ -74,9 +82,20 @@ public class ShroomThread {
      * @return boolean - Az eredmény
      */
     public boolean IsTectonReachable(Tecton tecton) {
-        String threadName = View.GetName(this);
-        String tectonName = View.GetName(tecton);
-        // TODO
+        return evolution == 3 && (tecton.equals(tecton1) || tecton.equals(tecton2));
+    }
+
+    public boolean DevourCrippledBug(Bug bug) {
+        boolean canMove = bug.GetCanMove();
+        Tecton currentTecton = bug.GetTecton();
+    
+        if(!canMove && (currentTecton == tecton1 || currentTecton == tecton2)) {
+            shroom.AddShroomBodyCost(-3);
+            bug.Remove();
+
+            return true;
+        }
+
         return false;
     }
 
@@ -130,5 +149,26 @@ public class ShroomThread {
      */
     public void SetTecton2(Tecton tecton) {
         tecton2 = tecton;
+    }
+
+    /**
+     * Visszaadja, hogy a fonal kapcsolódik-e a gomba testéhez.
+     * @return boolean - A válasz
+     */
+    public boolean GetConnectedToShroomBody() {
+        return connectedToShroomBody;
+    }
+
+    /**
+     * Beállítja, hogy a fonal kapcsolódik-e a gomba testéhez.
+     * @param connectedToShroomBody - Igaz vagy hamis
+     * @return void
+     */
+    public void SetConnectedToShroomBody(boolean connectedToShroomBody) {
+        this.connectedToShroomBody = connectedToShroomBody;
+    }
+
+    public void SetSustained() {
+        sustained = true;
     }
 }

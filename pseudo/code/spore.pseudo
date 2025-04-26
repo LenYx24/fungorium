@@ -1,4 +1,4 @@
-METHOD EatenBy(bug)
+METHOD EatenBy(bug) -> implemented
     effectId = RANDOM OF [1, 2, 3, 4, 5]
 
     CASE effectId OF
