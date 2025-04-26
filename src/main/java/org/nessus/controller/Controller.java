@@ -199,16 +199,6 @@ public class Controller implements IRandomProvider {
                 }
             }
         });
-        arrangeCmds.put("addeffect", new BaseCommand() {
-            @Override
-            public void Run(String[] args) {
-                if(NotEnoughArgs(args,2))
-                    return;
-                Bug bug = (Bug)view.GetObject(args[0]);
-                BugEffect effect = (BugEffect)view.GetObject(args[1]);
-                bug.AddEffect(effect);
-            }
-        });
         // ACT
         actCmds.put("placeshroomthread", new BaseCommand() {
             @Override
