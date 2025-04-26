@@ -1,0 +1,67 @@
+tecton1:
+	neighbours: {
+		tecton2
+	}
+	body: shroombody
+	threads: { }
+	bugs: {
+		bug
+	}
+	spores: { }
+tecton2:
+	neighbours: {
+		tecton1
+	}
+	body: null
+	threads: { }
+	bugs: { }
+	spores: { }
+actCat:
+	defaultActionPoints: 5
+	currentActionPoints: 3
+bugOwner:
+	bugs: {
+		bug
+	}
+	actCatalog: actCat
+bug:
+	tecton: tecton1
+	effects: { }
+	bugOwner: bugOwner
+	collectedNutrients: 0
+	canMove: true
+	canCut: true
+	moveCost: 1
+	eatCost: 2
+	cutThreadCost: 2
+shroom:
+	spores: { }
+	shroomBodies: {
+		shroombody
+	}
+	threads: {
+		thread
+	}
+	actCatalog: null
+grownShroomBodies: 1,
+	shroomThreadCost: 2
+	shroomBodyCost: 3
+	shroomUpgradeCost: 3
+	sporeCost: 2
+	devourCost: 2
+shroombody:
+	tecton: tecton1
+	level: 1
+	remainingThrows: 5
+	sporeMaterials: 0
+thread:
+	shroom: shroom
+	tecton1: tecton1
+	tecton2: tecton2
+	evolution: 3
+	connectedToShroomBody: true
+	isolationCounter: 3
+	cut: true
+	cutDamageTimer: 0
+	sustained: false
+

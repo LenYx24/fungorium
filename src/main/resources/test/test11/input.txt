@@ -1,0 +1,26 @@
+arrange
+create Tecton tecton
+
+create BugOwner bugOwner
+create Bug bug1 bugOwner
+
+create ActionPointCatalog actCat
+setref bugOwner actCatalog actCat
+
+create Spore spore
+setval spore nutrients 2
+
+place bug1 tecton
+place spore tecton
+
+seed 3
+
+currentplayer bugOwner
+
+act
+eatspore bug1 spore
+updatebugs bugOwner
+
+assert
+save output.txt
+

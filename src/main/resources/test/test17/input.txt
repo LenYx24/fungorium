@@ -1,0 +1,21 @@
+arrange
+create Tecton tecton1
+create Tecton tecton2
+
+neighbour tecton1 tecton2
+
+create Shroom shroom
+create ShroomThread thread shroom
+
+placethread thread tecton1 tecton2
+
+create ActionPointCatalog actCat
+setref shroom actCatalog actCat
+
+currentplayer shroom
+
+act
+placeshroombody tecton1
+
+assert
+save output.txt

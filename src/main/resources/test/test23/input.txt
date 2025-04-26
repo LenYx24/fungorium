@@ -1,0 +1,18 @@
+arrange
+create Tecton tecton1
+create Tecton tecton2
+neighbour tecton1 tecton2
+
+create Shroom shroom
+
+create ShroomBody shroomBody
+setval shroomBody sporeMaterials 0
+place shroomBody tecton1
+
+currentplayer shroom
+
+act
+throwspore shroomBody tecton2
+
+arrange
+save output.txt

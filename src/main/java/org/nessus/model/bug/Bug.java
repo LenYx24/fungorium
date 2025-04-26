@@ -155,7 +155,7 @@ public class Bug {
      * - van elég pontja a gombafonal vágásra
      * - a rovaron nincs bénító hatás
      * Ha teljesülnek a feltételek, akkor a rovar levágja a gombafonalat.
-     * @param shroomThread - A gombafonal, amit a rovar levág.
+     * @param thread - A gombafonal, amit a rovar levág.
      * @see ShroomThread
      * @see ActionPointCatalog
      * @see BugEffect

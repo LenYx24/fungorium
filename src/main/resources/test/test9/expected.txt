@@ -1,0 +1,35 @@
+tecton:
+	neighbours: { }
+	body: null
+	threads: { }
+	bugs: {
+		bug
+	}
+	spores: { }
+bugOwner:
+	bugs: {
+		bug
+	}
+	actCatalog: actCat
+bug:
+	tecton: tecton
+	effects: {
+		jawLockEffect1
+	}
+	bugOwner: bugOwner
+	collectedNutrients: 2
+	canMove: true
+	canCut: false
+	moveCost: 2
+	eatCost: 2
+	cutThreadCost: 2
+actCat:
+	defaultActionPoints: 5
+	currentActionPoints: 3
+spore:
+	shroom: shroom
+	tecton: null
+	nutrients: 2
+jawLockEffect1:
+	remainingUses: 2
+

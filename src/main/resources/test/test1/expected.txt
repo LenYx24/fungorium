@@ -1,5 +1,5 @@
 tecton1:
-    neighbours:{
+    neighbours: {
         tecton2
     }
     body: null
@@ -10,7 +10,7 @@ tecton1:
         bug
     }
 tecton2:
-    neighbours:{
+    neighbours: {
         tecton1
     }
     body: null
@@ -28,7 +28,7 @@ bugOwner:
 	actCatalog: actCat
 bug:
     tecton: tecton1
-    effects: {}
+    effects: { }
     bugOwner: bugOwner
     collectedNutrients: 0
     canMove: true

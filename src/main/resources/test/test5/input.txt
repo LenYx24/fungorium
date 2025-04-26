@@ -1,0 +1,31 @@
+arrange
+create Tecton tecton1
+create Tecton tecton2
+create ActionPointCatalog actCat
+
+neighbour tecton1 tecton2
+
+create BugOwner bugOwner
+setref actCatalog actCat
+
+create Bug bug bugOwner
+create Shroom shroom
+create ShroomBody shroombody shoom
+create ShroomThread thread shroom
+
+place bug tecton1
+place shroombody tecton1
+placethread thread tecton1 tecton2
+setval thread evolution 3
+
+currentplayer bugOwner
+
+act
+cutthread bug thread
+nextplayer
+nextplayer
+nextplayer
+
+assert
+save output.txt
+
