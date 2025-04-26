@@ -18,7 +18,16 @@ public class NameGenerator {
     public static void AddName(String name) {
         String prefix = name.replaceAll("\\d+", "");
         nameCounters.putIfAbsent(prefix, new AtomicInteger(0));
-        int id = Integer.parseInt(name.replaceAll("\\D+", ""));
-        nameCounters.get(prefix).set(Math.max(nameCounters.get(prefix).get(), id));
+        String n = name.replaceAll("\\D+", "");
+        if(n.isEmpty()){
+            nameCounters.get(prefix).set(Math.max(nameCounters.get(prefix).get(), 1));
+        }else{
+            try{
+                int id = Integer.parseInt(name.replaceAll("\\D+", ""));
+                nameCounters.get(prefix).set(Math.max(nameCounters.get(prefix).get(), id));
+            } catch(NumberFormatException e){
+                System.out.println("Rossz számformátum: " + e.getMessage());
+            }
+        }
     }
 }
