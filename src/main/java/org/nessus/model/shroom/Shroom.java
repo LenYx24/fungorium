@@ -4,7 +4,6 @@ import org.nessus.controller.IShroomController;
 import org.nessus.model.ActionPointCatalog;
 import org.nessus.model.bug.Bug;
 import org.nessus.model.tecton.Tecton;
-import org.nessus.model.bug.Bug;
 import org.nessus.view.View;
 
 import java.util.ArrayList;

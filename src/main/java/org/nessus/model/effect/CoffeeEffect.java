@@ -1,7 +1,6 @@
 package org.nessus.model.effect;
 
 import org.nessus.model.bug.Bug;
-import org.nessus.view.View;
 
 /**
  * Az osztály a "kávé" hatását reprezentálja.

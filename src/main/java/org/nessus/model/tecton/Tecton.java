@@ -1,19 +1,12 @@
 package org.nessus.model.tecton;
 
-import org.nessus.controller.IRandomProvider;
-import org.nessus.controller.ITectonController;
+import org.nessus.controller.*;
 import org.nessus.model.bug.Bug;
-import org.nessus.model.shroom.Shroom;
-import org.nessus.model.shroom.ShroomBody;
-import org.nessus.model.shroom.ShroomThread;
-import org.nessus.model.shroom.Spore;
+import org.nessus.model.shroom.*;
 import org.nessus.view.View;
 
-import java.lang.classfile.ClassFile.Option;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.Random;
 
 /**
  * A tektonokat reprezentáló osztály.
@@ -45,7 +38,6 @@ public class Tecton implements ITectonController {
 
         neighbours.add(copyTecton);
 
-        // TODO Use random provider
         IRandomProvider randProvider = View.GetObjectStore().GetRandomProvider();
 
         for (Bug bug : bugs) {
@@ -142,7 +134,7 @@ public class Tecton implements ITectonController {
      * @return void
      */
     public void SetShroomBody(ShroomBody body) {
-        body = body;
+        this.body = body;
     }
 
     /**

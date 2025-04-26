@@ -1,7 +1,6 @@
 package org.nessus.model.tecton;
 
 import org.nessus.model.shroom.ShroomThread;
-import org.nessus.view.View;
 
 /**
  * Egyfonál tekton, azaz ezen a tektonfajtán csak egy fonál lehet.
@@ -18,8 +17,7 @@ public class SingleThreadTecton extends Tecton {
      */
     @Override
     public Tecton Copy() {
-        Tecton copyTecton = new SingleThreadTecton();
-        return copyTecton;
+        return new SingleThreadTecton();
     }
 
     /**

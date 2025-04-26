@@ -1,7 +1,5 @@
 package org.nessus.model;
 
-import org.nessus.view.View;
-
 /**
  * A cselekvési pontokat reprezentáló osztály.
  * A cselekvési pontokat a játékosok használják a cselekvéseik végrehajtásához.

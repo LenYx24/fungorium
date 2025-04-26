@@ -1,8 +1,6 @@
 package org.nessus.model.tecton;
 
-import org.nessus.model.*;
 import org.nessus.model.shroom.ShroomThread;
-import org.nessus.view.View;
 
 import java.util.*;
 
@@ -23,9 +21,7 @@ public class DesertTecton extends Tecton {
      */
     @Override
     public Tecton Copy() {
-        Tecton copyTecton = new DesertTecton();
-        View.GetObjectStore().AddObject( "copyTecton", copyTecton);
-        return copyTecton;
+        return new DesertTecton();
     }
 
     /**

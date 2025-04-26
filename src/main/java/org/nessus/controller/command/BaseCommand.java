@@ -37,12 +37,7 @@ public abstract class BaseCommand {
     }
 
     protected static Class<?> GetTypeClass(Object o) {
-        // if (o instanceof Integer) return int.class;
-        // if (o instanceof Double) return double.class;
-        // if (o instanceof Character) return char.class;
-        // // TODO: Az összes osztályhoz felvenni egy ilyen sort (vagy más megoldást keresni)
-        // if (o instanceof Tecton) return Tecton.class;
-        // return String.class;
+        // TODO
         return o.getClass();
     }
     

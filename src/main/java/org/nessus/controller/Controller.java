@@ -132,8 +132,8 @@ public class Controller implements IRandomProvider {
                 Tecton tecton1 = (Tecton)view.GetObject(args[1]);
                 Tecton tecton2 = (Tecton)view.GetObject(args[2]);
 
-                if(obj instanceof ShroomThread) {
-                    ShroomThread thread = (ShroomThread)obj;
+                if(obj instanceof ShroomThread shroomThread) {
+                    ShroomThread thread = shroomThread;
 
                     tecton1.GrowShroomThread(thread);
                     tecton2.GrowShroomThread(thread);
@@ -170,13 +170,13 @@ public class Controller implements IRandomProvider {
                 String name = args[0];
                 Object obj = view.GetObject(name);
 
-                if(obj instanceof BugOwner) {
-                    currentBugOwner = (BugOwner)obj;
+                if(obj instanceof BugOwner bugOwner) {
+                    currentBugOwner = bugOwner;
                     bugOwnerRound = true;
                 }
 
-                if(obj instanceof Shroom) {
-                    currentShroom = (Shroom)obj;
+                if(obj instanceof Shroom shroom) {
+                    currentShroom = shroom;
                     bugOwnerRound = false;
                 }
             }
