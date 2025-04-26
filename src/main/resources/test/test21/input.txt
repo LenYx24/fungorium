@@ -15,5 +15,5 @@ currentplayer shroom
 act
 throwspore shroomBody tecton2
 
-arrange
+assert
 save output.txt

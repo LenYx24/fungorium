@@ -23,6 +23,11 @@ public class ShroomBody {
 
     /**
      * Az osztály konstruktora.
+     */
+    public ShroomBody() {
+    }
+    /**
+     * Az osztály konstruktora.
      * @param shroom
      * @param tecton
      */
@@ -37,6 +42,7 @@ public class ShroomBody {
      */
     public ShroomBody(Shroom shroom) {
         this.shroom = shroom;
+        shroom.SetShroomBody(this);
     }
 
     /**
