@@ -51,9 +51,9 @@ bugOwner:
 	actCatalog: bugOwner_actCat
 bugOwner_actCat:
 	defaultActionPoints: 5
-	currentActionPoints: 1
+	currentActionPoints: 2
 bug:
-	tecton: tecton2
+	tecton: tecton4
 	effects: {
 		coffeeEffect
 	}

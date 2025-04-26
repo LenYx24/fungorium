@@ -109,7 +109,6 @@ public class Bug {
             tecton.RemoveBug(this);
             destination.AddBug(this);
             tecton = destination;
-            System.out.println("sikeresen átmozdult");
             return true;
         }
         return false; // nincs elég pont, vagy nem szomszédos a két tekton

@@ -16,7 +16,7 @@ public class CoffeeEffect extends BugEffect {
      * @param bug
      */
     public void ApplyOn(Bug bug) {
-        bug.AddMoveCost(-2);
+        bug.AddMoveCost(-1);
         UpdateState(bug);
     }
 }
