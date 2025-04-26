@@ -114,10 +114,10 @@ public class Shroom implements IShroomController {
     public void PlaceShroomBody(Tecton tecton) {
         if (actCatalog.HasEnoughPoints(shroomBodyCost)) {
             ShroomBody newBody = new ShroomBody(this, tecton);
-            View.GetObjectStore().AddObject("newBody", newBody);
 
             boolean success = tecton.GrowShroomBody(newBody);
             if (success) {
+                View.GetObjectStore().AddObject("newBody", newBody);
                 grownShroomBodies++;
                 shroomBodies.add(newBody);
                 actCatalog.DecreasePoints(shroomBodyCost);

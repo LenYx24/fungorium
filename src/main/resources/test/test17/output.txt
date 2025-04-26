@@ -44,9 +44,3 @@ thread:
 	cut: false
 	cutDamageTimer: 3
 	sustained: false
-newBody:
-	shroom: shroom
-	tecton: tecton1
-	level: 1
-	remainingThrows: 5
-	sporeMaterials: 0
