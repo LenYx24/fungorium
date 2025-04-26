@@ -100,6 +100,21 @@ public class Controller implements IRandomProvider {
                 t2.SetNeighbour(t1);
             }
         });
+        
+        arrangeCmds.put("addeffect", new BaseCommand() {
+            @Override
+            public void Run(String[] args) {
+                if (NotEnoughArgs(args, 2))
+                    return;
+
+                Bug bug = (Bug)view.GetObject(args[0]);
+                BugEffect effect = (BugEffect)view.GetObject(args[1]);
+
+                bug.AddEffect(effect);
+            }
+            
+        });
+
         arrangeCmds.put("place", new BaseCommand() {
             @Override
             public void Run(String[] args) {

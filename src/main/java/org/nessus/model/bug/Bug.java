@@ -283,7 +283,7 @@ public class Bug {
      * @return void
      */
     public void SetCanCut(boolean canCut) {
-        this.canMove = canCut;
+        this.canCut = canCut;
     }
 
     /**

@@ -4,14 +4,14 @@ create Tecton tecton2
 
 neighbour tecton1 tecton2
 
-create Shroom
+create Shroom shroom
 create ShroomThread thread shroom
 
 create BugOwner bugOwner
 create Bug bug bugOwner
 
 create JawLockEffect effect
-setref Bug effects effect
+addeffect bug effect
 
 place bug tecton1
 placethread thread tecton1 tecton2
@@ -24,4 +24,3 @@ cutthread bug thread
 
 assert
 save output.txt
-
