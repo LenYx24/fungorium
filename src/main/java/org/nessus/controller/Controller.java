@@ -130,19 +130,19 @@ public class Controller implements IRandomProvider {
                     return;
                 
                 Object obj = view.GetObject(args[0]);
-                Tecton tecton = (Tecton)view.GetObject(args[1]);
+                ITectonController tecton = (ITectonController)view.GetObject(args[1]);
 
                 if(obj instanceof Bug bug) {
                     tecton.AddBug(bug);
-                    bug.SetTecton(tecton);
+                    bug.SetTecton((Tecton)tecton);
                 }
                 else if(obj instanceof ShroomBody body) {
                     tecton.SetShroomBody(body);
-                    body.SetTecton(tecton);
+                    body.SetTecton((Tecton)tecton);
                 }
                 else if(obj instanceof Spore spore) {
                     tecton.ThrowSpore(spore);
-                    spore.SetTecton(tecton);
+                    spore.SetTecton((Tecton)tecton);
                 }
             }
         });
@@ -154,14 +154,14 @@ public class Controller implements IRandomProvider {
 
                 ShroomThread thread = (ShroomThread)view.GetObject(args[0]);
 
-                Tecton tecton1 = (Tecton)view.GetObject(args[1]);
-                Tecton tecton2 = (Tecton)view.GetObject(args[2]);
+                ITectonController tecton1 = (ITectonController)view.GetObject(args[1]);
+                ITectonController tecton2 = (ITectonController)view.GetObject(args[2]);
 
                 tecton1.GrowShroomThread(thread);
                 tecton2.GrowShroomThread(thread);
 
-                thread.SetTecton1(tecton1);
-                thread.SetTecton2(tecton2);
+                thread.SetTecton1((Tecton)tecton1);
+                thread.SetTecton2((Tecton)tecton2);
             }
         });
 
@@ -461,6 +461,5 @@ public class Controller implements IRandomProvider {
     @Override
     public void SetSeed(long seed) {
         rand.setSeed(seed);
-}
-
+    }
 }
