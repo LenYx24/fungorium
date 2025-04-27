@@ -1,7 +1,6 @@
 package org.nessus.view;
 
 import java.util.*;
-import java.util.jar.Attributes.Name;
 
 import org.nessus.model.shroom.*;
 import org.nessus.controller.Controller;
@@ -56,8 +55,8 @@ public class View implements IGameObjectStore {
 
         while (running) {
             String prompt = controller.GetPrompt();
-            System.out.print(prompt + ">");
-
+            System.out.print(prompt);
+            
             String cmd = scanner.nextLine();
             controller.ProcessCommand(cmd);
         }
@@ -96,11 +95,6 @@ public class View implements IGameObjectStore {
             pendingObjects.put(name, object);
         }
         else {
-            if (object instanceof BugOwner bugOwner)
-                controller.AddBugOwner(bugOwner);
-            else if (object instanceof Shroom shroom)
-                controller.AddShroom(shroom);
-
             objects.put(name, object);
         }
     }

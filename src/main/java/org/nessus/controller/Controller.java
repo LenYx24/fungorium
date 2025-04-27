@@ -101,11 +101,11 @@ public class Controller implements IRandomProvider {
                 if(NotEnoughArgs(args,2))
                     return;
                 
-                Tecton t1 = (Tecton)view.GetObject(args[0]);
-                Tecton t2 = (Tecton)view.GetObject(args[1]);
+                ITectonController t1 = (ITectonController)view.GetObject(args[0]);
+                ITectonController t2 = (ITectonController)view.GetObject(args[1]);
 
-                t1.SetNeighbour(t2);
-                t2.SetNeighbour(t1);
+                t1.SetNeighbour((Tecton)t2);
+                t2.SetNeighbour((Tecton)t1);
             }
         });
         
@@ -152,20 +152,16 @@ public class Controller implements IRandomProvider {
                 if(NotEnoughArgs(args,3))
                     return;
 
-                Object obj = view.GetObject(args[0]);
+                ShroomThread thread = (ShroomThread)view.GetObject(args[0]);
 
                 Tecton tecton1 = (Tecton)view.GetObject(args[1]);
                 Tecton tecton2 = (Tecton)view.GetObject(args[2]);
 
-                if(obj instanceof ShroomThread shroomThread) {
-                    ShroomThread thread = shroomThread;
+                tecton1.GrowShroomThread(thread);
+                tecton2.GrowShroomThread(thread);
 
-                    tecton1.GrowShroomThread(thread);
-                    tecton2.GrowShroomThread(thread);
-
-                    thread.SetTecton1(tecton1);
-                    thread.SetTecton2(tecton2);
-                }
+                thread.SetTecton1(tecton1);
+                thread.SetTecton2(tecton2);
             }
         });
 
@@ -180,12 +176,22 @@ public class Controller implements IRandomProvider {
                 try (BufferedReader reader = Files.newBufferedReader(path)) {
                     String line;
                     while ((line = reader.readLine()) != null) {
-                        System.err.println(line);
+                        System.err.println(GetPrompt() + line);
                         ProcessCommand(line);
                     }
                 } catch (IOException e) {
                     System.out.println("Hiba a fájl olvasása közben: " + e.getMessage());
                 }
+            }
+        });
+
+        arrangeCmds.put("runall", new BaseCommand() {
+            @Override
+            public void Run(String[] args) {
+                var runcmd = arrangeCmds.get("run");
+                final int nTest = 34;
+                for (int i = 1; i <= nTest; i++)
+                    runcmd.Run(new String[] { "test" + i });
             }
         });
 
@@ -387,9 +393,9 @@ public class Controller implements IRandomProvider {
     public String GetPrompt() {
         var objStore = View.GetObjectStore();
         return switch(mode) {
-            case ARRANGE -> "arrange";
-            case ACT -> "act#" + objStore.GetName(bugOwnerRound ? currentBugOwner : currentShroom);
-            case ASSERT -> "assert";
+            case ARRANGE -> "arrange>";
+            case ACT -> "act#" + objStore.GetName(bugOwnerRound ? currentBugOwner : currentShroom) + ">";
+            case ASSERT -> "assert>";
         };
     }
 

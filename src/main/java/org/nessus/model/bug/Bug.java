@@ -257,7 +257,7 @@ public class Bug {
      * Az összedetett tápanyagérték lekérdezése
      * @return int - A tápanyagok értéke
      */
-    public int getCollectedNutrients() {
+    public int GetCollectedNutrients() {
         return collectedNutrients;
     }
 
