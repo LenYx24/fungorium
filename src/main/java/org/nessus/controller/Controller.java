@@ -13,31 +13,47 @@ import org.nessus.model.shroom.*;
 import org.nessus.model.tecton.Tecton;
 import org.nessus.view.View;
 
+/**
+ * Ez az osztály implementálja a Controllert, amely a játék logikájáért felelős.
+ * A Controller osztály kezeli a parancsokat, és irányítja a játék állapotát.
+ * A Controller osztályban található parancsok a játék különböző fázisait kezelik, mint például az elrendezést, a cselekvést és az állításokat.
+ */
 public class Controller implements IRandomProvider {
     private static Random rand = new Random();
 
+    /**
+     * A parancsok módjait definiáló enum.
+     * Az ARRANGE mód a játék előkészítéséért felelős, ahol a játékosok elhelyezhetik a bogaraikat és gombáikat.
+     * Az ACT mód a játék aktív fázisát jelenti, ahol a játékosok cselekedhetnek a bogaraikkal és gombáikkal.
+     * Az ASSERT mód a játék állapotának ellenőrzésére szolgál, ahol a játékosok megvizsgálhatják a játék állapotát és eredményeit.
+     * Az enum értékei: ARRANGE, ACT, ASSERT.
+     */
     private enum CmdMode {
         ARRANGE,
         ACT,
         ASSERT
     }
 
-    private IBugOwnerController currentBugOwner = null;
-    private IShroomController currentShroom = null;
+    private IBugOwnerController currentBugOwner = null; // a bug owner
+    private IShroomController currentShroom = null; // a shroom
 
-    private boolean bugOwnerRound = false;
-    private List<IBugOwnerController> bugOwners = new ArrayList<>();
-    private List<IShroomController> shrooms = new ArrayList<>();
+    private boolean bugOwnerRound = false; // Bug owner köre
+    private List<IBugOwnerController> bugOwners = new ArrayList<>(); // Bug owner lista
+    private List<IShroomController> shrooms = new ArrayList<>(); // Shroom lista
     
-    private CmdMode mode = CmdMode.ARRANGE;
-    private HashMap<String, BaseCommand> normalCmds = new HashMap<>();
+    private CmdMode mode = CmdMode.ARRANGE; // A Controller CmdMode-ja // See: CmdMode enum
+    private HashMap<String, BaseCommand> normalCmds = new HashMap<>(); // A Controller "Normál" parancsai
 
-    private HashMap<String, BaseCommand> arrangeCmds = new HashMap<>();
-    private HashMap<String, BaseCommand> actCmds = new HashMap<>();
-    private HashMap<String, BaseCommand> assertCmds = new HashMap<>();
+    private HashMap<String, BaseCommand> arrangeCmds = new HashMap<>(); // A Controller "Elrendezés" parancsai
+    private HashMap<String, BaseCommand> actCmds = new HashMap<>(); // A Controller "Cselekvés" parancsai
+    private HashMap<String, BaseCommand> assertCmds = new HashMap<>(); // A Controller "Állítás" parancsai
 
-    Path runpath = null;
+    Path runpath = null; // A fájlok elérési útja, ahol a tesztfájlok találhatóak
 
+    /**
+     * A Controller osztály konstruktora, amely inicializálja a parancsokat és beállítja a nézetet.
+     * @param view A nézet, amelyet a Controller használ.
+     */
     public Controller(View view) {
         normalCmds.put("hi", new BaseCommand() {
             @Override
@@ -390,6 +406,10 @@ public class Controller implements IRandomProvider {
         });
     }
 
+    /**
+     * Ez a metódus ellenőrzi, hogy elegendő argumentum van-e a parancs végrehajtásához.
+     * @return String - A parancs neve
+     */
     public String GetPrompt() {
         var objStore = View.GetObjectStore();
         return switch(mode) {
@@ -399,6 +419,11 @@ public class Controller implements IRandomProvider {
         };
     }
 
+    /**
+     * A parancsok feldolgozásáért felelős metódus.
+     * @param cmd A parancs, amelyet végre kell hajtani.
+     * @return void
+     */
     public void ProcessCommand(String cmd) {
         if (cmd.isEmpty())
             return;
@@ -421,6 +446,10 @@ public class Controller implements IRandomProvider {
             System.out.println("A parancs nem található");
     }
 
+    /**
+     * Ez a metódus adja vissza a parancsok aktuális módját.
+     * @return Map<String, BaseCommand> - A parancsok aktuális módja
+     */
     public Map<String, BaseCommand> GetCurrentModesCommands() {
         return switch (mode) {
             case ARRANGE -> arrangeCmds;
@@ -429,19 +458,39 @@ public class Controller implements IRandomProvider {
         };
     }
 
+    /**
+     * Ez a metódus felvesz egy új BugOwner-t a bugOwners listába.
+     * @param bugOwner A BugOwner, amelyet hozzá szeretnénk adni a listához
+     * @return void
+     */
     public void AddBugOwner(IBugOwnerController bugOwner) {
         bugOwners.add(bugOwner);
     }
 
+    /**
+     * Ez a metódus felvesz egy új Shroom-ot a shrooms listába.
+     * @param shroom A Shroom, amelyet hozzá szeretnénk adni a listához
+     * @return void
+     */
     public void AddShroom(IShroomController shroom) {
         shrooms.add(shroom);
     }
 
+    /**
+     * Ez a metódus egy random számot generál a megadott minimum és maximum érték között.
+     * @param min A minimum érték
+     * @param max A maximum érték
+     * @return int - A generált random szám
+     */
     @Override
     public int RandomNumber(int min, int max) {
         return rand.nextInt(min, max + 1);
     }
 
+    /**
+     * Ez a metódus egy random BugEffect-et generál.
+     * @return BugEffect - A generált random BugEffect
+     */
     @Override
     public BugEffect RandomBugEffect() {
         return switch (RandomNumber(1, 5)) {
@@ -453,11 +502,20 @@ public class Controller implements IRandomProvider {
         };
     }
 
+    /**
+     * Ez a metódus egy random boolean értéket generál.
+     * @return boolean - A generált random boolean érték
+     */
     @Override
     public boolean RandomBoolean() {
         return rand.nextBoolean();
     }
 
+    /**
+     * Ez a metódus egy random Seed értéket állít be.
+     * @param seed A Seed érték, amelyet be szeretnénk állítani
+     * @return void
+     */
     @Override
     public void SetSeed(long seed) {
         rand.setSeed(seed);

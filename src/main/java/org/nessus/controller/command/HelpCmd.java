@@ -1,6 +1,16 @@
 package org.nessus.controller.command;
 
-public class HelpCmd extends BaseCommand{
+/**
+ * Ez az osztály a help parancsot valósítja meg.
+ * A parancs használata:
+ * help [parancsnév]
+ */
+public class HelpCmd extends BaseCommand {
+    /**
+     * Ez a metódus a parancsot hajtja végre.
+     * @param args A parancs paraméterei.
+     * @return void
+     */
     @Override
     public void Run(String[] args) {
         // args[0]

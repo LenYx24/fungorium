@@ -187,14 +187,29 @@ public class Bug {
         moveCost += value;
     }
 
+    /**
+     * A rovar mozgásának költsége
+     * @see ActionPointCatalog
+     * @return int - A rovar mozgásának költsége
+     */
     public int GetMoveCost() {
         return moveCost;
     }
 
+    /**
+     * A rovar táplálkozásának költsége
+     * @see ActionPointCatalog
+     * @return int - A rovar táplálkozásának költsége
+     */
     public int GetEatCost() {
         return eatCost;
     }
 
+    /**
+     * A rovar gombafonal vágásának költsége
+     * @see ActionPointCatalog
+     * @return int - A rovar gombafonal vágásának költsége
+     */
     public int GetCutCost() {
         return cutThreadCost;
     }

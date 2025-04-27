@@ -66,8 +66,7 @@ public class Shroom implements IShroomController {
         ShroomBody body1 = tecton1.GetShroomBody();
         ShroomBody body2 = tecton2.GetShroomBody();
         
-        boolean connectedToBody = (body1 != null && body1.GetShroom() == this) ||
-                                  (body2 != null && body2.GetShroom() == this);
+        boolean connectedToBody = (body1 != null && body1.GetShroom() == this) || (body2 != null && body2.GetShroom() == this);
 
         List<ShroomThread> funcThreads = new ArrayList<>();
 

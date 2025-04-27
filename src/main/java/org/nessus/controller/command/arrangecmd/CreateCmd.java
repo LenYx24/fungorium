@@ -8,9 +8,36 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Ez az osztály felelős a különböző objektumok létrehozásáért a megadott paraméterek alapján.
+ * A parancs formátuma: create <osztálynév> <objektumnév> <paraméterek>
+ * Az osztálynév a létrehozandó objektum osztályának teljes neve, az objektumnév pedig az új objektum neve.
+ * 
+ * A parancs végrehajtásához a következő lépések szükségesek:
+ * 1. Ellenőrizzük, hogy elegendő paramétert adtak-e meg.
+ * 2. Ellenőrizzük, hogy a megadott osztály létezik-e.
+ * 3. Ellenőrizzük, hogy a megadott paraméterek típusa megfelelő-e az osztály konstruktorához.
+ * 4. Létrehozzuk az objektumot a megadott paraméterekkel.
+ * 5. Hozzáadjuk az objektumot a View-hoz.
+ * 6. Visszaadjuk a létrehozott objektumot.
+ */
 public class CreateCmd extends BaseCommand {
-    private Map<String, String> classNameFQNs = new HashMap<>();
-    private String baseprefix = "org.nessus.model.";
+    private Map<String, String> classNameFQNs = new HashMap<>(); // A parancsokhoz tartozó osztálynevek és azok teljes nevei
+    private String baseprefix = "org.nessus.model."; // Az osztályok alapértelmezett prefixe
+
+    /**
+     * A konstruktorban inicializáljuk a classNameFQNs map-et, amely a parancsokhoz tartozó osztályneveket és azok teljes neveit tárolja.
+     * Az osztálynevek a következő formátumban vannak megadva: <osztálynév>.<osztálynév>
+     * A map kulcsai a parancsok nevei, az értékek pedig a teljes osztálynevek.
+     * A map feltöltése során a baseprefix változó értékét is figyelembe vesszük.
+     * 
+     * A feltöltés során a következő osztályokat adjuk hozzá:
+     * - Bug: Bug és BugOwner
+     * - Effect: BugEffect, CoffeeEffect, CripplingEffect, DivisionEffect, JawLockEffect, SlowEffect
+     * - Shroom: Shroom, ShroomBody, ShroomThread, Spore
+     * - Tecton: Tecton, DesertTecton, InfertileTecton, SingleThreadTecton, ThreadSustainerTecton
+     * - Base: ActionPointCatalog
+     */
     public CreateCmd(){
         String prefix_plus = "";
         // bug
@@ -41,6 +68,17 @@ public class CreateCmd extends BaseCommand {
         // base
         classNameFQNs.put("ActionPointCatalog",baseprefix+"ActionPointCatalog");
     }
+
+    /**
+     * A parancs végrehajtásáért felelős metódus.
+     * A metódus ellenőrzi a paramétereket, és létrehozza az objektumot a megadott paraméterekkel.
+     * 
+     * @param args A parancs paraméterei
+     *            args[0] - Az osztály neve
+     *           args[1] - Az objektum neve
+     *          args[2] - A paraméterek
+     * @return void
+     */
     @Override
     public void Run(String[] args) {
         if(NotEnoughArgs(args,2)) {return;}

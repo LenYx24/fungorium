@@ -8,19 +8,47 @@ import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.util.Collection;
 
+/**
+ * Ez az osztály felelős a különböző objektumok mezőinek értékének megjelenítéséért a megadott paraméterek alapján.
+ * A parancs formátuma: show <objektumnév>
+ * Az objektumnév a mező, amelynek értékét meg szeretnénk jeleníteni.
+ * 
+ * A parancs végrehajtásához a következő lépések szükségesek:
+ * 1. Ellenőrizzük, hogy elegendő paramétert adtak-e meg.
+ * 2. Ellenőrizzük, hogy a megadott objektum létezik-e.
+ * 3. Ellenőrizzük, hogy a megadott mező létezik-e az objektumban.
+ * 4. Megjelenítjük az objektum mezőinek értékeit.
+ * 5. Visszaadjuk a megjelenített értékeket.
+ */
 public class ShowCmd extends BaseCommand {
     private OutputStream os;
 
+    /**
+     * Ez a metódus felelős az objektum mezőinek értékének megjelenítéséért.
+     * @param os Az OutputStream, amelyre a megjelenített értékeket írjuk.
+     */
     public ShowCmd(OutputStream os) {
         this.os = os;
     }
 
+    /**
+     * Ez a metódus felelős az objektum mezőjének értékének megjelenítéséért.
+     * @param value Az objektum mezőjének értéke.
+     * @return A megjelenített érték.
+     */
     private String GetValueOfObject(Object value){
         if(value == null) return null;
         String valuename = View.GetObjectStore().GetName(value);
         return valuename == null ? value.toString() : valuename;
     }
-    
+
+    /**
+     * Ez a metódus irányítja a parancs végrehajtását.
+     * A parancs formátuma: show <objektumnév>
+     * A célobjektum a mező, amelynek értékét meg szeretnénk jeleníteni.
+     * @param args A parancs paraméterei.
+     * @return void
+     */
     @Override
     public void Run(String[] args) {
         if(NotEnoughArgs(args,1))
