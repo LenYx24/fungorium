@@ -1,7 +1,5 @@
 package org.nessus.model;
 
-import org.nessus.view.View;
-
 /**
  * A cselekvési pontokat reprezentáló osztály.
  * A cselekvési pontokat a játékosok használják a cselekvéseik végrehajtásához.
@@ -26,6 +24,13 @@ public class ActionPointCatalog {
      */
     public void DecreasePoints(int cost) {
         currentActionPoints -= cost;
+    }
+    /**
+     * Növeli a pontok számát.
+     * @param cost
+     */
+    public void IncreasePoints(int cost) {
+        currentActionPoints += cost;
     }
 
     /**

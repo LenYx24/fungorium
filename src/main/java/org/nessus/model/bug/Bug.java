@@ -18,8 +18,9 @@ import java.util.List;
  * A rovaroknak van egy collectedNutrients változója, amelyben tárolják a táplálkozás során összegyűjtött tápanyagok mennyiségét.
  */
 public class Bug {
-    List<BugEffect> bugEffects = new ArrayList<>(); // hatások
     Tecton tecton; // tekton, amin a rovar tartózkodik
+    List<BugEffect> effects = new ArrayList<>(); // hatások
+    BugOwner bugOwner; // rovar tulajdonosa
 
     int collectedNutrients = 0; // összegyűjtött tápanyagok
 
@@ -30,36 +31,23 @@ public class Bug {
     int eatCost; // táplálkozás költsége
     int cutThreadCost; // gombafonal vágás költsége
 
-    BugOwner owner; // rovar tulajdonosa
-
-    /**
-     * Konstruktor
-     * Alapértelmezetten beállítja a pontokat és a költségeket.
-     */
-    public Bug() {
-        LoadDefaultCosts();
-    }
-
-    /**
-     * Konstruktor
-     * A rovar tektonját beállítja.
-     * @param tecton
-     */
-    public Bug(Tecton tecton) {
-        this();
-        this.tecton = tecton;
-    }
-
 
     /**
      * Konstruktor
      * A rovar tektonját és tulajdonosát beállítja.
-     * @param tecton
+     */
+    public Bug() {
+        LoadDefaultCosts();
+    }
+    /**
+     * Konstruktor
+     * A rovar tektonját és tulajdonosát beállítja.
      * @param owner
      */
-    public Bug(Tecton tecton, BugOwner owner) {
-        this(tecton);
-        this.owner = owner;
+    public Bug(BugOwner owner) {
+        LoadDefaultCosts();
+        this.bugOwner = owner;
+        owner.AddBug(this);
     }
 
     /**
@@ -69,7 +57,7 @@ public class Bug {
      * @return void
      */
     void SetOwner(BugOwner owner) {
-        this.owner = owner;
+        this.bugOwner = owner;
     }
 
     /**
@@ -78,7 +66,7 @@ public class Bug {
      * @return BugOwner - A rovar tulajdonosa
      */
     public BugOwner GetOwner() {
-        return owner;
+        return bugOwner;
     }
 
     /**
@@ -166,7 +154,7 @@ public class Bug {
         boolean reachable = thread.IsTectonReachable(tecton);
 
         if (canCut && reachable) {
-            thread.Remove();
+            thread.SetCut();
             return true;
         }
 
@@ -179,16 +167,15 @@ public class Bug {
      * @return void
      */
     public void Split() {
-        Bug newBug = new Bug();
+        Bug newBug = new Bug(bugOwner);
 
-        for (BugEffect bugEffect : this.bugEffects) {
-            newBug.bugEffects.add(bugEffect);
+        for (BugEffect bugEffect : this.effects) {
+            newBug.effects.add(bugEffect);
         }
 
         newBug.tecton = tecton;
-        newBug.owner = owner;
-
-        owner.AddBug(newBug);
+        tecton.AddBug(newBug);
+        View.GetObjectStore().AddObjectWithNameGen("bug", newBug);
     }
 
     /**
@@ -227,7 +214,7 @@ public class Bug {
      * @return void
      */
     public void AddEffect(BugEffect bugEffect) {
-        bugEffects.add(bugEffect);
+        effects.add(bugEffect);
     }
 
     /**
@@ -236,7 +223,7 @@ public class Bug {
      * @return void
      */
     public void ClearEffect(BugEffect effect) {
-        bugEffects.remove(effect);
+        effects.remove(effect);
     }
 
     /**
@@ -251,7 +238,8 @@ public class Bug {
         canCut = true;
         canMove = true;
 
-        bugEffects.forEach(effect -> effect.ApplyOn(this));
+        // Az effektek törlődhetnek ha lejárt az idejük, ezért másolaton iterálunk végig
+        List.copyOf(effects).forEach(effect -> effect.ApplyOn(this));
     }
 
     /**
@@ -260,7 +248,7 @@ public class Bug {
      * @return void
      */
     public void LoadDefaultCosts() {
-        moveCost = 1;
+        moveCost = 2;
         eatCost = 2;
         cutThreadCost = 2;
     }
@@ -269,7 +257,7 @@ public class Bug {
      * Az összedetett tápanyagérték lekérdezése
      * @return int - A tápanyagok értéke
      */
-    public int getCollectedNutrients() {
+    public int GetCollectedNutrients() {
         return collectedNutrients;
     }
 
@@ -296,7 +284,7 @@ public class Bug {
      * @return void
      */
     public void SetCanCut(boolean canCut) {
-        this.canMove = canCut;
+        this.canCut = canCut;
     }
 
     /**
@@ -308,7 +296,7 @@ public class Bug {
     public void Remove() {
         if (tecton != null)
             tecton.RemoveBug(this);
-        if (owner != null)
-            owner.RemoveBug(this);
+        if (bugOwner != null)
+            bugOwner.RemoveBug(this);
     }
 }

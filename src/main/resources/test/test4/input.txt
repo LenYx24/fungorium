@@ -1,12 +1,10 @@
 arrange
 create Tecton tecton1
 create Tecton tecton2
-create ActionPointCatalog actCat
 
 neighbour tecton1 tecton2
 
 create BugOwner bugOwner
-setref actCatalog actCat
 create Bug bug bugOwner
 
 place bug tecton1
@@ -20,4 +18,6 @@ move bug tecton2
 
 assert
 save output.txt
+
+resetobjects
 

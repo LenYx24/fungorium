@@ -3,29 +3,27 @@ tecton1:
 		tecton2
 	}
 	body: null
-	threads: {
-		thread
-	}
+	threads: { }
 	bugs: {
 		bug
 	}
+	spores: { }
 tecton2:
 	neighbours: {
 		tecton1
 	}
 	body: null
-	threads: {
-		thread
-	}
+	threads: { }
 	bugs: { }
-actCat:
-	defaultActionPoints: 5
-	currentActionPoints: 5
+	spores: { }
 bugOwner:
 	bugs: {
 		bug
 	}
-	actCatalog: actCat
+	actCatalog: bugOwner_actCat
+bugOwner_actCat:
+	defaultActionPoints: 5
+	currentActionPoints: 5
 bug:
 	tecton: tecton1
 	effects: { }
@@ -36,4 +34,3 @@ bug:
 	moveCost: 2
 	eatCost: 2
 	cutThreadCost: 2
-

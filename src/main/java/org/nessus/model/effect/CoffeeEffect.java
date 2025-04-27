@@ -1,7 +1,6 @@
 package org.nessus.model.effect;
 
 import org.nessus.model.bug.Bug;
-import org.nessus.view.View;
 
 /**
  * Az osztály a "kávé" hatását reprezentálja.
@@ -17,7 +16,7 @@ public class CoffeeEffect extends BugEffect {
      * @param bug
      */
     public void ApplyOn(Bug bug) {
-        bug.AddMoveCost(-2);
+        bug.AddMoveCost(-1);
         UpdateState(bug);
     }
 }

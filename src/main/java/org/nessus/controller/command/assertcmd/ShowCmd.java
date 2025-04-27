@@ -1,8 +1,6 @@
 package org.nessus.controller.command.assertcmd;
 
 import org.nessus.controller.command.BaseCommand;
-import org.nessus.model.tecton.DesertTecton;
-import org.nessus.model.tecton.Tecton;
 import org.nessus.view.View;
 
 import java.io.OutputStream;

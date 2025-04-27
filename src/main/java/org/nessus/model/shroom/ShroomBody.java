@@ -1,12 +1,6 @@
 package org.nessus.model.shroom;
 
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
 
 import org.nessus.model.tecton.Tecton;
 import org.nessus.view.View;
@@ -29,12 +23,26 @@ public class ShroomBody {
 
     /**
      * Az osztály konstruktora.
+     */
+    public ShroomBody() {
+    }
+    /**
+     * Az osztály konstruktora.
      * @param shroom
      * @param tecton
      */
     public ShroomBody(Shroom shroom, Tecton tecton) {
         this.shroom = shroom;
         this.tecton = tecton;
+    }
+
+    /**
+     * Az osztály konstruktora.
+     * @param shroom
+     */
+    public ShroomBody(Shroom shroom) {
+        this.shroom = shroom;
+        shroom.SetShroomBody(this);
     }
 
     /**
@@ -104,14 +112,15 @@ public class ShroomBody {
      * @return Spore - A kialakított spóra
      */
     public Spore FormSpore(Tecton tecton) {
-        if (sporeMaterials <= 2 || !InRange(tecton))
+        System.out.println("sporemat: "+sporeMaterials);
+        if (sporeMaterials < 2 || !InRange(tecton))
             return null;
 
         sporeMaterials -= 2;
         remainingThrows--;
 
         Spore spore = new Spore(shroom, tecton);
-        View.GetObjectStore().AddObject( "spore",spore);
+        View.GetObjectStore().AddObjectWithNameGen("spore",spore);
         tecton.ThrowSpore(spore);
 
         if (remainingThrows <= 0) {

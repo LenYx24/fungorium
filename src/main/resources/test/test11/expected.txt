@@ -3,14 +3,19 @@ tecton:
 	body: null
 	threads: { }
 	bugs: {
-		bug1
+		bug1,
+		bug2
 	}
 	spores: { }
 bugOwner:
 	bugs: {
-		bug1
+		bug1,
+		bug2
 	}
-	actCatalog: actCat
+	actCatalog: bugOwner_actCat
+bugOwner_actCat:
+	defaultActionPoints: 5
+	currentActionPoints: 5
 bug1:
 	tecton: tecton
 	effects: { }
@@ -21,23 +26,33 @@ bug1:
 	moveCost: 2
 	eatCost: 2
 	cutThreadCost: 2
-actCat:
+shroom:
+	spores: { }
+	shroomBodies: { }
+	threads: { }
+	actCatalog: shroom_actCat
+	grownShroomBodies: 0
+	shroomThreadCost: 2
+	shroomBodyCost: 3
+	shroomUpgradeCost: 3
+	sporeCost: 2
+	devourCost: 3
+shroom_actCat:
 	defaultActionPoints: 5
-	currentActionPoints: 3
+	currentActionPoints: 5
 spore:
 	shroom: shroom
-	tecton: null
+	tecton: tecton
 	nutrients: 2
-divisionEffect:
+bugEffect1:
 	remainingUses: 0
 bug2:
 	tecton: tecton
 	effects: { }
 	bugOwner: bugOwner
-	collectedNutrients: 2
+	collectedNutrients: 0
 	canMove: true
 	canCut: true
-	moveCost: 1
+	moveCost: 2
 	eatCost: 2
 	cutThreadCost: 2
-

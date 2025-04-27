@@ -2,8 +2,6 @@ package org.nessus.model.shroom;
 
 import org.nessus.model.tecton.Tecton;
 import org.nessus.model.bug.Bug;
-import org.nessus.model.tecton.ThreadSustainerTecton;
-import org.nessus.view.View;
 
 /**
  * A fonalat reprezentáló osztály.
@@ -21,17 +19,21 @@ public class ShroomThread {
     int isolationCounter = 0; // Az izoláció számlálója
     boolean cut = false; // A fonal el van-e vágva
 
-    int cutDamageTimer = 0; // Megadja, a fonál hány kör után szívódik fel miután elvágták
+    int cutDamageTimer = 3; // Megadja, a fonál hány kör után szívódik fel miután elvágták
     boolean sustained = false; // Megadja, hogy a fonált épp életben tartja-e egy ThreadSustainerTecton. Ilyenkor nem szívódik fel.
 
     /**
      * Az osztály konstruktora.
-     * @param tecton1
-     * @param tecton2
      */
-    public ShroomThread(Tecton tecton1, Tecton tecton2) {
-        this.tecton1 = tecton1;
-        this.tecton2 = tecton2;
+    public ShroomThread() {
+    }
+    /**
+     * Az osztály konstruktora.
+     * @param shroom
+     */
+    public ShroomThread(Shroom shroom) {
+        this.shroom = shroom;
+        shroom.SetShroomThread(this);
     }
     
     /**
@@ -41,8 +43,10 @@ public class ShroomThread {
      * @param tecton2
      */
     public ShroomThread(Shroom shroom, Tecton tecton1, Tecton tecton2) {
-        this(tecton1, tecton2);
         this.shroom = shroom;
+        shroom.SetShroomThread(this);
+        this.tecton1 = tecton1;
+        this.tecton2 = tecton2;
     }
 
     /**
@@ -70,7 +74,7 @@ public class ShroomThread {
             cutDamageTimer -= 1;
 
         if (!connectedToShroomBody && !sustained)
-            isolationCounter -= 1;
+            isolationCounter += 1;
 
         if (isolationCounter >= 3 || cutDamageTimer <= 0)
             Remove();
@@ -170,5 +174,9 @@ public class ShroomThread {
 
     public void SetSustained() {
         sustained = true;
+    }
+
+    public void SetCut() {
+        cut = true;
     }
 }

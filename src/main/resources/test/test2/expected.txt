@@ -9,6 +9,7 @@ tecton1:
 	bugs: {
 		bug
 	}
+	spores: { }
 tecton2:
 	neighbours: {
 		tecton1
@@ -18,14 +19,15 @@ tecton2:
 		thread
 	}
 	bugs: { }
-actCat:
-	defaultActionPoints: 5
-	currentActionPoints: 5
+	spores: { }
 bugOwner:
 	bugs: {
 		bug
 	}
-	actCatalog: actCat
+	actCatalog: bugOwner_actCat
+bugOwner_actCat:
+	defaultActionPoints: 5
+	currentActionPoints: 5
 bug:
 	tecton: tecton1
 	effects: { }
@@ -42,19 +44,22 @@ shroom:
 	threads: {
 		thread
 	}
-	actCatalog: null
-	grownShroomBodies: 0,
+	actCatalog: shroom_actCat
+	grownShroomBodies: 0
 	shroomThreadCost: 2
 	shroomBodyCost: 3
 	shroomUpgradeCost: 3
 	sporeCost: 2
-	devourCost: 2
+	devourCost: 3
+shroom_actCat:
+	defaultActionPoints: 5
+	currentActionPoints: 5
 thread:
 	shroom: shroom
 	tecton1: tecton1
 	tecton2: tecton2
 	evolution: 0
-	connectedToShroomBody: true
+	connectedToShroomBody: false
 	isolationCounter: 0
 	cut: false
 	cutDamageTimer: 3

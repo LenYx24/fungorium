@@ -9,6 +9,7 @@ create ShroomThread thread shroom
 setval thread evolution 3
 
 placethread thread tecton1 tecton2
+place shroomBody tecton1
 
 currentplayer shroom
 
@@ -17,5 +18,7 @@ updateshroom shroom
 updateshroom shroom
 updateshroom shroom
 
-arrange
+assert
 save output.txt
+
+resetobjects

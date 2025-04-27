@@ -5,6 +5,8 @@ import org.nessus.controller.IRandomProvider;
 public interface IGameObjectStore {
     public void AddObject(String name, Object object);
 
+    public void AddObjectWithNameGen(String name, Object object);
+
     /**
      * Visszaadja a paraméterként kapott objektum nevét.
      * @param object

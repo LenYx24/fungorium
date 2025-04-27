@@ -4,10 +4,8 @@ create Tecton tecton
 create BugOwner bugOwner
 create Bug bug bugOwner
 
-create ActionPointCatalog actCat
-setref bugOwner actCatalog actCat
-
-create Spore spore
+create Shroom shroom
+create Spore spore shroom
 setval spore nutrients 2
 
 place bug tecton
@@ -24,3 +22,4 @@ updatebugs bugOwner
 assert
 save output.txt
 
+resetobjects

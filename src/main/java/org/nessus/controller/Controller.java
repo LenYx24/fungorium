@@ -36,6 +36,8 @@ public class Controller implements IRandomProvider {
     private HashMap<String, BaseCommand> actCmds = new HashMap<>();
     private HashMap<String, BaseCommand> assertCmds = new HashMap<>();
 
+    Path runpath = null;
+
     public Controller(View view) {
         normalCmds.put("hi", new BaseCommand() {
             @Override
@@ -43,7 +45,7 @@ public class Controller implements IRandomProvider {
                 System.out.println("hi");
             }
         });
-        
+
         normalCmds.put("arrange", new BaseCommand() {
             @Override
             public void Run(String[] args) {
@@ -65,6 +67,13 @@ public class Controller implements IRandomProvider {
             }
         });
 
+        normalCmds.put("resetobjects", new BaseCommand() {
+            @Override
+            public void Run(String[] args) {
+                view.ResetObjects();
+            }
+        });
+
         normalCmds.put("exit", new BaseCommand() {
             @Override
             public void Run(String[] args) {
@@ -75,7 +84,7 @@ public class Controller implements IRandomProvider {
         normalCmds.put("help",new HelpCmd());
         // ARRANGE
         arrangeCmds.put("create",new CreateCmd());
-        
+
         arrangeCmds.put("setval",new SetValCmd());
         arrangeCmds.put("setref",new SetRefCmd());
 
@@ -85,34 +94,56 @@ public class Controller implements IRandomProvider {
                 ConvertToInteger(args[0]).ifPresent(x -> SetSeed(x));
             }
         });
+
         arrangeCmds.put("neighbour", new BaseCommand() {
             @Override
             public void Run(String[] args) {
                 if(NotEnoughArgs(args,2))
                     return;
                 
-                Tecton t1 = (Tecton)view.GetObject(args[0]);
-                Tecton t2 = (Tecton)view.GetObject(args[1]);
+                ITectonController t1 = (ITectonController)view.GetObject(args[0]);
+                ITectonController t2 = (ITectonController)view.GetObject(args[1]);
 
-                t1.SetNeighbour(t2);
-                t2.SetNeighbour(t1);
+                t1.SetNeighbour((Tecton)t2);
+                t2.SetNeighbour((Tecton)t1);
             }
         });
+        
+        arrangeCmds.put("addeffect", new BaseCommand() {
+            @Override
+            public void Run(String[] args) {
+                if (NotEnoughArgs(args, 2))
+                    return;
+
+                Bug bug = (Bug)view.GetObject(args[0]);
+                BugEffect effect = (BugEffect)view.GetObject(args[1]);
+
+                bug.AddEffect(effect);
+            }
+            
+        });
+
         arrangeCmds.put("place", new BaseCommand() {
             @Override
             public void Run(String[] args) {
                 if(NotEnoughArgs(args,2))
                     return;
                 
-                    Object obj = view.GetObject(args[0]);
+                Object obj = view.GetObject(args[0]);
                 Tecton tecton = (Tecton)view.GetObject(args[1]);
 
-                if(obj instanceof Bug)
-                    tecton.AddBug((Bug)obj);
-                else if(obj instanceof ShroomBody)
-                    tecton.SetShroomBody((ShroomBody)obj);
-                else if(obj instanceof Spore)
-                    tecton.ThrowSpore((Spore)obj);
+                if(obj instanceof Bug bug) {
+                    tecton.AddBug(bug);
+                    bug.SetTecton(tecton);
+                }
+                else if(obj instanceof ShroomBody body) {
+                    tecton.SetShroomBody(body);
+                    body.SetTecton(tecton);
+                }
+                else if(obj instanceof Spore spore) {
+                    tecton.ThrowSpore(spore);
+                    spore.SetTecton(tecton);
+                }
             }
         });
         arrangeCmds.put("placethread", new BaseCommand() {
@@ -121,17 +152,16 @@ public class Controller implements IRandomProvider {
                 if(NotEnoughArgs(args,3))
                     return;
 
-                Object obj = view.GetObject(args[0]);
+                ShroomThread thread = (ShroomThread)view.GetObject(args[0]);
 
                 Tecton tecton1 = (Tecton)view.GetObject(args[1]);
                 Tecton tecton2 = (Tecton)view.GetObject(args[2]);
 
-                if(obj instanceof ShroomThread) {
-                    ShroomThread thread = (ShroomThread)obj;
+                tecton1.GrowShroomThread(thread);
+                tecton2.GrowShroomThread(thread);
 
-                    tecton1.GrowShroomThread(thread);
-                    tecton2.GrowShroomThread(thread);
-                }
+                thread.SetTecton1(tecton1);
+                thread.SetTecton2(tecton2);
             }
         });
 
@@ -140,17 +170,28 @@ public class Controller implements IRandomProvider {
             public void Run(String[] args) {
                 if(NotEnoughArgs(args,1))
                     return;
-                
+
                 var path = Paths.get("src", "main", "resources", "test", args[0], "input.txt");
+                runpath = Paths.get("src", "main", "resources", "test", args[0]);
                 try (BufferedReader reader = Files.newBufferedReader(path)) {
                     String line;
                     while ((line = reader.readLine()) != null) {
-                        System.err.println(line);
+                        System.err.println(GetPrompt() + line);
                         ProcessCommand(line);
                     }
                 } catch (IOException e) {
                     System.out.println("Hiba a fájl olvasása közben: " + e.getMessage());
                 }
+            }
+        });
+
+        arrangeCmds.put("runall", new BaseCommand() {
+            @Override
+            public void Run(String[] args) {
+                var runcmd = arrangeCmds.get("run");
+                final int nTest = 34;
+                for (int i = 1; i <= nTest; i++)
+                    runcmd.Run(new String[] { "test" + i });
             }
         });
 
@@ -161,12 +202,14 @@ public class Controller implements IRandomProvider {
                 String name = args[0];
                 Object obj = view.GetObject(name);
 
-                if(obj instanceof BugOwner) {
-                    currentBugOwner = (BugOwner)obj;
+                if(obj instanceof BugOwner bugOwner) {
+                    currentBugOwner = bugOwner;
+                    bugOwnerRound = true;
                 }
 
-                if(obj instanceof Shroom) {
-                    currentShroom = (Shroom)obj;
+                if(obj instanceof Shroom shroom) {
+                    currentShroom = shroom;
+                    bugOwnerRound = false;
                 }
             }
         });
@@ -307,13 +350,13 @@ public class Controller implements IRandomProvider {
                     int idx = bugOwners.indexOf(currentBugOwner);
                     if (idx == bugOwners.size() - 1) {
                         bugOwnerRound = false;
-                        currentShroom = shrooms.getFirst();
+                        currentShroom = shrooms.get(0);
                     }
                 } else {
                     int idx = shrooms.indexOf(currentShroom);
                     if (idx == shrooms.size() - 1) {
                         bugOwnerRound = true;
-                        currentBugOwner = bugOwners.getFirst();
+                        currentBugOwner = bugOwners.get(0);
                     }
                 }
             }
@@ -333,6 +376,9 @@ public class Controller implements IRandomProvider {
             @Override
             public void Run(String[] args) {
                 var p = Paths.get("target", args[0]);
+                if(runpath != null){
+                    p = runpath.resolve(args[0]);
+                }
 
                 try (FileOutputStream fstream = new FileOutputStream(p.toFile())) {
                     var save = new ShowCmd(fstream);
@@ -345,10 +391,11 @@ public class Controller implements IRandomProvider {
     }
 
     public String GetPrompt() {
+        var objStore = View.GetObjectStore();
         return switch(mode) {
-            case ARRANGE -> "arrange";
-            case ACT -> "act";
-            case ASSERT -> "assert";
+            case ARRANGE -> "arrange>";
+            case ACT -> "act#" + objStore.GetName(bugOwnerRound ? currentBugOwner : currentShroom) + ">";
+            case ASSERT -> "assert>";
         };
     }
 

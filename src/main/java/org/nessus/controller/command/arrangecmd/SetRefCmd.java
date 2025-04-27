@@ -41,7 +41,6 @@ public class SetRefCmd extends BaseCommand {
             }
 
             field.set(targetObject, referenceObject);
-            System.out.println("Referencia sikeresen beállítva.");
         } catch (NoSuchFieldException | IllegalAccessException e) {
             System.out.println("Hiba a referencia beállításánál: " + e.getMessage());
         } finally {

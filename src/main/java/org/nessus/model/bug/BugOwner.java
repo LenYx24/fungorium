@@ -13,8 +13,8 @@ import org.nessus.model.tecton.Tecton;
 import org.nessus.view.View;
 
 public class BugOwner implements IBugOwnerController {
-    private ActionPointCatalog actCatalog;
     private List<Bug> bugs = new ArrayList<>();
+    private ActionPointCatalog actCatalog;
 
     private void PerformAction(IntSupplier actionCost, BooleanSupplier actionResult) {
         int cost = actionCost.getAsInt();
@@ -31,7 +31,9 @@ public class BugOwner implements IBugOwnerController {
 
     public BugOwner() {
         actCatalog = new ActionPointCatalog();
-        View.GetObjectStore().AddObject("actCatalog", actCatalog);
+        var objStore = View.GetObjectStore();
+        var name = objStore.GetPendingObjectName() + "_actCat";
+        View.GetObjectStore().AddObject(name, actCatalog);
     }
 
     public void Move(Bug bug, Tecton tecton) {
@@ -48,7 +50,9 @@ public class BugOwner implements IBugOwnerController {
 
     public void UpdateBugOwner() {
         ResetPoints();
-        bugs.forEach(Bug::UpdateBug);
+        // Ha osztódás effekt van a rovaron, akkor előfordulhat, hogy a rovar állapotának frissítése után új
+        // rovar keletkezik, ezért a rovarlista egy másolatán iterálunk, hogy ne legyen konkurens módosítás
+        List.copyOf(bugs).forEach(Bug::UpdateBug);
     }
 
     public void AddBug(Bug bug) {

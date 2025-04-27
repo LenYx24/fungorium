@@ -5,6 +5,7 @@ import java.util.*;
 import org.nessus.model.shroom.*;
 import org.nessus.controller.Controller;
 import org.nessus.controller.IRandomProvider;
+import org.nessus.controller.NameGenerator;
 import org.nessus.model.bug.*;
 
 import static java.lang.System.in;
@@ -54,8 +55,8 @@ public class View implements IGameObjectStore {
 
         while (running) {
             String prompt = controller.GetPrompt();
-            System.out.print(prompt + ">");
-
+            System.out.print(prompt);
+            
             String cmd = scanner.nextLine();
             controller.ProcessCommand(cmd);
         }
@@ -77,9 +78,31 @@ public class View implements IGameObjectStore {
                 controller.AddBugOwner(bugOwner);
             else if (object instanceof Shroom shroom)
                 controller.AddShroom(shroom);
-                
+
+            objects.put(name, object);
+            NameGenerator.AddName(name);
+        }
+    }
+
+    /**
+     * Ezzel a metódussal adhatunk hozzá objektumot a loghoz.
+     * @param prefix
+     * @param object
+     */
+    public void AddObjectWithNameGen(String prefix, Object object) {
+        String name = NameGenerator.GenerateName(prefix);
+        if (pendingObjectName != null) {
+            pendingObjects.put(name, object);
+        }
+        else {
             objects.put(name, object);
         }
+    }
+
+    public void ResetObjects() {
+        objects.clear();
+        pendingObjects.clear();
+        NameGenerator.ResetNames();
     }
 
     /**
@@ -108,10 +131,13 @@ public class View implements IGameObjectStore {
     @Override
     public void EndPending(Object object) {
         // Belerakjuk a legelső objektumot amely létre lett hozva a lista elé
-        objects.put(pendingObjectName, object);
-        objects.putAll(pendingObjects);
-        pendingObjects.clear();
+        var tmp = pendingObjectName;
         pendingObjectName = null;
+        
+        AddObject(tmp, object);
+        pendingObjects.forEach(this::AddObject);
+
+        pendingObjects.clear();
     }
     
     @Override

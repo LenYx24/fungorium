@@ -10,11 +10,14 @@ bugOwner:
 	bugs: {
 		bug
 	}
-	actCatalog: actCat
+	actCatalog: bugOwner_actCat
+bugOwner_actCat:
+	defaultActionPoints: 5
+	currentActionPoints: 5
 bug:
 	tecton: tecton
 	effects: {
-		coffeeEffect1
+		bugEffect1
 	}
 	bugOwner: bugOwner
 	collectedNutrients: 2
@@ -23,13 +26,23 @@ bug:
 	moveCost: 1
 	eatCost: 2
 	cutThreadCost: 2
-actCat:
-	defaultActionPoints: 3
+shroom:
+	spores: { }
+	shroomBodies: { }
+	threads: { }
+	actCatalog: shroom_actCat
+	grownShroomBodies: 0
+	shroomThreadCost: 2
+	shroomBodyCost: 3
+	shroomUpgradeCost: 3
+	sporeCost: 2
+	devourCost: 3
+shroom_actCat:
+	defaultActionPoints: 5
 	currentActionPoints: 5
 spore:
-shroom: shroom
-	tecton: null
+	shroom: shroom
+	tecton: tecton
 	nutrients: 2
-coffeeEffect1:
+bugEffect1:
 	remainingUses: 2
-

@@ -1,37 +1,38 @@
 tecton1:
-    neighbours: {
-        tecton2
-    }
-    body: shroomBody
-    threads: { }
-    bugs: { }
-    spores: { }
+	neighbours: {
+		tecton2
+	}
+	body: shroomBody
+	threads: { }
+	bugs: { }
+	spores: { }
 tecton2:
-    neighbours: {
-        tecton1
-    }
-    body: null
-    threads: { }
-    bugs: { }
-    spores: { }
+	neighbours: {
+		tecton1
+	}
+	body: null
+	threads: { }
+	bugs: { }
+	spores: { }
 shroom:
-    spores: { }
-    shroomBodies: {
-        shroombody
-    }
-    threads: { }
-    actCatalog: shroom_actCat
-    grownShroomBodies: 1
-    shroomThreadCost: 2
-    shroomBodyCost: 3
-    shroomUpgradeCost: 3
-    sporeCost: 2
-    devourCost: 2
+	spores: { }
+	shroomBodies: {
+		shroomBody
+	}
+	threads: { }
+	actCatalog: shroom_actCat
+	grownShroomBodies: 0
+	shroomThreadCost: 2
+	shroomBodyCost: 3
+	shroomUpgradeCost: 3
+	sporeCost: 2
+	devourCost: 3
 shroom_actCat:
-    defaultActionPoints: 5
-    currentActionPoints: 5
+	defaultActionPoints: 5
+	currentActionPoints: 5
 shroomBody:
-    tecton: tecton
-    level: 1
-    remainingThrows: 5
-    sporeMaterials: 0
+	shroom: shroom
+	tecton: tecton1
+	level: 1
+	remainingThrows: 5
+	sporeMaterials: 0

@@ -1,8 +1,6 @@
 package org.nessus.model.tecton;
 
-import org.nessus.model.*;
 import org.nessus.model.shroom.ShroomThread;
-import org.nessus.view.View;
 
 import java.util.*;
 
@@ -23,9 +21,7 @@ public class DesertTecton extends Tecton {
      */
     @Override
     public Tecton Copy() {
-        Tecton copyTecton = new DesertTecton();
-        View.GetObjectStore().AddObject( "copyTecton", copyTecton);
-        return copyTecton;
+        return new DesertTecton();
     }
 
     /**
@@ -36,7 +32,7 @@ public class DesertTecton extends Tecton {
      */
     @Override
     public boolean GrowShroomThread(ShroomThread thread) {
-        this.shroomThreads.add(thread);
+        this.threads.add(thread);
         this.decayTimers.put(thread, 2);
         return true;
     }
@@ -51,7 +47,7 @@ public class DesertTecton extends Tecton {
      */
     @Override
     public void UpdateTecton() {
-        for (ShroomThread thread : List.copyOf(shroomThreads)) {
+        for (ShroomThread thread : List.copyOf(threads)) {
             var decayTimer = decayTimers.get(thread);
 
             if (decayTimer <= 0) {
