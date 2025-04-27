@@ -67,6 +67,10 @@ public class Spore {
         shroom.RemoveSpore(this);
     }
 
+    /**
+     * A spóra tápanyagának lekérdezése.
+     * @return int - A spóra tápanyaga
+     */
     public int GetNutrient() {
         return nutrients;
     }

@@ -24,8 +24,7 @@ public class ShroomBody {
     /**
      * Az osztály konstruktora.
      */
-    public ShroomBody() {
-    }
+    public ShroomBody() {}
     /**
      * Az osztály konstruktora.
      * @param shroom
