@@ -10,6 +10,11 @@ import org.nessus.model.bug.*;
 
 import static java.lang.System.in;
 
+/**
+ * Ez a singleton View osztály felelős a program futtatásáért.
+ * A View osztály a Controller osztályt használja a parancsok feldolgozására.
+ * A View osztály a parancsok végrehajtásáért és a felhasználói interakcióért felelős.
+ */
 public class View implements IGameObjectStore {
     private static View instance;
 
@@ -27,24 +32,41 @@ public class View implements IGameObjectStore {
      */
     private View() {}
 
+    /**
+     * Ez a metódus visszaadja a {@code View} osztály egy példányát.
+     * Ha a példány még nem létezik, akkor létrehozza azt.
+     * @return A {@code View} osztály egy példánya.
+     */
     static View GetInstance() {
         if (instance == null)
             instance = new View();
         return instance;
     }
 
+    /**
+     * Ezzela metódussal kaphatunk vissza egy ObjectStore-t.
+     * @return IGameObjectStore - Az objektumok tárolására szolgáló objektum.
+     */
     public static IGameObjectStore GetObjectStore() {
         return GetInstance();
     }
 
+    /**
+     * Ezzel a metódussal állíthatjuk le a program futását.
+     * @return void
+     */
     public void Stop() {
         running = false;
     }
 
+    /**
+     * Ezzel a metódussal kérhetjük le a programban tárolt objektumokat.
+     * @return Set<String> - Az objektumok tárolására szolgáló térkép.
+     */
     public Set<String> GetObjects() {
         return objects.keySet();
     }
-    
+
     /**
      * A program futását megvalósító metódus.
      * @return void
@@ -99,6 +121,10 @@ public class View implements IGameObjectStore {
         }
     }
 
+    /**
+     * Ezzel a metódussal törölhetjük az összes objektumot a tárolókból.
+     * @return void
+     */
     public void ResetObjects() {
         objects.clear();
         pendingObjects.clear();
@@ -119,10 +145,20 @@ public class View implements IGameObjectStore {
         return null;
     }
 
+    /**
+     * Visszaadja azt az objektumot, amelynek a neve megegyezik a paraméterként kapott névvel.
+     * @param name - Az objektum neve
+     * @return Object - Az objektum, amelynek a neve megegyezik a paraméterként kapott névvel
+     */
     public Object GetObject(String name) {
         return objects.get(name);
     }
 
+    /**
+     * Beállítja a várakozó objektum nevét.
+     * @param name - Az objektum neve
+     * @return void
+     */
     @Override
     public void SetPending(String name) {
         pendingObjectName = name;
@@ -139,17 +175,29 @@ public class View implements IGameObjectStore {
 
         pendingObjects.clear();
     }
-    
+
+    /**
+     * Visszaadja a még várakozó objektum nevét.
+     * @return String - A várakozó objektum neve
+     */
     @Override
     public String GetPendingObjectName() {
         return pendingObjectName;
     }
-    
+
+    /**
+     * Lekér egy random generátort.
+     * @return IRandomProvider - A random generátor
+     */
     @Override
     public IRandomProvider GetRandomProvider() {
         return controller;
     }
 
+    /**
+     * A program belépési pontja.
+     * @param args - A parancssori argumentumok
+     */
     public static void main(String[] args) {
         View view = View.GetInstance();
         view.Run();
