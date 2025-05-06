@@ -40,7 +40,7 @@ public class Tecton implements ITectonController {
 
         neighbours.add(copyTecton);
 
-        IRandomProvider randProvider = View.GetObjectStore().GetRandomProvider();
+        Controller randProvider = View.GetObjectStore().GetRandomProvider();
 
         Iterator<Bug> bugIterator = bugs.iterator();
         while (bugIterator.hasNext()) {

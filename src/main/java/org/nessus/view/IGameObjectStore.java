@@ -1,6 +1,6 @@
 package org.nessus.view;
 
-import org.nessus.controller.IRandomProvider;
+import org.nessus.controller.Controller;
 
 /**
  * Az objektumkatalógus interfésze.
@@ -63,5 +63,5 @@ public interface IGameObjectStore {
      * Lekér egy random generátort.
      * @return IRandomProvider - A random generátor
      */
-    public IRandomProvider GetRandomProvider();
+    public Controller GetRandomProvider();
 }
