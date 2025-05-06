@@ -4,9 +4,9 @@ import java.util.*;
 
 import org.nessus.model.shroom.*;
 import org.nessus.controller.Controller;
-import org.nessus.controller.IRandomProvider;
-import org.nessus.controller.NameGenerator;
 import org.nessus.model.bug.*;
+
+import javax.swing.*;
 
 import static java.lang.System.in;
 
@@ -72,18 +72,14 @@ public class View implements IGameObjectStore {
      * @return void
      */
     public void Run() {
-        Scanner scanner = new Scanner(in);
-        System.out.println("Üdv a prototípus fázisban");
-
-        while (running) {
-            String prompt = controller.GetPrompt();
-            System.out.print(prompt);
-            
-            String cmd = scanner.nextLine();
-            controller.ProcessCommand(cmd);
-        }
-
-        scanner.close();
+        System.out.println("Üdv a grafikus fázisban");
+        JFrame frame = new JFrame();
+        frame.pack();
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                frame.setVisible(true);
+            }
+        });
     }
 
     /**
@@ -102,7 +98,7 @@ public class View implements IGameObjectStore {
                 controller.AddShroom(shroom);
 
             objects.put(name, object);
-            NameGenerator.AddName(name);
+            //NameGenerator.AddName(name);
         }
     }
 
@@ -112,13 +108,13 @@ public class View implements IGameObjectStore {
      * @param object
      */
     public void AddObjectWithNameGen(String prefix, Object object) {
-        String name = NameGenerator.GenerateName(prefix);
+        /*String name = NameGenerator.GenerateName(prefix);
         if (pendingObjectName != null) {
             pendingObjects.put(name, object);
         }
         else {
             objects.put(name, object);
-        }
+        }*/
     }
 
     /**
@@ -128,7 +124,7 @@ public class View implements IGameObjectStore {
     public void ResetObjects() {
         objects.clear();
         pendingObjects.clear();
-        NameGenerator.ResetNames();
+        //NameGenerator.ResetNames();
     }
 
     /**
@@ -190,7 +186,7 @@ public class View implements IGameObjectStore {
      * @return IRandomProvider - A random generátor
      */
     @Override
-    public IRandomProvider GetRandomProvider() {
+    public Controller GetRandomProvider() {
         return controller;
     }
 
