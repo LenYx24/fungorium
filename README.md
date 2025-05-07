@@ -1,8 +1,9 @@
 # Projekt
 
-A BME VIK 4. féléves szoftver projekt laboratórium tárgy "prototípus elkészítés" fázishoz készült projekt feladat.
+A BME VIK 4. féléves szoftver projekt laboratórium tárgy "grafikus változat elkészítés" fázishoz készült projekt feladat.
 
 A projekt jelenlegi állapota:
+TODO: updatelni ezt
 [![Java CI with Maven (SzoftProjLab)](https://github.com/LenYx24/fungorium-prototype/actions/workflows/maven.yml/badge.svg)](https://github.com/LenYx24/fungorium-prototype/actions/workflows/maven.yml)
 
 ## Követelmények
