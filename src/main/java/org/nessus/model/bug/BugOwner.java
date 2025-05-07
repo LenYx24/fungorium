@@ -57,7 +57,7 @@ public class BugOwner implements IBugOwnerController {
     public BugOwner() {
         actCatalog = new ActionPointCatalog();
         var objStore = View.GetObjectStore();
-        var name = objStore.GetPendingObjectName() + "_actCat";
+        var name = "actCat";
         View.GetObjectStore().AddObject(name, actCatalog);
     }
 

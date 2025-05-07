@@ -1,13 +1,9 @@
 package org.nessus.controller;
 
-import java.io.*;
 import java.nio.file.*;
 import java.util.*;
 
-import org.nessus.model.bug.*;
 import org.nessus.model.effect.*;
-import org.nessus.model.shroom.*;
-import org.nessus.model.tecton.Tecton;
 import org.nessus.view.View;
 
 /**
@@ -15,25 +11,41 @@ import org.nessus.view.View;
  * A Controller osztály kezeli a parancsokat, és irányítja a játék állapotát.
  * A Controller osztályban található parancsok a játék különböző fázisait kezelik, mint például az elrendezést, a cselekvést és az állításokat.
  */
-public class Controller {
+public class Controller implements IRandomProvider {
     private static Random rand = new Random();
 
-    private IBugOwnerController currentBugOwner = null; // a bug owner
     private IShroomController currentShroom = null; // a shroom
+    private IBugOwnerController currentBugOwner = null; // a bug owner
 
     private boolean bugOwnerRound = false; // Bug owner köre
-    private List<IBugOwnerController> bugOwners = new ArrayList<>(); // Bug owner lista
-    private List<IShroomController> shrooms = new ArrayList<>(); // Shroom lista
+    private Map<IBugOwnerController, String> bugOwners = new HashMap<>(); // Bug owner lista
+    private Map<IShroomController, String> shrooms = new HashMap<>(); // Shroom lista
+    private List<ITectonController> tectons = new ArrayList<>();
 
-
-    Path runpath = null; // A fájlok elérési útja, ahol a tesztfájlok találhatóak
+    private View view;
 
     /**
      * A Controller osztály konstruktora, amely inicializálja a parancsokat és beállítja a nézetet.
      * @param view A nézet, amelyet a Controller használ.
      */
     public Controller(View view) {
-
+        this.view = view;
+    }
+    public void GenerateMap(){
+        // TODO
+    }
+    public void StartAction(IActionController action){
+        // TODO
+    }
+    public void NextPlayer(){
+        // TODO
+    }
+    public String GetPlayerName(){
+        return bugOwnerRound ? bugOwners.get(currentBugOwner) : shrooms.get(currentShroom);
+    }
+    public int GetPlayerActionPoints(){
+        // TODO
+        return 0;
     }
     /**
      * Ez a metódus felvesz egy új BugOwner-t a bugOwners listába.
@@ -41,7 +53,8 @@ public class Controller {
      * @return void
      */
     public void AddBugOwner(IBugOwnerController bugOwner) {
-        bugOwners.add(bugOwner);
+        // TODO: Kellene a nevet is megadni amikor létrejön a bug, kell egy új string paraméter
+        bugOwners.put(bugOwner, "bug");
     }
 
     /**
@@ -50,9 +63,15 @@ public class Controller {
      * @return void
      */
     public void AddShroom(IShroomController shroom) {
-        shrooms.add(shroom);
+        // TODO: Kellene a nevet is megadni amikor létrejön a shroom, kell egy új string paraméter
+        shrooms.put(shroom, "shroom");
     }
-
+    public void AddTecton(ITectonController tecton) {
+        tectons.add(tecton);
+    }
+    public void ViewSelectionChanged(){
+        // TODO
+    }
     /**
      * Ez a metódus egy random számot generál a megadott minimum és maximum érték között.
      * @param min A minimum érték

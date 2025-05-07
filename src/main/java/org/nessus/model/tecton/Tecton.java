@@ -40,7 +40,7 @@ public class Tecton implements ITectonController {
 
         neighbours.add(copyTecton);
 
-        Controller randProvider = View.GetObjectStore().GetRandomProvider();
+        IRandomProvider randProvider = View.GetObjectStore().GetRandomProvider();
 
         Iterator<Bug> bugIterator = bugs.iterator();
         while (bugIterator.hasNext()) {
@@ -85,7 +85,7 @@ public class Tecton implements ITectonController {
     public void Split() {
         Tecton copyTecton = Copy();
         SpreadEntities(copyTecton);
-        View.GetObjectStore().AddObjectWithNameGen("tecton", copyTecton);
+        View.GetObjectStore().AddObject("tecton", copyTecton);
 
         //Konkurens Módosítás Kivétel elkerülése érdekében másolat
         List.copyOf(threads).forEach(ShroomThread::Remove);

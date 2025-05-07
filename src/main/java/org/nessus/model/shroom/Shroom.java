@@ -40,7 +40,7 @@ public class Shroom implements IShroomController {
     public Shroom() {
         actCatalog = new ActionPointCatalog();
         var objStore = View.GetObjectStore();
-        var name = objStore.GetPendingObjectName() + "_actCat";
+        var name = "actCat";
         View.GetObjectStore().AddObject(name, actCatalog);
         ResetPoints();
         LoadDefaultCosts();
@@ -90,7 +90,7 @@ public class Shroom implements IShroomController {
             boolean t2success = tecton2.GrowShroomThread(newThread);
 
             if (t1success && t2success) {
-                View.GetObjectStore().AddObjectWithNameGen("thread", newThread);
+                View.GetObjectStore().AddObject("thread", newThread);
                 actCatalog.DecreasePoints(shroomThreadCost);
             } else {
                 newThread.Remove();
@@ -114,7 +114,7 @@ public class Shroom implements IShroomController {
 
             boolean success = tecton.GrowShroomBody(newBody);
             if (success) {
-                View.GetObjectStore().AddObjectWithNameGen("shroomBody", newBody);
+                View.GetObjectStore().AddObject("shroomBody", newBody);
                 grownShroomBodies++;
                 shroomBodies.add(newBody);
                 actCatalog.DecreasePoints(shroomBodyCost);

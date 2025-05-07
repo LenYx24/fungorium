@@ -1,0 +1,11 @@
+package org.nessus.view.entityviews;
+
+import java.awt.*;
+
+public interface IEntityView {
+    void Draw(Graphics2D g2d);
+    int GetLayer();
+    boolean ContainsPoint(int x, int y);
+    boolean IsViewing(Object obj);
+    String GetEntityInfo();
+}

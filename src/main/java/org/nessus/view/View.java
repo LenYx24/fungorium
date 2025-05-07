@@ -1,10 +1,22 @@
 package org.nessus.view;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
+import org.nessus.controller.IRandomProvider;
 import org.nessus.model.shroom.*;
 import org.nessus.controller.Controller;
 import org.nessus.model.bug.*;
+import org.nessus.model.tecton.Tecton;
+import org.nessus.view.entityviews.IEntityView;
+import org.nessus.view.entityviews.ShroomBodyView;
+import org.nessus.view.entityviews.TectonView;
+import org.nessus.view.factories.BugViewFactory;
+import org.nessus.view.factories.ShroomViewFactory;
+import org.nessus.view.panels.GamePanel;
+import org.nessus.view.panels.MainMenuPanel;
+import org.nessus.view.panels.SettingsPanel;
 
 import javax.swing.*;
 
@@ -15,16 +27,25 @@ import static java.lang.System.in;
  * A View osztály a Controller osztályt használja a parancsok feldolgozására.
  * A View osztály a parancsok végrehajtásáért és a felhasználói interakcióért felelős.
  */
-public class View implements IGameObjectStore {
+public class View extends JFrame implements IGameObjectStore {
     private static View instance;
+    Map<String, Object> objects = new HashMap<>();
 
-    private boolean running = true; // A program futását jelző változó
-    
-    private String pendingObjectName;
-    private Map<String,Object> objects = new LinkedHashMap<>();
-    private Map<String,Object> pendingObjects = new LinkedHashMap<>();
+    private Tecton[] selectedTectons;
+    private Spore selectedSpore;
+    private Bug selectedBug;
+    private ShroomThread selectedShroomThread;
+    private ShroomBody selectedShroomBody;
+    private TectonView[] tectons;
+    private Map<BugOwner, BugViewFactory> bugOwners;
+    private Map<Shroom, ShroomViewFactory> shrooms;
 
     private Controller controller = new Controller(this);
+    private List<IEntityView> views = new ArrayList<>();
+
+    private MainMenuPanel mainMenuPanel;
+    private SettingsPanel settingsPanel;
+    private GamePanel gamePanel;
 
     /**
      * A {@code View} osztály konstruktora.
@@ -52,14 +73,6 @@ public class View implements IGameObjectStore {
     }
 
     /**
-     * Ezzel a metódussal állíthatjuk le a program futását.
-     * @return void
-     */
-    public void Stop() {
-        running = false;
-    }
-
-    /**
      * Ezzel a metódussal kérhetjük le a programban tárolt objektumokat.
      * @return Set<String> - Az objektumok tárolására szolgáló térkép.
      */
@@ -68,53 +81,17 @@ public class View implements IGameObjectStore {
     }
 
     /**
-     * A program futását megvalósító metódus.
-     * @return void
-     */
-    public void Run() {
-        System.out.println("Üdv a grafikus fázisban");
-        JFrame frame = new JFrame();
-        frame.pack();
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                frame.setVisible(true);
-            }
-        });
-    }
-
-    /**
      * Ezzel a metódussal adhatunk hozzá objektumot a loghoz.
      * @param name
      * @param object
      */
     public void AddObject(String name, Object object) {
-        if (pendingObjectName != null) {
-            pendingObjects.put(name, object);
-        }
-        else {
-            if (object instanceof BugOwner bugOwner)
-                controller.AddBugOwner(bugOwner);
-            else if (object instanceof Shroom shroom)
-                controller.AddShroom(shroom);
+        if (object instanceof BugOwner bugOwner)
+            controller.AddBugOwner(bugOwner);
+        else if (object instanceof Shroom shroom)
+            controller.AddShroom(shroom);
 
-            objects.put(name, object);
-            //NameGenerator.AddName(name);
-        }
-    }
-
-    /**
-     * Ezzel a metódussal adhatunk hozzá objektumot a loghoz.
-     * @param prefix
-     * @param object
-     */
-    public void AddObjectWithNameGen(String prefix, Object object) {
-        /*String name = NameGenerator.GenerateName(prefix);
-        if (pendingObjectName != null) {
-            pendingObjects.put(name, object);
-        }
-        else {
-            objects.put(name, object);
-        }*/
+        objects.put(name, object);
     }
 
     /**
@@ -123,8 +100,6 @@ public class View implements IGameObjectStore {
      */
     public void ResetObjects() {
         objects.clear();
-        pendingObjects.clear();
-        //NameGenerator.ResetNames();
     }
 
     /**
@@ -151,37 +126,6 @@ public class View implements IGameObjectStore {
     }
 
     /**
-     * Beállítja a várakozó objektum nevét.
-     * @param name - Az objektum neve
-     * @return void
-     */
-    @Override
-    public void SetPending(String name) {
-        pendingObjectName = name;
-    }
-
-    @Override
-    public void EndPending(Object object) {
-        // Belerakjuk a legelső objektumot amely létre lett hozva a lista elé
-        var tmp = pendingObjectName;
-        pendingObjectName = null;
-        
-        AddObject(tmp, object);
-        pendingObjects.forEach(this::AddObject);
-
-        pendingObjects.clear();
-    }
-
-    /**
-     * Visszaadja a még várakozó objektum nevét.
-     * @return String - A várakozó objektum neve
-     */
-    @Override
-    public String GetPendingObjectName() {
-        return pendingObjectName;
-    }
-
-    /**
      * Lekér egy random generátort.
      * @return IRandomProvider - A random generátor
      */
@@ -190,12 +134,91 @@ public class View implements IGameObjectStore {
         return controller;
     }
 
+    public void OpenMenu(){
+
+    }
+    public void OpenSettings(){
+
+    }
+    public void OpenGame(){
+
+    }
+
+    public void HandleSelection(IEntityView entity){
+
+    }
+    public void ClearSelection(){
+
+    }
+
+    public void AddShroomBody(ShroomBody shroomBody){
+        ShroomViewFactory factory = shrooms.get(shroomBody.GetShroom());
+        views.add(factory.CreateShroomBodyView(shroomBody));
+    }
+    public void AddShroomThread(ShroomThread shroomThread){
+        ShroomViewFactory factory = shrooms.get(shroomThread.GetShroom());
+        views.add(factory.CreateShroomThreadView(shroomThread));
+    }
+    public void AddSpore(){
+        ShroomViewFactory factory = shrooms.get(selectedSpore.GetShroom());
+        views.add(factory.CreateSporeView(selectedSpore));
+    }
+    public void AddBug(Bug bug){
+        BugViewFactory factory = bugOwners.get(bug.GetOwner());
+        views.add(factory.CreateBugView(bug));
+    }
+    public void AddTecton(Tecton tecton){
+        // TODO MILÁNÉ NE BÁNTSD
+    }
+    public void AddBugOwner(BugOwner bugOwner){
+
+    }
+
+    public IEntityView FindEntity(Object entity){
+        for(IEntityView view : views){
+            if(view.equals(entity))
+                return view;
+        }
+        return null;
+    }
+
+    public void ShowBugActions(){
+
+    }
+    public void ShowShroomBodyActions(){
+
+    }
+    public void ShowShroomThreadActions(){
+
+    }
+    public void ShowTectonActions(){
+
+    }
+
+    public void UpdatePlayerInfo(){
+
+    }
     /**
      * A program belépési pontja.
      * @param args - A parancssori argumentumok
      */
     public static void main(String[] args) {
-        View view = View.GetInstance();
-        view.Run();
+        System.out.println("Üdv a grafikus fázisban");
+        SwingUtilities.invokeLater(() -> {
+            JFrame frame = View.GetInstance();
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setPreferredSize(new Dimension(800, 600));
+            JPanel mainPanel = new JPanel(new CardLayout());
+
+            // A stringeket egy mapbe lehetne mozgatni, és a viewtől lekérni hogy a MainMenuPanelhez milyen aktivációs
+            // string tartozik
+            mainPanel.add(new MainMenuPanel(mainPanel), "menu");
+            mainPanel.add(new SettingsPanel(mainPanel), "settings");
+            mainPanel.add(new GamePanel(), "game");
+
+            frame.add(mainPanel);
+            frame.pack();
+            frame.setVisible(true);
+        });
     }
 }
