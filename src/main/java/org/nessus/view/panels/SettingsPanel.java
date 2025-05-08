@@ -1,10 +1,15 @@
 package org.nessus.view.panels;
 
-import org.nessus.model.bug.BugOwner;
 import org.nessus.view.BaseButton;
 import org.nessus.view.View;
 
 import javax.swing.*;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
+
+import javax.swing.text.AttributeSet;
+
 import java.awt.*;
 import java.util.Map;
 
@@ -22,21 +27,55 @@ public class SettingsPanel extends JPanel {
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
         label.setFont(new Font("Roboto", Font.BOLD, 40));
 
-        // 2x2 grid
+        // 3x2 grid
         JPanel griJPanel = new JPanel();
-        griJPanel.setLayout(new GridLayout(2, 2));
+        griJPanel.setLayout(new GridLayout(3, 2));
 
-        // 0,0
         JLabel gombaszLabel = new JLabel("Gombászok");
         gombaszLabel.setFont(new Font("Roboto", Font.BOLD, 20));
         gombaszLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        griJPanel.add(gombaszLabel, 0, 0);
+        griJPanel.add(gombaszLabel);
 
-        // 1,0
         JLabel rovaraszLabel = new JLabel("Rovarászok");
         rovaraszLabel.setFont(new Font("Roboto", Font.BOLD, 20));
         rovaraszLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        griJPanel.add(rovaraszLabel, 0, 1);
+        griJPanel.add(rovaraszLabel);
+
+        JPanel settingsLeft = new JPanel();
+        JPanel settingsRight = new JPanel();
+        griJPanel.add(settingsLeft);
+        griJPanel.add(settingsRight);
+
+        JLabel tectonNumber = new JLabel("Tektonok száma:");
+        tectonNumber.setFont(new Font("Roboto", Font.BOLD, 20));
+        JTextField intInput = new JTextField();
+
+        ((AbstractDocument) intInput.getDocument()).setDocumentFilter(new DocumentFilter() {
+            @Override
+            public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
+                if (string.matches("\\d*")) {
+                    super.insertString(fb, offset, string, attr);
+                }
+            }
+
+            @Override
+            public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+                if (text.matches("\\d*")) {
+                    super.replace(fb, offset, length, text, attrs);
+                }
+            }
+        });
+
+        intInput.setPreferredSize(new Dimension(100, 30));
+        JPanel leftPanel = new JPanel();
+        leftPanel.add(tectonNumber);
+        leftPanel.add(intInput);
+        griJPanel.add(leftPanel);
+
+        JButton actionButton = new BaseButton("Következő");
+        JPanel rightPanel = new JPanel();
+        rightPanel.add(actionButton);
+        griJPanel.add(rightPanel);
 
         JButton newGameButton = new BaseButton("vissza");
         newGameButton.addActionListener(e -> {
