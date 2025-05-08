@@ -21,7 +21,7 @@ public class MainMenuPanel extends JPanel {
         newGameButton.addActionListener(e -> {
             System.out.println("Uj játék");
             CardLayout cardLayout = (CardLayout)mainPanel.getLayout();
-            cardLayout.show(mainPanel,"settings");
+            cardLayout.show(mainPanel,"game");
         });
 
         JButton exitButton = new BaseButton("Kilépés");

@@ -17,6 +17,7 @@ import org.nessus.view.factories.ShroomViewFactory;
 import org.nessus.view.panels.GamePanel;
 import org.nessus.view.panels.MainMenuPanel;
 import org.nessus.view.panels.SettingsPanel;
+import org.nessus.view.panels.ControlPanel;
 
 import javax.swing.*;
 
@@ -62,6 +63,10 @@ public class View extends JFrame implements IGameObjectStore {
         if (instance == null)
             instance = new View();
         return instance;
+    }
+
+    public Controller GetController() {
+        return controller;
     }
 
     /**
@@ -215,6 +220,7 @@ public class View extends JFrame implements IGameObjectStore {
             mainPanel.add(new MainMenuPanel(mainPanel), "menu");
             mainPanel.add(new SettingsPanel(mainPanel), "settings");
             mainPanel.add(new GamePanel(), "game");
+            
 
             frame.add(mainPanel);
             frame.pack();

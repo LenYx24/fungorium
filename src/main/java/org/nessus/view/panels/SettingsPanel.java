@@ -32,6 +32,9 @@ public class SettingsPanel extends JPanel {
         panel.add(Box.createRigidArea(new Dimension(0, 30)));
         panel.add(newGameButton);
 
+        
         this.add(panel);
+        
+
     }
 }
