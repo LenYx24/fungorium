@@ -56,8 +56,7 @@ public class SettingsPanel extends JPanel {
             JTextField textField = new JTextField("Gombász" + playerNum);
             textField.setPreferredSize(new Dimension(100, 25));
             textField.setEnabled(false);
-            textField.setForeground(gombaszColors[i]);
-            
+
             JPanel colorBox = new JPanel();
             colorBox.setPreferredSize(new Dimension(20, 20));
             colorBox.setBackground(gombaszColors[i]);
@@ -87,8 +86,7 @@ public class SettingsPanel extends JPanel {
             JTextField textField = new JTextField("Rovarász" + playerNum);
             textField.setPreferredSize(new Dimension(100, 25));
             textField.setEnabled(false);
-            textField.setForeground(rovaraszColors[i]);
-            
+
             JPanel colorBox = new JPanel();
             colorBox.setPreferredSize(new Dimension(20, 20));
             colorBox.setBackground(rovaraszColors[i]);
