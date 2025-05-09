@@ -1,6 +1,7 @@
 package org.nessus.model.tecton;
 
 import org.nessus.model.shroom.ShroomThread;
+import org.nessus.view.TectonTexturer;
 
 import java.util.*;
 
@@ -61,5 +62,10 @@ public class DesertTecton extends Tecton {
                 decayTimers.replace(thread, decayTimer - 1);
             }
         }
+    }
+
+    @Override
+    public void accept(TectonTexturer texturer) {
+        texturer.visit(this);
     }
 }
