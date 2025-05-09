@@ -1,15 +1,20 @@
 package org.nessus.view.panels;
 
 import javax.swing.*;
+
+import org.nessus.view.View;
+
 import java.awt.*;
 
 public class GamePanel extends JPanel {
+    private View view;
     private JPanel mapPanel;
     private JPanel controlPanel;
 
-    public GamePanel() {
+    public GamePanel(View view) {
+        this.view = view;
         mapPanel = new MapPanel();         
-        controlPanel = new ControlPanel();
+        controlPanel = new ControlPanel(view);
 
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();

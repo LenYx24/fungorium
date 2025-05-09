@@ -13,6 +13,10 @@ public class SettingsPanel extends JPanel {
     Map<JCheckBox, JTextField> bugOwners;
     JButton nextBtn;
 
+    public SettingsPanel(View view) {
+        this.view = view;
+    }
+
     public SettingsPanel(JPanel mainPanel){
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));

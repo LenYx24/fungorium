@@ -219,7 +219,7 @@ public class View extends JFrame implements IGameObjectStore {
             // string tartozik
             mainPanel.add(new MainMenuPanel(mainPanel), "menu");
             mainPanel.add(new SettingsPanel(mainPanel), "settings");
-            mainPanel.add(new GamePanel(), "game");
+            mainPanel.add(new GamePanel(View.GetInstance()), "game");
             
 
             frame.add(mainPanel);

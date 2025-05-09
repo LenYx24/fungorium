@@ -15,6 +15,7 @@ import java.util.List;
 
 
 public class ControlPanel extends JPanel {
+    private View view;
     private List<JButton> bugActions;
     private List<JButton> shroomBodyActions;
     private List<JButton> shroomThreadActions;
@@ -24,14 +25,15 @@ public class ControlPanel extends JPanel {
 
     Dimension buttonSize = new Dimension(180, 30); // width: 180px, height: 30px
 
-
     private void styleLabel(JLabel label) {
         label.setForeground(Color.WHITE);
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
     }
     
 
-    public ControlPanel() {
+    public ControlPanel(View view) {
+        this.view = view;
+
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBackground(Color.DARK_GRAY);
         setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -46,7 +48,6 @@ public class ControlPanel extends JPanel {
         add(Box.createVerticalStrut(10)); // spacing
     
         // --- Action Buttons ---
-        View view = (View) View.GetObjectStore();
         ActionButtonFactory actionButtonFactory = new ActionButtonFactory(view.GetController());
     
         shroomBodyActions = new ArrayList<>();
