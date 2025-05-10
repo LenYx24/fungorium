@@ -8,7 +8,11 @@ import org.nessus.controller.IRandomProvider;
 import org.nessus.model.shroom.*;
 import org.nessus.controller.Controller;
 import org.nessus.model.bug.*;
+import org.nessus.model.tecton.DesertTecton;
+import org.nessus.model.tecton.InfertileTecton;
+import org.nessus.model.tecton.SingleThreadTecton;
 import org.nessus.model.tecton.Tecton;
+import org.nessus.model.tecton.ThreadSustainerTecton;
 import org.nessus.view.entityviews.IEntityView;
 import org.nessus.view.entityviews.ShroomBodyView;
 import org.nessus.view.entityviews.TectonView;
@@ -192,8 +196,10 @@ public class View extends JFrame implements IGameObjectStore {
         views.add(factory.CreateBugView(bug));
     }
     public void AddTecton(Tecton tecton){
-        // TODO MILÁNÉ NE BÁNTSD
+        var texturer = new TectonTexturer();
+        tecton.accept(texturer);
     }
+
     public void AddBugOwner(BugOwner bugOwner){
 
     }

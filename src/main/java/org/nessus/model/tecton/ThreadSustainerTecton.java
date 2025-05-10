@@ -1,6 +1,7 @@
 package org.nessus.model.tecton;
 
 import org.nessus.model.shroom.ShroomThread;
+import org.nessus.view.TectonTexturer;
 
 /**
  * A {@link Tecton} osztályból származó osztály, amely a fonál fenntartására szolgál.
@@ -28,5 +29,10 @@ public class ThreadSustainerTecton extends Tecton {
     public boolean GrowShroomThread(ShroomThread thread) {
         thread.SetSustained();
         return super.GrowShroomThread(thread);
+    }
+
+    @Override
+    public void accept(TectonTexturer texturer) {
+        texturer.visit(this);
     }
 }
