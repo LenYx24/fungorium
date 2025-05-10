@@ -19,7 +19,7 @@ public class GamePanel extends JPanel {
 
     public GamePanel(View view) {
         this.view = view;
-        mapPanel = new MapPanel();         
+        mapPanel = new MapPanel(1280, 720);         
         controlPanel = new ControlPanel(view);
 
         setLayout(new GridBagLayout());
