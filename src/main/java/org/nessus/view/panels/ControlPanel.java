@@ -86,6 +86,7 @@ public class ControlPanel extends JPanel {
         // --- Bottom Buttons ---
         nextPlayerBtn = new JButton("Következő játékos");
         endGameBtn = new JButton("Játék vége");
+        endGameBtn.addActionListener(e -> EndGame());
 
         nextPlayerBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         nextPlayerBtn.setMaximumSize(buttonSize);
@@ -102,9 +103,9 @@ public class ControlPanel extends JPanel {
         add(endGameBtn);
     }
     
-
-
-
+    private void EndGame() {
+        view.OpenMenu();
+    }
 
     public void UpdatePlayerInfo(String name, int actionPoints){
         //TODO

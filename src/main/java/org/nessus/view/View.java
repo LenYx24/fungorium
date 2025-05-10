@@ -42,6 +42,7 @@ public class View extends JFrame implements IGameObjectStore {
     private Controller controller = new Controller(this);
     private List<IEntityView> views = new ArrayList<>();
 
+    private JPanel mainPanel;
     private MainMenuPanel mainMenuPanel;
     private SettingsPanel settingsPanel;
     private GamePanel gamePanel;
@@ -50,7 +51,21 @@ public class View extends JFrame implements IGameObjectStore {
      * A {@code View} osztály konstruktora.
      * A konstruktor privát, mert nem szükséges példányosítani az osztályt.
      */
-    private View() {}
+    private View() {
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new Dimension(800, 600));
+        mainPanel = new JPanel(new CardLayout());
+
+        // A stringeket egy mapbe lehetne mozgatni, és a viewtől lekérni hogy a MainMenuPanelhez milyen aktivációs
+        // string tartozik
+        mainPanel.add(new MainMenuPanel(mainPanel), "menu");
+        mainPanel.add(new SettingsPanel(this, mainPanel), "settings");
+        mainPanel.add(new GamePanel(this), "game");
+
+        add(mainPanel);
+        pack();
+        setVisible(true);
+    }
 
     /**
      * Ez a metódus visszaadja a {@code View} osztály egy példányát.
@@ -138,13 +153,18 @@ public class View extends JFrame implements IGameObjectStore {
     }
 
     public void OpenMenu(){
-
+        CardLayout cardLayout = (CardLayout)mainPanel.getLayout();
+        cardLayout.show(mainPanel,"menu");
     }
+
     public void OpenSettings(){
-
+        CardLayout cardLayout = (CardLayout)mainPanel.getLayout();
+        cardLayout.show(mainPanel,"settings");
     }
-    public void OpenGame(){
 
+    public void OpenGame(){
+        CardLayout cardLayout = (CardLayout)mainPanel.getLayout();
+        cardLayout.show(mainPanel,"game");
     }
 
     public void HandleSelection(IEntityView entity){
@@ -207,22 +227,10 @@ public class View extends JFrame implements IGameObjectStore {
      */
     public static void main(String[] args) {
         System.out.println("Üdv a grafikus fázisban");
+
         SwingUtilities.invokeLater(() -> {
-            JFrame frame = View.GetInstance();
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setPreferredSize(new Dimension(800, 600));
-            JPanel mainPanel = new JPanel(new CardLayout());
-
-            // A stringeket egy mapbe lehetne mozgatni, és a viewtől lekérni hogy a MainMenuPanelhez milyen aktivációs
-            // string tartozik
-            mainPanel.add(new MainMenuPanel(mainPanel), "menu");
-            mainPanel.add(new SettingsPanel(mainPanel), "settings");
-            mainPanel.add(new GamePanel(View.GetInstance()), "game");
-            
-
-            frame.add(mainPanel);
-            frame.pack();
-            frame.setVisible(true);
+            View view = View.GetInstance();
+            view.OpenMenu();
         });
 
         //shutdown hook

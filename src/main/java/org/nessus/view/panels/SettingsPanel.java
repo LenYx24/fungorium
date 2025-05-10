@@ -23,7 +23,9 @@ public class SettingsPanel extends JPanel {
         this.view = view;
     }
 
-    public SettingsPanel(JPanel mainPanel){
+    public SettingsPanel(View view, JPanel mainPanel) {
+        this.view = view;
+
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
@@ -151,12 +153,13 @@ public class SettingsPanel extends JPanel {
         leftPanel.add(tectonNumber);
         leftPanel.add(intInput);
 
-        JButton actionButton = new BaseButton("Következő");
+        JButton nextBtn = new BaseButton("Következő");
+        nextBtn.addActionListener(e -> view.OpenGame());
         JPanel rightPanel = new JPanel();
-        rightPanel.add(actionButton);
+        rightPanel.add(nextBtn);
 
-        JButton newGameButton = new BaseButton("Vissza");
-        newGameButton.addActionListener(e -> {
+        JButton backBtn = new BaseButton("Vissza");
+        backBtn.addActionListener(e -> {
             System.out.println("VISSZA!%");
             CardLayout cardLayout = (CardLayout)mainPanel.getLayout();
             cardLayout.show(mainPanel,"menu");
@@ -167,7 +170,7 @@ public class SettingsPanel extends JPanel {
 
         panel.add(tectonPanel);
         panel.add(Box.createRigidArea(new Dimension(0, 30)));
-        panel.add(newGameButton);
+        panel.add(backBtn);
 
         
         this.add(panel);
