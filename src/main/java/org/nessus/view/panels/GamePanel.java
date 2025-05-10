@@ -1,9 +1,41 @@
 package org.nessus.view.panels;
 
+import java.awt.List;
+import java.util.ArrayList;
+
+import org.nessus.model.bug.BugOwner;
+import org.nessus.model.shroom.Shroom;
+
 import javax.swing.*;
 
-public class GamePanel extends JPanel
-{
+import org.nessus.view.View;
+
+import java.awt.*;
+
+public class GamePanel extends JPanel {
+    private View view;
     private JPanel mapPanel;
     private JPanel controlPanel;
+
+    public GamePanel(View view) {
+        this.view = view;
+        mapPanel = new MapPanel(1280, 720);         
+        controlPanel = new ControlPanel(view);
+
+        setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 6;
+        gbc.weighty = 1;
+        gbc.fill = GridBagConstraints.BOTH;
+        add(mapPanel, gbc);
+
+        gbc.gridx = 1;
+        gbc.weightx = 1;
+        add(controlPanel, gbc);
+
+    }
 }
+
