@@ -149,7 +149,7 @@ public class MapPanel extends JPanel implements ActionListener {
     }
 
     private static void DelayAction(int delay, Runnable action) {
-        Timer t = new Timer(delay, _ -> {
+        Timer t = new Timer(delay, a -> {
             action.run();
         });
 
