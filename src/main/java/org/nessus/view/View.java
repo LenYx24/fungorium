@@ -53,7 +53,8 @@ public class View extends JFrame implements IGameObjectStore {
      */
     private View() {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new Dimension(800, 600));
+        setSize(new Dimension(1280, 720));
+        setLocationRelativeTo(null);
         mainPanel = new JPanel(new CardLayout());
 
         // A stringeket egy mapbe lehetne mozgatni, és a viewtől lekérni hogy a MainMenuPanelhez milyen aktivációs
