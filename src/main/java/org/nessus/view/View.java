@@ -21,8 +21,6 @@ import org.nessus.view.panels.ControlPanel;
 
 import javax.swing.*;
 
-import static java.lang.System.in;
-
 /**
  * Ez a singleton View osztály felelős a program futtatásáért.
  * A View osztály a Controller osztályt használja a parancsok feldolgozására.
@@ -226,5 +224,10 @@ public class View extends JFrame implements IGameObjectStore {
             frame.pack();
             frame.setVisible(true);
         });
+
+        //shutdown hook
+        Runtime.getRuntime().addShutdownHook(new Thread(() ->
+            System.out.println("A program leáll.")
+        ));
     }
 }
