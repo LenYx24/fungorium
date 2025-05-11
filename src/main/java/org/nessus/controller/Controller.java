@@ -1,10 +1,10 @@
 package org.nessus.controller;
 
-import java.nio.file.*;
 import java.util.*;
 
 import org.nessus.model.bug.BugOwner;
 import org.nessus.model.shroom.Shroom;
+import org.nessus.model.tecton.Tecton;
 
 import org.nessus.model.effect.*;
 import org.nessus.view.View;
@@ -25,7 +25,7 @@ public class Controller implements IRandomProvider {
     private Map<IShroomController, String> shrooms = new HashMap<>(); // Shroom lista
     private List<ITectonController> tectons = new ArrayList<>();
 
-    private View view;
+    private static View view; // static lett
 
     /**
      * A Controller osztály konstruktora, amely inicializálja a parancsokat és beállítja a nézetet.
@@ -35,9 +35,37 @@ public class Controller implements IRandomProvider {
         this.view = view;
     }
 
-    public static void InitGame(ArrayList<Shroom> gombaszok, ArrayList<BugOwner> rovaraszok, int numOfTectons) {
-        // TODO: Settingspanel fogja hívni, ezzel a metódussal fogjuk inicializálni a játékot (gombászok, rovarászok, tektonok száma)
-        // Listában kapja meg a gombászokat és rovarászokat, hogy a színek is megmaradjanak
+    public static void InitGame(List<Shroom> gombaszok, List<BugOwner> rovaraszok, int numOfTectons) { //TODO: check
+        Controller controller = view.GetController();
+
+        controller.shrooms.clear();
+        controller.bugOwners.clear();
+        controller.tectons.clear();
+
+        for (Shroom shroom : gombaszok) {
+            String name = View.GetObjectStore().GetName(shroom);
+            controller.shrooms.put(shroom, name);
+        }
+
+        for (BugOwner bugOwner : rovaraszok) {
+            String name = View.GetObjectStore().GetName(bugOwner);
+            controller.bugOwners.put(bugOwner, name);
+        }
+
+        for (int i = 0; i < numOfTectons; i++) {
+            ITectonController tecton = new Tecton();
+            controller.tectons.add(tecton);
+        }
+
+        if (!controller.shrooms.isEmpty()) {
+            controller.currentShroom = controller.shrooms.keySet().iterator().next();
+            controller.bugOwnerRound = false;
+        } else if (!controller.bugOwners.isEmpty()) {
+            controller.currentBugOwner = controller.bugOwners.keySet().iterator().next();
+            controller.bugOwnerRound = true;
+        }
+
+        controller.GenerateMap();
     }
 
     public void GenerateMap(){
