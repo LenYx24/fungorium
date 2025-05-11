@@ -184,9 +184,29 @@ public class SettingsPanel extends JPanel {
             }
 
             if (!hasGombasz || !hasRovarasz || !hasTectonNumber) {
-                JOptionPane.showMessageDialog(this, 
+                JOptionPane.showMessageDialog(this,
                     "Kérlek válassz legalább egy gombászt, egy rovarászt, és add meg a tektonok számát!", 
                     "Hiányzó beállítások", 
+                    JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            String inputText = intInput.getText().trim();
+
+            int tectonCount;
+            try {
+                tectonCount = Integer.parseInt(inputText);
+                if (tectonCount <= 0) {
+                    JOptionPane.showMessageDialog(this,
+                        "A tektonok számának 1 és " + Integer.MAX_VALUE + " között kell lennie!", 
+                        "Hibás szám", 
+                        JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this,
+                    "A megadott szám túl nagy! Kérlek adj meg egy 1 és " + Integer.MAX_VALUE + " közötti értéket!", 
+                    "Túl nagy szám", 
                     JOptionPane.WARNING_MESSAGE);
                 return;
             }
@@ -220,7 +240,7 @@ public class SettingsPanel extends JPanel {
                 }
             }
 
-            int tectonCount = Integer.parseInt(intInput.getText());
+            tectonCount = Integer.parseInt(intInput.getText());
             System.out.println("--- TEKTONOK ---");
             System.out.println("Tektonok száma: " + tectonCount);
 
