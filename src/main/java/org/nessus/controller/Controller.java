@@ -35,7 +35,7 @@ public class Controller implements IRandomProvider {
         this.view = view;
     }
 
-    public void InitGame(List<Shroom> gombaszok, List<BugOwner> rovaraszok, int numOfTectons) {
+    public static void InitGame(ArrayList<Shroom> gombaszok, ArrayList<BugOwner> rovaraszok, int numOfTectons) {
         // TODO: Settingspanel fogja hívni, ezzel a metódussal fogjuk inicializálni a játékot (gombászok, rovarászok, tektonok száma)
         // Listában kapja meg a gombászokat és rovarászokat, hogy a színek is megmaradjanak
     }
