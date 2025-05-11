@@ -3,6 +3,9 @@ package org.nessus.controller;
 import java.nio.file.*;
 import java.util.*;
 
+import org.nessus.model.bug.BugOwner;
+import org.nessus.model.shroom.Shroom;
+
 import org.nessus.model.effect.*;
 import org.nessus.view.View;
 
@@ -31,22 +34,33 @@ public class Controller implements IRandomProvider {
     public Controller(View view) {
         this.view = view;
     }
+
+    public void InitGame(List<Shroom> gombaszok, List<BugOwner> rovaraszok, int numOfTectons) {
+        // TODO: Settingspanel fogja hívni, ezzel a metódussal fogjuk inicializálni a játékot (gombászok, rovarászok, tektonok száma)
+        // Listában kapja meg a gombászokat és rovarászokat, hogy a színek is megmaradjanak
+    }
+
     public void GenerateMap(){
         // TODO
     }
+
     public void StartAction(IActionController action){
         // TODO
     }
+
     public void NextPlayer(){
         // TODO
     }
+
     public String GetPlayerName(){
         return bugOwnerRound ? bugOwners.get(currentBugOwner) : shrooms.get(currentShroom);
     }
+
     public int GetPlayerActionPoints(){
         // TODO
         return 0;
     }
+
     /**
      * Ez a metódus felvesz egy új BugOwner-t a bugOwners listába.
      * @param bugOwner A BugOwner, amelyet hozzá szeretnénk adni a listához
@@ -66,12 +80,15 @@ public class Controller implements IRandomProvider {
         // TODO: Kellene a nevet is megadni amikor létrejön a shroom, kell egy új string paraméter
         shrooms.put(shroom, "shroom");
     }
+
     public void AddTecton(ITectonController tecton) {
         tectons.add(tecton);
     }
+
     public void ViewSelectionChanged(){
         // TODO
     }
+
     /**
      * Ez a metódus egy random számot generál a megadott minimum és maximum érték között.
      * @param min A minimum érték
