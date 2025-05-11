@@ -132,6 +132,14 @@ public class View extends JFrame implements IGameObjectStore {
         return controller;
     }
 
+    /**
+     * Visszaadja a Controller példányát.
+     * @return Controller - A Controller példánya
+     */
+    public Controller GetController() {
+        return controller;
+    }
+
     public void OpenMenu(){
 
     }
