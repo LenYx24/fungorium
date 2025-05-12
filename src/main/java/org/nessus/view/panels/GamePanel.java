@@ -1,15 +1,7 @@
 package org.nessus.view.panels;
 
-import java.awt.List;
-import java.util.ArrayList;
-
-import org.nessus.model.bug.BugOwner;
-import org.nessus.model.shroom.Shroom;
-
 import javax.swing.*;
-
 import org.nessus.view.View;
-
 import java.awt.*;
 
 public class GamePanel extends JPanel {

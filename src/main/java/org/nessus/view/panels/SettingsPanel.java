@@ -2,18 +2,11 @@ package org.nessus.view.panels;
 
 import org.nessus.view.BaseButton;
 import org.nessus.view.View;
-import org.nessus.view.factories.BugViewFactory;
-import org.nessus.view.factories.ShroomViewFactory;
-import org.nessus.view.factories.bugfactories.BlackTeamFactory;
-import org.nessus.view.factories.bugfactories.BrownTeamFactory;
-import org.nessus.view.factories.bugfactories.WhiteTeamFactory;
-import org.nessus.view.factories.shroomfactories.BlueTeamFactory;
-import org.nessus.view.factories.shroomfactories.GreenTeamFactory;
-import org.nessus.view.factories.shroomfactories.RedTeamFactory;
+import org.nessus.view.factories.*;
+import org.nessus.view.factories.bugfactories.*;
+import org.nessus.view.factories.shroomfactories.*;
 import org.nessus.model.shroom.Shroom;
 import org.nessus.model.bug.BugOwner;
-
-import org.nessus.controller.Controller;
 
 import javax.swing.*;
 import javax.swing.text.AbstractDocument;
@@ -23,7 +16,6 @@ import javax.swing.text.DocumentFilter;
 import javax.swing.text.AttributeSet;
 
 import java.awt.*;
-import java.util.ArrayList;
 
 public class SettingsPanel extends JPanel {
     private JButton nextBtn;
@@ -236,7 +228,8 @@ public class SettingsPanel extends JPanel {
                     Shroom shroom = new Shroom();
                     String name = gombaszTextFields[i].getText();
 
-                    view.AddShroom(shroom, shroomFactories[i], name);
+                    var objectStore = view.GetObjectStore();
+                    objectStore.AddShroom(shroom, shroomFactories[i], name);
                     controller.AddShroom(shroom);
 
                     System.out.println("Név: " + name + ", Típus: Shroom, Szín: " + gombaszColors[i]);
@@ -254,8 +247,9 @@ public class SettingsPanel extends JPanel {
                 if (rovaraszCheckBoxes[i].isSelected()) {
                     BugOwner bugOwner = new BugOwner();
                     String name = rovaraszTextFields[i].getText();
-
-                    view.AddBugOwner(bugOwner, bugFactories[i], name);
+                    
+                    var objectStore = view.GetObjectStore();
+                    objectStore.AddBugOwner(bugOwner, bugFactories[i], name);
                     controller.AddBugOwner(bugOwner);
 
                     System.out.println("Név: " + name + ", Típus: BugOwner, Szín: " + rovaraszColors[i]);

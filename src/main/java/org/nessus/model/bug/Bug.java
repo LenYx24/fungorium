@@ -180,7 +180,7 @@ public class Bug {
 
         newBug.tecton = tecton;
         tecton.AddBug(newBug);
-        View.GetObjectStore().AddBug(newBug);
+        View.GetGameObjectStore().AddBug(newBug);
     }
 
     /**

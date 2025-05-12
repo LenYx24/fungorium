@@ -1,19 +1,10 @@
 package org.nessus.view;
 
 import java.awt.*;
-import java.util.*;
-import java.util.List;
-
 import org.nessus.controller.IRandomProvider;
 import org.nessus.controller.Controller;
-import org.nessus.model.shroom.*;
-import org.nessus.model.tecton.Tecton;
-import org.nessus.model.bug.*;
 import org.nessus.view.entityviews.*;
-import org.nessus.view.factories.*;
 import org.nessus.view.panels.*;
-
-import java.util.AbstractMap.SimpleEntry;
 
 import javax.swing.*;
 
@@ -22,26 +13,14 @@ import javax.swing.*;
  * A View osztály a Controller osztályt használja a parancsok feldolgozására.
  * A View osztály a parancsok végrehajtásáért és a felhasználói interakcióért felelős.
  */
-public class View extends JFrame implements IGameObjectStore {
+public class View extends JFrame {
     private static View instance;
-
-    private List<Tecton> selectedTectons = new ArrayList<>();
-    private Spore selectedSpore = null;
-    private Bug selectedBug = null;
-    private ShroomThread selectedShroomThread = null;
-    private ShroomBody selectedShroomBody = null;
-
-    private List<TectonView> tectons = new ArrayList<>();
     
-    private Map<BugOwner, SimpleEntry<BugViewFactory, String>> bugOwners = new HashMap<>();
-    private Map<Shroom, SimpleEntry<ShroomViewFactory, String>> shrooms = new HashMap<>();
-
     private Controller controller = new Controller(this);
-    private List<IEntityView> views = new ArrayList<>();
-
+    private SelectionCatalog selection = new SelectionCatalog();
+    private ObjectStore objectStore = new ObjectStore();
+    
     private JPanel mainPanel;
-    private MainMenuPanel mainMenuPanel;
-    private SettingsPanel settingsPanel;
     private GamePanel gamePanel;
 
     /**
@@ -70,31 +49,26 @@ public class View extends JFrame implements IGameObjectStore {
      * Ha a példány még nem létezik, akkor létrehozza azt.
      * @return A {@code View} osztály egy példánya.
      */
-    static View GetInstance() {
+    private static View GetInstance() {
         if (instance == null)
             instance = new View();
         return instance;
     }
 
-    /**
-     * Lekér egy random generátort.
-     * @return IRandomProvider - A random generátor
-     */
-    @Override
-    public Controller GetRandomProvider() {
-        return controller;
+    public static IRandomProvider GetRandomProvider() {
+        return GetInstance().controller;
     }
 
     /**
      * Ezzela metódussal kaphatunk vissza egy ObjectStore-t.
      * @return IGameObjectStore - Az objektumok tárolására szolgáló objektum.
      */
-    public static IGameObjectStore GetObjectStore() {
-        return GetInstance();
+    public static IGameObjectStore GetGameObjectStore() {
+        return GetInstance().objectStore;
     }
 
-    public List<IEntityView> GetEntityViews() {
-        return views;
+    public ObjectStore GetObjectStore() {
+        return objectStore;
     }
 
     /**
@@ -103,6 +77,10 @@ public class View extends JFrame implements IGameObjectStore {
      */
     public Controller GetController() {
         return controller;
+    }
+
+    public SelectionCatalog GetSelection() {
+        return selection;
     }
 
     public void OpenMenu(){
@@ -123,99 +101,13 @@ public class View extends JFrame implements IGameObjectStore {
     public void HandleSelection(IEntityView entity){
         var controlPanel = gamePanel.GetControlPanel();
         controlPanel.UpdateEntityInfo(entity);
-        var selector = new EntitySelector(this);
+        var selector = new EntitySelector(selection);
         entity.Accept(selector);
         controller.ViewSelectionChanged();
     }
 
-    public void ClearSelection(){
-        selectedBug = null;
-        selectedShroomBody = null;
-        selectedShroomThread = null;
-        selectedSpore = null;
-        selectedTectons.clear();
-    }
-
-    public void AddShroomBody(ShroomBody shroomBody){
-        var shroom = shrooms.get(shroomBody.GetShroom());
-        var factory = shroom.getKey();
-        views.add(factory.CreateShroomBodyView(shroomBody));
-    }
-
-    public void AddShroomThread(ShroomThread shroomThread){
-        var shroom = shrooms.get(shroomThread.GetShroom());
-        var factory = shroom.getKey();
-        views.add(factory.CreateShroomThreadView(shroomThread));
-    }
-
-    public void AddSpore(Spore spore) {
-        var shroom = shrooms.get(spore.GetShroom());
-        var factory = shroom.getKey();
-        views.add(factory.CreateSporeView(spore));
-    }
-
-    public void AddBug(Bug bug){
-        var bugOwner = bugOwners.get(bug.GetOwner());
-        var factory = bugOwner.getKey();
-        views.add(factory.CreateBugView(bug));
-    }
-
-    public void AddTecton(Tecton tecton) {
-        var texturer = new TectonTexturer();
-        tecton.Accept(texturer);
-    }
-
-    public void AddShroom(Shroom shroom, ShroomViewFactory factory, String name) {
-        shrooms.put(shroom, new SimpleEntry<>(factory, name));
-    }
- 
-    public void AddBugOwner(BugOwner bugOwner, BugViewFactory factory, String name) {
-        bugOwners.put(bugOwner, new SimpleEntry<>(factory, name));
-    }
-
-    public void SelectBug(Bug bug) {
-        selectedBug = bug;
-    }
-
-    public void SelectShroomThread(ShroomThread thread){
-        selectedShroomThread = thread;
-    }
-
-    public void SelectShroomBody(ShroomBody body) {
-        selectedShroomBody = body;
-    }
-
-    public void SelectSpore(Spore spore) {
-        selectedSpore = spore;
-    }
-
-    public void SelectTecton(Tecton tecton) {
-        selectedTectons.remove(0);
-        selectedTectons.add(tecton);
-    }
-
-    public Bug GetSelectedBug() {
-        return selectedBug;
-    }
-
-    public ShroomThread GetSelectedShroomThread() {
-        return selectedShroomThread;
-    }
-
-    public ShroomBody GetSelectedShroomBody() {
-        return selectedShroomBody;
-    }
-
-    public Spore GetSelectedSpore() {
-        return selectedSpore;
-    }
-
-    public List<Tecton> GetSelectedTectons() {
-        return selectedTectons;
-    }
-
     public IEntityView FindEntity(Object entity){
-        for(IEntityView view : views){
+        for(IEntityView view : objectStore.GetEntityViews()) {
             if(view.equals(entity))
                 return view;
         }
@@ -229,10 +121,11 @@ public class View extends JFrame implements IGameObjectStore {
     public void ShowShroomBodyActions() {
 
     }
-    
+
     public void ShowShroomThreadActions() {
 
     }
+
     public void ShowTectonActions() {
 
     }

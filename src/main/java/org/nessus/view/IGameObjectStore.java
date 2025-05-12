@@ -25,10 +25,4 @@ public interface IGameObjectStore {
     void AddSpore(Spore spore);
     void AddBug(Bug bug);
     void AddTecton(Tecton tecton);
-
-    /**
-     * Lekér egy random generátort.
-     * @return IRandomProvider - A random generátor
-     */
-    public IRandomProvider GetRandomProvider();
 }

@@ -10,7 +10,6 @@ import org.nessus.model.ActionPointCatalog;
 import org.nessus.model.shroom.ShroomThread;
 import org.nessus.model.shroom.Spore;
 import org.nessus.model.tecton.Tecton;
-import org.nessus.view.View;
 
 /**
  * A rovarok tulajdonosát reprezentáló osztály.

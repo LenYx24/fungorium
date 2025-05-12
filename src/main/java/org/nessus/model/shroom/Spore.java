@@ -1,6 +1,5 @@
 package org.nessus.model.shroom;
 
-import org.nessus.controller.Controller;
 import org.nessus.controller.IRandomProvider;
 import org.nessus.model.bug.Bug;
 import org.nessus.model.effect.BugEffect;
@@ -55,8 +54,7 @@ public class Spore {
      * @return void
      */
     public void EatenBy(Bug bug) {
-        var objStore = View.GetObjectStore();
-        IRandomProvider rand = objStore.GetRandomProvider();
+        IRandomProvider rand = View.GetRandomProvider();
         BugEffect randEffect = rand.RandomBugEffect();
         
         bug.AddNutrients(nutrients);

@@ -6,14 +6,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.awt.event.*;
+import java.util.*;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -50,7 +44,8 @@ public class MapPanel extends JPanel implements ActionListener {
             @Override
             public void mousePressed(java.awt.event.MouseEvent e) {
                 var cursor = e.getPoint();
-                view.GetEntityViews()
+                view.GetObjectStore()
+                    .GetEntityViews()
                     .stream()
                     .filter(entityView -> entityView.ContainsPoint(cursor.x, cursor.y))
                     .forEach(view::HandleSelection);

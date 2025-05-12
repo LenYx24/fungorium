@@ -1,30 +1,31 @@
 package org.nessus.view.entityviews;
+import org.nessus.view.SelectionCatalog;
 import org.nessus.view.View;
 
 public class EntitySelector {
-    private View view;
+    private SelectionCatalog selection;
 
-    public EntitySelector(View view) {
-        this.view = view;
+    public EntitySelector(SelectionCatalog selection) {
+        this.selection = selection;
     }
 
     public void Visit(BugView bugView) {
-        view.SelectBug(bugView.GetModel());
+        selection.SelectBug(bugView.GetModel());
     }
 
     public void Visit(ShroomBodyView bodyView) {
-        view.SelectShroomBody(bodyView.GetModel());
+        selection.SelectShroomBody(bodyView.GetModel());
     }
 
     public void Visit(ShroomThreadView threadView) {
-        view.SelectShroomThread(threadView.GetModel());
+        selection.SelectShroomThread(threadView.GetModel());
     }
 
     public void Visit(SporeView sporeView) {
-        view.SelectSpore(sporeView.GetModel());
+        selection.SelectSpore(sporeView.GetModel());
     }
 
     public void Visit(TectonView tectonView) {
-        view.SelectTecton(tectonView.GetModel());
+        selection.SelectTecton(tectonView.GetModel());
     }
 }
