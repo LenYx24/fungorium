@@ -27,6 +27,13 @@ public class ObjectStore implements IGameObjectStore {
     private List<IEntityView> views = new ArrayList<>();
     private Map<Tecton, TectonView> tectons = new HashMap<>();
 
+    public void Clear() {
+        bugOwners.clear();
+        shrooms.clear();
+        views.clear();
+        tectons.clear();
+    }
+
     public void AddShroomBody(ShroomBody shroomBody){
         var shroom = shrooms.get(shroomBody.GetShroom());
         var factory = shroom.getKey();

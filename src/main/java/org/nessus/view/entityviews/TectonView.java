@@ -15,8 +15,8 @@ public class TectonView extends EntitySpriteView{
 
     public TectonView(Tecton t) {
         this.model = t;
-        this.x = r.nextInt(600);
-        this.y = r.nextInt(600);
+        this.x = r.nextInt(1280);
+        this.y = r.nextInt(720);
     }
 
     @Override

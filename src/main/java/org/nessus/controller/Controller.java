@@ -87,8 +87,13 @@ public class Controller implements IRandomProvider {
             connected.add(lastConnected);
         }
 
+        int additionalEdges = tectonCount * (tectonCount - 1) / 8;
+        for (int i = 0; i < additionalEdges; i++)
+            AddRandomEdge(connected, connected);
+
         tectons.addAll(connected);
         var store = view.GetObjectStore();
+        store.Clear();
         connected.forEach(store::AddTecton);
 
         for (var bugOwner : bugOwners) {

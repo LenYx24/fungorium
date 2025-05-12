@@ -3,13 +3,9 @@ package org.nessus.utility;
 import org.nessus.model.tecton.Tecton;
 import org.nessus.view.entityviews.TectonView;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import javax.swing.Timer;
 
 import java.awt.Graphics2D;
 import java.awt.Color;
@@ -35,18 +31,23 @@ class Edge {
         
         return false;
     }
+
+    @Override
+    public int hashCode() {
+        // sorrendfüggetlen hash
+        return a.hashCode() + b.hashCode();
+    }
 };
 
 public class GraphUtil {
     private int width;
     private int height;
 
-    private static final double SPRING_LENGTH = 100;
-    private static final double SPRING_STRENGTH = 0.3;
-    private static final double REPULSION_STRENGTH = 10000;
-    private static final double DAMPING = 0.85;
+    private static final double SPRING_LENGTH = 150;
+    private static final double SPRING_STRENGTH = 0.05;
+    private static final double REPULSION_STRENGTH = 500;
+    private static final double DAMPING = 2;
     private static final int NODE_RADIUS = 100;
-    private static final int SIMULTATION_ITER = 100;
 
     private Set<Edge> edges = new HashSet<>();
     private Map<Tecton, TectonView> tectons;
