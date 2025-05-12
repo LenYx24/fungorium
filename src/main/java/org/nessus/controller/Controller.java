@@ -21,8 +21,8 @@ public class Controller implements IRandomProvider {
     private IBugOwnerController currentBugOwner = null; // a bug owner
 
     private boolean bugOwnerRound = false; // Bug owner köre
-    private Map<IBugOwnerController, String> bugOwners = new HashMap<>(); // Bug owner lista
-    private Map<IShroomController, String> shrooms = new HashMap<>(); // Shroom lista
+    private List<IBugOwnerController> bugOwners = new ArrayList<>(); // Bug owner lista
+    private List<IShroomController> shrooms = new ArrayList<>(); // Shroom lista
     private List<ITectonController> tectons = new ArrayList<>();
 
     private static View view; // static lett
@@ -35,40 +35,13 @@ public class Controller implements IRandomProvider {
         this.view = view;
     }
 
-    public static void InitGame(List<Shroom> gombaszok, List<BugOwner> rovaraszok, int numOfTectons) { //TODO: check
-        Controller controller = view.GetController();
-
-        controller.shrooms.clear();
-        controller.bugOwners.clear();
-        controller.tectons.clear();
-
-        for (Shroom shroom : gombaszok) {
-            String name = View.GetObjectStore().GetName(shroom);
-            controller.shrooms.put(shroom, name);
-        }
-
-        for (BugOwner bugOwner : rovaraszok) {
-            String name = View.GetObjectStore().GetName(bugOwner);
-            controller.bugOwners.put(bugOwner, name);
-        }
-
-        for (int i = 0; i < numOfTectons; i++) {
-            ITectonController tecton = new Tecton();
-            controller.tectons.add(tecton);
-        }
-
-        if (!controller.shrooms.isEmpty()) {
-            controller.currentShroom = controller.shrooms.keySet().iterator().next();
-            controller.bugOwnerRound = false;
-        } else if (!controller.bugOwners.isEmpty()) {
-            controller.currentBugOwner = controller.bugOwners.keySet().iterator().next();
-            controller.bugOwnerRound = true;
-        }
-
-        controller.GenerateMap();
+    public void ClearMap() {
+        bugOwners.clear();
+        shrooms.clear();
+        tectons.clear();
     }
 
-    public void GenerateMap(){
+    public void GenerateMap(int tectonCount) {
         // TODO
     }
 
@@ -80,8 +53,8 @@ public class Controller implements IRandomProvider {
         // TODO
     }
 
-    public String GetPlayerName(){
-        return bugOwnerRound ? bugOwners.get(currentBugOwner) : shrooms.get(currentShroom);
+    public Object GetCurrentPlayer(){
+        return bugOwnerRound ? currentBugOwner : currentShroom;
     }
 
     public int GetPlayerActionPoints(){
@@ -96,7 +69,7 @@ public class Controller implements IRandomProvider {
      */
     public void AddBugOwner(IBugOwnerController bugOwner) {
         // TODO: Kellene a nevet is megadni amikor létrejön a bug, kell egy új string paraméter
-        bugOwners.put(bugOwner, "bug");
+        bugOwners.add(bugOwner);
     }
 
     /**
@@ -106,7 +79,7 @@ public class Controller implements IRandomProvider {
      */
     public void AddShroom(IShroomController shroom) {
         // TODO: Kellene a nevet is megadni amikor létrejön a shroom, kell egy új string paraméter
-        shrooms.put(shroom, "shroom");
+        shrooms.add(shroom);
     }
 
     public void AddTecton(ITectonController tecton) {

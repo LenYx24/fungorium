@@ -58,8 +58,6 @@ public class Spore {
         var objStore = View.GetObjectStore();
         IRandomProvider rand = objStore.GetRandomProvider();
         BugEffect randEffect = rand.RandomBugEffect();
-
-        objStore.AddObject("bugEffect", randEffect);
         
         bug.AddNutrients(nutrients);
         bug.AddEffect(randEffect);

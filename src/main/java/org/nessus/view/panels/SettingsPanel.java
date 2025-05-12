@@ -2,7 +2,14 @@ package org.nessus.view.panels;
 
 import org.nessus.view.BaseButton;
 import org.nessus.view.View;
-
+import org.nessus.view.factories.BugViewFactory;
+import org.nessus.view.factories.ShroomViewFactory;
+import org.nessus.view.factories.bugfactories.BlackTeamFactory;
+import org.nessus.view.factories.bugfactories.BrownTeamFactory;
+import org.nessus.view.factories.bugfactories.WhiteTeamFactory;
+import org.nessus.view.factories.shroomfactories.BlueTeamFactory;
+import org.nessus.view.factories.shroomfactories.GreenTeamFactory;
+import org.nessus.view.factories.shroomfactories.RedTeamFactory;
 import org.nessus.model.shroom.Shroom;
 import org.nessus.model.bug.BugOwner;
 
@@ -214,8 +221,14 @@ public class SettingsPanel extends JPanel {
                 return;
             }
 
-            ArrayList<Shroom> gombaszokList = new ArrayList<>();
-            ArrayList<BugOwner> rovaraszokList = new ArrayList<>();
+            ShroomViewFactory[] shroomFactories = {
+                new RedTeamFactory(),
+                new GreenTeamFactory(),
+                new BlueTeamFactory()
+            };
+
+            var controller = view.GetController();
+            controller.ClearMap();
 
             System.out.println("--- LÉTREHOZOTT GOMBÁSZOK ---");
             for (int i = 0; i < gombaszCheckBoxes.length; i++) {
@@ -223,12 +236,18 @@ public class SettingsPanel extends JPanel {
                     Shroom shroom = new Shroom();
                     String name = gombaszTextFields[i].getText();
 
-                    View.GetObjectStore().AddObject(name, shroom);
-                    gombaszokList.add(shroom);
+                    view.AddShroom(shroom, shroomFactories[i], name);
+                    controller.AddShroom(shroom);
 
                     System.out.println("Név: " + name + ", Típus: Shroom, Szín: " + gombaszColors[i]);
                 }
             }
+
+            BugViewFactory[] bugFactories = {
+                new WhiteTeamFactory(),
+                new BlackTeamFactory(),
+                new BrownTeamFactory()
+            };
 
             System.out.println("--- LÉTREHOZOTT ROVARÁSZOK ---");
             for (int i = 0; i < rovaraszCheckBoxes.length; i++) {
@@ -236,8 +255,8 @@ public class SettingsPanel extends JPanel {
                     BugOwner bugOwner = new BugOwner();
                     String name = rovaraszTextFields[i].getText();
 
-                    View.GetObjectStore().AddObject(name, bugOwner);
-                    rovaraszokList.add(bugOwner);
+                    view.AddBugOwner(bugOwner, bugFactories[i], name);
+                    controller.AddBugOwner(bugOwner);
 
                     System.out.println("Név: " + name + ", Típus: BugOwner, Szín: " + rovaraszColors[i]);
                 }
@@ -247,10 +266,8 @@ public class SettingsPanel extends JPanel {
             System.out.println("--- TEKTONOK ---");
             System.out.println("Tektonok száma: " + tectonCount);
 
-            Controller.InitGame(gombaszokList, rovaraszokList, tectonCount);
-
-            CardLayout cardLayout = (CardLayout)mainPanel.getLayout();
-            cardLayout.show(mainPanel, "game");
+            controller.GenerateMap(tectonCount);
+            view.OpenGame();
         });
 
         rightPanel.add(actionButton);

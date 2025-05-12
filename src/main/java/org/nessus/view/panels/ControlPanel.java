@@ -29,7 +29,6 @@ public class ControlPanel extends JPanel {
         label.setForeground(Color.WHITE);
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
     }
-    
 
     public ControlPanel(View view) {
         this.view = view;
