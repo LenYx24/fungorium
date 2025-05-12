@@ -1,7 +1,9 @@
 package org.nessus.view;
 
-import org.nessus.controller.Controller;
 import org.nessus.controller.IRandomProvider;
+import org.nessus.model.bug.Bug;
+import org.nessus.model.shroom.*;
+import org.nessus.model.tecton.Tecton;
 
 /**
  * Az objektumkatalógus interfésze.
@@ -9,27 +11,11 @@ import org.nessus.controller.IRandomProvider;
  * Az objektumkatalógusban tárolt objektumok nevei egyedi azonosítókként szolgálnak.
  */
 public interface IGameObjectStore {
-    /**
-     * Egy objektum hozzáadása az objektumkatalógushoz.
-     * @param name - Az objektum neve
-     * @param object - Az objektum, amelyet hozzá szeretnénk adni
-     * @return void
-     */
-    public void AddObject(String name, Object object);
-
-    /**
-     * Visszaadja a paraméterként kapott objektum nevét.
-     * @param object
-     * @return String - Az objektum neve
-     */
-    public String GetName(Object object);
-
-    /**
-     * Visszaadja azt az objektumot, amelynek a neve megegyezik a paraméterként kapott névvel.
-     * @param name - Az objektum neve
-     * @return Object - Az objektum, amelynek a neve megegyezik a paraméterként kapott névvel
-     */
-    public Object GetObject(String name);
+    void AddShroomBody(ShroomBody shroomBody);
+    void AddShroomThread(ShroomThread shroomThread);
+    void AddSpore(Spore spore);
+    void AddBug(Bug bug);
+    void AddTecton(Tecton tecton);
 
     /**
      * Lekér egy random generátort.

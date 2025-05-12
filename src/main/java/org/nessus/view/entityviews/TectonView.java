@@ -39,6 +39,10 @@ public class TectonView extends EntitySpriteView{
         return "";
     }
 
+    public Tecton GetModel() {
+        return model;
+    }
+
     public double X()
     {
         return this.x;
@@ -77,5 +81,10 @@ public class TectonView extends EntitySpriteView{
     public void setDY(double dy)
     {
         this.dy = dy;
+    }
+
+    @Override
+    public void Accept(EntitySelector selector) {
+        selector.Visit(this);
     }
 }

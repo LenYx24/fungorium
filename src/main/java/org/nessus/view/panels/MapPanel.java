@@ -1,4 +1,5 @@
 package org.nessus.view.panels;
+import org.nessus.view.View;
 import org.nessus.view.entityviews.TectonView;
 
 import java.awt.Color;
@@ -7,6 +8,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +19,8 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class MapPanel extends JPanel implements ActionListener {
+    private View view;
+
     private final int width;
     private final int height;
     private final Timer timer;
@@ -32,13 +36,26 @@ public class MapPanel extends JPanel implements ActionListener {
 
     private Random r = new Random(0);
 
-    public MapPanel(int width, int height) {
+    public MapPanel(View view, int width, int height) {
+        this.view = view;
+
         this.width = width;
         this.height = height;
         setPreferredSize(new Dimension(width, height));
         setBackground(Color.WHITE);
         timer = new Timer(0, this);
         timer.start();
+
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(java.awt.event.MouseEvent e) {
+                var cursor = e.getPoint();
+                view.GetEntityViews()
+                    .stream()
+                    .filter(entityView -> entityView.ContainsPoint(cursor.x, cursor.y))
+                    .forEach(view::HandleSelection);
+            }
+        });
     }
 
     static class Edge {

@@ -14,12 +14,12 @@ import java.awt.*;
 
 public class GamePanel extends JPanel {
     private View view;
-    private JPanel mapPanel;
-    private JPanel controlPanel;
+    private MapPanel mapPanel;
+    private ControlPanel controlPanel;
 
     public GamePanel(View view) {
         this.view = view;
-        mapPanel = new MapPanel(1280, 720);         
+        mapPanel = new MapPanel(view, 1280, 720);         
         controlPanel = new ControlPanel(view);
 
         setLayout(new GridBagLayout());
@@ -36,6 +36,10 @@ public class GamePanel extends JPanel {
         gbc.weightx = 1;
         add(controlPanel, gbc);
 
+    }
+
+    public ControlPanel GetControlPanel() {
+        return controlPanel;
     }
 }
 

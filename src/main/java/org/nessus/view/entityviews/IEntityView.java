@@ -8,4 +8,5 @@ public interface IEntityView {
     boolean ContainsPoint(int x, int y);
     boolean IsViewing(Object obj);
     String GetEntityInfo();
+    void Accept(EntitySelector selector);
 }

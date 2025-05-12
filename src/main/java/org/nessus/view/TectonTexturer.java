@@ -8,23 +8,23 @@ import org.nessus.model.tecton.ThreadSustainerTecton;
 import org.nessus.view.entityviews.TectonView;
 
 public class TectonTexturer {
-    public TectonView visit(Tecton tecton) {
+    public TectonView Visit(Tecton tecton) {
         throw new UnsupportedOperationException();
     }
 
-    public TectonView visit(DesertTecton tecton) {
+    public TectonView Visit(DesertTecton tecton) {
         throw new UnsupportedOperationException();
     }
 
-    public TectonView visit(InfertileTecton tecton) {
+    public TectonView Visit(InfertileTecton tecton) {
         throw new UnsupportedOperationException();
     }
 
-    public TectonView visit(ThreadSustainerTecton tecton) {
+    public TectonView Visit(ThreadSustainerTecton tecton) {
         throw new UnsupportedOperationException();
     }
 
-    public TectonView visit(SingleThreadTecton tecton) {
+    public TectonView Visit(SingleThreadTecton tecton) {
         throw new UnsupportedOperationException();
     }
 }

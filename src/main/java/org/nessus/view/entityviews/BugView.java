@@ -30,4 +30,13 @@ public class BugView extends EntitySpriteView{
     public String GetEntityInfo() {
         return "";
     }
+
+    public Bug GetModel() {
+        return model;
+    }
+
+    @Override
+    public void Accept(EntitySelector selector) {
+        selector.Visit(this);
+    }
 }

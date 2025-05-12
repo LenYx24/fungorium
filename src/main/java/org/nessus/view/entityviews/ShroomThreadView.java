@@ -38,4 +38,13 @@ public class ShroomThreadView implements IEntityView {
     public String GetEntityInfo() {
         return "";
     }
+
+    public ShroomThread GetModel() {
+        return model;
+    }
+
+    @Override
+    public void Accept(EntitySelector selector) {
+        selector.Visit(this);
+    }
 }

@@ -28,7 +28,7 @@ public class InfertileTecton extends Tecton {
     }
 
     @Override
-    public void accept(TectonTexturer texturer) {
-        texturer.visit(this);
+    public void Accept(TectonTexturer texturer) {
+        texturer.Visit(this);
     }
 }

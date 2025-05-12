@@ -30,4 +30,13 @@ public class ShroomBodyView extends EntitySpriteView{
     public String GetEntityInfo() {
         return "";
     }
+
+    public ShroomBody GetModel() {
+        return model;
+    }
+
+    @Override
+    public void Accept(EntitySelector selector) {
+        selector.Visit(this);
+    }
 }

@@ -86,7 +86,7 @@ public class Tecton implements ITectonController {
     public void Split() {
         Tecton copyTecton = Copy();
         SpreadEntities(copyTecton);
-        View.GetObjectStore().AddObject("tecton", copyTecton);
+        View.GetObjectStore().AddTecton(copyTecton);
 
         //Konkurens Módosítás Kivétel elkerülése érdekében másolat
         List.copyOf(threads).forEach(ShroomThread::Remove);
@@ -304,7 +304,7 @@ public class Tecton implements ITectonController {
         return threads;
     }
 
-    public void accept(TectonTexturer texturer) {
-        texturer.visit(this);
+    public void Accept(TectonTexturer texturer) {
+        texturer.Visit(this);
     }
 }

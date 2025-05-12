@@ -5,23 +5,13 @@ import java.util.*;
 import java.util.List;
 
 import org.nessus.controller.IRandomProvider;
-import org.nessus.model.shroom.*;
 import org.nessus.controller.Controller;
-import org.nessus.model.bug.*;
-import org.nessus.model.tecton.DesertTecton;
-import org.nessus.model.tecton.InfertileTecton;
-import org.nessus.model.tecton.SingleThreadTecton;
+import org.nessus.model.shroom.*;
 import org.nessus.model.tecton.Tecton;
-import org.nessus.model.tecton.ThreadSustainerTecton;
-import org.nessus.view.entityviews.IEntityView;
-import org.nessus.view.entityviews.ShroomBodyView;
-import org.nessus.view.entityviews.TectonView;
-import org.nessus.view.factories.BugViewFactory;
-import org.nessus.view.factories.ShroomViewFactory;
-import org.nessus.view.panels.GamePanel;
-import org.nessus.view.panels.MainMenuPanel;
-import org.nessus.view.panels.SettingsPanel;
-import org.nessus.view.panels.ControlPanel;
+import org.nessus.model.bug.*;
+import org.nessus.view.entityviews.*;
+import org.nessus.view.factories.*;
+import org.nessus.view.panels.*;
 
 import javax.swing.*;
 
@@ -32,16 +22,17 @@ import javax.swing.*;
  */
 public class View extends JFrame implements IGameObjectStore {
     private static View instance;
-    Map<String, Object> objects = new HashMap<>();
 
-    private Tecton[] selectedTectons;
-    private Spore selectedSpore;
-    private Bug selectedBug;
-    private ShroomThread selectedShroomThread;
-    private ShroomBody selectedShroomBody;
-    private TectonView[] tectons;
-    private Map<BugOwner, BugViewFactory> bugOwners;
-    private Map<Shroom, ShroomViewFactory> shrooms;
+    private List<Tecton> selectedTectons = new ArrayList<>();
+    private Spore selectedSpore = null;
+    private Bug selectedBug = null;
+    private ShroomThread selectedShroomThread = null;
+    private ShroomBody selectedShroomBody = null;
+
+    private List<TectonView> tectons = new ArrayList<>();
+    
+    private Map<BugOwner, BugViewFactory> bugOwners = new HashMap<>();
+    private Map<Shroom, ShroomViewFactory> shrooms = new HashMap<>();
 
     private Controller controller = new Controller(this);
     private List<IEntityView> views = new ArrayList<>();
@@ -88,6 +79,15 @@ public class View extends JFrame implements IGameObjectStore {
     }
 
     /**
+     * Lekér egy random generátort.
+     * @return IRandomProvider - A random generátor
+     */
+    @Override
+    public Controller GetRandomProvider() {
+        return controller;
+    }
+
+    /**
      * Ezzela metódussal kaphatunk vissza egy ObjectStore-t.
      * @return IGameObjectStore - Az objektumok tárolására szolgáló objektum.
      */
@@ -95,66 +95,8 @@ public class View extends JFrame implements IGameObjectStore {
         return GetInstance();
     }
 
-    /**
-     * Ezzel a metódussal kérhetjük le a programban tárolt objektumokat.
-     * @return Set<String> - Az objektumok tárolására szolgáló térkép.
-     */
-    public Set<String> GetObjects() {
-        return objects.keySet();
-    }
-
-    /**
-     * Ezzel a metódussal adhatunk hozzá objektumot a loghoz.
-     * @param name
-     * @param object
-     */
-    public void AddObject(String name, Object object) {
-        if (object instanceof BugOwner bugOwner)
-            controller.AddBugOwner(bugOwner);
-        else if (object instanceof Shroom shroom)
-            controller.AddShroom(shroom);
-
-        objects.put(name, object);
-    }
-
-    /**
-     * Ezzel a metódussal törölhetjük az összes objektumot a tárolókból.
-     * @return void
-     */
-    public void ResetObjects() {
-        objects.clear();
-    }
-
-    /**
-     * Visszaadja a paraméterként kapott objektum nevét.
-     * @param object
-     * @return String - Az objektum neve
-     */
-    public String GetName(Object object) {
-        for (Map.Entry<String, Object> entry : objects.entrySet()) {
-            if (entry.getValue() == object) {
-                return entry.getKey();
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Visszaadja azt az objektumot, amelynek a neve megegyezik a paraméterként kapott névvel.
-     * @param name - Az objektum neve
-     * @return Object - Az objektum, amelynek a neve megegyezik a paraméterként kapott névvel
-     */
-    public Object GetObject(String name) {
-        return objects.get(name);
-    }
-
-    /**
-     * Lekér egy random generátort.
-     * @return IRandomProvider - A random generátor
-     */
-    @Override
-    public Controller GetRandomProvider() {
-        return controller;
+    public List<IEntityView> GetEntityViews() {
+        return views;
     }
 
     public void OpenMenu(){
@@ -173,35 +115,69 @@ public class View extends JFrame implements IGameObjectStore {
     }
 
     public void HandleSelection(IEntityView entity){
-
+        var controlPanel = gamePanel.GetControlPanel();
+        controlPanel.UpdateEntityInfo(entity);
+        var selector = new EntitySelector(this);
+        entity.Accept(selector);
+        controller.ViewSelectionChanged();
     }
+
     public void ClearSelection(){
-
+        selectedBug = null;
+        selectedShroomBody = null;
+        selectedShroomThread = null;
+        selectedSpore = null;
+        selectedTectons.clear();
     }
 
-    public void AddShroomBody(ShroomBody shroomBody){
+    public void AddShroomBody(ShroomBody shroomBody) {
         ShroomViewFactory factory = shrooms.get(shroomBody.GetShroom());
         views.add(factory.CreateShroomBodyView(shroomBody));
     }
-    public void AddShroomThread(ShroomThread shroomThread){
+
+    public void AddShroomThread(ShroomThread shroomThread) {
         ShroomViewFactory factory = shrooms.get(shroomThread.GetShroom());
         views.add(factory.CreateShroomThreadView(shroomThread));
     }
-    public void AddSpore(){
-        ShroomViewFactory factory = shrooms.get(selectedSpore.GetShroom());
-        views.add(factory.CreateSporeView(selectedSpore));
+
+    public void AddSpore(Spore spore) {
+        ShroomViewFactory factory = shrooms.get(spore.GetShroom());
+        views.add(factory.CreateSporeView(spore));
     }
-    public void AddBug(Bug bug){
+
+    public void AddBug(Bug bug) {
         BugViewFactory factory = bugOwners.get(bug.GetOwner());
         views.add(factory.CreateBugView(bug));
     }
-    public void AddTecton(Tecton tecton){
+
+    public void AddTecton(Tecton tecton) {
         var texturer = new TectonTexturer();
-        tecton.accept(texturer);
+        tecton.Accept(texturer);
     }
 
-    public void AddBugOwner(BugOwner bugOwner){
+    public void AddBugOwner(BugOwner bugOwner) {
 
+    }
+
+    public void SelectBug(Bug bug) {
+        selectedBug = bug;
+    }
+
+    public void SelectShroomThread(ShroomThread thread){
+        selectedShroomThread = thread;
+    }
+
+    public void SelectShroomBody(ShroomBody body) {
+        selectedShroomBody = body;
+    }
+
+    public void SelectSpore(Spore spore) {
+        selectedSpore = spore;
+    }
+
+    public void SelectTecton(Tecton tecton) {
+        selectedTectons.remove(0);
+        selectedTectons.add(tecton);
     }
 
     public IEntityView FindEntity(Object entity){
@@ -215,12 +191,15 @@ public class View extends JFrame implements IGameObjectStore {
     public void ShowBugActions(){
 
     }
+
     public void ShowShroomBodyActions(){
 
     }
+
     public void ShowShroomThreadActions(){
 
     }
+
     public void ShowTectonActions(){
 
     }
@@ -228,6 +207,7 @@ public class View extends JFrame implements IGameObjectStore {
     public void UpdatePlayerInfo(){
 
     }
+
     /**
      * A program belépési pontja.
      * @param args - A parancssori argumentumok
