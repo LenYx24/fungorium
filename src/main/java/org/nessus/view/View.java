@@ -83,10 +83,6 @@ public class View extends JFrame implements IGameObjectStore {
         return instance;
     }
 
-    public Controller GetController() {
-        return controller;
-    }
-
     /**
      * Ezzela metódussal kaphatunk vissza egy ObjectStore-t.
      * @return IGameObjectStore - Az objektumok tárolására szolgáló objektum.
