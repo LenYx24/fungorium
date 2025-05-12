@@ -19,7 +19,8 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class SettingsPanel extends JPanel {
-    JButton nextBtn;
+    private JButton nextBtn;
+    private View view;
 
     private JCheckBox[] gombaszCheckBoxes = new JCheckBox[3];
     private JTextField[] gombaszTextFields = new JTextField[3];
@@ -28,7 +29,9 @@ public class SettingsPanel extends JPanel {
     private Color[] gombaszColors = {Color.RED, Color.GREEN, Color.BLUE};
     private Color[] rovaraszColors = {Color.WHITE, Color.GRAY, new Color(139, 69, 19)};
 
-    public SettingsPanel(JPanel mainPanel) {
+    public SettingsPanel(View view, JPanel mainPanel) {
+        this.view = view;
+
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
@@ -252,8 +255,8 @@ public class SettingsPanel extends JPanel {
 
         rightPanel.add(actionButton);
 
-        JButton newGameButton = new BaseButton("Vissza");
-        newGameButton.addActionListener(e -> {
+        JButton backBtn = new BaseButton("Vissza");
+        backBtn.addActionListener(e -> {
             System.out.println("VISSZA%");
             CardLayout cardLayout = (CardLayout)mainPanel.getLayout();
             cardLayout.show(mainPanel,"menu");
@@ -264,8 +267,11 @@ public class SettingsPanel extends JPanel {
 
         panel.add(tectonPanel);
         panel.add(Box.createRigidArea(new Dimension(0, 30)));
-        panel.add(newGameButton);
+        panel.add(backBtn);
 
+        
         this.add(panel);
+        
+
     }
 }

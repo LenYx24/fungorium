@@ -8,7 +8,11 @@ import org.nessus.controller.IRandomProvider;
 import org.nessus.model.shroom.*;
 import org.nessus.controller.Controller;
 import org.nessus.model.bug.*;
+import org.nessus.model.tecton.DesertTecton;
+import org.nessus.model.tecton.InfertileTecton;
+import org.nessus.model.tecton.SingleThreadTecton;
 import org.nessus.model.tecton.Tecton;
+import org.nessus.model.tecton.ThreadSustainerTecton;
 import org.nessus.view.entityviews.IEntityView;
 import org.nessus.view.entityviews.ShroomBodyView;
 import org.nessus.view.entityviews.TectonView;
@@ -17,6 +21,7 @@ import org.nessus.view.factories.ShroomViewFactory;
 import org.nessus.view.panels.GamePanel;
 import org.nessus.view.panels.MainMenuPanel;
 import org.nessus.view.panels.SettingsPanel;
+import org.nessus.view.panels.ControlPanel;
 
 import javax.swing.*;
 
@@ -41,6 +46,7 @@ public class View extends JFrame implements IGameObjectStore {
     private Controller controller = new Controller(this);
     private List<IEntityView> views = new ArrayList<>();
 
+    private JPanel mainPanel;
     private MainMenuPanel mainMenuPanel;
     private SettingsPanel settingsPanel;
     private GamePanel gamePanel;
@@ -49,7 +55,22 @@ public class View extends JFrame implements IGameObjectStore {
      * A {@code View} osztály konstruktora.
      * A konstruktor privát, mert nem szükséges példányosítani az osztályt.
      */
-    private View() {}
+    private View() {
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setSize(new Dimension(1280, 720));
+        setLocationRelativeTo(null);
+        mainPanel = new JPanel(new CardLayout());
+
+        // A stringeket egy mapbe lehetne mozgatni, és a viewtől lekérni hogy a MainMenuPanelhez milyen aktivációs
+        // string tartozik
+        mainPanel.add(new MainMenuPanel(mainPanel), "menu");
+        mainPanel.add(new SettingsPanel(this, mainPanel), "settings");
+        mainPanel.add(new GamePanel(this), "game");
+
+        add(mainPanel);
+        pack();
+        setVisible(true);
+    }
 
     /**
      * Ez a metódus visszaadja a {@code View} osztály egy példányát.
@@ -60,6 +81,10 @@ public class View extends JFrame implements IGameObjectStore {
         if (instance == null)
             instance = new View();
         return instance;
+    }
+
+    public Controller GetController() {
+        return controller;
     }
 
     /**
@@ -141,13 +166,18 @@ public class View extends JFrame implements IGameObjectStore {
     }
 
     public void OpenMenu(){
-
+        CardLayout cardLayout = (CardLayout)mainPanel.getLayout();
+        cardLayout.show(mainPanel,"menu");
     }
+
     public void OpenSettings(){
-
+        CardLayout cardLayout = (CardLayout)mainPanel.getLayout();
+        cardLayout.show(mainPanel,"settings");
     }
-    public void OpenGame(){
 
+    public void OpenGame(){
+        CardLayout cardLayout = (CardLayout)mainPanel.getLayout();
+        cardLayout.show(mainPanel,"game");
     }
 
     public void HandleSelection(IEntityView entity){
@@ -174,8 +204,10 @@ public class View extends JFrame implements IGameObjectStore {
         views.add(factory.CreateBugView(bug));
     }
     public void AddTecton(Tecton tecton){
-        // TODO MILÁNÉ NE BÁNTSD
+        var texturer = new TectonTexturer();
+        tecton.accept(texturer);
     }
+
     public void AddBugOwner(BugOwner bugOwner){
 
     }
@@ -210,21 +242,10 @@ public class View extends JFrame implements IGameObjectStore {
      */
     public static void main(String[] args) {
         System.out.println("Üdv a grafikus fázisban");
+
         SwingUtilities.invokeLater(() -> {
-            JFrame frame = View.GetInstance();
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setPreferredSize(new Dimension(800, 600));
-            JPanel mainPanel = new JPanel(new CardLayout());
-
-            // A stringeket egy mapbe lehetne mozgatni, és a viewtől lekérni hogy a MainMenuPanelhez milyen aktivációs
-            // string tartozik
-            mainPanel.add(new MainMenuPanel(mainPanel), "menu");
-            mainPanel.add(new SettingsPanel(mainPanel), "settings");
-            mainPanel.add(new GamePanel(), "game");
-
-            frame.add(mainPanel);
-            frame.pack();
-            frame.setVisible(true);
+            View view = View.GetInstance();
+            view.OpenMenu();
         });
 
         //shutdown hook

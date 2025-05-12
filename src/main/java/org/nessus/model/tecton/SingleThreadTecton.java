@@ -1,6 +1,7 @@
 package org.nessus.model.tecton;
 
 import org.nessus.model.shroom.ShroomThread;
+import org.nessus.view.TectonTexturer;
 
 /**
  * Egyfonál tekton, azaz ezen a tektonfajtán csak egy fonál lehet.
@@ -33,5 +34,10 @@ public class SingleThreadTecton extends Tecton {
         }
         
         return false;
+    }
+
+    @Override
+    public void accept(TectonTexturer texturer) {
+        texturer.visit(this);
     }
 }

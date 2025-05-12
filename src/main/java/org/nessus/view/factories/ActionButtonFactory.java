@@ -6,28 +6,33 @@ import javax.swing.*;
 
 public class ActionButtonFactory {
     private Controller controller;
-    JButton CreateBugMoveButton(){
+
+    public ActionButtonFactory(Controller controller) {
+        this.controller = controller;
+    }
+
+    public JButton CreateBugMoveButton(){
         return new JButton("NOT IMPLEMENTED");
     }
-    JButton CreateBugEatButton(){
+    public JButton CreateBugEatButton(){
         return new JButton("NOT IMPLEMENTED");
     }
-    JButton CreateBugCutButton(){
+    public JButton CreateBugCutButton(){
         return new JButton("NOT IMPLEMENTED");
     }
-    JButton CreateThrowSporeButton(){
+    public JButton CreateThrowSporeButton(){
         return new JButton("NOT IMPLEMENTED");
     }
-    JButton CreateShroomThreadDevourButton(){
+    public JButton CreateShroomThreadDevourButton(){
         return new JButton("NOT IMPLEMENTED");
     }
-    JButton CreatePlaceShroomBodyButton(){
+    public JButton CreatePlaceShroomBodyButton(){
         return new JButton("NOT IMPLEMENTED");
     }
-    JButton CreateUpgradeShroomBodyButton(){
+    public JButton CreateUpgradeShroomBodyButton(){
         return new JButton("NOT IMPLEMENTED");
     }
-    JButton CreatePlaceShroomThreadButton(){
+    public JButton CreatePlaceShroomThreadButton(){
         return new JButton("NOT IMPLEMENTED");
     }
 }

@@ -5,7 +5,15 @@ import org.nessus.model.tecton.Tecton;
 import java.awt.*;
 
 public class TectonView extends EntitySpriteView{
-    private Tecton tecton;
+    private Tecton model;
+    private double dx;
+    private double dy;
+
+    public TectonView(Tecton t)
+    {
+        this.model = t;
+    }
+
     @Override
     public void Draw(Graphics2D g2d) {
 
@@ -29,5 +37,45 @@ public class TectonView extends EntitySpriteView{
     @Override
     public String GetEntityInfo() {
         return "";
+    }
+
+    public double X()
+    {
+        return this.x;
+    }
+
+    public double Y()
+    {
+        return this.y;
+    }
+
+    public void setX(double x)
+    {
+        this.x = x;
+    }
+
+    public void setY(double y)
+    {
+        this.y = y;
+    }
+
+    public double DX()
+    {
+        return dx;
+    }
+
+    public double DY()
+    {
+        return dy;
+    }
+
+    public void setDX(double dx)
+    {
+        this.dx = dx;
+    }
+
+    public void setDY(double dy)
+    {
+        this.dy = dy;
     }
 }
