@@ -180,6 +180,26 @@ public class View extends JFrame implements IGameObjectStore {
         selectedTectons.add(tecton);
     }
 
+    public Bug GetSelectedBug() {
+        return selectedBug;
+    }
+
+    public ShroomThread GetSelectedShroomThread() {
+        return selectedShroomThread;
+    }
+
+    public ShroomBody GetSelectedShroomBody() {
+        return selectedShroomBody;
+    }
+
+    public Spore GetSelectedSpore() {
+        return selectedSpore;
+    }
+
+    public List<Tecton> GetSelectedTectons() {
+        return selectedTectons;
+    }
+
     public IEntityView FindEntity(Object entity){
         for(IEntityView view : views){
             if(view.equals(entity))

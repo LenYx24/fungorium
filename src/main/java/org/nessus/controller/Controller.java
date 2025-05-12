@@ -14,6 +14,7 @@ import org.nessus.view.View;
 public class Controller implements IRandomProvider {
     private static Random rand = new Random();
 
+    private IActionController currentAction = null;
     private IShroomController currentShroom = null; // a shroom
     private IBugOwnerController currentBugOwner = null; // a bug owner
 
@@ -70,7 +71,22 @@ public class Controller implements IRandomProvider {
         tectons.add(tecton);
     }
     public void ViewSelectionChanged(){
-        // TODO
+        if (currentAction != null) {
+            if (currentAction.TryAction(view))
+                currentAction = null;
+            return;
+        }
+
+        if (bugOwnerRound && view.GetSelectedBug() != null) {
+            view.ShowBugActions();
+        } else {
+            if (view.GetSelectedShroomBody() != null)
+                view.ShowShroomBodyActions();
+            else if (view.GetSelectedShroomThread() != null)
+                view.ShowShroomThreadActions();
+            else if (view.GetSelectedTectons() != null)
+                view.ShowTectonActions();
+        }
     }
     /**
      * Ez a metódus egy random számot generál a megadott minimum és maximum érték között.
