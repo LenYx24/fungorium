@@ -1,7 +1,13 @@
 package org.nessus.controller;
 
-import java.nio.file.*;
 import java.util.*;
+import java.util.stream.IntStream;
+
+import org.nessus.model.bug.Bug;
+import org.nessus.model.bug.BugOwner;
+import org.nessus.model.shroom.Shroom;
+import org.nessus.model.shroom.ShroomBody;
+import org.nessus.model.tecton.Tecton;
 
 import org.nessus.model.effect.*;
 import org.nessus.view.View;
@@ -18,11 +24,11 @@ public class Controller implements IRandomProvider {
     private IBugOwnerController currentBugOwner = null; // a bug owner
 
     private boolean bugOwnerRound = false; // Bug owner köre
-    private Map<IBugOwnerController, String> bugOwners = new HashMap<>(); // Bug owner lista
-    private Map<IShroomController, String> shrooms = new HashMap<>(); // Shroom lista
+    private List<IBugOwnerController> bugOwners = new ArrayList<>(); // Bug owner lista
+    private List<IShroomController> shrooms = new ArrayList<>(); // Shroom lista
     private List<ITectonController> tectons = new ArrayList<>();
 
-    private View view;
+    private static View view; // static lett
 
     /**
      * A Controller osztály konstruktora, amely inicializálja a parancsokat és beállítja a nézetet.
@@ -31,22 +37,85 @@ public class Controller implements IRandomProvider {
     public Controller(View view) {
         this.view = view;
     }
-    public void GenerateMap(){
-        // TODO
+
+    public void ClearMap() {
+        bugOwners.clear();
+        shrooms.clear();
+        tectons.clear();
     }
+
+    private void AddEdge(Tecton t1, Tecton t2) {
+        t1.SetNeighbour(t2);
+        t2.SetNeighbour(t1);
+    }
+
+    private <T> T RandomOf(List<T> list) {
+        return list.get(RandomNumber(0, list.size() - 1));
+    }
+
+    private List<Tecton> AddRandomEdge(List<Tecton> list1, List<Tecton> list2) {
+        Tecton t1 = null;
+        Tecton t2 = null;
+
+        while (t1 == t2) {
+            t1 = RandomOf(list1);
+            t2 = RandomOf(list2);
+        }
+
+        AddEdge(t1, t2);
+        return List.of(t1, t2);
+    }
+
+    public void GenerateMap(int tectonCount) {
+        List<Tecton> disconnected = new ArrayList<>();
+        List<Tecton> connected = new ArrayList<>();
+
+        for (int i = 0; i < tectonCount; i++)
+            disconnected.add(new Tecton());
+
+        var pickedTectons = AddRandomEdge(disconnected, disconnected);
+        for (var tecton : List.copyOf(pickedTectons)) {
+            disconnected.remove(tecton);
+            connected.add(tecton);
+        }
+
+        for (int i = 0; i < tectonCount - 2; i++) {
+            pickedTectons = AddRandomEdge(disconnected, connected);
+            var lastConnected = pickedTectons.get(0);
+            disconnected.remove(lastConnected);
+            connected.add(lastConnected);
+        }
+
+        tectons.addAll(connected);
+
+        for (var bugOwner : bugOwners) {
+            var tecton = RandomOf(connected);
+            tecton.AddBug(new Bug((BugOwner)bugOwner, tecton));
+        }
+
+        for (var shroom : shrooms) {
+            var tecton = RandomOf(connected);
+            tecton.SetShroomBody(new ShroomBody((Shroom)shroom, tecton));
+        }
+    }
+
     public void StartAction(IActionController action){
         // TODO
     }
+
     public void NextPlayer(){
         // TODO
     }
-    public String GetPlayerName(){
-        return bugOwnerRound ? bugOwners.get(currentBugOwner) : shrooms.get(currentShroom);
+
+    public Object GetCurrentPlayer(){
+        return bugOwnerRound ? currentBugOwner : currentShroom;
     }
+
     public int GetPlayerActionPoints(){
         // TODO
         return 0;
     }
+
     /**
      * Ez a metódus felvesz egy új BugOwner-t a bugOwners listába.
      * @param bugOwner A BugOwner, amelyet hozzá szeretnénk adni a listához
@@ -54,7 +123,7 @@ public class Controller implements IRandomProvider {
      */
     public void AddBugOwner(IBugOwnerController bugOwner) {
         // TODO: Kellene a nevet is megadni amikor létrejön a bug, kell egy új string paraméter
-        bugOwners.put(bugOwner, "bug");
+        bugOwners.add(bugOwner);
     }
 
     /**
@@ -64,14 +133,17 @@ public class Controller implements IRandomProvider {
      */
     public void AddShroom(IShroomController shroom) {
         // TODO: Kellene a nevet is megadni amikor létrejön a shroom, kell egy új string paraméter
-        shrooms.put(shroom, "shroom");
+        shrooms.add(shroom);
     }
+
     public void AddTecton(ITectonController tecton) {
         tectons.add(tecton);
     }
+
     public void ViewSelectionChanged(){
         // TODO
     }
+
     /**
      * Ez a metódus egy random számot generál a megadott minimum és maximum érték között.
      * @param min A minimum érték

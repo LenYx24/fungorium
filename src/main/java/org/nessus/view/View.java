@@ -23,6 +23,8 @@ import org.nessus.view.panels.MainMenuPanel;
 import org.nessus.view.panels.SettingsPanel;
 import org.nessus.view.panels.ControlPanel;
 
+import java.util.AbstractMap.SimpleEntry;
+
 import javax.swing.*;
 
 /**
@@ -40,8 +42,8 @@ public class View extends JFrame implements IGameObjectStore {
     private ShroomThread selectedShroomThread;
     private ShroomBody selectedShroomBody;
     private TectonView[] tectons;
-    private Map<BugOwner, BugViewFactory> bugOwners;
-    private Map<Shroom, ShroomViewFactory> shrooms;
+    private Map<BugOwner, SimpleEntry<BugViewFactory, String>> bugOwners = new HashMap<>();
+    private Map<Shroom, SimpleEntry<ShroomViewFactory, String>> shrooms = new HashMap<>();
 
     private Controller controller = new Controller(this);
     private List<IEntityView> views = new ArrayList<>();
@@ -83,10 +85,6 @@ public class View extends JFrame implements IGameObjectStore {
         return instance;
     }
 
-    public Controller GetController() {
-        return controller;
-    }
-
     /**
      * Ezzela metódussal kaphatunk vissza egy ObjectStore-t.
      * @return IGameObjectStore - Az objektumok tárolására szolgáló objektum.
@@ -101,20 +99,6 @@ public class View extends JFrame implements IGameObjectStore {
      */
     public Set<String> GetObjects() {
         return objects.keySet();
-    }
-
-    /**
-     * Ezzel a metódussal adhatunk hozzá objektumot a loghoz.
-     * @param name
-     * @param object
-     */
-    public void AddObject(String name, Object object) {
-        if (object instanceof BugOwner bugOwner)
-            controller.AddBugOwner(bugOwner);
-        else if (object instanceof Shroom shroom)
-            controller.AddShroom(shroom);
-
-        objects.put(name, object);
     }
 
     /**
@@ -157,6 +141,14 @@ public class View extends JFrame implements IGameObjectStore {
         return controller;
     }
 
+    /**
+     * Visszaadja a Controller példányát.
+     * @return Controller - A Controller példánya
+     */
+    public Controller GetController() {
+        return controller;
+    }
+
     public void OpenMenu(){
         CardLayout cardLayout = (CardLayout)mainPanel.getLayout();
         cardLayout.show(mainPanel,"menu");
@@ -180,19 +172,26 @@ public class View extends JFrame implements IGameObjectStore {
     }
 
     public void AddShroomBody(ShroomBody shroomBody){
-        ShroomViewFactory factory = shrooms.get(shroomBody.GetShroom());
+        var shroom = shrooms.get(shroomBody.GetShroom());
+        var factory = shroom.getKey();
         views.add(factory.CreateShroomBodyView(shroomBody));
     }
+
     public void AddShroomThread(ShroomThread shroomThread){
-        ShroomViewFactory factory = shrooms.get(shroomThread.GetShroom());
+        var shroom = shrooms.get(shroomThread.GetShroom());
+        var factory = shroom.getKey();
         views.add(factory.CreateShroomThreadView(shroomThread));
     }
-    public void AddSpore(){
-        ShroomViewFactory factory = shrooms.get(selectedSpore.GetShroom());
-        views.add(factory.CreateSporeView(selectedSpore));
+
+    public void AddSpore(Spore spore) {
+        var shroom = shrooms.get(spore.GetShroom());
+        var factory = shroom.getKey();
+        views.add(factory.CreateSporeView(spore));
     }
+
     public void AddBug(Bug bug){
-        BugViewFactory factory = bugOwners.get(bug.GetOwner());
+        var bugOwner = bugOwners.get(bug.GetOwner());
+        var factory = bugOwner.getKey();
         views.add(factory.CreateBugView(bug));
     }
     public void AddTecton(Tecton tecton){
@@ -200,8 +199,12 @@ public class View extends JFrame implements IGameObjectStore {
         tecton.accept(texturer);
     }
 
-    public void AddBugOwner(BugOwner bugOwner){
-
+    public void AddShroom(Shroom shroom, ShroomViewFactory factory, String name) {
+        shrooms.put(shroom, new SimpleEntry<>(factory, name));
+    }
+ 
+    public void AddBugOwner(BugOwner bugOwner, BugViewFactory factory, String name) {
+        bugOwners.put(bugOwner, new SimpleEntry<>(factory, name));
     }
 
     public IEntityView FindEntity(Object entity){
@@ -212,20 +215,21 @@ public class View extends JFrame implements IGameObjectStore {
         return null;
     }
 
-    public void ShowBugActions(){
-
-    }
-    public void ShowShroomBodyActions(){
-
-    }
-    public void ShowShroomThreadActions(){
-
-    }
-    public void ShowTectonActions(){
+    public void ShowBugActions() {
 
     }
 
-    public void UpdatePlayerInfo(){
+    public void ShowShroomBodyActions() {
+
+    }
+    public void ShowShroomThreadActions() {
+
+    }
+    public void ShowTectonActions() {
+
+    }
+
+    public void UpdatePlayerInfo() {
 
     }
     /**
