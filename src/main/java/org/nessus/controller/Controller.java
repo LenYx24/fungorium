@@ -29,7 +29,7 @@ public class Controller implements IRandomProvider {
     private List<IShroomController> shrooms = new ArrayList<>(); // Shroom lista
     private List<ITectonController> tectons = new ArrayList<>();
 
-    private static View view; // static lett
+    private View view; // static lett
 
     /**
      * A Controller osztály konstruktora, amely inicializálja a parancsokat és beállítja a nézetet.
@@ -88,6 +88,8 @@ public class Controller implements IRandomProvider {
         }
 
         tectons.addAll(connected);
+        var store = view.GetObjectStore();
+        connected.forEach(store::AddTecton);
 
         for (var bugOwner : bugOwners) {
             var tecton = RandomOf(connected);

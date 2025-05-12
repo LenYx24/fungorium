@@ -25,7 +25,7 @@ public class ObjectStore implements IGameObjectStore {
     private Map<Shroom, SimpleEntry<ShroomViewFactory, String>> shrooms = new HashMap<>();
 
     private List<IEntityView> views = new ArrayList<>();
-    private List<TectonView> tectons = new ArrayList<>();
+    private Map<Tecton, TectonView> tectons = new HashMap<>();
 
     public void AddShroomBody(ShroomBody shroomBody){
         var shroom = shrooms.get(shroomBody.GetShroom());
@@ -54,10 +54,15 @@ public class ObjectStore implements IGameObjectStore {
     public void AddTecton(Tecton tecton) {
         var texturer = new TectonTexturer();
         tecton.Accept(texturer);
+        tectons.put(tecton, texturer.GetResult());
     }
 
     public List<IEntityView> GetEntityViews() {
         return views;
+    }
+
+    public Map<Tecton, TectonView> GetTectonViews() {
+        return tectons;
     }
 
     public void AddShroom(Shroom shroom, ShroomViewFactory factory, String name) {

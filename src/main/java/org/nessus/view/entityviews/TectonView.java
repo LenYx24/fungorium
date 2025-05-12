@@ -4,15 +4,19 @@ import org.nessus.model.tecton.Tecton;
 import org.nessus.utility.EntitySelector;
 
 import java.awt.*;
+import java.util.Random;
 
 public class TectonView extends EntitySpriteView{
     private Tecton model;
     private double dx;
     private double dy;
 
-    public TectonView(Tecton t)
-    {
+    private Random r = new Random();
+
+    public TectonView(Tecton t) {
         this.model = t;
+        this.x = r.nextInt(600);
+        this.y = r.nextInt(600);
     }
 
     @Override

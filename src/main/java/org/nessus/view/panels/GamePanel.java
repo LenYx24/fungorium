@@ -27,7 +27,6 @@ public class GamePanel extends JPanel {
         gbc.gridx = 1;
         gbc.weightx = 1;
         add(controlPanel, gbc);
-
     }
 
     public ControlPanel GetControlPanel() {

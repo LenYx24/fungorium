@@ -33,12 +33,13 @@ public class View extends JFrame {
         setSize(new Dimension(1280, 720));
         setLocationRelativeTo(null);
         mainPanel = new JPanel(new CardLayout());
+        gamePanel = new GamePanel(this);
 
         // A stringeket egy mapbe lehetne mozgatni, és a viewtől lekérni hogy a MainMenuPanelhez milyen aktivációs
         // string tartozik
         mainPanel.add(new MainMenuPanel(mainPanel), "menu");
         mainPanel.add(new SettingsPanel(this, mainPanel), "settings");
-        mainPanel.add(new GamePanel(this), "game");
+        mainPanel.add(gamePanel, "game");
 
         add(mainPanel);
         pack();
@@ -84,19 +85,22 @@ public class View extends JFrame {
         return selection;
     }
 
-    public void OpenMenu(){
+    public void OpenMenu() {
         CardLayout cardLayout = (CardLayout)mainPanel.getLayout();
         cardLayout.show(mainPanel,"menu");
     }
 
-    public void OpenSettings(){
+    public void OpenSettings() {
         CardLayout cardLayout = (CardLayout)mainPanel.getLayout();
         cardLayout.show(mainPanel,"settings");
     }
 
-    public void OpenGame(){
+    public void OpenGame() {
         CardLayout cardLayout = (CardLayout)mainPanel.getLayout();
         cardLayout.show(mainPanel,"game");
+    
+        Timer timer = new Timer(1000 / 60, e -> gamePanel.repaint());
+        timer.start();
     }
 
     public void HandleSelection(IEntityView entity){
