@@ -1,7 +1,7 @@
 package org.nessus.model.tecton;
 
 import org.nessus.model.shroom.ShroomThread;
-import org.nessus.view.TectonTexturer;
+import org.nessus.utility.TectonTexturer;
 
 import java.util.*;
 

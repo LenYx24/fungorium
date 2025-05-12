@@ -1,4 +1,4 @@
-package org.nessus.view;
+package org.nessus.utility;
 
 import org.nessus.model.tecton.DesertTecton;
 import org.nessus.model.tecton.InfertileTecton;

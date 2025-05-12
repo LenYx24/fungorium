@@ -2,6 +2,7 @@ package org.nessus.view;
 
 import java.awt.*;
 import org.nessus.controller.IRandomProvider;
+import org.nessus.utility.EntitySelector;
 import org.nessus.controller.Controller;
 import org.nessus.view.entityviews.*;
 import org.nessus.view.panels.*;

@@ -1,6 +1,7 @@
 package org.nessus.view.entityviews;
 
 import org.nessus.model.bug.Bug;
+import org.nessus.utility.EntitySelector;
 
 import java.awt.*;
 

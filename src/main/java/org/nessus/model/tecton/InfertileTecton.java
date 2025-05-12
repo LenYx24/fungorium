@@ -1,7 +1,7 @@
 package org.nessus.model.tecton;
 
 import org.nessus.model.shroom.ShroomBody;
-import org.nessus.view.TectonTexturer;
+import org.nessus.utility.TectonTexturer;
 
 /**
  * Ezen a tektontípuson nem lehet gombatestet növeszteni.

@@ -3,6 +3,7 @@ package org.nessus.view.entityviews;
 import org.nessus.model.shroom.Shroom;
 import org.nessus.model.shroom.ShroomThread;
 import org.nessus.model.tecton.Tecton;
+import org.nessus.utility.EntitySelector;
 
 import java.awt.*;
 

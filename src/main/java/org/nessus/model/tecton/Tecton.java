@@ -3,7 +3,7 @@ package org.nessus.model.tecton;
 import org.nessus.controller.*;
 import org.nessus.model.bug.Bug;
 import org.nessus.model.shroom.*;
-import org.nessus.view.TectonTexturer;
+import org.nessus.utility.TectonTexturer;
 import org.nessus.view.View;
 
 import java.util.ArrayList;

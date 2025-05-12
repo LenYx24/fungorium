@@ -2,6 +2,8 @@ package org.nessus.view.entityviews;
 
 import java.awt.*;
 
+import org.nessus.utility.EntitySelector;
+
 public interface IEntityView {
     void Draw(Graphics2D g2d);
     int GetLayer();

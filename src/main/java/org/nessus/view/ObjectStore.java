@@ -14,6 +14,7 @@ import org.nessus.model.shroom.ShroomBody;
 import org.nessus.model.shroom.ShroomThread;
 import org.nessus.model.shroom.Spore;
 import org.nessus.model.tecton.Tecton;
+import org.nessus.utility.TectonTexturer;
 import org.nessus.view.entityviews.IEntityView;
 import org.nessus.view.entityviews.TectonView;
 import org.nessus.view.factories.BugViewFactory;

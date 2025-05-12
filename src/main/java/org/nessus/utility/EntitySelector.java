@@ -1,6 +1,11 @@
-package org.nessus.view.entityviews;
+package org.nessus.utility;
 import org.nessus.view.SelectionCatalog;
 import org.nessus.view.View;
+import org.nessus.view.entityviews.BugView;
+import org.nessus.view.entityviews.ShroomBodyView;
+import org.nessus.view.entityviews.ShroomThreadView;
+import org.nessus.view.entityviews.SporeView;
+import org.nessus.view.entityviews.TectonView;
 
 public class EntitySelector {
     private SelectionCatalog selection;
