@@ -13,6 +13,8 @@ import org.nessus.view.entityviews.*;
 import org.nessus.view.factories.*;
 import org.nessus.view.panels.*;
 
+import java.util.AbstractMap.SimpleEntry;
+
 import javax.swing.*;
 
 /**
@@ -31,8 +33,8 @@ public class View extends JFrame implements IGameObjectStore {
 
     private List<TectonView> tectons = new ArrayList<>();
     
-    private Map<BugOwner, BugViewFactory> bugOwners = new HashMap<>();
-    private Map<Shroom, ShroomViewFactory> shrooms = new HashMap<>();
+    private Map<BugOwner, SimpleEntry<BugViewFactory, String>> bugOwners = new HashMap<>();
+    private Map<Shroom, SimpleEntry<ShroomViewFactory, String>> shrooms = new HashMap<>();
 
     private Controller controller = new Controller(this);
     private List<IEntityView> views = new ArrayList<>();
@@ -74,10 +76,6 @@ public class View extends JFrame implements IGameObjectStore {
         return instance;
     }
 
-    public Controller GetController() {
-        return controller;
-    }
-
     /**
      * Lekér egy random generátort.
      * @return IRandomProvider - A random generátor
@@ -97,6 +95,14 @@ public class View extends JFrame implements IGameObjectStore {
 
     public List<IEntityView> GetEntityViews() {
         return views;
+    }
+
+    /**
+     * Visszaadja a Controller példányát.
+     * @return Controller - A Controller példánya
+     */
+    public Controller GetController() {
+        return controller;
     }
 
     public void OpenMenu(){
@@ -130,23 +136,27 @@ public class View extends JFrame implements IGameObjectStore {
         selectedTectons.clear();
     }
 
-    public void AddShroomBody(ShroomBody shroomBody) {
-        ShroomViewFactory factory = shrooms.get(shroomBody.GetShroom());
+    public void AddShroomBody(ShroomBody shroomBody){
+        var shroom = shrooms.get(shroomBody.GetShroom());
+        var factory = shroom.getKey();
         views.add(factory.CreateShroomBodyView(shroomBody));
     }
 
-    public void AddShroomThread(ShroomThread shroomThread) {
-        ShroomViewFactory factory = shrooms.get(shroomThread.GetShroom());
+    public void AddShroomThread(ShroomThread shroomThread){
+        var shroom = shrooms.get(shroomThread.GetShroom());
+        var factory = shroom.getKey();
         views.add(factory.CreateShroomThreadView(shroomThread));
     }
 
     public void AddSpore(Spore spore) {
-        ShroomViewFactory factory = shrooms.get(spore.GetShroom());
+        var shroom = shrooms.get(spore.GetShroom());
+        var factory = shroom.getKey();
         views.add(factory.CreateSporeView(spore));
     }
 
-    public void AddBug(Bug bug) {
-        BugViewFactory factory = bugOwners.get(bug.GetOwner());
+    public void AddBug(Bug bug){
+        var bugOwner = bugOwners.get(bug.GetOwner());
+        var factory = bugOwner.getKey();
         views.add(factory.CreateBugView(bug));
     }
 
@@ -155,8 +165,12 @@ public class View extends JFrame implements IGameObjectStore {
         tecton.Accept(texturer);
     }
 
-    public void AddBugOwner(BugOwner bugOwner) {
-
+    public void AddShroom(Shroom shroom, ShroomViewFactory factory, String name) {
+        shrooms.put(shroom, new SimpleEntry<>(factory, name));
+    }
+ 
+    public void AddBugOwner(BugOwner bugOwner, BugViewFactory factory, String name) {
+        bugOwners.put(bugOwner, new SimpleEntry<>(factory, name));
     }
 
     public void SelectBug(Bug bug) {
@@ -208,23 +222,22 @@ public class View extends JFrame implements IGameObjectStore {
         return null;
     }
 
-    public void ShowBugActions(){
+    public void ShowBugActions() {
 
     }
 
-    public void ShowShroomBodyActions(){
+    public void ShowShroomBodyActions() {
+
+    }
+    
+    public void ShowShroomThreadActions() {
+
+    }
+    public void ShowTectonActions() {
 
     }
 
-    public void ShowShroomThreadActions(){
-
-    }
-
-    public void ShowTectonActions(){
-
-    }
-
-    public void UpdatePlayerInfo(){
+    public void UpdatePlayerInfo() {
 
     }
 

@@ -2,6 +2,18 @@ package org.nessus.view.panels;
 
 import org.nessus.view.BaseButton;
 import org.nessus.view.View;
+import org.nessus.view.factories.BugViewFactory;
+import org.nessus.view.factories.ShroomViewFactory;
+import org.nessus.view.factories.bugfactories.BlackTeamFactory;
+import org.nessus.view.factories.bugfactories.BrownTeamFactory;
+import org.nessus.view.factories.bugfactories.WhiteTeamFactory;
+import org.nessus.view.factories.shroomfactories.BlueTeamFactory;
+import org.nessus.view.factories.shroomfactories.GreenTeamFactory;
+import org.nessus.view.factories.shroomfactories.RedTeamFactory;
+import org.nessus.model.shroom.Shroom;
+import org.nessus.model.bug.BugOwner;
+
+import org.nessus.controller.Controller;
 
 import javax.swing.*;
 import javax.swing.text.AbstractDocument;
@@ -11,17 +23,18 @@ import javax.swing.text.DocumentFilter;
 import javax.swing.text.AttributeSet;
 
 import java.awt.*;
-import java.util.Map;
+import java.util.ArrayList;
 
 public class SettingsPanel extends JPanel {
+    private JButton nextBtn;
     private View view;
-    Map<JCheckBox, JTextField> shrooms;
-    Map<JCheckBox, JTextField> bugOwners;
-    JButton nextBtn;
 
-    public SettingsPanel(View view) {
-        this.view = view;
-    }
+    private JCheckBox[] gombaszCheckBoxes = new JCheckBox[3];
+    private JTextField[] gombaszTextFields = new JTextField[3];
+    private JCheckBox[] rovaraszCheckBoxes = new JCheckBox[3];
+    private JTextField[] rovaraszTextFields = new JTextField[3];
+    private Color[] gombaszColors = {Color.RED, Color.GREEN, Color.BLUE};
+    private Color[] rovaraszColors = {Color.WHITE, Color.GRAY, new Color(139, 69, 19)};
 
     public SettingsPanel(View view, JPanel mainPanel) {
         this.view = view;
@@ -34,18 +47,18 @@ public class SettingsPanel extends JPanel {
         label.setFont(new Font("Roboto", Font.BOLD, 40));
 
         // 3x2 grid
-        JPanel griJPanel = new JPanel();
-        griJPanel.setLayout(new GridLayout(3, 2));
+        JPanel gridJPanel = new JPanel();
+        gridJPanel.setLayout(new GridLayout(3, 2));
 
         JLabel gombaszLabel = new JLabel("Gombászok");
         gombaszLabel.setFont(new Font("Roboto", Font.BOLD, 20));
         gombaszLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        griJPanel.add(gombaszLabel);
+        gridJPanel.add(gombaszLabel);
 
         JLabel rovaraszLabel = new JLabel("Rovarászok");
         rovaraszLabel.setFont(new Font("Roboto", Font.BOLD, 20));
         rovaraszLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        griJPanel.add(rovaraszLabel);
+        gridJPanel.add(rovaraszLabel);
 
         JPanel settingsLeft = new JPanel();
         settingsLeft.setLayout(new BoxLayout(settingsLeft, BoxLayout.Y_AXIS));
@@ -53,15 +66,16 @@ public class SettingsPanel extends JPanel {
         JPanel settingsRight = new JPanel();
         settingsRight.setLayout(new BoxLayout(settingsRight, BoxLayout.Y_AXIS));
 
-        Color[] gombaszColors = {Color.RED, Color.GREEN, Color.BLUE};
         for (int i = 0; i < 3; i++) {
             final int playerNum = i + 1;
             JCheckBox checkBox = new JCheckBox();
             checkBox.setMargin(new Insets(0, 0, 0, 0));
-            
+            gombaszCheckBoxes[i] = checkBox;
+
             JTextField textField = new JTextField("Gombász" + playerNum);
             textField.setPreferredSize(new Dimension(100, 25));
             textField.setEnabled(false);
+            gombaszTextFields[i] = textField;
 
             JPanel colorBox = new JPanel();
             colorBox.setPreferredSize(new Dimension(20, 20));
@@ -83,15 +97,16 @@ public class SettingsPanel extends JPanel {
             settingsLeft.add(playerRow);
         }
 
-        Color[] rovaraszColors = {Color.WHITE, Color.GRAY, new Color(139, 69, 19)};
         for (int i = 0; i < 3; i++) {
             final int playerNum = i + 1;
             JCheckBox checkBox = new JCheckBox();
             checkBox.setMargin(new Insets(0, 0, 0, 0));
+            rovaraszCheckBoxes[i] = checkBox;
             
             JTextField textField = new JTextField("Rovarász" + playerNum);
             textField.setPreferredSize(new Dimension(100, 25));
             textField.setEnabled(false);
+            rovaraszTextFields[i] = textField;
 
             JPanel colorBox = new JPanel();
             colorBox.setPreferredSize(new Dimension(20, 20));
@@ -115,14 +130,14 @@ public class SettingsPanel extends JPanel {
 
         JPanel leftWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
         leftWrapper.add(settingsLeft);
-        griJPanel.add(leftWrapper);
+        gridJPanel.add(leftWrapper);
 
         JPanel rightWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
         rightWrapper.add(settingsRight);
-        griJPanel.add(rightWrapper);
+        gridJPanel.add(rightWrapper);
 
         panel.add(label);
-        panel.add(griJPanel);
+        panel.add(gridJPanel);
         panel.add(Box.createRigidArea(new Dimension(0, 20)));
 
         JPanel tectonPanel = new JPanel();
@@ -132,6 +147,7 @@ public class SettingsPanel extends JPanel {
         tectonNumber.setFont(new Font("Roboto", Font.BOLD, 20));
         JTextField intInput = new JTextField();
 
+        // Csak int engedése a tekton szám mezőben
         ((AbstractDocument) intInput.getDocument()).setDocumentFilter(new DocumentFilter() {
             @Override
             public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
@@ -153,14 +169,112 @@ public class SettingsPanel extends JPanel {
         leftPanel.add(tectonNumber);
         leftPanel.add(intInput);
 
-        JButton nextBtn = new BaseButton("Következő");
-        nextBtn.addActionListener(e -> view.OpenGame());
+        JButton actionButton = new BaseButton("Tovább");
         JPanel rightPanel = new JPanel();
-        rightPanel.add(nextBtn);
+
+        actionButton.addActionListener(e -> {
+            System.out.println("JÁTÉK INIT%");
+
+            boolean hasGombasz = false;
+            boolean hasRovarasz = false;
+            boolean hasTectonNumber = !intInput.getText().isEmpty();
+
+            for (JCheckBox checkBox : gombaszCheckBoxes) {
+                if (checkBox.isSelected()) {
+                    hasGombasz = true;
+                    break;
+                }
+            }
+
+            for (JCheckBox checkBox : rovaraszCheckBoxes) {
+                if (checkBox.isSelected()) {
+                    hasRovarasz = true;
+                    break;
+                }
+            }
+
+            if (!hasGombasz || !hasRovarasz || !hasTectonNumber) {
+                JOptionPane.showMessageDialog(this,
+                    "Kérlek válassz legalább egy gombászt, egy rovarászt, és add meg a tektonok számát!", 
+                    "Hiányzó beállítások", 
+                    JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            String inputText = intInput.getText().trim();
+
+            int tectonCount;
+            try {
+                tectonCount = Integer.parseInt(inputText);
+                if (tectonCount <= 0) {
+                    JOptionPane.showMessageDialog(this,
+                        "A tektonok számának 1 és " + Integer.MAX_VALUE + " között kell lennie!", 
+                        "Hibás szám", 
+                        JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this,
+                    "A megadott szám túl nagy! Kérlek adj meg egy 1 és " + Integer.MAX_VALUE + " közötti értéket!", 
+                    "Túl nagy szám", 
+                    JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            ShroomViewFactory[] shroomFactories = {
+                new RedTeamFactory(),
+                new GreenTeamFactory(),
+                new BlueTeamFactory()
+            };
+
+            var controller = view.GetController();
+            controller.ClearMap();
+
+            System.out.println("--- LÉTREHOZOTT GOMBÁSZOK ---");
+            for (int i = 0; i < gombaszCheckBoxes.length; i++) {
+                if (gombaszCheckBoxes[i].isSelected()) {
+                    Shroom shroom = new Shroom();
+                    String name = gombaszTextFields[i].getText();
+
+                    view.AddShroom(shroom, shroomFactories[i], name);
+                    controller.AddShroom(shroom);
+
+                    System.out.println("Név: " + name + ", Típus: Shroom, Szín: " + gombaszColors[i]);
+                }
+            }
+
+            BugViewFactory[] bugFactories = {
+                new WhiteTeamFactory(),
+                new BlackTeamFactory(),
+                new BrownTeamFactory()
+            };
+
+            System.out.println("--- LÉTREHOZOTT ROVARÁSZOK ---");
+            for (int i = 0; i < rovaraszCheckBoxes.length; i++) {
+                if (rovaraszCheckBoxes[i].isSelected()) {
+                    BugOwner bugOwner = new BugOwner();
+                    String name = rovaraszTextFields[i].getText();
+
+                    view.AddBugOwner(bugOwner, bugFactories[i], name);
+                    controller.AddBugOwner(bugOwner);
+
+                    System.out.println("Név: " + name + ", Típus: BugOwner, Szín: " + rovaraszColors[i]);
+                }
+            }
+
+            tectonCount = Integer.parseInt(intInput.getText());
+            System.out.println("--- TEKTONOK ---");
+            System.out.println("Tektonok száma: " + tectonCount);
+
+            controller.GenerateMap(tectonCount);
+            view.OpenGame();
+        });
+
+        rightPanel.add(actionButton);
 
         JButton backBtn = new BaseButton("Vissza");
         backBtn.addActionListener(e -> {
-            System.out.println("VISSZA!%");
+            System.out.println("VISSZA%");
             CardLayout cardLayout = (CardLayout)mainPanel.getLayout();
             cardLayout.show(mainPanel,"menu");
         });

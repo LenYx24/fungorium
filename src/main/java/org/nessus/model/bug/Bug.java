@@ -50,6 +50,11 @@ public class Bug {
         owner.AddBug(this);
     }
 
+    public Bug(BugOwner owner, Tecton tecton) {
+        this(owner);
+        this.tecton = tecton;
+    }
+
     /**
      * Rovar tulajdonosának beállítása
      * @param owner - A rovar tulajdonosa
