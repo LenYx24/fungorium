@@ -1,9 +1,12 @@
 package org.nessus.controller;
 
 import java.util.*;
+import java.util.stream.IntStream;
 
+import org.nessus.model.bug.Bug;
 import org.nessus.model.bug.BugOwner;
 import org.nessus.model.shroom.Shroom;
+import org.nessus.model.shroom.ShroomBody;
 import org.nessus.model.tecton.Tecton;
 
 import org.nessus.model.effect.*;
@@ -41,8 +44,59 @@ public class Controller implements IRandomProvider {
         tectons.clear();
     }
 
+    private void AddEdge(Tecton t1, Tecton t2) {
+        t1.SetNeighbour(t2);
+        t2.SetNeighbour(t1);
+    }
+
+    private <T> T RandomOf(List<T> list) {
+        return list.get(RandomNumber(0, list.size() - 1));
+    }
+
+    private List<Tecton> AddRandomEdge(List<Tecton> list1, List<Tecton> list2) {
+        Tecton t1 = null;
+        Tecton t2 = null;
+
+        while (t1 == t2) {
+            t1 = RandomOf(list1);
+            t2 = RandomOf(list2);
+        }
+
+        AddEdge(t1, t2);
+        return List.of(t1, t2);
+    }
+
     public void GenerateMap(int tectonCount) {
-        // TODO
+        List<Tecton> disconnected = new ArrayList<>();
+        List<Tecton> connected = new ArrayList<>();
+
+        for (int i = 0; i < tectonCount; i++)
+            disconnected.add(new Tecton());
+
+        var pickedTectons = AddRandomEdge(disconnected, disconnected);
+        for (var tecton : List.copyOf(pickedTectons)) {
+            disconnected.remove(tecton);
+            connected.add(tecton);
+        }
+
+        for (int i = 0; i < tectonCount - 2; i++) {
+            pickedTectons = AddRandomEdge(disconnected, connected);
+            var lastConnected = pickedTectons.get(0);
+            disconnected.remove(lastConnected);
+            connected.add(lastConnected);
+        }
+
+        tectons.addAll(connected);
+
+        for (var bugOwner : bugOwners) {
+            var tecton = RandomOf(connected);
+            tecton.AddBug(new Bug((BugOwner)bugOwner, tecton));
+        }
+
+        for (var shroom : shrooms) {
+            var tecton = RandomOf(connected);
+            tecton.SetShroomBody(new ShroomBody((Shroom)shroom, tecton));
+        }
     }
 
     public void StartAction(IActionController action){
