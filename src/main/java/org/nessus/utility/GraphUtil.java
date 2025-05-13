@@ -34,10 +34,11 @@ public class GraphUtil {
     private int width;
     private int height;
 
+    private static final double PADDING = 10;
     private static final double SPRING_LENGTH = 200;
     private static final double SPRING_STRENGTH = 0.01;
     private static final double REPULSION_STRENGTH = 30000;
-    private static final double DAMPING = 3;
+    private static final double DAMPING = 0.9;
     private static final int NODE_RADIUS = 100;
 
     private Set<Edge> edges = new HashSet<>();
@@ -63,20 +64,17 @@ public class GraphUtil {
     }
 
     private void applyForces() {
-        Tecton maxNeighbourTecton = tectons.keySet().stream().findFirst().orElse(null);
-        for (Tecton t : tectons.keySet()) {
-            if (t.GetNeighbours().size() > maxNeighbourTecton.GetNeighbours().size()) {
-                maxNeighbourTecton = t;
+        for (TectonView n : tectons.values()) {
+            if (!n.IsLocked()) {
+                n.setDX(0);
+                n.setDY(0);
             }
         }
 
-        for (TectonView n : tectons.values()) {
-            n.setDX(0);
-            n.setDY(0);
-        }
-
-        // Repulsion force
+        // Repulsion
         for (TectonView a : tectons.values()) {
+            if (a.IsLocked()) continue;
+
             for (TectonView b : tectons.values()) {
                 if (a == b) continue;
 
@@ -85,6 +83,7 @@ public class GraphUtil {
                 double distSq = dx * dx + dy * dy;
                 double dist = Math.sqrt(distSq);
                 if (dist < NODE_RADIUS) dist = NODE_RADIUS;
+
                 double force = REPULSION_STRENGTH / (dist * dist);
 
                 a.setDX(a.DX() + (dx / dist) * force);
@@ -92,8 +91,10 @@ public class GraphUtil {
             }
         }
 
-        // Spring (attractive) force
+        // Spring attraction
         for (Edge e : edges) {
+            if (e.a.IsLocked() && e.b.IsLocked()) continue;
+
             double dx = e.b.X() - e.a.X();
             double dy = e.b.Y() - e.a.Y();
             double dist = Math.sqrt(dx * dx + dy * dy);
@@ -103,21 +104,25 @@ public class GraphUtil {
             double fx = dx / dist * force;
             double fy = dy / dist * force;
 
-            e.a.setDX(e.a.DX() + fx);
-            e.a.setDY(e.a.DY() + fy);
-            e.b.setDX(e.b.DX() - fx);
-            e.b.setDY(e.b.DY() - fy);
+            if (!e.a.IsLocked()) {
+                e.a.setDX(e.a.DX() + fx);
+                e.a.setDY(e.a.DY() + fy);
+            }
+            if (!e.b.IsLocked()) {
+                e.b.setDX(e.b.DX() - fx);
+                e.b.setDY(e.b.DY() - fy);
+            }
         }
 
-        // Apply movement and bounds
+        // Apply motion and bounds
         for (TectonView n : tectons.values()) {
+            if (n.IsLocked()) continue;
+
             n.setDX(n.DX() * DAMPING);
             n.setDY(n.DY() * DAMPING);
             n.setX(n.X() + n.DX());
             n.setY(n.Y() + n.DY());
 
-            // Keep within bounds with radius buffer
-            final int PADDING = 10;
             n.setX(Math.max(NODE_RADIUS / 2 + PADDING, Math.min(width - NODE_RADIUS / 2 - PADDING, n.X())));
             n.setY(Math.max(NODE_RADIUS / 2 + PADDING, Math.min(height - NODE_RADIUS / 2 - PADDING, n.Y())));
         }

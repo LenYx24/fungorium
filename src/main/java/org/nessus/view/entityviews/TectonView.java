@@ -14,7 +14,7 @@ public class TectonView extends EntitySpriteView{
     private double dx;
     private double dy;
     private int size = 100;
-
+    private boolean locked = false;
     private Random r = new Random();
 
     public TectonView(Tecton t, BufferedImage sprite) {
@@ -30,6 +30,14 @@ public class TectonView extends EntitySpriteView{
         this.image = newImage;
     }
 
+    public void SetLocked(boolean locked) {
+        this.locked = locked;
+    }
+
+    public boolean IsLocked() {
+        return locked;
+    }
+
     @Override
     public void Draw(Graphics2D g2d) {
         this.DrawSprite(g2d,size);
@@ -42,15 +50,16 @@ public class TectonView extends EntitySpriteView{
 
     @Override
     public boolean ContainsPoint(int x, int y) {
-        int _x = (int)this.x - size/2;
-        int _y = (int)this.y - size/2;
-        boolean hit = _x < x && _x + size < x && _y < y && _y + size < y;
-        if(hit){
-            System.out.println("_x: " + _x + ", _y: " + _y + "  this "+ this.model);
-            System.out.println("x: " + x + ", y: " + y);
-            System.out.println();
-        }
-        return hit;
+        int tX = (int)GetX();
+        int tY = (int)GetY();
+
+        int topLeftX = tX - size / 2;
+        int topLeftY = tY - size / 2;
+
+        boolean boundCheckX = x >= topLeftX && x <= topLeftX + size;
+        boolean boundCheckY = y >= topLeftY && y <= topLeftX + size;
+
+        return boundCheckX && boundCheckY;
     }
 
     @Override
