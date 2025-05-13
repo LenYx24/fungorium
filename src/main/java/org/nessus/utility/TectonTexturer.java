@@ -38,6 +38,6 @@ public class TectonTexturer {
     }
 
     public void Visit(SingleThreadTecton tecton) {
-        view = new TectonView(tecton, GetImage("default_tecton"));
+        view = new TectonView(tecton, GetImage("singlethread_tecton"));
     }
 }
