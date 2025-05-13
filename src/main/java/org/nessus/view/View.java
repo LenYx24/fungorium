@@ -99,7 +99,7 @@ public class View extends JFrame {
         CardLayout cardLayout = (CardLayout)mainPanel.getLayout();
         cardLayout.show(mainPanel,"game");
     
-        Timer timer = new Timer(1, e -> gamePanel.repaint());
+        Timer timer = new Timer(0, e -> gamePanel.repaint());
         timer.start();
     }
 
