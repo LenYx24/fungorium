@@ -17,6 +17,8 @@ public abstract class EntitySpriteView implements IEntityView{
     public double GetY(){
         return y;
     }
+    public void setX(double x) { this.x = x; }
+    public void setY(double y) { this.y = y; }
     protected void DrawSprite(Graphics2D g2d, int size){
         int _x = (int)x - size/2;
         int _y = (int)y - size/2;

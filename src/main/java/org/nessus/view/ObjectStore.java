@@ -15,8 +15,7 @@ import org.nessus.model.shroom.ShroomThread;
 import org.nessus.model.shroom.Spore;
 import org.nessus.model.tecton.Tecton;
 import org.nessus.utility.TectonTexturer;
-import org.nessus.view.entityviews.IEntityView;
-import org.nessus.view.entityviews.TectonView;
+import org.nessus.view.entityviews.*;
 import org.nessus.view.factories.BugViewFactory;
 import org.nessus.view.factories.ShroomViewFactory;
 
@@ -37,7 +36,10 @@ public class ObjectStore implements IGameObjectStore {
     public void AddShroomBody(ShroomBody shroomBody){
         var shroom = shrooms.get(shroomBody.GetShroom());
         var factory = shroom.getKey();
-        views.add(factory.CreateShroomBodyView(shroomBody));
+        ShroomBodyView sbview = factory.CreateShroomBodyView(shroomBody);
+        views.add(sbview);
+        TectonView host = tectons.get(shroomBody.GetTecton());
+        host.AddEntity(sbview);
     }
 
     public void AddShroomThread(ShroomThread shroomThread){
@@ -49,13 +51,19 @@ public class ObjectStore implements IGameObjectStore {
     public void AddSpore(Spore spore) {
         var shroom = shrooms.get(spore.GetShroom());
         var factory = shroom.getKey();
-        views.add(factory.CreateSporeView(spore));
+        SporeView spview = factory.CreateSporeView(spore);
+        views.add(spview);
+        TectonView host = tectons.get(spore.GetTecton());
+        host.AddEntity(spview);
     }
     
     public void AddBug(Bug bug){
         var bugOwner = bugOwners.get(bug.GetOwner());
         var factory = bugOwner.getKey();
-        views.add(factory.CreateBugView(bug));
+        BugView bview = factory.CreateBugView(bug);
+        views.add(bview);
+        TectonView host = tectons.get(bug.GetTecton());
+        host.AddEntity(bview);
     }
 
     public void AddTecton(Tecton tecton) {

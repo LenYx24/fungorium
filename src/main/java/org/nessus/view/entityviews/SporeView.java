@@ -22,7 +22,10 @@ public class SporeView extends EntitySpriteView{
     }
     @Override
     public void Draw(Graphics2D g2d) {
-
+        if (model.GetTecton() != null) {
+            return;
+        }
+        this.DrawSprite(g2d, size);
     }
 
     @Override

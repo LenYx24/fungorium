@@ -23,10 +23,14 @@ public class ShroomBodyView extends EntitySpriteView{
         g2.dispose();
         this.image = newImage;
     }
+
     @Override
-    public void Draw(Graphics2D g2d) {
-        SetPositionToTecton(model.GetTecton());
-        DrawSprite(g2d,size);
+    public void Draw(Graphics2D g2d)
+    {
+        if (model.GetTecton() != null) {
+            return;
+        }
+        this.DrawSprite(g2d, size);
     }
 
     @Override

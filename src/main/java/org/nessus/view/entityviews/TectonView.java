@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class TectonView extends EntitySpriteView{
@@ -16,6 +17,12 @@ public class TectonView extends EntitySpriteView{
     private int size = 100;
     private boolean locked = false;
     private Random r = new Random();
+    private ArrayList<IEntityView> entities = new ArrayList<>();
+
+    public void AddEntity(IEntityView e)
+    {
+        entities.add(e);
+    }
 
     public TectonView(Tecton t, BufferedImage sprite) {
         this.model = t;
@@ -30,6 +37,34 @@ public class TectonView extends EntitySpriteView{
         this.image = newImage;
     }
 
+    private void drawEntities(Graphics2D g2d)
+    {
+        if (entities.isEmpty()) return;
+
+        int containerSize = size - 20;
+        int cols = (int) Math.ceil(Math.sqrt(entities.size()));
+        int rows = (int) Math.ceil((double) entities.size() / cols);
+        int cellSize = Math.min(containerSize / cols, containerSize / rows);
+
+        int originX = (int)(x - containerSize / 2.0);
+        int originY = (int)(y - containerSize / 2.0);
+
+        for (int i = 0; i < entities.size(); i++) {
+            IEntityView entity = entities.get(i);
+
+            int row = i / cols;
+            int col = i % cols;
+            int px = originX + col * cellSize;
+            int py = originY + row * cellSize;
+
+            if (entity instanceof EntitySpriteView ev) {
+                ev.setX(px + cellSize / 2.0);
+                ev.setY(py + cellSize / 2.0);
+                ev.DrawSprite(g2d, cellSize);
+            }
+        }
+    }
+
     public void SetLocked(boolean locked) {
         this.locked = locked;
     }
@@ -39,8 +74,10 @@ public class TectonView extends EntitySpriteView{
     }
 
     @Override
-    public void Draw(Graphics2D g2d) {
-        this.DrawSprite(g2d,size);
+    public void Draw(Graphics2D g2d)
+    {
+        this.DrawSprite(g2d, size);
+        drawEntities(g2d);
     }
 
     @Override
