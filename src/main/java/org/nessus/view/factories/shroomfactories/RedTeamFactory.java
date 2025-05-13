@@ -8,21 +8,25 @@ import org.nessus.view.entityviews.ShroomThreadView;
 import org.nessus.view.entityviews.SporeView;
 import org.nessus.view.factories.ShroomViewFactory;
 
+import java.awt.*;
+
+import static org.nessus.utility.ImageReader.GetImage;
+
 public class RedTeamFactory extends ShroomViewFactory {
 
 
     @Override
     public ShroomBodyView CreateShroomBodyView(ShroomBody body) {
-        return null;
+        return new ShroomBodyView(body, GetImage("red_shroombody"));
     }
 
     @Override
     public ShroomThreadView CreateShroomThreadView(ShroomThread shroomThread) {
-        return null;
+        return new ShroomThreadView(shroomThread, Color.RED);
     }
 
     @Override
     public SporeView CreateSporeView(Spore spore) {
-        return null;
+        return new SporeView(spore, GetImage("red_spore"));
     }
 }

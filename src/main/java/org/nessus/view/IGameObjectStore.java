@@ -6,6 +6,7 @@ import org.nessus.model.shroom.ShroomBody;
 import org.nessus.model.shroom.ShroomThread;
 import org.nessus.model.shroom.Spore;
 import org.nessus.model.tecton.Tecton;
+import org.nessus.view.entityviews.TectonView;
 
 /**
  * Az objektumkatalógus interfésze.
@@ -25,4 +26,5 @@ public interface IGameObjectStore {
     void AddSpore(Spore spore);
     void AddBug(Bug bug);
     void AddTecton(Tecton tecton);
+    TectonView FindTectonView(Tecton tecton);
 }

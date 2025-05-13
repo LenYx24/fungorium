@@ -221,6 +221,7 @@ public class SettingsPanel extends JPanel {
 
             var controller = view.GetController();
             controller.ClearMap();
+            view.GetObjectStore().Clear();
 
             System.out.println("--- LÉTREHOZOTT GOMBÁSZOK ---");
             for (int i = 0; i < gombaszCheckBoxes.length; i++) {

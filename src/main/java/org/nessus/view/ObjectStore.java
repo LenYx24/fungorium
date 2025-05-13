@@ -67,6 +67,9 @@ public class ObjectStore implements IGameObjectStore {
     public List<IEntityView> GetEntityViews() {
         return views;
     }
+    public TectonView FindTectonView(Tecton tecton){
+        return tectons.get(tecton);
+    }
 
     public Map<Tecton, TectonView> GetTectonViews() {
         return tectons;

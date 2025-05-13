@@ -43,10 +43,10 @@ public class GraphUtil {
     private int width;
     private int height;
 
-    private static final double SPRING_LENGTH = 150;
-    private static final double SPRING_STRENGTH = 0.05;
-    private static final double REPULSION_STRENGTH = 500;
-    private static final double DAMPING = 2;
+    private static final double SPRING_LENGTH = 300;
+    private static final double SPRING_STRENGTH = 0.07;
+    private static final double REPULSION_STRENGTH = 50;
+    private static final double DAMPING = 3;
     private static final int NODE_RADIUS = 100;
 
     private Set<Edge> edges = new HashSet<>();
@@ -74,7 +74,31 @@ public class GraphUtil {
     }
 
     private void applyForces() {
+        Tecton maxNeighbourTecton = tectons.keySet().stream().findFirst().orElse(null);
+        for(Tecton t : tectons.keySet()) {
+            if(t.GetNeighbours().size() > maxNeighbourTecton.GetNeighbours().size()) {
+                maxNeighbourTecton = t;
+            }
+        }
         for (TectonView n : tectons.values()) {
+            if(n.GetModel() == maxNeighbourTecton){
+                int cp_x = 640;
+                int cp_y = 360;
+                int v_x = cp_x - (int)n.GetX();
+                int v_y = cp_y - (int)n.GetY();
+                double length = Math.sqrt(v_x * v_x + v_y * v_y);
+                int dx = v_x / 100;
+                int dy = v_x / 100;
+                if(length < 72){
+                    dx = 0;
+                    dy = 0;
+                }else if (length < 160){
+                    dx = v_x / 200;
+                    dy = v_x / 200;
+                }
+                n.setDX(dx);
+                n.setDY(dy);
+            }
             n.setDX(0);
             n.setDY(0);
         }

@@ -4,9 +4,11 @@ import org.nessus.model.bug.Bug;
 import org.nessus.view.entityviews.BugView;
 import org.nessus.view.factories.BugViewFactory;
 
+import static org.nessus.utility.ImageReader.GetImage;
+
 public class WhiteTeamFactory extends BugViewFactory {
     @Override
     public BugView CreateBugView(Bug bug) {
-        return null;
+        return new BugView(bug,GetImage("white_bug"));
     }
 }

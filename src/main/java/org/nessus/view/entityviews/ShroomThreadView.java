@@ -6,10 +6,16 @@ import org.nessus.model.tecton.Tecton;
 import org.nessus.utility.EntitySelector;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class ShroomThreadView implements IEntityView {
     private ShroomThread model;
-
+    int size = 50;
+    Color color = null;
+    public ShroomThreadView(ShroomThread shroomThread, Color color) {
+        this.model = shroomThread;
+        this.color = color;
+    }
     public ShroomThreadView(Shroom s, Tecton t1, Tecton t2)
     {
         this.model = new ShroomThread(s, t1, t2);

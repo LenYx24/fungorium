@@ -4,24 +4,35 @@ import org.nessus.model.tecton.Tecton;
 import org.nessus.utility.EntitySelector;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Ellipse2D;
+import java.awt.image.BufferedImage;
 import java.util.Random;
 
 public class TectonView extends EntitySpriteView{
     private Tecton model;
     private double dx;
     private double dy;
+    private int size = 100;
 
     private Random r = new Random();
 
-    public TectonView(Tecton t) {
+    public TectonView(Tecton t, BufferedImage sprite) {
         this.model = t;
         this.x = r.nextInt(1280);
         this.y = r.nextInt(720);
+
+        BufferedImage newImage = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = newImage.createGraphics();
+
+        g2.drawImage(sprite, 0, 0,size,size, null);
+        g2.dispose();
+        this.image = newImage;
     }
 
     @Override
     public void Draw(Graphics2D g2d) {
-
+        this.DrawSprite(g2d,size);
     }
 
     @Override
@@ -31,7 +42,15 @@ public class TectonView extends EntitySpriteView{
 
     @Override
     public boolean ContainsPoint(int x, int y) {
-        return false;
+        int _x = (int)this.x - size/2;
+        int _y = (int)this.y - size/2;
+        boolean hit = _x < x && _x + size < x && _y < y && _y + size < y;
+        if(hit){
+            System.out.println("_x: " + _x + ", _y: " + _y + "  this "+ this.model);
+            System.out.println("x: " + x + ", y: " + y);
+            System.out.println();
+        }
+        return hit;
     }
 
     @Override
