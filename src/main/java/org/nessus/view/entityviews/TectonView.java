@@ -57,8 +57,11 @@ public class TectonView extends EntitySpriteView{
         int topLeftY = tY - size / 2;
 
         boolean boundCheckX = x >= topLeftX && x <= topLeftX + size;
-        boolean boundCheckY = y >= topLeftY && y <= topLeftX + size;
-
+        boolean boundCheckY = y >= topLeftY && y <= topLeftY + size;
+        if (boundCheckX && boundCheckY) {
+            
+            System.out.println("HIT: " + this);
+        }
         return boundCheckX && boundCheckY;
     }
 

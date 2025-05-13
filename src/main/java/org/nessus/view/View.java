@@ -144,6 +144,7 @@ public class View extends JFrame {
      * @param args - A parancssori argumentumok
      */
     public static void main(String[] args) {
+        System.setProperty("sun.java2d.opengl", "true");
         System.out.println("Üdv a grafikus fázisban");
 
         SwingUtilities.invokeLater(() -> {

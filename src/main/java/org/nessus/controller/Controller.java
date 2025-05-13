@@ -75,8 +75,7 @@ public class Controller implements IRandomProvider {
     public void GenerateMap(int tectonCount) {
         List<Tecton> disconnected = new ArrayList<>();
         List<Tecton> connected = new ArrayList<>();
-
-        Random r = new Random();
+        
         for (int i = 0; i < tectonCount; i++){
             // 0-7 intervallumban generálunk számokat
             // az első 4 szám egyenként egy típust jelöl
@@ -84,14 +83,27 @@ public class Controller implements IRandomProvider {
             // így 50% az esély hogy egyszerű tektont kapunk
 
             int tectonTypes = 4;
-            int num = r.nextInt(tectonTypes * 2);
-            Tecton tecton = new Tecton();
+            int num = RandomNumber(0, tectonTypes * 2);
+            Tecton tecton;
+            
             switch(num){
-                case 0:{tecton = new DesertTecton();break;}
-                case 1:{tecton = new InfertileTecton();break;}
-                case 2:{tecton = new SingleThreadTecton();break;}
-                case 3:{tecton = new ThreadSustainerTecton();break;}
+                case 0:
+                    tecton = new DesertTecton();
+                    break;
+                case 1:
+                    tecton = new InfertileTecton();
+                    break;
+                case 2:
+                    tecton = new SingleThreadTecton();
+                    break;
+                case 3:
+                    tecton = new ThreadSustainerTecton();
+                    break;
+                default: 
+                    tecton = new Tecton();
+                    break;
             }
+
             disconnected.add(tecton);
         }
 

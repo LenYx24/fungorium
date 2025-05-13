@@ -18,7 +18,7 @@ public class MapPanel extends JPanel {
         this.view = view;
         this.graphRenderer = new GraphUtil(width, height, view.GetObjectStore().GetTectonViews());
         setPreferredSize(new Dimension(width, height));
-        setBackground(Color.WHITE);
+        setBackground(Color.BLUE);
 
         addMouseListener(new MouseAdapter() {
             @Override
