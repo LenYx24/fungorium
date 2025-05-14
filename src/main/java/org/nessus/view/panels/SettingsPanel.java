@@ -31,48 +31,57 @@ public class SettingsPanel extends JPanel {
 
     public SettingsPanel(View view, JPanel mainPanel) {
         this.view = view;
-        backgroundImage = new ImageIcon("src/main/resources/textures/menu.gif").getImage();
+        backgroundImage = new ImageIcon("src/main/resources/textures/settingsbg.gif").getImage();
 
         JPanel panel = new JPanel();
+        panel.setOpaque(false);
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-        JLabel label = new JLabel("JÁTÉK BEÁLLÍTÁSA",SwingConstants.CENTER);
+        JLabel label = new JLabel(" ",SwingConstants.CENTER);
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
         label.setFont(new Font("Roboto", Font.BOLD, 40));
 
         // 3x2 grid
         JPanel gridJPanel = new JPanel();
+        gridJPanel.setOpaque(false);
         gridJPanel.setLayout(new GridLayout(3, 2));
 
-        JLabel gombaszLabel = new JLabel("Gombászok");
-        gombaszLabel.setFont(new Font("Roboto", Font.BOLD, 20));
-        gombaszLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        JLabel gombaszLabel = new JLabel("",SwingConstants.CENTER);
+        gombaszLabel.setFont(new Font("Arial", Font.BOLD, 35));
+        gombaszLabel.setForeground(Color.MAGENTA);
+        gombaszLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         gridJPanel.add(gombaszLabel);
 
-        JLabel rovaraszLabel = new JLabel("Rovarászok");
-        rovaraszLabel.setFont(new Font("Roboto", Font.BOLD, 20));
-        rovaraszLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        JLabel rovaraszLabel = new JLabel("",SwingConstants.CENTER);
+        rovaraszLabel.setFont(new Font("Arial", Font.BOLD, 35));
+        rovaraszLabel.setForeground(Color.MAGENTA);
+        rovaraszLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         gridJPanel.add(rovaraszLabel);
 
         JPanel settingsLeft = new JPanel();
+        settingsLeft.setOpaque(false);
+        settingsLeft.setPreferredSize(new Dimension(300, 125));
         settingsLeft.setLayout(new BoxLayout(settingsLeft, BoxLayout.Y_AXIS));
 
         JPanel settingsRight = new JPanel();
+        settingsRight.setOpaque(false);
+        settingsRight.setPreferredSize(new Dimension(300, 125));
         settingsRight.setLayout(new BoxLayout(settingsRight, BoxLayout.Y_AXIS));
 
         for (int i = 0; i < 3; i++) {
             final int playerNum = i + 1;
             JCheckBox checkBox = new JCheckBox();
-            checkBox.setMargin(new Insets(0, 0, 0, 0));
+            checkBox.setPreferredSize(new Dimension(40, 40));
+            checkBox.setOpaque(false);
             gombaszCheckBoxes[i] = checkBox;
 
             JTextField textField = new JTextField("Gombász" + playerNum);
-            textField.setPreferredSize(new Dimension(100, 25));
+            textField.setPreferredSize(new Dimension(100, 40));
             textField.setEnabled(false);
             gombaszTextFields[i] = textField;
 
             JPanel colorBox = new JPanel();
-            colorBox.setPreferredSize(new Dimension(20, 20));
+            colorBox.setPreferredSize(new Dimension(40, 40));
             colorBox.setBackground(gombaszColors[i]);
             colorBox.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
@@ -85,6 +94,7 @@ public class SettingsPanel extends JPanel {
             });
 
             JPanel playerRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
+            playerRow.setOpaque(false);
             playerRow.add(checkBox);
             playerRow.add(textField);
             playerRow.add(colorBox);
@@ -94,16 +104,17 @@ public class SettingsPanel extends JPanel {
         for (int i = 0; i < 3; i++) {
             final int playerNum = i + 1;
             JCheckBox checkBox = new JCheckBox();
-            checkBox.setMargin(new Insets(0, 0, 0, 0));
+            checkBox.setOpaque(false);
+            checkBox.setPreferredSize(new Dimension(40, 40));
             rovaraszCheckBoxes[i] = checkBox;
             
             JTextField textField = new JTextField("Rovarász" + playerNum);
-            textField.setPreferredSize(new Dimension(100, 25));
+            textField.setPreferredSize(new Dimension(100, 40));
             textField.setEnabled(false);
             rovaraszTextFields[i] = textField;
 
             JPanel colorBox = new JPanel();
-            colorBox.setPreferredSize(new Dimension(20, 20));
+            colorBox.setPreferredSize(new Dimension(40, 40));
             colorBox.setBackground(rovaraszColors[i]);
             colorBox.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
@@ -116,6 +127,7 @@ public class SettingsPanel extends JPanel {
             });
 
             JPanel playerRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
+            playerRow.setOpaque(false);
             playerRow.add(checkBox);
             playerRow.add(textField);
             playerRow.add(colorBox);
@@ -123,10 +135,12 @@ public class SettingsPanel extends JPanel {
         }
 
         JPanel leftWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+        leftWrapper.setOpaque(false);
         leftWrapper.add(settingsLeft);
         gridJPanel.add(leftWrapper);
 
         JPanel rightWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+        rightWrapper.setOpaque(false);
         rightWrapper.add(settingsRight);
         gridJPanel.add(rightWrapper);
 
@@ -135,10 +149,12 @@ public class SettingsPanel extends JPanel {
         panel.add(Box.createRigidArea(new Dimension(0, 20)));
 
         JPanel tectonPanel = new JPanel();
+        tectonPanel.setOpaque(false);
         tectonPanel.setLayout(new GridLayout(1, 2));
 
-        JLabel tectonNumber = new JLabel("Tektonok száma:");
-        tectonNumber.setFont(new Font("Roboto", Font.BOLD, 20));
+        JLabel tectonNumber = new JLabel("");
+        tectonNumber.setFont(new Font("Arial", Font.BOLD, 35));
+        tectonNumber.setForeground(Color.MAGENTA);
         JTextField intInput = new JTextField();
 
         // Csak int engedése a tekton szám mezőben
@@ -160,11 +176,16 @@ public class SettingsPanel extends JPanel {
 
         intInput.setPreferredSize(new Dimension(100, 30));
         JPanel leftPanel = new JPanel();
+        leftPanel.setOpaque(false);
         leftPanel.add(tectonNumber);
         leftPanel.add(intInput);
 
-        JButton actionButton = new BaseButton("Tovább");
+        JButton actionButton = new BaseButton("");
+        actionButton.setContentAreaFilled(false);
+        actionButton.setBorderPainted(false);
         JPanel rightPanel = new JPanel();
+        actionButton.setPreferredSize(new Dimension(200,50));
+        rightPanel.setOpaque(false);
 
         actionButton.addActionListener(e -> {
             System.out.println("JÁTÉK INIT%");
@@ -361,7 +382,9 @@ public class SettingsPanel extends JPanel {
 
         rightPanel.add(actionButton);
 
-        JButton backBtn = new BaseButton("Vissza");
+        JButton backBtn = new BaseButton("");
+        backBtn.setContentAreaFilled(false);
+        backBtn.setBorderPainted(false);
         backBtn.addActionListener(e -> {
             System.out.println("VISSZA%");
             CardLayout cardLayout = (CardLayout)mainPanel.getLayout();

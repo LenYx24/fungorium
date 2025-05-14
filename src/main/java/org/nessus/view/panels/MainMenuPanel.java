@@ -16,9 +16,10 @@ public class MainMenuPanel extends JPanel {
         backgroundImage = new ImageIcon("src/main/resources/textures/menu.gif").getImage();
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        JButton newGameButton = new BaseButton("Új játék");
+        JButton newGameButton = new BaseButton("");
         newGameButton.setPreferredSize(new Dimension(600, 20));
         newGameButton.setContentAreaFilled(false);
+        newGameButton.setBorderPainted(false);
         newGameButton.setFont(new Font("Arial", Font.BOLD, 35));
         newGameButton.setForeground(Color.MAGENTA);
         newGameButton.addActionListener(e -> {
@@ -27,16 +28,17 @@ public class MainMenuPanel extends JPanel {
             cardLayout.show(mainPanel,"settings");
         });
 
-        JButton exitButton = new BaseButton("Kilépés");
+        JButton exitButton = new BaseButton("");
         exitButton.setPreferredSize(new Dimension(600, 20));
         exitButton.setContentAreaFilled(false);
+        exitButton.setBorderPainted(false);
         exitButton.setFont(new Font("Arial", Font.BOLD, 35));
         exitButton.setForeground(Color.MAGENTA);
         exitButton.addActionListener(e -> {
             System.exit(0);
         });
 
-        this.add(Box.createVerticalStrut(400));
+        this.add(Box.createVerticalStrut(410));
         this.add(newGameButton);
         this.add(Box.createVerticalStrut(50));
         this.add(exitButton);
