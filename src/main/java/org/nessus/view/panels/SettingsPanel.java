@@ -195,21 +195,113 @@ public class SettingsPanel extends JPanel {
                 return;
             }
 
+            for (int i = 0; i < gombaszTextFields.length; i++) {
+                String gombaszName = gombaszTextFields[i].getText();
+                if (gombaszName.isEmpty()) {
+                    JOptionPane.showMessageDialog(this,
+                        "Kérlek add meg a gombászok nevét!", 
+                        "Hibás név", 
+                        JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+            }
+
+            for (int i = 0; i < rovaraszTextFields.length; i++) {
+                String rovaraszName = rovaraszTextFields[i].getText();
+                if (rovaraszName.isEmpty()) {
+                    JOptionPane.showMessageDialog(this,
+                        "Kérlek add meg a rovarászok nevét!", 
+                        "Hibás név", 
+                        JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+            }
+
+            for (int i = 0; i < gombaszTextFields.length; i++) {
+                for (int j = 0; j < rovaraszTextFields.length; j++) {
+                    if (gombaszTextFields[i].getText().equals(rovaraszTextFields[j].getText())) {
+                        JOptionPane.showMessageDialog(this,
+                            "Nem lehet két vagy több játékosnak ugyan az a neve!", 
+                            "Hibás név", 
+                            JOptionPane.WARNING_MESSAGE);
+                        return;
+                    }
+                }
+            }
+
+            for (int i = 0; i < rovaraszTextFields.length; i++) {
+                for (int j = 0; j < gombaszTextFields.length; j++) {
+                    if (rovaraszTextFields[i].getText().equals(gombaszTextFields[j].getText())) {
+                        JOptionPane.showMessageDialog(this,
+                            "Nem lehet két vagy több játékosnak ugyan az a neve!", 
+                            "Hibás név", 
+                            JOptionPane.WARNING_MESSAGE);
+                        return;
+                    }
+                }
+            }
+
+            for (int i = 0; i < gombaszTextFields.length; i++) {
+                for (int j = i + 1; j < gombaszTextFields.length; j++) {
+                    if (gombaszTextFields[i].getText().equals(gombaszTextFields[j].getText())) {
+                        JOptionPane.showMessageDialog(this,
+                            "Nem lehet két vagy több gombásznak ugyan az a neve!", 
+                            "Hibás név", 
+                            JOptionPane.WARNING_MESSAGE);
+                        return;
+                    }
+                }
+            }
+
+            for (int i = 0; i < rovaraszTextFields.length; i++) {
+                for (int j = i + 1; j < rovaraszTextFields.length; j++) {
+                    if (rovaraszTextFields[i].getText().equals(rovaraszTextFields[j].getText())) {
+                        JOptionPane.showMessageDialog(this,
+                            "Nem lehet két vagy több rovarásznak ugyan az a neve!", 
+                            "Hibás név", 
+                            JOptionPane.WARNING_MESSAGE);
+                        return;
+                    }
+                }
+            }
+
+            for (int i = 0; i < gombaszTextFields.length; i++) {
+                String gombaszName = gombaszTextFields[i].getText();
+                if (gombaszName.length() > 10) {
+                    JOptionPane.showMessageDialog(this,
+                        "A gombász neve nem lehet hosszabb mint 10 karakter!", 
+                        "Hibás név", 
+                        JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+            }
+
+            for (int i = 0; i < rovaraszTextFields.length; i++) {
+                String rovaraszName = rovaraszTextFields[i].getText();
+                if (rovaraszName.length() > 10) {
+                    JOptionPane.showMessageDialog(this,
+                        "A rovarász neve nem lehet hosszabb mint 10 karakter!", 
+                        "Hibás név", 
+                        JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+            }
+
             String inputText = intInput.getText().trim();
 
             int tectonCount;
             try {
                 tectonCount = Integer.parseInt(inputText);
-                if (tectonCount <= 0) {
+                if (tectonCount <= 1 || tectonCount > 50) {
                     JOptionPane.showMessageDialog(this,
-                        "A tektonok számának 1 és " + Integer.MAX_VALUE + " között kell lennie!", 
+                        "A tektonok számának 2 és 50 között kell lennie!", 
                         "Hibás szám", 
                         JOptionPane.WARNING_MESSAGE);
                     return;
                 }
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this,
-                    "A megadott szám túl nagy! Kérlek adj meg egy 1 és " + Integer.MAX_VALUE + " közötti értéket!", 
+                    "A megadott szám túl nagy! Kérlek adj meg egy 2 és 50 közötti értéket!", 
                     "Túl nagy szám", 
                     JOptionPane.WARNING_MESSAGE);
                 return;
