@@ -33,6 +33,7 @@ public class View extends JFrame {
         setSize(new Dimension(1280, 720));
         setLocationRelativeTo(null);
         setTitle("Fungorium");
+        setResizable(false);
         mainPanel = new JPanel(new CardLayout());
         gamePanel = new GamePanel(this);
 

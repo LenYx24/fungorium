@@ -9,6 +9,8 @@ import java.util.Set;
 
 import java.awt.Graphics2D;
 import java.awt.Color;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 class Edge {
     public TectonView a, b;
@@ -30,7 +32,7 @@ class Edge {
     }
 }
 
-public class GraphUtil {
+public class GraphUtil implements KeyListener {
     private int width;
     private int height;
 
@@ -43,6 +45,9 @@ public class GraphUtil {
 
     private Set<Edge> edges = new HashSet<>();
     private Map<Tecton, TectonView> tectons;
+    
+    // Add a flag to track edge visibility
+    private boolean showEdges = true;
 
     public GraphUtil(int width, int height, Map<Tecton, TectonView> tectons) {
         this.width = width;
@@ -123,15 +128,18 @@ public class GraphUtil {
             n.setX(n.X() + n.DX());
             n.setY(n.Y() + n.DY());
 
-            n.setX(Math.max(NODE_RADIUS / 2 + PADDING, Math.min(width - NODE_RADIUS / 2 - PADDING, n.X())));
-            n.setY(Math.max(NODE_RADIUS / 2 + PADDING, Math.min(height - NODE_RADIUS / 2 - PADDING, n.Y())));
+            n.setX(Math.max(NODE_RADIUS / 2.0 + PADDING, Math.min(width - NODE_RADIUS / 2.0 - PADDING, n.X())));
+            n.setY(Math.max(NODE_RADIUS / 2.0 + PADDING, Math.min(height - NODE_RADIUS / 2.0 - PADDING, n.Y())));
         }
     }
 
     public void Draw(Graphics2D g2d) {
-        g2d.setColor(Color.LIGHT_GRAY);
-        for (Edge e : edges) {
-            g2d.drawLine((int) e.a.X(), (int) e.a.Y(), (int) e.b.X(), (int) e.b.Y());
+        // Only draw edges if showEdges is true
+        if (showEdges) {
+            g2d.setColor(Color.LIGHT_GRAY);
+            for (Edge e : edges) {
+                g2d.drawLine((int) e.a.X(), (int) e.a.Y(), (int) e.b.X(), (int) e.b.Y());
+            }
         }
 
         for (TectonView n : tectons.values()) {
@@ -142,5 +150,35 @@ public class GraphUtil {
             g2d.setColor(Color.BLACK);
             g2d.drawOval(x, y, NODE_RADIUS, NODE_RADIUS);
         }
+    }
+    
+    // Toggle edge visibility
+    public void toggleEdgeVisibility() {
+        showEdges = !showEdges;
+    }
+    
+    // Implement KeyListener methods
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_R) {
+            toggleEdgeVisibility();
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        // Not needed for this implementation
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        // Not needed for this implementation
+    }
+    
+    // Method to register this KeyListener with a component
+    public void registerKeyListener(java.awt.Component component) {
+        component.addKeyListener(this);
+        // Ensure the component can receive focus
+        component.setFocusable(true);
     }
 }

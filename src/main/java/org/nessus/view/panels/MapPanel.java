@@ -20,6 +20,7 @@ public class MapPanel extends JPanel {
     public MapPanel(View view, int width, int height) {
         this.view = view;
         this.graphRenderer = new GraphUtil(width, height, view.GetObjectStore().GetTectonViews());
+        graphRenderer.registerKeyListener(view);
         setPreferredSize(new Dimension(width, height));
         backgroundImage = new ImageIcon("src/main/resources/textures/mapbg.gif").getImage();
 
