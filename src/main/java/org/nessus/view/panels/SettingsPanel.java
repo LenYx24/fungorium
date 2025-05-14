@@ -20,6 +20,7 @@ import java.awt.*;
 public class SettingsPanel extends JPanel {
     private JButton nextBtn;
     private View view;
+    private Image backgroundImage;
 
     private JCheckBox[] gombaszCheckBoxes = new JCheckBox[3];
     private JTextField[] gombaszTextFields = new JTextField[3];
@@ -30,6 +31,7 @@ public class SettingsPanel extends JPanel {
 
     public SettingsPanel(View view, JPanel mainPanel) {
         this.view = view;
+        backgroundImage = new ImageIcon("src/main/resources/textures/menu.gif").getImage();
 
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -285,5 +287,12 @@ public class SettingsPanel extends JPanel {
         this.add(panel);
         
 
+    }
+
+    @Override
+    protected void paintComponent(Graphics g)
+    {
+        super.paintComponent(g);
+        g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
     }
 }

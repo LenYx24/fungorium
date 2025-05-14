@@ -8,16 +8,19 @@ import java.awt.*;
 public class MainMenuPanel extends JPanel {
     JButton newGameBtn;
     JButton exitBtn;
-    // Ezt majd ki lehet mozgatni egy külső button factoryba
-    public MainMenuPanel(JPanel mainPanel){
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+    private Image backgroundImage;
 
-        JLabel label = new JLabel("Fungorium",SwingConstants.CENTER);
-        label.setAlignmentX(Component.CENTER_ALIGNMENT);
-        label.setFont(new Font("Roboto", Font.BOLD, 30));
+    // Ezt majd ki lehet mozgatni egy külső button factoryba
+    public MainMenuPanel(JPanel mainPanel)
+    {
+        backgroundImage = new ImageIcon("src/main/resources/textures/menu.gif").getImage();
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         JButton newGameButton = new BaseButton("Új játék");
+        newGameButton.setPreferredSize(new Dimension(600, 20));
+        newGameButton.setContentAreaFilled(false);
+        newGameButton.setFont(new Font("Arial", Font.BOLD, 35));
+        newGameButton.setForeground(Color.MAGENTA);
         newGameButton.addActionListener(e -> {
             System.out.println("Uj játék");
             CardLayout cardLayout = (CardLayout)mainPanel.getLayout();
@@ -25,16 +28,24 @@ public class MainMenuPanel extends JPanel {
         });
 
         JButton exitButton = new BaseButton("Kilépés");
+        exitButton.setPreferredSize(new Dimension(600, 20));
+        exitButton.setContentAreaFilled(false);
+        exitButton.setFont(new Font("Arial", Font.BOLD, 35));
+        exitButton.setForeground(Color.MAGENTA);
         exitButton.addActionListener(e -> {
             System.exit(0);
         });
 
-        panel.add(label);
-        panel.add(Box.createRigidArea(new Dimension(0, 30)));
-        panel.add(newGameButton);
-        panel.add(Box.createRigidArea(new Dimension(0, 30)));
-        panel.add(exitButton);
+        this.add(Box.createVerticalStrut(400));
+        this.add(newGameButton);
+        this.add(Box.createVerticalStrut(50));
+        this.add(exitButton);
+    }
 
-        this.add(panel);
+    @Override
+    protected void paintComponent(Graphics g)
+    {
+        super.paintComponent(g);
+        g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
     }
 }
