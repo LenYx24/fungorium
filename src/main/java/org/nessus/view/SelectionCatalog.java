@@ -33,7 +33,9 @@ public class SelectionCatalog {
     }
 
     public void SelectTecton(Tecton tecton) {
-        selectedTectons.remove(0);
+        if(!selectedTectons.isEmpty()){
+            selectedTectons.remove(0);
+        }
         selectedTectons.add(tecton);
     }
 

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.nessus.controller.IBugOwnerController;
 import org.nessus.controller.IRandomProvider;
 import org.nessus.model.bug.Bug;
 import org.nessus.model.bug.BugOwner;
@@ -38,8 +39,6 @@ public class ObjectStore implements IGameObjectStore {
         var factory = shroom.getKey();
         ShroomBodyView sbview = factory.CreateShroomBodyView(shroomBody);
         views.add(sbview);
-        TectonView host = tectons.get(shroomBody.GetTecton());
-        host.AddEntity(sbview);
     }
 
     public void AddShroomThread(ShroomThread shroomThread){
@@ -53,8 +52,6 @@ public class ObjectStore implements IGameObjectStore {
         var factory = shroom.getKey();
         SporeView spview = factory.CreateSporeView(spore);
         views.add(spview);
-        TectonView host = tectons.get(spore.GetTecton());
-        host.AddEntity(spview);
     }
     
     public void AddBug(Bug bug){
@@ -62,8 +59,6 @@ public class ObjectStore implements IGameObjectStore {
         var factory = bugOwner.getKey();
         BugView bview = factory.CreateBugView(bug);
         views.add(bview);
-        TectonView host = tectons.get(bug.GetTecton());
-        host.AddEntity(bview);
     }
 
     public void AddTecton(Tecton tecton) {
@@ -89,5 +84,9 @@ public class ObjectStore implements IGameObjectStore {
 
     public void AddBugOwner(BugOwner bugOwner, BugViewFactory factory, String name) {
         bugOwners.put(bugOwner, new SimpleEntry<>(factory, name));
+    }
+
+    public String GetBugOwnerName(IBugOwnerController bugOwner){
+        return bugOwners.get((BugOwner)bugOwner).getValue();
     }
 }

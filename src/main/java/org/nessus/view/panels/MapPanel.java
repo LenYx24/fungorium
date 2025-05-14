@@ -1,10 +1,14 @@
 package org.nessus.view.panels;
 import org.nessus.utility.GraphUtil;
+import org.nessus.view.ObjectStore;
 import org.nessus.view.View;
+import org.nessus.view.entityviews.IEntityView;
 import org.nessus.view.entityviews.TectonView;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Collection;
+import java.util.List;
 import javax.swing.*;
 
 public class MapPanel extends JPanel {
@@ -24,23 +28,22 @@ public class MapPanel extends JPanel {
             @Override
             public void mousePressed(java.awt.event.MouseEvent e) {
                 var cursor = e.getPoint();
-                view.GetObjectStore()
-                    .GetEntityViews()
-                    .stream()
-                    .filter(entityView -> entityView.ContainsPoint(cursor.x, cursor.y))
-                    .forEach(view::HandleSelection);
-
-                TectonView tectonView = view.GetObjectStore()
-                    .GetTectonViews()
-                    .values()
-                    .stream()
-                    .filter(t -> t.ContainsPoint(cursor.x, cursor.y))
-                    .findFirst()
-                    .orElse(null);
-
-                if (tectonView != null) {
-                    tectonView.SetLocked(true);    
-                    dragged = tectonView;
+                ObjectStore objectStore = view.GetObjectStore();
+                List<IEntityView> entityViews = objectStore.GetEntityViews();
+                for(IEntityView entity: entityViews){
+                    if(entity.ContainsPoint(cursor.x, cursor.y)){
+                        view.HandleSelection(entity);
+                        return;
+                    }
+                }
+                Collection<TectonView> tectonViews = objectStore.GetTectonViews().values();
+                for(TectonView tectonView: tectonViews){
+                    if(tectonView.ContainsPoint(cursor.x, cursor.y)){
+                        tectonView.SetLocked(true);
+                        dragged = tectonView;
+                        view.HandleSelection(tectonView);
+                        return;
+                    }
                 }
             }
 

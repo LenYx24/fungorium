@@ -3,6 +3,8 @@ package org.nessus.view.entityviews;
 import org.nessus.model.shroom.ShroomBody;
 import org.nessus.model.shroom.Spore;
 import org.nessus.utility.EntitySelector;
+import org.nessus.utility.Point;
+import org.nessus.view.View;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -22,20 +24,16 @@ public class SporeView extends EntitySpriteView{
     }
     @Override
     public void Draw(Graphics2D g2d) {
-        if (model.GetTecton() != null) {
+        if(model.GetTecton() == null){
             return;
         }
-        this.DrawSprite(g2d, size);
+        View.GetGameObjectStore().FindTectonView(model.GetTecton()).InsertEntity(this);
+        this.DrawSprite(g2d);
     }
 
     @Override
     public int GetLayer() {
         return 0;
-    }
-
-    @Override
-    public boolean ContainsPoint(int x, int y) {
-        return false;
     }
 
     @Override

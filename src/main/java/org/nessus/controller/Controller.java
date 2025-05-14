@@ -145,15 +145,33 @@ public class Controller implements IRandomProvider {
     }
 
     public void StartAction(IActionController action){
-        // TODO
+        currentAction = action;
     }
 
     public void NextPlayer(){
-        // TODO
+        if (bugOwnerRound) {
+            int idx = bugOwners.indexOf(currentBugOwner);
+            if (idx == bugOwners.size() - 1) {
+                bugOwnerRound = false;
+                currentShroom = shrooms.get(0);
+            }
+        } else {
+            int idx = shrooms.indexOf(currentShroom);
+            if (idx == shrooms.size() - 1) {
+                bugOwnerRound = true;
+                currentBugOwner = bugOwners.get(0);
+            }
+        }
     }
 
     public Object GetCurrentPlayer(){
         return bugOwnerRound ? currentBugOwner : currentShroom;
+    }
+    public IBugOwnerController GetCurrentBugOwnerController(){
+        return bugOwnerRound ? currentBugOwner : null;
+    }
+    public IShroomController GetCurrentShroomController(){
+        return bugOwnerRound ? null : currentShroom;
     }
 
     public int GetPlayerActionPoints(){
@@ -169,6 +187,7 @@ public class Controller implements IRandomProvider {
     public void AddBugOwner(IBugOwnerController bugOwner) {
         // TODO: Kellene a nevet is megadni amikor létrejön a bug, kell egy új string paraméter
         bugOwners.add(bugOwner);
+        currentBugOwner = bugOwner;
     }
 
     /**
@@ -179,6 +198,7 @@ public class Controller implements IRandomProvider {
     public void AddShroom(IShroomController shroom) {
         // TODO: Kellene a nevet is megadni amikor létrejön a shroom, kell egy új string paraméter
         shrooms.add(shroom);
+        currentShroom = shroom;
     }
 
     public void AddTecton(ITectonController tecton) {

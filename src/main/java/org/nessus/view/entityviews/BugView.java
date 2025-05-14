@@ -5,6 +5,7 @@ import org.nessus.model.tecton.Tecton;
 import org.nessus.utility.EntitySelector;
 import org.nessus.view.IGameObjectStore;
 import org.nessus.view.View;
+import org.nessus.utility.Point;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -21,25 +22,20 @@ public class BugView extends EntitySpriteView{
 
         g2.drawImage(sprite, 0, 0,size,size, null);
         g2.dispose();
-        System.out.println("roundedimage width: " + newImage.getWidth());
         this.image = newImage;
     }
     @Override
     public void Draw(Graphics2D g2d) {
-        if (model.GetTecton() != null) {
+        if(model.GetTecton() == null){
             return;
         }
-        this.DrawSprite(g2d, size);
+        View.GetGameObjectStore().FindTectonView(model.GetTecton()).InsertEntity(this);
+        this.DrawSprite(g2d);
     }
 
     @Override
     public int GetLayer() {
         return 0;
-    }
-
-    @Override
-    public boolean ContainsPoint(int x, int y) {
-        return false;
     }
 
     @Override

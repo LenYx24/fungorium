@@ -10,6 +10,10 @@ import javax.swing.border.EmptyBorder;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +26,9 @@ public class ControlPanel extends JPanel {
     private List<JButton> tectonActions;
     private JButton nextPlayerBtn;
     private JButton endGameBtn;
+    private JTextArea infoArea;
+    private JLabel playerLabel;
+    private JLabel actionPointsLabel;
 
     Dimension buttonSize = new Dimension(180, 30); // width: 180px, height: 30px
 
@@ -29,7 +36,12 @@ public class ControlPanel extends JPanel {
         label.setForeground(Color.WHITE);
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
     }
-
+    private void SetPlayerLabelText(String name){
+        playerLabel.setText("Játékos: " + name);
+    }
+    private void SetActionPointsLabelText(String points){
+        actionPointsLabel.setText("Akciópontok: " + points);
+    }
     public ControlPanel(View view) {
         this.view = view;
 
@@ -38,17 +50,44 @@ public class ControlPanel extends JPanel {
         setBorder(new EmptyBorder(5, 5, 5, 5));
     
         // --- Top Labels ---
-        JLabel playerLabel = new JLabel("Játékos: gombász1");
-        JLabel actionPointsLabel = new JLabel("Akciópontok: 5");
+        playerLabel = new JLabel("TODO");
+        // Az alábbi kód azért nem jó, mert az ObjectStoreban még nincs benne a bugOwner, mivel a ControlPanel,
+        // már az alkalmazás legelején létrejön, nem a settingsPanel után
+        // TODO: Megírni, hogy amikor előtérbe kerül a ControlPanel akkor legyen updateelve a PlayerLabel
+        addComponentListener(new ComponentAdapter() {
+            public void ComponentShown(ComponentEvent e) {
+                SetPlayerLabelText(view.GetObjectStore().GetBugOwnerName(view.GetController().GetCurrentBugOwnerController()));
+            }
+        });
+
+        actionPointsLabel = new JLabel();
+        // TODO: Kell egy új metódus az ActionPointCatalog osztályba, és ezen felül a BugOwner és Shroom osztályokba
+        // amelyek visszaadják az akciópont értékét
+        SetActionPointsLabelText("TODO");
+
         styleLabel(playerLabel);
         styleLabel(actionPointsLabel);
         add(playerLabel);
         add(actionPointsLabel);
         add(Box.createVerticalStrut(10)); // spacing
-    
-        // --- Action Buttons ---
+
         ActionButtonFactory actionButtonFactory = new ActionButtonFactory(view.GetController());
-    
+        // --- Shroom Action Buttons ---
+
+        bugActions = new ArrayList<>();
+        bugActions.add(actionButtonFactory.CreateBugMoveButton());
+        bugActions.add(actionButtonFactory.CreateBugEatButton());
+
+        for (JButton button : bugActions) {
+            button.setAlignmentX(Component.CENTER_ALIGNMENT);
+            button.setMaximumSize(buttonSize);
+            button.setPreferredSize(buttonSize);
+            button.setMinimumSize(buttonSize);
+            add(button);
+            add(Box.createVerticalStrut(5));
+        }
+        // --- Shroom Action Buttons ---
+
         shroomBodyActions = new ArrayList<>();
         shroomBodyActions.add(actionButtonFactory.CreateThrowSporeButton());
         shroomBodyActions.add(actionButtonFactory.CreateUpgradeShroomBodyButton());
@@ -70,7 +109,7 @@ public class ControlPanel extends JPanel {
         styleLabel(objectInfoLabel);
         add(objectInfoLabel);
     
-        JTextArea infoArea = new JTextArea("Spóra anyagok: 2\nSzint: 3\nHátralévő köpések: 1\nMilán szereti Ádámot");
+        infoArea = new JTextArea("Spóra anyagok: 2\nSzint: 3\nHátralévő köpések: 1\nMilán szereti Ádámot");
         infoArea.setEditable(false);
         infoArea.setBackground(Color.WHITE);
         infoArea.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -84,6 +123,8 @@ public class ControlPanel extends JPanel {
     
         // --- Bottom Buttons ---
         nextPlayerBtn = new JButton("Következő játékos");
+        nextPlayerBtn.addActionListener(e -> view.GetController().NextPlayer());
+
         endGameBtn = new JButton("Játék vége");
         endGameBtn.addActionListener(e -> EndGame());
 
@@ -107,7 +148,8 @@ public class ControlPanel extends JPanel {
     }
 
     public void UpdatePlayerInfo(String name, int actionPoints){
-        //TODO
+        playerLabel.setText("Játékos: " + name);
+        infoArea.setText("TODO UPDATE");
     }
 
     public void UpdateEntityInfo(IEntityView view){

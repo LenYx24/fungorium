@@ -4,25 +4,22 @@ import org.nessus.model.tecton.Tecton;
 import org.nessus.utility.EntitySelector;
 
 import java.awt.*;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
+import java.util.Queue;
+import org.nessus.utility.Point;
 
 public class TectonView extends EntitySpriteView{
     private Tecton model;
     private double dx;
     private double dy;
-    private int size = 100;
     private boolean locked = false;
     private Random r = new Random();
-    private ArrayList<IEntityView> entities = new ArrayList<>();
-
-    public void AddEntity(IEntityView e)
-    {
-        entities.add(e);
-    }
+    Queue<Point> pointsForEntites = new LinkedList<Point>();
+    int cellSize = 0;
 
     public TectonView(Tecton t, BufferedImage sprite) {
         this.model = t;
@@ -37,31 +34,29 @@ public class TectonView extends EntitySpriteView{
         this.image = newImage;
     }
 
-    private void drawEntities(Graphics2D g2d)
+    private void CalculateEntityPositions()
     {
-        if (entities.isEmpty()) return;
+        pointsForEntites.clear();
+        int entityCount = model.GetEntityCount();
+        if (entityCount == 0) return;
 
         int containerSize = size - 20;
-        int cols = (int) Math.ceil(Math.sqrt(entities.size()));
-        int rows = (int) Math.ceil((double) entities.size() / cols);
-        int cellSize = Math.min(containerSize / cols, containerSize / rows);
+        int cols = (int) Math.ceil(Math.sqrt(entityCount));
+        int rows = (int) Math.ceil((double) entityCount / cols);
+        cellSize = Math.min(containerSize / cols, containerSize / rows);
 
         int originX = (int)(x - containerSize / 2.0);
         int originY = (int)(y - containerSize / 2.0);
 
-        for (int i = 0; i < entities.size(); i++) {
-            IEntityView entity = entities.get(i);
-
+        for (int i = 0; i < entityCount; i++) {
             int row = i / cols;
             int col = i % cols;
             int px = originX + col * cellSize;
             int py = originY + row * cellSize;
 
-            if (entity instanceof EntitySpriteView ev) {
-                ev.setX(px + cellSize / 2.0);
-                ev.setY(py + cellSize / 2.0);
-                ev.DrawSprite(g2d, cellSize);
-            }
+            double _x = px + cellSize / 2.0;
+            double _y = py + cellSize / 2.0;
+            pointsForEntites.add(new Point(_x, _y));
         }
     }
 
@@ -76,30 +71,22 @@ public class TectonView extends EntitySpriteView{
     @Override
     public void Draw(Graphics2D g2d)
     {
-        this.DrawSprite(g2d, size);
-        drawEntities(g2d);
+        this.DrawSprite(g2d);
+        this.CalculateEntityPositions();
+    }
+    public void InsertEntity(EntitySpriteView entityView){
+        Point p = pointsForEntites.poll();
+        if(p == null){
+            return;
+        }
+        entityView.x = p.x;
+        entityView.y = p.y;
+        entityView.size = cellSize;
     }
 
     @Override
     public int GetLayer() {
         return 0;
-    }
-
-    @Override
-    public boolean ContainsPoint(int x, int y) {
-        int tX = (int)GetX();
-        int tY = (int)GetY();
-
-        int topLeftX = tX - size / 2;
-        int topLeftY = tY - size / 2;
-
-        boolean boundCheckX = x >= topLeftX && x <= topLeftX + size;
-        boolean boundCheckY = y >= topLeftY && y <= topLeftY + size;
-        if (boundCheckX && boundCheckY) {
-            
-            System.out.println("HIT: " + this);
-        }
-        return boundCheckX && boundCheckY;
     }
 
     @Override

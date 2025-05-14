@@ -307,4 +307,11 @@ public class Tecton implements ITectonController {
     public void Accept(TectonTexturer texturer) {
         texturer.Visit(this);
     }
+    public int GetEntityCount(){
+        int count = bugs.size() + spores.size();
+        if(body != null){
+            count++;
+        }
+        return count;
+    }
 }

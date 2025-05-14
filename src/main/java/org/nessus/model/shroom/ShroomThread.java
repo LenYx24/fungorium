@@ -179,4 +179,7 @@ public class ShroomThread {
     public void SetCut() {
         cut = true;
     }
+    public void SetEvolution(){
+        evolution = 3;
+    }
 }
