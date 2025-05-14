@@ -32,7 +32,7 @@ public class View extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setSize(new Dimension(1280, 720));
         setLocationRelativeTo(null);
-        setTitle("Fungarium");
+        setTitle("Fungorium");
         mainPanel = new JPanel(new CardLayout());
         gamePanel = new GamePanel(this);
 
