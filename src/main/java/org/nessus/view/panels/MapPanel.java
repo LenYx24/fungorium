@@ -80,8 +80,6 @@ public class MapPanel extends JPanel {
         graphRenderer.Draw(g2d);
         var store = view.GetObjectStore();
         store.GetTectonViews().values().forEach(tectonView -> tectonView.Draw(g2d));
-        store.GetEntityViews().forEach(x -> {
-            x.Draw(g2d);
-        });
+        store.GetEntityViews().forEach(x -> x.Draw(g2d));
     }
 }
