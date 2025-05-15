@@ -328,6 +328,23 @@ public class SettingsPanel extends JPanel {
                 return;
             }
 
+            int gombaszok = 0;
+
+            for (int i = 0; i < 3; i++)
+            {
+                if (gombaszCheckBoxes[i].isSelected())
+                    gombaszok++;
+            }
+
+            if (gombaszok > tectonCount)
+            {
+                JOptionPane.showMessageDialog(this,
+                        "Legalább annyi tekton legyen, ahány gombász játszik!",
+                        "Nincs elég tekton",
+                        JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
             ShroomViewFactory[] shroomFactories = {
                 new RedTeamFactory(),
                 new GreenTeamFactory(),

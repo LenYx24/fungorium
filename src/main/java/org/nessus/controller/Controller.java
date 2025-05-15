@@ -31,12 +31,14 @@ public class Controller implements IRandomProvider {
     private List<ITectonController> tectons = new ArrayList<>();
 
     private View view; // static lett
+    private int playerIndex = 0;
 
     /**
      * A Controller osztály konstruktora, amely inicializálja a parancsokat és beállítja a nézetet.
      * @param view A nézet, amelyet a Controller használ.
      */
-    public Controller(View view) {
+    public Controller(View view)
+    {
         this.view = view;
     }
 
@@ -72,7 +74,8 @@ public class Controller implements IRandomProvider {
         return List.of(t1, t2);
     }
 
-    public void GenerateMap(int tectonCount) {
+    public void GenerateMap(int tectonCount)
+    {
         List<Tecton> disconnected = new ArrayList<>();
         List<Tecton> connected = new ArrayList<>();
         
@@ -138,33 +141,50 @@ public class Controller implements IRandomProvider {
 
         for (var shroom : shrooms) {
             var tecton = RandomOf(connected);
+
+            while (tecton.GetShroomBody() != null)
+                tecton = RandomOf(connected);
+
             ShroomBody shroomBody = new ShroomBody((Shroom)shroom, tecton);
             tecton.SetShroomBody(shroomBody);
             store.AddShroomBody(shroomBody);
         }
+
+        NextPlayer();
     }
 
     public void StartAction(IActionController action){
         currentAction = action;
     }
 
-    public void NextPlayer(){
-        if (bugOwnerRound) {
-            int idx = bugOwners.indexOf(currentBugOwner);
-            if (idx == bugOwners.size() - 1) {
+    public void NextPlayer()
+    {
+        if (bugOwnerRound)
+        {
+            if (playerIndex == bugOwners.size())
+            {
                 bugOwnerRound = false;
-                currentShroom = shrooms.get(0);
+                playerIndex = 0;
+                currentShroom = shrooms.get(playerIndex);
             }
-        } else {
-            int idx = shrooms.indexOf(currentShroom);
-            if (idx == shrooms.size() - 1) {
-                bugOwnerRound = true;
-                currentBugOwner = bugOwners.get(0);
-            }
+            currentBugOwner = bugOwners.get(playerIndex);
         }
+        else
+        {
+            if (playerIndex == shrooms.size())
+            {
+                bugOwnerRound = true;
+                playerIndex = 0;
+                currentBugOwner = bugOwners.get(playerIndex);
+            }
+            currentShroom = shrooms.get(playerIndex);
+        }
+        playerIndex++;
+        view.UpdatePlayerInfo();
     }
 
-    public Object GetCurrentPlayer(){
+    public Object GetCurrentPlayer()
+    {
         return bugOwnerRound ? currentBugOwner : currentShroom;
     }
     public IBugOwnerController GetCurrentBugOwnerController(){
@@ -266,4 +286,6 @@ public class Controller implements IRandomProvider {
     public void SetSeed(long seed) {
         rand.setSeed(seed);
     }
+
+    public boolean IsBugOwnerRound() {return bugOwnerRound;}
 }

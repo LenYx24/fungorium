@@ -3,9 +3,12 @@ package org.nessus.view.factories;
 import org.nessus.controller.Controller;
 import org.nessus.controller.IActionController;
 import org.nessus.controller.IBugOwnerController;
+import org.nessus.controller.IShroomController;
 import org.nessus.model.bug.Bug;
 import org.nessus.model.shroom.Shroom;
+import org.nessus.model.shroom.ShroomBody;
 import org.nessus.model.shroom.ShroomThread;
+import org.nessus.model.shroom.Spore;
 import org.nessus.model.tecton.Tecton;
 import org.nessus.view.View;
 
@@ -50,14 +53,50 @@ public class ActionButtonFactory {
             return false;
         });
     }
-    public JButton CreateBugEatButton(){
-        return new JButton("NOT IMPLEMENTED");
+    public JButton CreateBugEatButton() {
+        return CreateActionButton("Spóraevés",(View view)->{
+            List<Tecton> tectons = view.GetSelection().GetTectons();
+            if(!tectons.isEmpty()){
+                Bug bug = view.GetSelection().GetBug();
+                Spore spore = view.GetSelection().GetSpore();
+                IBugOwnerController bugOwner = controller.GetCurrentBugOwnerController();
+                if(bugOwner != null)
+                {
+                    bugOwner.Eat(bug, spore);
+                    spore.EatenBy(bug);
+                    return true;
+                }
+            }
+            return false;
+        });
     }
     public JButton CreateBugCutButton(){
         return new JButton("NOT IMPLEMENTED");
     }
-    public JButton CreateThrowSporeButton(){
-        return new JButton("NOT IMPLEMENTED");
+    public JButton CreateThrowSporeButton()
+    {
+        return CreateActionButton("Spóraköpés",(View view)->{
+            List<Tecton> tectons = view.GetSelection().GetTectons();
+            if(!tectons.isEmpty())
+            {
+                ShroomBody body = view.GetSelection().GetShroomBody();
+                Tecton destination = tectons.getLast();
+                IShroomController shroomOwner = controller.GetCurrentShroomController();
+                if(shroomOwner != null && body.InRange(destination))
+                {
+                    //Teszt miatt rögtön 2-re állítom a SporeMatot
+                    body.SetSporeMaterials(2);
+                    Spore spore = body.FormSpore(destination);
+                    if (spore != null)
+                    {
+                        view.GetObjectStore().AddSpore(spore);
+                        return true;
+                    }
+                    return false;
+                }
+            }
+            return false;
+        });
     }
     public JButton CreateShroomThreadDevourButton(){
         return new JButton("NOT IMPLEMENTED");

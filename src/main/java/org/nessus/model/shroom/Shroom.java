@@ -160,10 +160,12 @@ public class Shroom implements IShroomController {
      */
     @Override
     public void ThrowSpore(ShroomBody body, Tecton tecton) {
-        if (actCatalog.HasEnoughPoints(sporeCost)) {
+        if (actCatalog.HasEnoughPoints(sporeCost))
+        {
             Spore spore = body.FormSpore(tecton);
 
             System.out.println("nemnull: " + spore != null);
+
             if (spore != null) {
                 spores.add(spore);
                 actCatalog.DecreasePoints(sporeCost);

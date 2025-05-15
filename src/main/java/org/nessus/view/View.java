@@ -137,10 +137,13 @@ public class View extends JFrame {
 
     }
 
-    public void UpdatePlayerInfo() {
-
+    public void UpdatePlayerInfo()
+    {
+        if (controller.IsBugOwnerRound())
+            gamePanel.GetControlPanel().UpdatePlayerInfo(objectStore.GetBugOwnerName(controller.GetCurrentBugOwnerController()), 2);
+        else
+            gamePanel.GetControlPanel().UpdatePlayerInfo(objectStore.GetShroomName(controller.GetCurrentShroomController()), 2);
     }
-
     /**
      * A program belépési pontja.
      * @param args - A parancssori argumentumok

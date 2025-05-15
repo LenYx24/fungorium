@@ -147,7 +147,8 @@ public class ControlPanel extends JPanel {
         view.OpenMenu();
     }
 
-    public void UpdatePlayerInfo(String name, int actionPoints){
+    public void UpdatePlayerInfo(String name, int actionPoints)
+    {
         playerLabel.setText("Játékos: " + name);
         infoArea.setText("TODO UPDATE");
     }

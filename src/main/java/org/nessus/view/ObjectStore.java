@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.nessus.controller.IBugOwnerController;
 import org.nessus.controller.IRandomProvider;
+import org.nessus.controller.IShroomController;
 import org.nessus.model.bug.Bug;
 import org.nessus.model.bug.BugOwner;
 import org.nessus.model.shroom.Shroom;
@@ -88,5 +89,8 @@ public class ObjectStore implements IGameObjectStore {
 
     public String GetBugOwnerName(IBugOwnerController bugOwner){
         return bugOwners.get((BugOwner)bugOwner).getValue();
+    }
+    public String GetShroomName(IShroomController shroom){
+        return shrooms.get((Shroom) shroom).getValue();
     }
 }
