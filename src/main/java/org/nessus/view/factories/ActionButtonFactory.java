@@ -64,7 +64,6 @@ public class ActionButtonFactory {
                 if(bugOwner != null)
                 {
                     bugOwner.Eat(bug, spore);
-                    view.GetObjectStore().RemoveSpore(spore);
                     return true;
                 }
             }
@@ -83,17 +82,12 @@ public class ActionButtonFactory {
                 ShroomBody body = view.GetSelection().GetShroomBody();
                 Tecton destination = tectons.getLast();
                 IShroomController shroomOwner = controller.GetCurrentShroomController();
-                if(shroomOwner != null && body.InRange(destination))
+                if(shroomOwner != null)
                 {
                     //Teszt miatt rögtön 2-re állítom a SporeMatot
                     body.SetSporeMaterials(2);
-                    Spore spore = body.FormSpore(destination);
-                    if (spore != null)
-                    {
-                        view.GetObjectStore().AddSpore(spore);
-                        return true;
-                    }
-                    return false;
+                    shroomOwner.ThrowSpore(body, destination);
+                    return true;
                 }
             }
             return false;
@@ -102,8 +96,22 @@ public class ActionButtonFactory {
     public JButton CreateShroomThreadDevourButton(){
         return new JButton("NOT IMPLEMENTED");
     }
-    public JButton CreatePlaceShroomBodyButton(){
-        return new JButton("NOT IMPLEMENTED");
+    public JButton CreatePlaceShroomBodyButton()
+    {
+        return CreateActionButton("Gombatest elhelyezése",(View view)->{
+            List<Tecton> tectons = view.GetSelection().GetTectons();
+            if(!tectons.isEmpty())
+            {
+                Tecton destination = tectons.getLast();
+                IShroomController shroomOwner = controller.GetCurrentShroomController();
+                if(shroomOwner != null)
+                {
+                    shroomOwner.PlaceShroomBody(destination);
+                    return true;
+                }
+            }
+            return false;
+        });
     }
     public JButton CreateUpgradeShroomBodyButton(){
         return new JButton("NOT IMPLEMENTED");

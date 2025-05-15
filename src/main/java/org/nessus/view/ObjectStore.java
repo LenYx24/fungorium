@@ -35,11 +35,23 @@ public class ObjectStore implements IGameObjectStore {
         tectons.clear();
     }
 
-    public void AddShroomBody(ShroomBody shroomBody){
-        var shroom = shrooms.get(shroomBody.GetShroom());
-        var factory = shroom.getKey();
-        ShroomBodyView sbview = factory.CreateShroomBodyView(shroomBody);
-        views.add(sbview);
+    public void AddShroomBody(ShroomBody shroomBody)
+    {
+        boolean contains = false;
+
+        for (IEntityView e : views)
+        {
+            if(e.GetModel() == shroomBody)
+                contains = true;
+        }
+
+        if (!contains)
+        {
+            var shroom = shrooms.get(shroomBody.GetShroom());
+            var factory = shroom.getKey();
+            ShroomBodyView sbview = factory.CreateShroomBodyView(shroomBody);
+            views.add(sbview);
+        }
     }
 
     public void AddShroomThread(ShroomThread shroomThread){

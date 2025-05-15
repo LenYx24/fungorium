@@ -77,6 +77,7 @@ public class TectonView extends EntitySpriteView{
     public void InsertEntity(EntitySpriteView entityView){
         Point p = pointsForEntites.poll();
         if(p == null){
+            System.out.println("NULLL A PÉÉÉÉÉÉÉ");
             return;
         }
         entityView.x = p.x;

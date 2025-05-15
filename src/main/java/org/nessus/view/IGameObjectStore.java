@@ -27,4 +27,6 @@ public interface IGameObjectStore {
     void AddBug(Bug bug);
     void AddTecton(Tecton tecton);
     TectonView FindTectonView(Tecton tecton);
+
+    void RemoveSpore(Spore spore);
 }

@@ -90,6 +90,7 @@ public class ControlPanel extends JPanel {
 
         shroomBodyActions = new ArrayList<>();
         shroomBodyActions.add(actionButtonFactory.CreateThrowSporeButton());
+        shroomBodyActions.add(actionButtonFactory.CreatePlaceShroomBodyButton());
         shroomBodyActions.add(actionButtonFactory.CreateUpgradeShroomBodyButton());
     
         for (JButton button : shroomBodyActions) {
