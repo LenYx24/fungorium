@@ -7,8 +7,13 @@ import org.nessus.view.entityviews.TectonView;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Queue;
+
 import javax.swing.*;
 
 public class MapPanel extends JPanel {
@@ -80,7 +85,16 @@ public class MapPanel extends JPanel {
         graphRenderer.Draw(g2d);
         var store = view.GetObjectStore();
         
-        store.GetTectonViews().values().forEach(tectonView -> tectonView.Draw(g2d));
-        store.GetEntityViews().forEach(x -> x.Draw(g2d));
+        var renderBuffer = new PriorityQueue<IEntityView>((a, b) -> a.GetLayer() - b.GetLayer());
+        
+        store.GetTectonViews().values().forEach(x -> {
+            x.CalculateEntityPositions();
+            x.CalculateShroomThreadPositions();
+            renderBuffer.add(x);
+        });
+
+        store.GetEntityViews().forEach(renderBuffer::add);
+        while(!renderBuffer.isEmpty())
+            renderBuffer.poll().Draw(g2d);
     }
 }

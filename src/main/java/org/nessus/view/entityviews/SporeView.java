@@ -33,7 +33,7 @@ public class SporeView extends EntitySpriteView{
 
     @Override
     public int GetLayer() {
-        return 0;
+        return 2;
     }
 
     @Override

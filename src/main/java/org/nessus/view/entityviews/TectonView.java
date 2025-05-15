@@ -42,7 +42,7 @@ public class TectonView extends EntitySpriteView{
         this.image = newImage;
     }
 
-    private void CalculateEntityPositions()
+    public void CalculateEntityPositions()
     {
         pointsForEntites.clear();
         int entityCount = model.GetEntityCount();
@@ -68,7 +68,7 @@ public class TectonView extends EntitySpriteView{
         }
     }
 
-    private void CalculateShroomThreadPositions() {
+    public void CalculateShroomThreadPositions() {
         shroomThreadOffsets.clear();
         var store = View.GetGameObjectStore();
 
@@ -114,11 +114,8 @@ public class TectonView extends EntitySpriteView{
     }
 
     @Override
-    public void Draw(Graphics2D g2d)
-    {
+    public void Draw(Graphics2D g2d) {
         this.DrawSprite(g2d);
-        this.CalculateEntityPositions();
-        this.CalculateShroomThreadPositions();
     }
 
     public void InsertEntity(EntitySpriteView entityView){
@@ -155,7 +152,7 @@ public class TectonView extends EntitySpriteView{
 
     @Override
     public int GetLayer() {
-        return 0;
+        return 1;
     }
 
     @Override
