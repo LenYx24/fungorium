@@ -67,8 +67,8 @@ public class Shroom implements IShroomController {
 
         List<ShroomThread> funcThreads = new ArrayList<>();
 
-        funcThreads.addAll(tecton1.GetThreads());
-        funcThreads.addAll(tecton2.GetThreads());
+        funcThreads.addAll(tecton1.GetShroomThreads());
+        funcThreads.addAll(tecton2.GetShroomThreads());
 
         if (!connectedToBody) {
             for (ShroomThread thread : funcThreads) {

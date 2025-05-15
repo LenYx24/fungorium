@@ -188,10 +188,10 @@ public class Controller implements IRandomProvider {
         return bugOwnerRound ? currentBugOwner : currentShroom;
     }
     public IBugOwnerController GetCurrentBugOwnerController(){
-        return bugOwnerRound ? currentBugOwner : null;
+        return currentBugOwner;
     }
     public IShroomController GetCurrentShroomController(){
-        return bugOwnerRound ? null : currentShroom;
+        return currentShroom;
     }
 
     public int GetPlayerActionPoints(){
@@ -227,8 +227,10 @@ public class Controller implements IRandomProvider {
 
     public void ViewSelectionChanged(){
         if (currentAction != null) {
-            if (currentAction.TryAction(view))
+            if (currentAction.TryAction(view)) {
                 currentAction = null;
+                view.GetSelection().ClearSelection();
+            }
             return;
         }
 

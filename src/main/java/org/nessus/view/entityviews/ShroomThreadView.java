@@ -4,26 +4,49 @@ import org.nessus.model.shroom.Shroom;
 import org.nessus.model.shroom.ShroomThread;
 import org.nessus.model.tecton.Tecton;
 import org.nessus.utility.EntitySelector;
+import org.nessus.utility.Point;
+import org.nessus.view.View;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics2D;
 
 public class ShroomThreadView implements IEntityView {
     private ShroomThread model;
-    int size = 50;
-    Color color = null;
+
+    private Point p1 = null;
+    private Point p2 = null;
+
+    private Color color = null;
+
     public ShroomThreadView(ShroomThread shroomThread, Color color) {
         this.model = shroomThread;
         this.color = color;
     }
-    public ShroomThreadView(Shroom s, Tecton t1, Tecton t2)
-    {
-        this.model = new ShroomThread(s, t1, t2);
+
+    public void SetLocation(Point p1, Point p2) {
+        this.p1 = p1;
+        this.p2 = p2;
     }
 
     @Override
     public void Draw(Graphics2D g2d) {
+        if (model.GetTecton1() == model.GetTecton2()) {
+            System.out.println("HUROKÉL");
+            System.exit(-1);
+        }
 
+        var store = View.GetGameObjectStore();
+
+        var t1View = store.FindTectonView(model.GetTecton1());
+        var t2View = store.FindTectonView(model.GetTecton2());
+
+        t1View.InsertShroomThread(this);
+        t2View.InsertShroomThread(this);
+        
+        g2d.setStroke(new BasicStroke(2));
+        g2d.setColor(color);
+        g2d.drawLine((int)p1.x, (int)p1.y, (int)p2.x, (int)p2.y);
     }
 
     @Override

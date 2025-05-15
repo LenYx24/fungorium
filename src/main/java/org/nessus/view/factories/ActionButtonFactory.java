@@ -43,7 +43,8 @@ public class ActionButtonFactory {
                 Tecton destination = tectons.getLast();
                 IBugOwnerController bugOwner = controller.GetCurrentBugOwnerController();
                 if(bugOwner != null){
-                    ShroomThread shroomThread = new ShroomThread(new Shroom(), destination, bug.GetTecton());
+                    ShroomThread shroomThread = new ShroomThread((Shroom)controller.GetCurrentShroomController(), destination, bug.GetTecton());
+                    view.GetObjectStore().AddShroomThread(shroomThread);
                     destination.GrowShroomThread(shroomThread);
                     bug.GetTecton().GrowShroomThread(shroomThread);
                     shroomThread.SetEvolution();

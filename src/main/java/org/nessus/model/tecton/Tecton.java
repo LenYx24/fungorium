@@ -296,14 +296,6 @@ public class Tecton implements ITectonController {
         return threads.contains(thread);
     }
 
-    /**
-     * Visszaadja a tektonon található gombatestet.
-     * @return List<ShroomBody> - A tektonon található gombatestek listája
-     */
-    public List<ShroomThread> GetThreads() {
-        return threads;
-    }
-
     public void Accept(TectonTexturer texturer) {
         texturer.Visit(this);
     }

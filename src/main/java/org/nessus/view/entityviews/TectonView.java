@@ -2,24 +2,32 @@ package org.nessus.view.entityviews;
 
 import org.nessus.model.tecton.Tecton;
 import org.nessus.utility.EntitySelector;
+import org.nessus.model.shroom.ShroomThread;
 
-import java.awt.*;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
-import java.util.Queue;
+import java.util.*;
+
 import org.nessus.utility.Point;
+import org.nessus.utility.Vec2;
+import org.nessus.view.View;
 
 public class TectonView extends EntitySpriteView{
     private Tecton model;
+    
     private double dx;
     private double dy;
+    
     private boolean locked = false;
+    
     private Random r = new Random();
-    Queue<Point> pointsForEntites = new LinkedList<Point>();
-    int cellSize = 0;
+    
+    private Queue<Point> pointsForEntites = new LinkedList<>();
+    private Map<Tecton, Queue<Point>> shroomThreadOffsets = new HashMap<>();
+    
+    private int cellSize = 0;
+
+    private static final double BASE_SHROOMTHREAD_OFFSET = 10;
 
     public TectonView(Tecton t, BufferedImage sprite) {
         this.model = t;
@@ -60,6 +68,43 @@ public class TectonView extends EntitySpriteView{
         }
     }
 
+    private void CalculateShroomThreadPositions() {
+        shroomThreadOffsets.clear();
+        var store = View.GetGameObjectStore();
+
+        for (var neighbour : model.GetNeighbours()) {
+            var neighbourView = store.FindTectonView(neighbour);
+            
+            var shroomThreads = model.GetShroomThreads()
+                .stream()
+                .filter(x -> x.GetTecton1() == neighbour || x.GetTecton2() == neighbour)
+                .toList();
+
+            var threadCount = shroomThreads.size();
+
+            // Ha a szomszédos tektonnak vannak fonal offsettjei beállítva erre a tektonra, akkor már itt nem szabad
+            // offsetet számolni. Ha nincs fonal, akkor szintén nincs teendő.
+            if (neighbourView.shroomThreadOffsets.containsKey(model) || threadCount == 0)
+                continue;
+        
+            var tectonCenter = new Point(x, y);
+            var neighbourCenter = new Point(neighbourView.x, neighbourView.y);
+
+            var vectorToNeighbour = new Vec2(tectonCenter, neighbourCenter);
+            var offsetVector = vectorToNeighbour.Normalize().Rotate(Math.PI / 2);
+            var offset = threadCount / 2 * BASE_SHROOMTHREAD_OFFSET;
+            
+            Queue<Point> pointQueue = new LinkedList<>();
+
+            for (int i = 0; i < threadCount; i++) {
+                pointQueue.add(tectonCenter.Translate(offsetVector.Scale(offset)));
+                offset -= BASE_SHROOMTHREAD_OFFSET;
+            }
+
+            shroomThreadOffsets.put(neighbour, pointQueue);
+        }
+    }
+
     public void SetLocked(boolean locked) {
         this.locked = locked;
     }
@@ -73,7 +118,9 @@ public class TectonView extends EntitySpriteView{
     {
         this.DrawSprite(g2d);
         this.CalculateEntityPositions();
+        this.CalculateShroomThreadPositions();
     }
+
     public void InsertEntity(EntitySpriteView entityView){
         Point p = pointsForEntites.poll();
         if(p == null){
@@ -83,6 +130,24 @@ public class TectonView extends EntitySpriteView{
         entityView.x = p.x;
         entityView.y = p.y;
         entityView.size = cellSize;
+    }
+
+    public void InsertShroomThread(ShroomThreadView shroomThreadView) {
+        var threadModel = shroomThreadView.GetModel();
+        var t1 = threadModel.GetTecton1();
+        var t2 = threadModel.GetTecton2();
+
+        var neighbour = t1 == model ? t2 : t1;
+        if (!shroomThreadOffsets.containsKey(neighbour))
+            return;
+
+        var neighbourView = View.GetGameObjectStore().FindTectonView(neighbour);
+        var distanceVector = new Vec2(neighbourView.x - x, neighbourView.y - y);
+        
+        var startPoint = shroomThreadOffsets.get(neighbour).poll();
+        var endPoint = startPoint.Translate(distanceVector);
+
+        shroomThreadView.SetLocation(startPoint, endPoint);
     }
 
     @Override
