@@ -1,5 +1,7 @@
 package org.nessus.view.panels;
 
+import org.nessus.model.bug.BugOwner;
+import org.nessus.model.shroom.Shroom;
 import org.nessus.view.View;
 import org.nessus.view.entityviews.IEntityView;
 import org.nessus.view.factories.ActionButtonFactory;
@@ -148,13 +150,28 @@ public class ControlPanel extends JPanel {
         view.OpenMenu();
     }
 
-    public void UpdatePlayerInfo(String name, int actionPoints)
+    public void UpdatePlayerInfo(String name)
     {
-        playerLabel.setText("Játékos: " + name);
-        infoArea.setText("TODO UPDATE");
+        SetPlayerLabelText(name);
+        UpdateActionPoints();
     }
 
-    public void UpdateEntityInfo(IEntityView view){
-        // TODO
+    public void UpdateActionPoints()
+    {
+        if (view.GetController().IsBugOwnerRound())
+        {
+            BugOwner current = (BugOwner)view.GetController().GetCurrentPlayer();
+            SetActionPointsLabelText(String.valueOf(current.GetActionPointCatalog().GetCurrentPoints()));
+        }
+        else
+        {
+            Shroom current = (Shroom)view.GetController().GetCurrentPlayer();
+            SetActionPointsLabelText(String.valueOf(current.GetActionPointCatalog().GetCurrentPoints()));
+        }
+    }
+
+    public void UpdateEntityInfo(IEntityView view)
+    {
+        infoArea.setText(view.GetEntityInfo());
     }
 }

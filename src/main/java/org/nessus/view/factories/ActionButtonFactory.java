@@ -11,6 +11,7 @@ import org.nessus.model.shroom.ShroomThread;
 import org.nessus.model.shroom.Spore;
 import org.nessus.model.tecton.Tecton;
 import org.nessus.view.View;
+import org.nessus.view.panels.GamePanel;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
@@ -47,6 +48,7 @@ public class ActionButtonFactory {
                     bug.GetTecton().GrowShroomThread(shroomThread);
                     shroomThread.SetEvolution();
                     bugOwner.Move(bug, destination);
+                    controller.GetView().GetGamePanel().GetControlPanel().UpdateActionPoints();
                     return true;
                 }
             }
@@ -64,6 +66,7 @@ public class ActionButtonFactory {
                 if(bugOwner != null)
                 {
                     bugOwner.Eat(bug, spore);
+                    controller.GetView().GetGamePanel().GetControlPanel().UpdateActionPoints();
                     return true;
                 }
             }
@@ -84,9 +87,8 @@ public class ActionButtonFactory {
                 IShroomController shroomOwner = controller.GetCurrentShroomController();
                 if(shroomOwner != null)
                 {
-                    //Teszt miatt rögtön 2-re állítom a SporeMatot
-                    body.SetSporeMaterials(2);
                     shroomOwner.ThrowSpore(body, destination);
+                    controller.GetView().GetGamePanel().GetControlPanel().UpdateActionPoints();
                     return true;
                 }
             }
@@ -107,6 +109,7 @@ public class ActionButtonFactory {
                 if(shroomOwner != null)
                 {
                     shroomOwner.PlaceShroomBody(destination);
+                    controller.GetView().GetGamePanel().GetControlPanel().UpdateActionPoints();
                     return true;
                 }
             }

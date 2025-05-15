@@ -288,4 +288,6 @@ public class Controller implements IRandomProvider {
     }
 
     public boolean IsBugOwnerRound() {return bugOwnerRound;}
+
+    public View GetView() {return view;}
 }

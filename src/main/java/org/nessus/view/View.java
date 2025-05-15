@@ -105,7 +105,8 @@ public class View extends JFrame {
         timer.start();
     }
 
-    public void HandleSelection(IEntityView entity){
+    public void HandleSelection(IEntityView entity)
+    {
         var controlPanel = gamePanel.GetControlPanel();
         controlPanel.UpdateEntityInfo(entity);
         var selector = new EntitySelector(selection);
@@ -140,10 +141,20 @@ public class View extends JFrame {
     public void UpdatePlayerInfo()
     {
         if (controller.IsBugOwnerRound())
-            gamePanel.GetControlPanel().UpdatePlayerInfo(objectStore.GetBugOwnerName(controller.GetCurrentBugOwnerController()), 2);
+        {
+            controller.GetCurrentBugOwnerController().UpdateBugOwner();
+            gamePanel.GetControlPanel().UpdatePlayerInfo(objectStore.GetBugOwnerName(controller.GetCurrentBugOwnerController()));
+        }
         else
-            gamePanel.GetControlPanel().UpdatePlayerInfo(objectStore.GetShroomName(controller.GetCurrentShroomController()), 2);
+        {
+            controller.GetCurrentShroomController().UpdateShroom();
+            gamePanel.GetControlPanel().UpdatePlayerInfo(objectStore.GetShroomName(controller.GetCurrentShroomController()));
+        }
+
     }
+
+    public GamePanel GetGamePanel() {return gamePanel;}
+
     /**
      * A program belépési pontja.
      * @param args - A parancssori argumentumok

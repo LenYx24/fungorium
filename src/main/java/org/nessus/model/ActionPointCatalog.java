@@ -40,4 +40,8 @@ public class ActionPointCatalog {
     public void ResetPoints() {
         currentActionPoints = defaultActionPoints;
     }
+
+    public int GetCurrentPoints() {return currentActionPoints;}
+
+    public int GetDefaultPoints() {return defaultActionPoints;}
 }
