@@ -182,4 +182,8 @@ public class ShroomThread {
     public void SetEvolution(){
         evolution = 3;
     }
+
+    public int GetEvolution() {
+        return evolution;
+    }
 }

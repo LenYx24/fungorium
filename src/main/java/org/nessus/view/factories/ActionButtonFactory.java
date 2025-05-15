@@ -26,6 +26,10 @@ public class ActionButtonFactory {
         this.controller = controller;
     }
 
+    private void UpdateActionPoints() {
+        controller.GetView().GetGamePanel().GetControlPanel().UpdateActionPoints();
+    }
+
     private JButton CreateActionButton(String name, IActionController action){
         JButton button = new JButton(name);
         button.addMouseListener(new MouseAdapter() {
@@ -43,13 +47,8 @@ public class ActionButtonFactory {
                 Tecton destination = tectons.getLast();
                 IBugOwnerController bugOwner = controller.GetCurrentBugOwnerController();
                 if(bugOwner != null){
-                    ShroomThread shroomThread = new ShroomThread((Shroom)controller.GetCurrentShroomController(), destination, bug.GetTecton());
-                    view.GetObjectStore().AddShroomThread(shroomThread);
-                    destination.GrowShroomThread(shroomThread);
-                    bug.GetTecton().GrowShroomThread(shroomThread);
-                    shroomThread.SetEvolution();
                     bugOwner.Move(bug, destination);
-                    controller.GetView().GetGamePanel().GetControlPanel().UpdateActionPoints();
+                    UpdateActionPoints();
                     return true;
                 }
             }
@@ -67,7 +66,7 @@ public class ActionButtonFactory {
                 if(bugOwner != null)
                 {
                     bugOwner.Eat(bug, spore);
-                    controller.GetView().GetGamePanel().GetControlPanel().UpdateActionPoints();
+                    UpdateActionPoints();
                     return true;
                 }
             }
@@ -89,7 +88,7 @@ public class ActionButtonFactory {
                 if(shroomOwner != null)
                 {
                     shroomOwner.ThrowSpore(body, destination);
-                    controller.GetView().GetGamePanel().GetControlPanel().UpdateActionPoints();
+                    UpdateActionPoints();
                     return true;
                 }
             }
@@ -101,7 +100,7 @@ public class ActionButtonFactory {
     }
     public JButton CreatePlaceShroomBodyButton()
     {
-        return CreateActionButton("Gombatest elhelyezése",(View view)->{
+        return CreateActionButton("Gombatest elhelyezése", (View view)->{
             List<Tecton> tectons = view.GetSelection().GetTectons();
             if(!tectons.isEmpty())
             {
@@ -110,7 +109,7 @@ public class ActionButtonFactory {
                 if(shroomOwner != null)
                 {
                     shroomOwner.PlaceShroomBody(destination);
-                    controller.GetView().GetGamePanel().GetControlPanel().UpdateActionPoints();
+                    UpdateActionPoints();
                     return true;
                 }
             }
@@ -121,6 +120,19 @@ public class ActionButtonFactory {
         return new JButton("NOT IMPLEMENTED");
     }
     public JButton CreatePlaceShroomThreadButton(){
-        return new JButton("NOT IMPLEMENTED");
+        return CreateActionButton("Gombafonal növesztése", view -> {
+            var tectons = view.GetSelection().GetTectons();
+            if (tectons.size() == 2) {
+                Tecton t1 = tectons.get(0);
+                Tecton t2 = tectons.get(1);
+                var shroom = controller.GetCurrentShroomController();
+                if (shroom != null) {
+                    shroom.PlaceShroomThread(t1, t2);
+                    UpdateActionPoints();
+                    return true;
+                }
+            }
+            return false;
+        });
     }
 }

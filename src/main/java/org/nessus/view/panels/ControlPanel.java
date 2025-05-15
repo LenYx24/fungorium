@@ -94,6 +94,7 @@ public class ControlPanel extends JPanel {
         shroomBodyActions.add(actionButtonFactory.CreateThrowSporeButton());
         shroomBodyActions.add(actionButtonFactory.CreatePlaceShroomBodyButton());
         shroomBodyActions.add(actionButtonFactory.CreateUpgradeShroomBodyButton());
+        shroomBodyActions.add(actionButtonFactory.CreatePlaceShroomThreadButton());
     
         for (JButton button : shroomBodyActions) {
             button.setAlignmentX(Component.CENTER_ALIGNMENT);

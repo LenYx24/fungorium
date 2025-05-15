@@ -5,6 +5,7 @@ import org.nessus.model.shroom.ShroomThread;
 import org.nessus.model.tecton.Tecton;
 import org.nessus.utility.EntitySelector;
 import org.nessus.utility.Point;
+import org.nessus.utility.Vec2;
 import org.nessus.view.View;
 
 import java.awt.BasicStroke;
@@ -46,7 +47,11 @@ public class ShroomThreadView implements IEntityView {
         
         g2d.setStroke(new BasicStroke(2));
         g2d.setColor(color);
-        g2d.drawLine((int)p1.x, (int)p1.y, (int)p2.x, (int)p2.y);
+
+        var distanceVector = new Vec2(p1, p2);
+        var growthRate = (model.GetEvolution() + 1) / 4.0;
+        var endPoint = p1.Translate(distanceVector.Scale(growthRate));
+        g2d.drawLine((int)p1.x, (int)p1.y, (int)endPoint.x, (int)endPoint.y);
     }
 
     @Override
