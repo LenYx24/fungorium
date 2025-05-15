@@ -53,7 +53,8 @@ public class ActionButtonFactory {
             return false;
         });
     }
-    public JButton CreateBugEatButton() {
+    public JButton CreateBugEatButton()
+    {
         return CreateActionButton("Spóraevés",(View view)->{
             List<Tecton> tectons = view.GetSelection().GetTectons();
             if(!tectons.isEmpty()){
@@ -63,7 +64,7 @@ public class ActionButtonFactory {
                 if(bugOwner != null)
                 {
                     bugOwner.Eat(bug, spore);
-                    spore.EatenBy(bug);
+                    view.GetObjectStore().RemoveSpore(spore);
                     return true;
                 }
             }

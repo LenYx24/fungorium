@@ -54,6 +54,11 @@ public class ObjectStore implements IGameObjectStore {
         SporeView spview = factory.CreateSporeView(spore);
         views.add(spview);
     }
+
+    public void RemoveSpore(Spore spore)
+    {
+        views.removeIf(e -> e.GetModel() == spore);
+    }
     
     public void AddBug(Bug bug){
         var bugOwner = bugOwners.get(bug.GetOwner());

@@ -11,4 +11,5 @@ public interface IEntityView {
     boolean IsViewing(Object obj);
     String GetEntityInfo();
     void Accept(EntitySelector selector);
+    Object GetModel();
 }
