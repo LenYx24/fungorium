@@ -142,7 +142,10 @@ public class TectonView extends EntitySpriteView{
             return;
 
         var neighbourView = View.GetGameObjectStore().FindTectonView(neighbour);
-        var distanceVector = new Vec2(neighbourView.x - x, neighbourView.y - y);
+        
+        var tectonCenter = new Point(x, y);
+        var neighbourCenter = new Point(neighbourView.x, neighbourView.y);
+        var distanceVector = new Vec2(tectonCenter, neighbourCenter);
         
         var startPoint = shroomThreadOffsets.get(neighbour).poll();
         var endPoint = startPoint.Translate(distanceVector);

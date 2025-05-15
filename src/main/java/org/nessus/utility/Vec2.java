@@ -28,7 +28,7 @@ public class Vec2 {
 
     public Vec2 Rotate(double angleRad) {
         var _x = x * Math.cos(angleRad) - y * Math.sin(angleRad);
-        var _y = y * Math.sin(angleRad) + y * Math.cos(angleRad);
+        var _y = x * Math.sin(angleRad) + y * Math.cos(angleRad);
         return new Vec2(_x, _y);
     }
 
