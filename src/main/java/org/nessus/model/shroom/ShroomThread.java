@@ -1,6 +1,7 @@
 package org.nessus.model.shroom;
 
 import org.nessus.model.tecton.Tecton;
+import org.nessus.view.View;
 import org.nessus.model.bug.Bug;
 
 /**
@@ -111,6 +112,7 @@ public class ShroomThread {
         tecton1.RemoveShroomThread(this);
         tecton2.RemoveShroomThread(this);
         shroom.RemoveShroomThread(this);
+        View.GetGameObjectStore().RemoveEntity(this);
     }
 
     /**

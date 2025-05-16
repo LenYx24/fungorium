@@ -156,9 +156,10 @@ public class ShroomBody {
                 } else {
                     neighbour = thread.GetTecton1();
                 }
-
+                
+                thread.connectedToShroomBody = true;
+                
                 if (!visited.contains(neighbour)) {
-                    thread.connectedToShroomBody = true;
                     visited.add(neighbour);
                     queue.add(neighbour);
                 }

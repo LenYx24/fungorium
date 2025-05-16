@@ -130,6 +130,7 @@ public class Tecton implements ITectonController {
         
         var spore = usableSpores.get(0);
         RemoveSpore(spore);
+        View.GetGameObjectStore().RemoveEntity(spore);
         
         this.body = body;
         body.SetTecton(this);

@@ -56,10 +56,10 @@ public class ObjectStore implements IGameObjectStore {
         views.add(spview);
     }
 
-    public void RemoveSpore(Spore spore)
-    {
-        views.removeIf(e -> e.GetModel() == spore);
-    }
+    public void RemoveEntity(Object model) {
+        views.remove(model);
+        tectons.remove(model);
+    } 
     
     public void AddBug(Bug bug){
         var bugOwner = bugOwners.get(bug.GetOwner());

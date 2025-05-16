@@ -60,7 +60,7 @@ public class Spore {
         bug.AddNutrients(nutrients);
         bug.AddEffect(randEffect);
 
-        View.GetGameObjectStore().RemoveSpore(this);
+        View.GetGameObjectStore().RemoveEntity(this);
 
         tecton.RemoveSpore(this);
         shroom.RemoveSpore(this);

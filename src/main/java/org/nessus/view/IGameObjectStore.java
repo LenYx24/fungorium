@@ -30,10 +30,11 @@ public interface IGameObjectStore {
     void AddSpore(Spore spore);
     void AddBug(Bug bug);
     void AddTecton(Tecton tecton);
+
     TectonView FindTectonView(Tecton tecton);
     IEntityView FindEntityView(Object obj);
+    void RemoveEntity(Object model);
 
-    void RemoveSpore(Spore spore);
     String GetBugOwnerName(IBugOwnerController bugOwner);
     String GetShroomName(IShroomController shroom);
 }

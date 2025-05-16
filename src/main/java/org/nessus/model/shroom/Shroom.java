@@ -145,6 +145,7 @@ public class Shroom implements IShroomController {
 
             bodyShroom.RemoveSpore(consumedSpore);
             bodyTecton.RemoveSpore(consumedSpore);
+            View.GetGameObjectStore().RemoveEntity(consumedSpore);
             actCatalog.DecreasePoints(shroomUpgradeCost);
         }
     }

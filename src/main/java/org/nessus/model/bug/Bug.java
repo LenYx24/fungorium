@@ -324,5 +324,6 @@ public class Bug {
             tecton.RemoveBug(this);
         if (bugOwner != null)
             bugOwner.RemoveBug(this);
+        View.GetGameObjectStore().RemoveEntity(this);
     }
 }
