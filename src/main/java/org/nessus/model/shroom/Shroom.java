@@ -310,4 +310,29 @@ public class Shroom implements IShroomController {
     public void SetShroomThread(ShroomThread thread) {
         threads.add(thread);
     }
+
+    public int GetSporeThrowCost()
+    {
+        return sporeCost;
+    }
+
+    public int GetShroomThreadCost()
+    {
+        return shroomThreadCost;
+    }
+
+    public int GetShroomBodyCost()
+    {
+        return shroomBodyCost;
+    }
+
+    public int GetUpgradeCost()
+    {
+        return shroomUpgradeCost;
+    }
+
+    public int GetDevourCost()
+    {
+        return devourCost;
+    }
 }

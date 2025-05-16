@@ -90,6 +90,12 @@ public class Bug {
         return tecton;
     }
 
+    public boolean GetCanCut() {
+        return canCut;
+    }
+
+    public List<BugEffect> GetEffects(){return effects;}
+
     /**
      * Mozgás
      * A rovar mozgatása egy másik tektonra.

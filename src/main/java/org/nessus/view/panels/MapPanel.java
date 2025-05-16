@@ -32,7 +32,8 @@ public class MapPanel extends JPanel {
 
         addMouseListener(new MouseAdapter() {
             @Override
-            public void mousePressed(java.awt.event.MouseEvent e) {
+            public void mousePressed(java.awt.event.MouseEvent e)
+            {
                 var cursor = e.getPoint();
                 ObjectStore objectStore = view.GetObjectStore();
                 List<IEntityView> entityViews = objectStore.GetEntityViews();
@@ -51,6 +52,10 @@ public class MapPanel extends JPanel {
                         return;
                     }
                 }
+
+                //A játékos sem tektonra sem entitásra nem nyomott
+                view.GetSelection().ClearSelection();
+                view.GetGamePanel().GetControlPanel().ClearInfo();
             }
 
             @Override

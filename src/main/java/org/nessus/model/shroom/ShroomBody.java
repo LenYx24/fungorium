@@ -200,4 +200,19 @@ public class ShroomBody {
     public void SetSporeMaterials(int sporeMaterials) {
         this.sporeMaterials = sporeMaterials;
     }
+
+    public int GetSporeMaterials()
+    {
+        return sporeMaterials;
+    }
+
+    public int GetRemainingThrows()
+    {
+        return remainingThrows;
+    }
+
+    public int GetLevel()
+    {
+        return level;
+    }
 }

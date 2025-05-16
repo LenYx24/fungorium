@@ -22,12 +22,13 @@ public class SelectionCatalog {
     }
 
     private void SetViewSelection(Object obj){
-        view.GetObjectStore().FindEntityView(obj).SetSelected(true);
+        if(obj != null)
+            view.GetObjectStore().FindEntityView(obj).SetSelected(true);
     }
     private void SetViewSelection(Tecton tecton){
         view.GetObjectStore().FindTectonView(tecton).SetSelected(true);
     }
-    private void UnsetViewSelection(Object obj){
+    public void UnsetViewSelection(Object obj){
         if(obj != null){
             view.GetObjectStore().FindEntityView(obj).SetSelected(false);
         }
@@ -37,30 +38,68 @@ public class SelectionCatalog {
             view.GetObjectStore().FindTectonView(tecton).SetSelected(false);
         }
     }
-    public void SelectBug(Bug bug) {
-        selectedBug = bug;
-        SetViewSelection(bug);
+    public void SelectBug(Bug bug)
+    {
+        if (selectedBug == null)
+        {
+            selectedBug = bug;
+            SetViewSelection(bug);
+        }
+        else
+        {
+            UnsetViewSelection(selectedBug);
+            selectedBug = bug;
+            SetViewSelection(bug);
+        }
     }
 
-    public void SelectShroomThread(ShroomThread thread){
-        selectedShroomThread = thread;
-        SetViewSelection(thread);
+    public void SelectShroomThread(ShroomThread thread)
+    {
+        if (selectedShroomThread == null)
+        {
+            selectedShroomThread = thread;
+            SetViewSelection(thread);
+        }
+        else
+        {
+            UnsetViewSelection(selectedShroomThread);
+            selectedShroomThread = thread;
+            SetViewSelection(thread);
+        }
     }
 
     public void SelectShroomBody(ShroomBody body) {
-        selectedShroomBody = body;
-        SetViewSelection(body);
+        if (selectedShroomBody == null)
+        {
+            selectedShroomBody = body;
+            SetViewSelection(body);
+        }
+        else
+        {
+            UnsetViewSelection(selectedShroomBody);
+            selectedShroomBody = body;
+            SetViewSelection(body);
+        }
     }
 
     public void SelectSpore(Spore spore) {
-        selectedSpore = spore;
-        SetViewSelection(spore);
+        if (selectedSpore == null)
+        {
+            selectedSpore = spore;
+            SetViewSelection(spore);
+        }
+        else
+        {
+            UnsetViewSelection(selectedSpore);
+            selectedSpore = spore;
+            SetViewSelection(spore);
+        }
     }
 
     public void SelectTecton(Tecton tecton) {
         if(selectedTectons.size() > 1){
+            UnsetViewSelection(selectedTectons.get(0));
             selectedTectons.remove(0);
-            UnsetViewSelection(tecton);
         }
         selectedTectons.add(tecton);
         SetViewSelection(tecton);

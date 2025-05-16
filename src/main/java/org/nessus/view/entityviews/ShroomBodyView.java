@@ -46,8 +46,19 @@ public class ShroomBodyView extends EntitySpriteView{
     }
 
     @Override
-    public String GetEntityInfo() {
-        return "";
+    public String GetEntityInfo()
+    {
+        String info = "Tulajdonos: ";
+
+        info = info.concat(View.GetGameObjectStore().GetShroomName(model.GetShroom()) + "\n");
+
+        info = info.concat("Szint: " + model.GetLevel() + "\n");
+
+        info = info.concat("Spóraanyag: " + model.GetSporeMaterials() + "\n");
+
+        info = info.concat("Hátralevő köpések: " + model.GetRemainingThrows() + "\n");
+
+        return info;
     }
 
     public ShroomBody GetModel() {

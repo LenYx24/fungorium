@@ -42,8 +42,15 @@ public class SporeView extends EntitySpriteView{
     }
 
     @Override
-    public String GetEntityInfo() {
-        return "";
+    public String GetEntityInfo()
+    {
+        String info = "Tulajdonos: ";
+
+        info = info.concat(View.GetGameObjectStore().GetShroomName(model.GetShroom()) + "\n");
+
+        info = info.concat("Tápanyagtartalom: " + model.GetNutrient() + "\n");
+
+        return info;
     }
 
     public Spore GetModel() {

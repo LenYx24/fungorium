@@ -5,10 +5,12 @@ import org.nessus.controller.IActionController;
 import org.nessus.controller.IBugOwnerController;
 import org.nessus.controller.IShroomController;
 import org.nessus.model.bug.Bug;
+import org.nessus.model.shroom.Shroom;
 import org.nessus.model.shroom.ShroomBody;
 import org.nessus.model.shroom.Spore;
 import org.nessus.model.tecton.Tecton;
 import org.nessus.view.View;
+import org.nessus.view.entityviews.IEntityView;
 
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
@@ -26,6 +28,15 @@ public class ActionButtonFactory {
         controller.GetView().GetGamePanel().GetControlPanel().UpdateActionPoints();
     }
 
+    private void UpdateButtonTexts() {
+        controller.GetView().GetGamePanel().GetControlPanel().UpdateButtonTexts();
+    }
+
+    private void UpdateEntityInfo(IEntityView e)
+    {
+        controller.GetView().GetGamePanel().GetControlPanel().UpdateEntityInfo(e);
+    }
+
     private JButton CreateActionButton(String name, IActionController action){
         JButton button = new JButton(name);
         button.addMouseListener(new MouseAdapter() {
@@ -36,13 +47,13 @@ public class ActionButtonFactory {
         return button;
     }
     public JButton CreateBugMoveButton(){
-        return CreateActionButton("Rovar lépés",(View view)->{
+        return CreateActionButton("Rovar mozgás" ,(View view)->{
             List<Tecton> tectons = view.GetSelection().GetTectons();
             if(!tectons.isEmpty()){
                 Bug bug = view.GetSelection().GetBug();
                 Tecton destination = tectons.getLast();
                 IBugOwnerController bugOwner = controller.GetCurrentBugOwnerController();
-                if(bugOwner != null){
+                if(bugOwner != null && bugOwner == bug.GetOwner() && bug.GetCanMove()){
                     bugOwner.Move(bug, destination);
                     UpdateActionPoints();
                     return true;
@@ -54,15 +65,18 @@ public class ActionButtonFactory {
     public JButton CreateBugEatButton()
     {
         return CreateActionButton("Spóraevés",(View view)->{
-            List<Tecton> tectons = view.GetSelection().GetTectons();
-            if(!tectons.isEmpty()){
-                Bug bug = view.GetSelection().GetBug();
-                Spore spore = view.GetSelection().GetSpore();
+            Bug bug = view.GetSelection().GetBug();
+            Spore spore = view.GetSelection().GetSpore();
+            if(bug != null && spore != null)
+            {
                 IBugOwnerController bugOwner = controller.GetCurrentBugOwnerController();
-                if(bugOwner != null)
+                if(bugOwner != null && bugOwner == bug.GetOwner())
                 {
+                    view.GetSelection().SelectSpore(null);
                     bugOwner.Eat(bug, spore);
                     UpdateActionPoints();
+                    UpdateButtonTexts();
+                    UpdateEntityInfo(view.GetObjectStore().FindEntityView(bug));
                     return true;
                 }
             }
@@ -70,13 +84,13 @@ public class ActionButtonFactory {
         });
     }
     public JButton CreateBugCutButton(){
-        return CreateActionButton("Rovar gombafonal elvágása",(View view)->{
+        return CreateActionButton("Gombafonal elvágása",(View view)->{
             var bug = view.GetSelection().GetBug();
             var shroomThread = view.GetSelection().GetShroomThread();
             if(bug != null && shroomThread != null)
             {
                 IBugOwnerController bugOwner = controller.GetCurrentBugOwnerController();
-                if(bugOwner != null && bugOwner == bug.GetOwner())
+                if(bugOwner != null && bugOwner == bug.GetOwner() && bug.GetCanCut())
                 {
                     bugOwner.CutThread(bug, shroomThread);
                     UpdateActionPoints();
@@ -99,6 +113,7 @@ public class ActionButtonFactory {
                 {
                     shroomOwner.ThrowSpore(body, destination);
                     UpdateActionPoints();
+                    UpdateEntityInfo(view.GetObjectStore().FindEntityView(body));
                     return true;
                 }
             }
@@ -114,6 +129,7 @@ public class ActionButtonFactory {
                 if (shroomThread.GetShroom() == view.GetController().GetCurrentShroomController()) {
                     shroom.ShroomThreadDevourBug(shroomThread, bug);
                     UpdateActionPoints();
+                    UpdateButtonTexts();
                     return true;
                 }
             }
@@ -146,6 +162,7 @@ public class ActionButtonFactory {
                 if (shroom != null && shroomBody.GetShroom() == shroom) {
                     shroom.UpgradeShroomBody(shroomBody);
                     UpdateActionPoints();
+                    UpdateEntityInfo(view.GetObjectStore().FindEntityView(shroomBody));
                     return true;
                 }
             }

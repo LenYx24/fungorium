@@ -46,20 +46,31 @@ public class BugView extends EntitySpriteView{
     @Override
     public String GetEntityInfo()
     {
-        String info = "";
+        String info = "Tulajdonos: ";
 
-        info.concat("Tulajdonos: " + model.GetOwner() + "\n");
+        info = info.concat(View.GetGameObjectStore().GetBugOwnerName(model.GetOwner()) + "\n");
 
-        if (model.GetCanMove())
+        info = info.concat("Begyűjtött tápanyag: " + model.GetCollectedNutrients() + "\n");
+
+        if (!model.GetCanMove())
         {
-            info.concat("Bénult: " + "nem\n");
-        }
-        else
-        {
-            info.concat("Bénult: " + "igen\n");
+            info = info.concat("BÉNULT\n");
         }
 
-        info.concat("Begyűjtött tápanyag: " + model.GetCollectedNutrients() + "\n");
+        if (!model.GetCanCut())
+        {
+            info = info.concat("SZÁJZÁRT\n");
+        }
+
+        if (model.GetMoveCost() == 1)
+        {
+            info = info.concat("GYORSÍTVA\n");
+        }
+
+        if (model.GetMoveCost() == 4)
+        {
+            info = info.concat("LASSÍTVA\n");
+        }
 
         return info;
     }

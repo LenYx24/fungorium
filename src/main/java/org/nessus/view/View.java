@@ -109,10 +109,11 @@ public class View extends JFrame {
     public void HandleSelection(IEntityView entity)
     {
         var controlPanel = gamePanel.GetControlPanel();
-        controlPanel.UpdateEntityInfo(entity);
         var selector = new EntitySelector(selection);
         entity.Accept(selector);
         controller.ViewSelectionChanged();
+        controlPanel.UpdateEntityInfo(entity);
+        controlPanel.UpdateButtonTexts();
     }
 
     public IEntityView FindEntity(Object entity){

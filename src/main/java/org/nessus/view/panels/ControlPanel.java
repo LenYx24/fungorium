@@ -109,7 +109,7 @@ public class ControlPanel extends JPanel {
         StyleLabel(objectInfoLabel);
         add(objectInfoLabel);
     
-        infoArea = new JTextArea("Spóra anyagok: 2\nSzint: 3\nHátralévő köpések: 1\nMilán szereti Ádámot");
+        infoArea = new JTextArea("");
         infoArea.setEditable(false);
         infoArea.setBackground(Color.WHITE);
         infoArea.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -142,6 +142,7 @@ public class ControlPanel extends JPanel {
     {
         SetPlayerLabelText(name);
         UpdateActionPoints();
+        UpdateButtonTexts();
         CardLayout buttonsLayout = (CardLayout)buttonPanel.getLayout();
         if(view.GetController().IsBugOwnerRound()){
             buttonsLayout.show(buttonPanel, "bugButtons");
@@ -167,5 +168,40 @@ public class ControlPanel extends JPanel {
     public void UpdateEntityInfo(IEntityView view)
     {
         infoArea.setText(view.GetEntityInfo());
+    }
+
+    public void ClearInfo()
+    {
+        infoArea.setText("");
+    }
+
+    public void UpdateButtonTexts()
+    {
+        if (view.GetController().IsBugOwnerRound() && view.GetSelection().GetBug() != null)
+        {
+            BugOwner current = (BugOwner) view.GetController().GetCurrentBugOwnerController();
+            if (current == view.GetSelection().GetBug().GetOwner())
+            {
+                bugActions.get(0).setText("Rovar mozgás: " + view.GetSelection().GetBug().GetMoveCost());
+                bugActions.get(1).setText("Spóraevés: " + view.GetSelection().GetBug().GetEatCost());
+                bugActions.get(2).setText("Gombafonal elvágása: " + view.GetSelection().GetBug().GetCutCost());
+            }
+            else
+            {
+                bugActions.get(0).setText("---");
+                bugActions.get(1).setText("---");
+                bugActions.get(2).setText("---");
+            }
+        }
+
+        if (!view.GetController().IsBugOwnerRound())
+        {
+            Shroom current = (Shroom)view.GetController().GetCurrentShroomController();
+            shroomActions.get(0).setText("Spóraköpés: " + current.GetSporeThrowCost());
+            shroomActions.get(1).setText("Gombatest elhelyezése: " + current.GetShroomBodyCost());
+            shroomActions.get(2).setText("Gombatest fejlesztése: " + current.GetUpgradeCost());
+            shroomActions.get(3).setText("Gombafonal növ.: " + current.GetShroomThreadCost());
+            shroomActions.get(4).setText("Rovar felfalása fonallal: " + current.GetDevourCost());
+        }
     }
 }

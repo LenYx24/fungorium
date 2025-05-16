@@ -1,11 +1,15 @@
 package org.nessus.view;
 
+import org.nessus.controller.IBugOwnerController;
 import org.nessus.controller.IRandomProvider;
+import org.nessus.controller.IShroomController;
 import org.nessus.model.bug.Bug;
+import org.nessus.model.bug.BugOwner;
 import org.nessus.model.shroom.ShroomBody;
 import org.nessus.model.shroom.ShroomThread;
 import org.nessus.model.shroom.Spore;
 import org.nessus.model.tecton.Tecton;
+import org.nessus.view.entityviews.IEntityView;
 import org.nessus.view.entityviews.TectonView;
 
 /**
@@ -27,6 +31,9 @@ public interface IGameObjectStore {
     void AddBug(Bug bug);
     void AddTecton(Tecton tecton);
     TectonView FindTectonView(Tecton tecton);
+    IEntityView FindEntityView(Object obj);
 
     void RemoveSpore(Spore spore);
+    String GetBugOwnerName(IBugOwnerController bugOwner);
+    String GetShroomName(IShroomController shroom);
 }

@@ -99,4 +99,5 @@ public class ShroomThreadView implements IEntityView {
     public void SetSelected(boolean selected){
         selection = selected;
     }
+
 }
