@@ -53,8 +53,10 @@ public class ShroomThreadView implements IEntityView {
 
         // Shift from center to edge along direction
         double offset = 50.0;
-        this.p1 = t1Center.Translate(direction.Scale(offset));
-        this.p2 = t2Center.Translate(direction.Scale(-offset));
+        p1 = p1.Translate(direction.Scale(offset));
+        p2 = p2.Translate(direction.Scale(-offset));
+        //this.p1 = t1Center.Translate(direction.Scale(offset));
+        //this.p2 = t2Center.Translate(direction.Scale(-offset));
 
         g2d.setStroke(new BasicStroke(2));
         g2d.setColor(color);
