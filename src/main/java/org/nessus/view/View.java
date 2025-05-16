@@ -18,7 +18,7 @@ public class View extends JFrame {
     private static View instance;
     
     private Controller controller = new Controller(this);
-    private SelectionCatalog selection = new SelectionCatalog();
+    private SelectionCatalog selection;
     private ObjectStore objectStore = new ObjectStore();
     
     private JPanel mainPanel;
@@ -29,6 +29,7 @@ public class View extends JFrame {
      * A konstruktor privát, mert nem szükséges példányosítani az osztályt.
      */
     private View() {
+        selection = new SelectionCatalog(this);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setSize(new Dimension(1280, 720));
         setLocationRelativeTo(null);

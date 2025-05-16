@@ -19,6 +19,7 @@ public class ShroomThreadView implements IEntityView {
     private Point p2 = null;
 
     private Color color = null;
+    private boolean selection = false;
 
     public ShroomThreadView(ShroomThread shroomThread, Color color) {
         this.model = shroomThread;
@@ -66,7 +67,7 @@ public class ShroomThreadView implements IEntityView {
 
     @Override
     public boolean IsViewing(Object obj) {
-        return false;
+        return model == obj;
     }
 
     @Override
@@ -81,5 +82,8 @@ public class ShroomThreadView implements IEntityView {
     @Override
     public void Accept(EntitySelector selector) {
         selector.Visit(this);
+    }
+    public void SetSelected(boolean selected){
+        selection = selected;
     }
 }

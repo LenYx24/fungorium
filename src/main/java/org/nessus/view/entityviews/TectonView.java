@@ -157,7 +157,7 @@ public class TectonView extends EntitySpriteView{
 
     @Override
     public boolean IsViewing(Object obj) {
-        return false;
+        return model == obj;
     }
 
     @Override

@@ -15,35 +15,64 @@ public class SelectionCatalog {
     private Bug selectedBug = null;
     private ShroomThread selectedShroomThread = null;
     private ShroomBody selectedShroomBody = null;
+    private View view;
 
+    public SelectionCatalog(View view) {
+        this.view = view;
+    }
+
+    private void SetViewSelection(Object obj){
+        view.GetObjectStore().FindEntityView(obj).SetSelected(true);
+    }
+    private void SetViewSelection(Tecton tecton){
+        view.GetObjectStore().FindTectonView(tecton).SetSelected(true);
+    }
+    private void UnsetViewSelection(Object obj){
+        view.GetObjectStore().FindEntityView(obj).SetSelected(false);
+    }
+    private void UnsetViewSelection(Tecton tecton){
+        view.GetObjectStore().FindTectonView(tecton).SetSelected(false);
+    }
     public void SelectBug(Bug bug) {
         selectedBug = bug;
+        SetViewSelection(bug);
     }
 
     public void SelectShroomThread(ShroomThread thread){
         selectedShroomThread = thread;
+        SetViewSelection(thread);
     }
 
     public void SelectShroomBody(ShroomBody body) {
         selectedShroomBody = body;
+        SetViewSelection(body);
     }
 
     public void SelectSpore(Spore spore) {
         selectedSpore = spore;
+        SetViewSelection(spore);
     }
 
     public void SelectTecton(Tecton tecton) {
         if(selectedTectons.size() > 1){
             selectedTectons.remove(0);
+            UnsetViewSelection(tecton);
         }
         selectedTectons.add(tecton);
+        SetViewSelection(tecton);
     }
-
     public void ClearSelection(){
         selectedBug = null;
+        UnsetViewSelection(selectedBug);
         selectedShroomBody = null;
+        UnsetViewSelection(selectedShroomBody);
         selectedShroomThread = null;
+        UnsetViewSelection(selectedShroomThread);
         selectedSpore = null;
+        UnsetViewSelection(selectedSpore);
+        for(Tecton t : selectedTectons){
+            UnsetViewSelection(t);
+        }
         selectedTectons.clear();
     }
 

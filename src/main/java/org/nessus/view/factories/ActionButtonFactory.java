@@ -74,7 +74,21 @@ public class ActionButtonFactory {
         });
     }
     public JButton CreateBugCutButton(){
-        return new JButton("NOT IMPLEMENTED");
+        return CreateActionButton("Rovar gombafonal elvágása",(View view)->{
+            var bug = view.GetSelection().GetBug();
+            var shroomThread = view.GetSelection().GetShroomThread();
+            if(bug != null && shroomThread != null)
+            {
+                IBugOwnerController bugOwner = controller.GetCurrentBugOwnerController();
+                if(bugOwner != null && bugOwner == bug.GetOwner())
+                {
+                    bugOwner.CutThread(bug, shroomThread);
+                    UpdateActionPoints();
+                    return true;
+                }
+            }
+            return false;
+        });
     }
     public JButton CreateThrowSporeButton()
     {
@@ -96,7 +110,19 @@ public class ActionButtonFactory {
         });
     }
     public JButton CreateShroomThreadDevourButton(){
-        return new JButton("NOT IMPLEMENTED");
+        return CreateActionButton("Rovar elfogyasztása gombafonallal", view -> {
+            var shroomThread = view.GetSelection().GetShroomThread();
+            var bug = view.GetSelection().GetBug();
+            if (shroomThread != null && bug != null) {
+                var shroom = controller.GetCurrentShroomController();
+                if (shroomThread.GetShroom() == view.GetController().GetCurrentShroomController()) {
+                    shroom.ShroomThreadDevourBug(shroomThread, bug);
+                    UpdateActionPoints();
+                    return true;
+                }
+            }
+            return false;
+        });
     }
     public JButton CreatePlaceShroomBodyButton()
     {
@@ -117,7 +143,18 @@ public class ActionButtonFactory {
         });
     }
     public JButton CreateUpgradeShroomBodyButton(){
-        return new JButton("NOT IMPLEMENTED");
+        return CreateActionButton("Gombatest fejlesztése", view -> {
+            var shroomBody = view.GetSelection().GetShroomBody();
+            if (shroomBody != null) {
+                var shroom = controller.GetCurrentShroomController();
+                if (shroom != null && shroomBody.GetShroom() == shroom) {
+                    shroom.UpgradeShroomBody(shroomBody);
+                    UpdateActionPoints();
+                    return true;
+                }
+            }
+            return false;
+        });
     }
     public JButton CreatePlaceShroomThreadButton(){
         return CreateActionButton("Gombafonal növesztése", view -> {

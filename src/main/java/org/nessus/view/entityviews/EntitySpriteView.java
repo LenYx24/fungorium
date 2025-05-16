@@ -13,6 +13,7 @@ public abstract class EntitySpriteView implements IEntityView{
     protected double y;
     protected BufferedImage image;
     protected int size = 100;
+    protected boolean selection = false;
     public double GetX(){
         return x;
     }
@@ -24,6 +25,12 @@ public abstract class EntitySpriteView implements IEntityView{
     protected void DrawSprite(Graphics2D g2d){
         int _x = (int)x - size/2;
         int _y = (int)y - size/2;
+        if(selection){
+            int padding = 2;
+            g2d.setStroke(new BasicStroke(padding));
+            g2d.setColor(new Color(255,0,0));
+            g2d.drawRect(_x - padding,_y - padding,size + 2*padding,size + 2*padding);
+        }
         g2d.drawImage(image, _x, _y,size,size,null);
     }
     public boolean ContainsPoint(int x, int y) {
@@ -39,5 +46,8 @@ public abstract class EntitySpriteView implements IEntityView{
             System.out.println("HIT: " + this);
         }
         return boundCheckX && boundCheckY;
+    }
+    public void SetSelected(boolean selected){
+        selection = selected;
     }
 }

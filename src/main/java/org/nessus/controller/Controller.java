@@ -154,6 +154,7 @@ public class Controller implements IRandomProvider {
     }
 
     public void StartAction(IActionController action){
+        view.GetSelection().ClearSelection();
         currentAction = action;
     }
 

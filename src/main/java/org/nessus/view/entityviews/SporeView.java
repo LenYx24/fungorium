@@ -38,7 +38,7 @@ public class SporeView extends EntitySpriteView{
 
     @Override
     public boolean IsViewing(Object obj) {
-        return false;
+        return model == obj;
     }
 
     @Override

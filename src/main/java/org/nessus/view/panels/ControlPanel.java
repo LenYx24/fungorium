@@ -9,9 +9,7 @@ import org.nessus.view.factories.ActionButtonFactory;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
+import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
@@ -23,20 +21,25 @@ import java.util.List;
 public class ControlPanel extends JPanel {
     private View view;
     private List<JButton> bugActions;
-    private List<JButton> shroomBodyActions;
-    private List<JButton> shroomThreadActions;
-    private List<JButton> tectonActions;
+    private List<JButton> shroomActions;
     private JButton nextPlayerBtn;
     private JButton endGameBtn;
     private JTextArea infoArea;
     private JLabel playerLabel;
     private JLabel actionPointsLabel;
+    private JPanel buttonPanel;
 
     Dimension buttonSize = new Dimension(180, 30); // width: 180px, height: 30px
 
-    private void styleLabel(JLabel label) {
+    private void StyleLabel(JLabel label) {
         label.setForeground(Color.WHITE);
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
+    }
+    private void StyleButton(JButton button){
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        button.setMaximumSize(buttonSize);
+        button.setPreferredSize(buttonSize);
+        button.setMinimumSize(buttonSize);
     }
     private void SetPlayerLabelText(String name){
         playerLabel.setText("Játékos: " + name);
@@ -52,65 +55,58 @@ public class ControlPanel extends JPanel {
         setBorder(new EmptyBorder(5, 5, 5, 5));
     
         // --- Top Labels ---
-        playerLabel = new JLabel("TODO");
-        // Az alábbi kód azért nem jó, mert az ObjectStoreban még nincs benne a bugOwner, mivel a ControlPanel,
-        // már az alkalmazás legelején létrejön, nem a settingsPanel után
-        // TODO: Megírni, hogy amikor előtérbe kerül a ControlPanel akkor legyen updateelve a PlayerLabel
-        addComponentListener(new ComponentAdapter() {
-            public void ComponentShown(ComponentEvent e) {
-                SetPlayerLabelText(view.GetObjectStore().GetBugOwnerName(view.GetController().GetCurrentBugOwnerController()));
-            }
-        });
+        playerLabel = new JLabel("");
 
-        actionPointsLabel = new JLabel();
-        // TODO: Kell egy új metódus az ActionPointCatalog osztályba, és ezen felül a BugOwner és Shroom osztályokba
-        // amelyek visszaadják az akciópont értékét
-        SetActionPointsLabelText("TODO");
+        actionPointsLabel = new JLabel("");
 
-        styleLabel(playerLabel);
-        styleLabel(actionPointsLabel);
+        StyleLabel(playerLabel);
+        StyleLabel(actionPointsLabel);
         add(playerLabel);
         add(actionPointsLabel);
         add(Box.createVerticalStrut(10)); // spacing
 
         ActionButtonFactory actionButtonFactory = new ActionButtonFactory(view.GetController());
-        // --- Shroom Action Buttons ---
+        buttonPanel = new JPanel(new CardLayout());
+        // --- Bug Action Buttons ---
+        JPanel bugActionPanel = new JPanel();
+        bugActionPanel.setLayout(new BoxLayout(bugActionPanel, BoxLayout.Y_AXIS));
 
         bugActions = new ArrayList<>();
         bugActions.add(actionButtonFactory.CreateBugMoveButton());
         bugActions.add(actionButtonFactory.CreateBugEatButton());
+        bugActions.add(actionButtonFactory.CreateBugCutButton());
 
         for (JButton button : bugActions) {
-            button.setAlignmentX(Component.CENTER_ALIGNMENT);
-            button.setMaximumSize(buttonSize);
-            button.setPreferredSize(buttonSize);
-            button.setMinimumSize(buttonSize);
-            add(button);
-            add(Box.createVerticalStrut(5));
+            StyleButton(button);
+            bugActionPanel.add(button);
+            bugActionPanel.add(Box.createVerticalStrut(5));
         }
+        buttonPanel.add(bugActionPanel,"bugButtons");
         // --- Shroom Action Buttons ---
+        JPanel shroomActionPanel = new JPanel();
+        shroomActionPanel.setLayout(new BoxLayout(shroomActionPanel, BoxLayout.Y_AXIS));
 
-        shroomBodyActions = new ArrayList<>();
-        shroomBodyActions.add(actionButtonFactory.CreateThrowSporeButton());
-        shroomBodyActions.add(actionButtonFactory.CreatePlaceShroomBodyButton());
-        shroomBodyActions.add(actionButtonFactory.CreateUpgradeShroomBodyButton());
-        shroomBodyActions.add(actionButtonFactory.CreatePlaceShroomThreadButton());
+        shroomActions = new ArrayList<>();
+        shroomActions.add(actionButtonFactory.CreateThrowSporeButton());
+        shroomActions.add(actionButtonFactory.CreatePlaceShroomBodyButton());
+        shroomActions.add(actionButtonFactory.CreateUpgradeShroomBodyButton());
+        shroomActions.add(actionButtonFactory.CreatePlaceShroomThreadButton());
+        shroomActions.add(actionButtonFactory.CreateShroomThreadDevourButton());
     
-        for (JButton button : shroomBodyActions) {
-            button.setAlignmentX(Component.CENTER_ALIGNMENT);
-            button.setMaximumSize(buttonSize);
-            button.setPreferredSize(buttonSize);
-            button.setMinimumSize(buttonSize);
-            add(button);
-            add(Box.createVerticalStrut(5));
+        for (JButton button : shroomActions) {
+            StyleButton(button);
+            shroomActionPanel.add(button);
+            shroomActionPanel.add(Box.createVerticalStrut(5));
         }
-    
+        buttonPanel.add(shroomActionPanel,"shroomButtons");
+        ((CardLayout)buttonPanel.getLayout()).show(buttonPanel, "bugButtons");
+        add(buttonPanel);
         // --- Glue to push middle section to vertical center ---
         add(Box.createVerticalGlue());
     
         // --- Centered Object Info Section ---
         JLabel objectInfoLabel = new JLabel("Objektum jellemzői:");
-        styleLabel(objectInfoLabel);
+        StyleLabel(objectInfoLabel);
         add(objectInfoLabel);
     
         infoArea = new JTextArea("Spóra anyagok: 2\nSzint: 3\nHátralévő köpések: 1\nMilán szereti Ádámot");
@@ -120,7 +116,6 @@ public class ControlPanel extends JPanel {
         infoArea.setMaximumSize(new Dimension(180, 250));
         infoArea.setPreferredSize(new Dimension(180, 250)); // increased height
         add(infoArea);
-
     
         // --- Glue to push bottom buttons to bottom ---
         add(Box.createVerticalGlue());
@@ -128,19 +123,11 @@ public class ControlPanel extends JPanel {
         // --- Bottom Buttons ---
         nextPlayerBtn = new JButton("Következő játékos");
         nextPlayerBtn.addActionListener(e -> view.GetController().NextPlayer());
+        StyleButton(nextPlayerBtn);
 
         endGameBtn = new JButton("Játék vége");
         endGameBtn.addActionListener(e -> EndGame());
-
-        nextPlayerBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
-        nextPlayerBtn.setMaximumSize(buttonSize);
-        nextPlayerBtn.setPreferredSize(buttonSize);
-        nextPlayerBtn.setMinimumSize(buttonSize);
-
-        endGameBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
-        endGameBtn.setMaximumSize(buttonSize);
-        endGameBtn.setPreferredSize(buttonSize);
-        endGameBtn.setMinimumSize(buttonSize);
+        StyleButton(nextPlayerBtn);
 
         add(nextPlayerBtn);
         add(Box.createVerticalStrut(5));
@@ -155,14 +142,20 @@ public class ControlPanel extends JPanel {
     {
         SetPlayerLabelText(name);
         UpdateActionPoints();
+        CardLayout buttonsLayout = (CardLayout)buttonPanel.getLayout();
+        if(view.GetController().IsBugOwnerRound()){
+            buttonsLayout.show(buttonPanel, "bugButtons");
+        }else{
+            buttonsLayout.show(buttonPanel, "shroomButtons");
+        }
     }
 
     public void UpdateActionPoints()
     {
         if (view.GetController().IsBugOwnerRound())
         {
-            BugOwner current = (BugOwner)view.GetController().GetCurrentPlayer();
-            SetActionPointsLabelText(String.valueOf(current.GetActionPointCatalog().GetCurrentPoints()));
+            BugOwner bugOwner = (BugOwner)view.GetController().GetCurrentPlayer();
+            SetActionPointsLabelText(String.valueOf(bugOwner.GetActionPointCatalog().GetCurrentPoints()));
         }
         else
         {

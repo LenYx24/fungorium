@@ -88,6 +88,13 @@ public class ObjectStore implements IGameObjectStore {
     public List<IEntityView> GetEntityViews() {
         return views;
     }
+    public IEntityView FindEntityView(Object obj){
+        for(IEntityView e : views){
+            if(e.GetModel() == obj)
+                return e;
+        };
+        return null;
+    }
     public TectonView FindTectonView(Tecton tecton){
         return tectons.get(tecton);
     }

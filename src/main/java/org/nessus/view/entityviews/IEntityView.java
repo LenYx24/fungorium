@@ -12,4 +12,5 @@ public interface IEntityView {
     String GetEntityInfo();
     void Accept(EntitySelector selector);
     Object GetModel();
+    void SetSelected(boolean selected);
 }

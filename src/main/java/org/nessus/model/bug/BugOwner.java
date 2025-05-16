@@ -143,4 +143,7 @@ public class BugOwner implements IBugOwnerController {
     public ActionPointCatalog GetActionPointCatalog() {
         return actCatalog;
     }
+    public List<Bug> GetBugs(){
+        return bugs;
+    }
 }
