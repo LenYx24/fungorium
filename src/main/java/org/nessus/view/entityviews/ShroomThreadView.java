@@ -45,7 +45,17 @@ public class ShroomThreadView implements IEntityView {
 
         t1View.InsertShroomThread(this);
         t2View.InsertShroomThread(this);
-        
+
+        Point t1Center = new Point(t1View.GetX(), t1View.GetY()); // Center of tecton 1
+        Point t2Center = new Point(t2View.GetX(), t2View.GetY()); // Center of tecton 2
+
+        Vec2 direction = new Vec2(t1Center, t2Center).Normalize();
+
+        // Shift from center to edge along direction
+        double offset = 50.0;
+        this.p1 = t1Center.Translate(direction.Scale(offset));
+        this.p2 = t2Center.Translate(direction.Scale(-offset));
+
         g2d.setStroke(new BasicStroke(2));
         g2d.setColor(color);
 
@@ -54,6 +64,7 @@ public class ShroomThreadView implements IEntityView {
         var endPoint = p1.Translate(distanceVector.Scale(growthRate));
         g2d.drawLine((int)p1.x, (int)p1.y, (int)endPoint.x, (int)endPoint.y);
     }
+
 
     @Override
     public int GetLayer() {

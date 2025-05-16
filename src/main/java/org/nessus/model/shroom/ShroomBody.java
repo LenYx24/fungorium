@@ -33,6 +33,7 @@ public class ShroomBody {
     public ShroomBody(Shroom shroom, Tecton tecton) {
         this.shroom = shroom;
         this.tecton = tecton;
+        shroom.SetShroomBody(this);
     }
 
     /**
