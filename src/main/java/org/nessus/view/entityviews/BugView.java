@@ -1,12 +1,15 @@
 package org.nessus.view.entityviews;
 
 import org.nessus.model.bug.Bug;
+import org.nessus.model.effect.CoffeeEffect;
+import org.nessus.model.effect.SlowEffect;
 import org.nessus.model.tecton.Tecton;
 import org.nessus.utility.EntitySelector;
 import org.nessus.view.IGameObjectStore;
 import org.nessus.view.View;
 import org.nessus.utility.Point;
 
+import javax.management.ObjectInstance;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -62,12 +65,12 @@ public class BugView extends EntitySpriteView{
             info = info.concat("SZÁJZÁRT\n");
         }
 
-        if (model.GetMoveCost() == 1)
+        if (model.GetEffects().stream().anyMatch(effect -> effect instanceof CoffeeEffect))
         {
             info = info.concat("GYORSÍTVA\n");
         }
 
-        if (model.GetMoveCost() == 4)
+        if (model.GetEffects().stream().anyMatch(effect -> effect instanceof SlowEffect))
         {
             info = info.concat("LASSÍTVA\n");
         }

@@ -94,8 +94,17 @@ public class Controller implements IRandomProvider {
                     tecton = new DesertTecton();
                     break;
                 case 1:
-                    tecton = new InfertileTecton();
+                {
+                    if (disconnected.size() >= shrooms.size())
+                    {
+                        tecton = new InfertileTecton();
+                    }
+                    else
+                    {
+                        tecton = new Tecton();
+                    }
                     break;
+                }
                 case 2:
                     tecton = new SingleThreadTecton();
                     break;
@@ -142,14 +151,13 @@ public class Controller implements IRandomProvider {
         for (var shroom : shrooms) {
             var tecton = RandomOf(connected);
 
-            while (tecton.GetShroomBody() != null)
+            while (tecton.GetShroomBody() != null || tecton instanceof InfertileTecton)
                 tecton = RandomOf(connected);
 
             ShroomBody shroomBody = new ShroomBody((Shroom)shroom, tecton);
             tecton.SetShroomBody(shroomBody);
             store.AddShroomBody(shroomBody);
         }
-
         NextPlayer();
     }
 

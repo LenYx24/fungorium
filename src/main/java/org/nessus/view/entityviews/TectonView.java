@@ -1,6 +1,6 @@
 package org.nessus.view.entityviews;
 
-import org.nessus.model.tecton.Tecton;
+import org.nessus.model.tecton.*;
 import org.nessus.utility.EntitySelector;
 import org.nessus.model.shroom.ShroomThread;
 
@@ -121,7 +121,6 @@ public class TectonView extends EntitySpriteView{
     public void InsertEntity(EntitySpriteView entityView){
         Point p = pointsForEntites.poll();
         if(p == null){
-            System.out.println("NULLL A PÉÉÉÉÉÉÉ");
             return;
         }
         entityView.x = p.x;
@@ -161,8 +160,21 @@ public class TectonView extends EntitySpriteView{
     }
 
     @Override
-    public String GetEntityInfo() {
-        return "";
+    public String GetEntityInfo()
+    {
+        if (model instanceof DesertTecton)
+            return "Sivatagi Tekton";
+
+        else if (model instanceof InfertileTecton)
+            return "Terméketlen Tekton";
+
+        else if (model instanceof ThreadSustainerTecton)
+            return "Fonáltartó Tekton";
+
+        else if (model instanceof SingleThreadTecton)
+            return "Egyfonalas Tekton";
+
+        else return "Tekton";
     }
 
     public Tecton GetModel() {
