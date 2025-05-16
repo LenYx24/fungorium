@@ -5,16 +5,12 @@ import org.nessus.controller.IActionController;
 import org.nessus.controller.IBugOwnerController;
 import org.nessus.controller.IShroomController;
 import org.nessus.model.bug.Bug;
-import org.nessus.model.shroom.Shroom;
 import org.nessus.model.shroom.ShroomBody;
-import org.nessus.model.shroom.ShroomThread;
 import org.nessus.model.shroom.Spore;
 import org.nessus.model.tecton.Tecton;
 import org.nessus.view.View;
-import org.nessus.view.panels.GamePanel;
 
 import javax.swing.*;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
@@ -94,12 +90,12 @@ public class ActionButtonFactory {
     {
         return CreateActionButton("Spóraköpés",(View view)->{
             List<Tecton> tectons = view.GetSelection().GetTectons();
+            ShroomBody body = view.GetSelection().GetShroomBody();
             if(!tectons.isEmpty())
             {
-                ShroomBody body = view.GetSelection().GetShroomBody();
                 Tecton destination = tectons.getLast();
                 IShroomController shroomOwner = controller.GetCurrentShroomController();
-                if(shroomOwner != null)
+                if(shroomOwner != null && body != null)
                 {
                     shroomOwner.ThrowSpore(body, destination);
                     UpdateActionPoints();

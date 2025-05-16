@@ -28,10 +28,14 @@ public class SelectionCatalog {
         view.GetObjectStore().FindTectonView(tecton).SetSelected(true);
     }
     private void UnsetViewSelection(Object obj){
-        view.GetObjectStore().FindEntityView(obj).SetSelected(false);
+        if(obj != null){
+            view.GetObjectStore().FindEntityView(obj).SetSelected(false);
+        }
     }
     private void UnsetViewSelection(Tecton tecton){
-        view.GetObjectStore().FindTectonView(tecton).SetSelected(false);
+        if(tecton != null){
+            view.GetObjectStore().FindTectonView(tecton).SetSelected(false);
+        }
     }
     public void SelectBug(Bug bug) {
         selectedBug = bug;
@@ -62,14 +66,14 @@ public class SelectionCatalog {
         SetViewSelection(tecton);
     }
     public void ClearSelection(){
-        selectedBug = null;
         UnsetViewSelection(selectedBug);
-        selectedShroomBody = null;
+        selectedBug = null;
         UnsetViewSelection(selectedShroomBody);
-        selectedShroomThread = null;
+        selectedShroomBody = null;
         UnsetViewSelection(selectedShroomThread);
-        selectedSpore = null;
+        selectedShroomThread = null;
         UnsetViewSelection(selectedSpore);
+        selectedSpore = null;
         for(Tecton t : selectedTectons){
             UnsetViewSelection(t);
         }

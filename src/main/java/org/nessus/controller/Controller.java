@@ -206,7 +206,6 @@ public class Controller implements IRandomProvider {
      * @return void
      */
     public void AddBugOwner(IBugOwnerController bugOwner) {
-        // TODO: Kellene a nevet is megadni amikor létrejön a bug, kell egy új string paraméter
         bugOwners.add(bugOwner);
         currentBugOwner = bugOwner;
     }
@@ -217,7 +216,6 @@ public class Controller implements IRandomProvider {
      * @return void
      */
     public void AddShroom(IShroomController shroom) {
-        // TODO: Kellene a nevet is megadni amikor létrejön a shroom, kell egy új string paraméter
         shrooms.add(shroom);
         currentShroom = shroom;
     }
