@@ -126,6 +126,7 @@ public class ShroomBody {
         if (remainingThrows <= 0) {
             tecton.ClearShroomBody();
             shroom.RemoveShroomBody(this);
+            View.GetGameObjectStore().RemoveEntity(this);
         }
 
         return spore;
@@ -158,7 +159,7 @@ public class ShroomBody {
                 }
                 
                 thread.connectedToShroomBody = true;
-                
+
                 if (!visited.contains(neighbour)) {
                     visited.add(neighbour);
                     queue.add(neighbour);

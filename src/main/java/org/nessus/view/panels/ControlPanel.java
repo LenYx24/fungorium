@@ -167,7 +167,8 @@ public class ControlPanel extends JPanel {
 
     public void UpdateEntityInfo(IEntityView view)
     {
-        infoArea.setText(view.GetEntityInfo());
+        if (view != null)
+            infoArea.setText(view.GetEntityInfo());
     }
 
     public void ClearInfo()

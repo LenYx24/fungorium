@@ -57,8 +57,7 @@ public class ObjectStore implements IGameObjectStore {
     }
 
     public void RemoveEntity(Object model) {
-        views.remove(model);
-        tectons.remove(model);
+        views.remove(FindEntityView(model));
     } 
     
     public void AddBug(Bug bug){

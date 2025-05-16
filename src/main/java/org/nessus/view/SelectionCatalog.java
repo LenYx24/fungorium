@@ -8,6 +8,7 @@ import org.nessus.model.shroom.ShroomBody;
 import org.nessus.model.shroom.ShroomThread;
 import org.nessus.model.shroom.Spore;
 import org.nessus.model.tecton.Tecton;
+import org.nessus.view.entityviews.IEntityView;
 
 public class SelectionCatalog {
     private List<Tecton> selectedTectons = new ArrayList<>();
@@ -22,22 +23,25 @@ public class SelectionCatalog {
     }
 
     private void SetViewSelection(Object obj){
-        if(obj != null)
-            view.GetObjectStore().FindEntityView(obj).SetSelected(true);
+        var entityView = view.GetObjectStore().FindEntityView(obj);
+        if (entityView != null)
+            entityView.SetSelected(true);
     }
+
     private void SetViewSelection(Tecton tecton){
         view.GetObjectStore().FindTectonView(tecton).SetSelected(true);
     }
+
     public void UnsetViewSelection(Object obj){
-        if(obj != null){
+        var entityView = view.GetObjectStore().FindEntityView(obj);
+        if (entityView != null)
             view.GetObjectStore().FindEntityView(obj).SetSelected(false);
-        }
     }
+
     private void UnsetViewSelection(Tecton tecton){
-        if(tecton != null){
-            view.GetObjectStore().FindTectonView(tecton).SetSelected(false);
-        }
+        view.GetObjectStore().FindTectonView(tecton).SetSelected(false);
     }
+
     public void SelectBug(Bug bug)
     {
         if (selectedBug == null)
