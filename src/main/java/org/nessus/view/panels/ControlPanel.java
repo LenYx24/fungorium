@@ -122,12 +122,15 @@ public class ControlPanel extends JPanel {
     
         // --- Bottom Buttons ---
         nextPlayerBtn = new JButton("Következő játékos");
-        nextPlayerBtn.addActionListener(e -> view.GetController().NextPlayer());
+        nextPlayerBtn.addActionListener(e -> {
+            view.GetController().NextPlayer();
+            view.requestFocus();
+        });
         StyleButton(nextPlayerBtn);
 
         endGameBtn = new JButton("Játék vége");
         endGameBtn.addActionListener(e -> EndGame());
-        StyleButton(nextPlayerBtn);
+        StyleButton(endGameBtn); // Fixed: Apply styling to endGameBtn instead of nextPlayerBtn again
 
         add(nextPlayerBtn);
         add(Box.createVerticalStrut(5));
