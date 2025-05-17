@@ -8,6 +8,7 @@ import org.nessus.view.entityviews.*;
 import org.nessus.view.panels.*;
 
 import javax.swing.*;
+import com.formdev.flatlaf.FlatDarkLaf; // Changed from FlatLightLaf to FlatDarkLaf
 
 /**
  * Ez a singleton View osztály felelős a program futtatásáért.
@@ -148,6 +149,14 @@ public class View extends JFrame {
      */
     public static void main(String[] args) {
         System.setProperty("sun.java2d.opengl", "true");
+        
+        // Set up FlatLaf
+        try {
+            UIManager.setLookAndFeel(new FlatDarkLaf()); // Changed to FlatDarkLaf
+        } catch (Exception ex) {
+            System.err.println("Failed to initialize FlatLaf");
+        }
+        
         System.out.println("Üdv a grafikus fázisban");
 
         SwingUtilities.invokeLater(() -> {
