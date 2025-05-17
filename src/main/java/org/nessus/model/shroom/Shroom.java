@@ -58,29 +58,48 @@ public class Shroom implements IShroomController {
     public void PlaceShroomThread(Tecton tecton1, Tecton tecton2) {
         boolean enough = actCatalog.HasEnoughPoints(shroomThreadCost);
         boolean neighbours = tecton1.IsNeighbourOf(tecton2);
-
         
         ShroomBody body1 = tecton1.GetShroomBody();
         ShroomBody body2 = tecton2.GetShroomBody();
         
-        boolean connectedToBody = (body1 != null && body1.GetShroom() == this) || (body2 != null && body2.GetShroom() == this);
+        Tecton start = null;
+        Tecton end = null;
 
-        List<ShroomThread> funcThreads = new ArrayList<>();
+        boolean connectedToBody = false;
+        
+        if (body1 != null && body1.GetShroom() == this) {
+            connectedToBody = true;
+            start = tecton1;
+            end = tecton2;
+        }
 
-        funcThreads.addAll(tecton1.GetShroomThreads());
-        funcThreads.addAll(tecton2.GetShroomThreads());
+        if (body2 != null && body2.GetShroom() == this) {
+            connectedToBody = true;
+            start = tecton2;
+            end = tecton1;
+        }
 
         if (!connectedToBody) {
-            for (ShroomThread thread : funcThreads) {
+            for (ShroomThread thread : tecton1.GetShroomThreads()) {
                 if (thread.GetShroom() == this && thread.connectedToShroomBody) {
                     connectedToBody = true;
+                    start = tecton1;
+                    end = tecton2;
                     break;
+                }
+            }
+
+            for (ShroomThread thread : tecton2.GetShroomThreads()) {
+                if (thread.GetShroom() == this && thread.connectedToShroomBody) {
+                    connectedToBody = true;
+                    start = tecton2;
+                    end = tecton1;
                 }
             }
         }
 
         if (enough && neighbours && connectedToBody) {
-            ShroomThread newThread = new ShroomThread(this, tecton1, tecton2);
+            ShroomThread newThread = new ShroomThread(this, start, end);
             newThread.SetConnectedToShroomBody(connectedToBody);
 
             boolean t1success = tecton1.GrowShroomThread(newThread);
