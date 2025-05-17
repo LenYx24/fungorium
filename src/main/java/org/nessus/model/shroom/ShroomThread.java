@@ -188,4 +188,7 @@ public class ShroomThread {
     public int GetEvolution() {
         return evolution;
     }
+    public boolean IsDying(){
+        return cut || (!connectedToShroomBody && !sustained);
+    }
 }

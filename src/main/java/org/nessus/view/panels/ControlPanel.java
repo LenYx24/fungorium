@@ -29,7 +29,7 @@ public class ControlPanel extends JPanel {
     private JLabel actionPointsLabel;
     private JPanel buttonPanel;
 
-    Dimension buttonSize = new Dimension(180, 30); // width: 180px, height: 30px
+    Dimension buttonSize = new Dimension(250, 30); // width: 180px, height: 30px
 
     private void StyleLabel(JLabel label) {
         label.setForeground(Color.WHITE);

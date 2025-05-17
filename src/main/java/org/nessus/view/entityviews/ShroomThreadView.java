@@ -77,6 +77,9 @@ public class ShroomThreadView implements IEntityView {
 
         }
         g2d.setColor(color);
+        if(model.IsDying()){
+            g2d.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 128));
+        }
         g2d.setStroke(new BasicStroke(size));
         g2d.drawLine((int)p1.x, (int)p1.y, (int)endPoint.x, (int)endPoint.y);
     }
@@ -90,9 +93,6 @@ public class ShroomThreadView implements IEntityView {
     @Override
     public boolean ContainsPoint(int x, int y) {
         Point hit = new Point(x, y);
-        /*double numerator = Math.abs((p2.x - p1.x)*(p1.y - hit.y) - (p1.x - hit.x)*(p2.y - p1.y));
-        double denominator = Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
-        double distance = numerator / denominator;*/
         Vec2 p1p2 = new Vec2(p1,p2);
         double lineLength = p1p2.Length();
         Vec2 v0 = p1p2.Normalize();

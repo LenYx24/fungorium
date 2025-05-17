@@ -55,15 +55,19 @@ public class Spore {
      */
     public void EatenBy(Bug bug) {
         IRandomProvider rand = View.GetRandomProvider();
-        BugEffect randEffect = rand.RandomBugEffect();
-        
-        bug.AddNutrients(nutrients);
-        bug.AddEffect(randEffect);
+
+        if(rand.RandomBoolean()){
+            BugEffect randEffect = rand.RandomBugEffect();
+            bug.AddNutrients(nutrients);
+            bug.AddEffect(randEffect);
+            randEffect.ApplyOn(bug);
+        }
 
         View.GetGameObjectStore().RemoveEntity(this);
 
         tecton.RemoveSpore(this);
         shroom.RemoveSpore(this);
+
     }
 
     /**

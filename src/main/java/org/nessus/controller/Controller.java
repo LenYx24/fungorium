@@ -238,20 +238,6 @@ public class Controller implements IRandomProvider {
                 currentAction = null;
                 view.GetSelection().ClearSelection();
             }
-            return;
-        }
-
-        var selection = view.GetSelection();
-
-        if (bugOwnerRound && selection.GetBug() != null) {
-            view.ShowBugActions();
-        } else {
-            if (selection.GetShroomBody() != null)
-                view.ShowShroomBodyActions();
-            else if (selection.GetShroomThread() != null)
-                view.ShowShroomThreadActions();
-            else if (selection.GetTectons() != null)
-                view.ShowTectonActions();
         }
     }
 

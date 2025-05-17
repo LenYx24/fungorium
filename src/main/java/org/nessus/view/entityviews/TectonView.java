@@ -48,7 +48,7 @@ public class TectonView extends EntitySpriteView{
         int entityCount = model.GetEntityCount();
         if (entityCount == 0) return;
 
-        int containerSize = size - 20;
+        int containerSize = size - 30;
         int cols = (int) Math.ceil(Math.sqrt(entityCount));
         int rows = (int) Math.ceil((double) entityCount / cols);
         cellSize = Math.min(containerSize / cols, containerSize / rows);

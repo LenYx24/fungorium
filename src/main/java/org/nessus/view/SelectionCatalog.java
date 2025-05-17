@@ -44,10 +44,10 @@ public class SelectionCatalog {
 
     public void SelectBug(Bug bug)
     {
-        if (selectedBug == null)
+        if (selectedBug == bug)
         {
-            selectedBug = bug;
-            SetViewSelection(bug);
+            UnsetViewSelection(bug);
+            selectedBug = null;
         }
         else
         {
@@ -59,10 +59,10 @@ public class SelectionCatalog {
 
     public void SelectShroomThread(ShroomThread thread)
     {
-        if (selectedShroomThread == null)
+        if (selectedShroomThread == thread)
         {
-            selectedShroomThread = thread;
             SetViewSelection(thread);
+            selectedShroomThread = null;
         }
         else
         {
@@ -73,10 +73,10 @@ public class SelectionCatalog {
     }
 
     public void SelectShroomBody(ShroomBody body) {
-        if (selectedShroomBody == null)
+        if (selectedShroomBody == body)
         {
-            selectedShroomBody = body;
-            SetViewSelection(body);
+            UnsetViewSelection(body);
+            selectedShroomBody = null;
         }
         else
         {
@@ -87,10 +87,10 @@ public class SelectionCatalog {
     }
 
     public void SelectSpore(Spore spore) {
-        if (selectedSpore == null)
+        if (selectedSpore == spore)
         {
-            selectedSpore = spore;
-            SetViewSelection(spore);
+            UnsetViewSelection(spore);
+            selectedSpore = null;
         }
         else
         {
@@ -101,25 +101,29 @@ public class SelectionCatalog {
     }
 
     public void SelectTecton(Tecton tecton) {
-        if(selectedTectons.size() > 1){
-            UnsetViewSelection(selectedTectons.get(0));
-            selectedTectons.remove(0);
+        if(selectedTectons.contains(tecton)){
+            UnsetViewSelection(tecton);
+            selectedTectons.remove(tecton);
+        }else{
+            if(selectedTectons.size() > 1){
+                UnsetViewSelection(selectedTectons.get(0));
+                selectedTectons.remove(0);
+            }
+            selectedTectons.add(tecton);
+            SetViewSelection(tecton);
         }
-        selectedTectons.add(tecton);
-        SetViewSelection(tecton);
     }
     public void ClearSelection(){
         UnsetViewSelection(selectedBug);
-        selectedBug = null;
         UnsetViewSelection(selectedShroomBody);
-        selectedShroomBody = null;
         UnsetViewSelection(selectedShroomThread);
-        selectedShroomThread = null;
         UnsetViewSelection(selectedSpore);
+        selectedTectons.forEach(this::UnsetViewSelection);
+
+        selectedBug = null;
+        selectedShroomBody = null;
+        selectedShroomThread = null;
         selectedSpore = null;
-        for(Tecton t : selectedTectons){
-            UnsetViewSelection(t);
-        }
         selectedTectons.clear();
     }
 

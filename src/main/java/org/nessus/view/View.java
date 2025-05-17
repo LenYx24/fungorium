@@ -125,22 +125,6 @@ public class View extends JFrame {
         return null;
     }
 
-    public void ShowBugActions() {
-
-    }
-
-    public void ShowShroomBodyActions() {
-
-    }
-
-    public void ShowShroomThreadActions() {
-
-    }
-
-    public void ShowTectonActions() {
-
-    }
-
     public void UpdatePlayerInfo()
     {
         if (controller.IsBugOwnerRound())
