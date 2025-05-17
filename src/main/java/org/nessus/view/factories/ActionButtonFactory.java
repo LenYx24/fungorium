@@ -53,7 +53,7 @@ public class ActionButtonFactory {
                 Bug bug = view.GetSelection().GetBug();
                 Tecton destination = tectons.getLast();
                 IBugOwnerController bugOwner = controller.GetCurrentBugOwnerController();
-                if(bugOwner != null && bugOwner == bug.GetOwner() && bug.GetCanMove()){
+                if(bug != null && bugOwner != null && bugOwner == bug.GetOwner() && bug.GetCanMove()){
                     bugOwner.Move(bug, destination);
                     UpdateActionPoints();
                     return true;

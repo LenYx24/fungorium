@@ -14,6 +14,9 @@ import java.awt.Graphics2D;
 
 public class ShroomThreadView implements IEntityView {
     private ShroomThread model;
+    private Point p1;
+    private Point p2;
+    private int size = 5;
 
     private Vec2 offset;
 
@@ -51,15 +54,30 @@ public class ShroomThreadView implements IEntityView {
         
         // Shift from center to edge along direction
         double tectonEdgeOffset = 50.0;
-        Point p1 = t1Center.Translate(direction.Scale(tectonEdgeOffset)).Translate(offset);
-        Point p2 = t2Center.Translate(direction.Scale(-tectonEdgeOffset)).Translate(offset);
+        p1 = t1Center.Translate(direction.Scale(tectonEdgeOffset)).Translate(offset);
+        p2 = t2Center.Translate(direction.Scale(-tectonEdgeOffset)).Translate(offset);
 
-        g2d.setStroke(new BasicStroke(2));
-        g2d.setColor(color);
-        
+
         var distanceVector = new Vec2(p1, p2);
         var growthRate = (model.GetEvolution() + 1) / 4.0;
         var endPoint = p1.Translate(distanceVector.Scale(growthRate));
+
+        if(selection){
+            g2d.setColor(Color.YELLOW);
+            g2d.setStroke(new BasicStroke((float)size / 2.0f));
+            var norm = direction.Scale(size).Rotate(Math.PI / 2);
+
+            var pBorder1 = p1.Translate(norm);
+            var pEndPoint1 = endPoint.Translate(norm);
+            g2d.drawLine((int)pBorder1.x, (int)pBorder1.y, (int)pEndPoint1.x, (int)pEndPoint1.y);
+
+            var pBorder2 = p1.Translate(norm.Scale(-1));
+            var pEndPoint2 = endPoint.Translate(norm.Scale(-1));
+            g2d.drawLine((int)pBorder2.x, (int)pBorder2.y, (int)pEndPoint2.x, (int)pEndPoint2.y);
+
+        }
+        g2d.setColor(color);
+        g2d.setStroke(new BasicStroke(size));
         g2d.drawLine((int)p1.x, (int)p1.y, (int)endPoint.x, (int)endPoint.y);
     }
 
@@ -71,7 +89,24 @@ public class ShroomThreadView implements IEntityView {
 
     @Override
     public boolean ContainsPoint(int x, int y) {
-        return false;
+        Point hit = new Point(x, y);
+        /*double numerator = Math.abs((p2.x - p1.x)*(p1.y - hit.y) - (p1.x - hit.x)*(p2.y - p1.y));
+        double denominator = Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
+        double distance = numerator / denominator;*/
+        Vec2 p1p2 = new Vec2(p1,p2);
+        double lineLength = p1p2.Length();
+        Vec2 v0 = p1p2.Normalize();
+        Point p = p1;
+        Point r = hit;
+        Vec2 prVec = new Vec2(p,r);
+        double distance = prVec.Dot(v0);
+        if(distance < 0 || distance > lineLength){
+            return false;
+        }
+        Vec2 vProjected = v0.Scale(distance);
+        double dist = prVec.Subtract(vProjected).Length();
+
+        return dist < (double)size;
     }
 
     @Override
