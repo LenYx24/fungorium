@@ -65,12 +65,12 @@ public class BugView extends EntitySpriteView{
             info = info.concat("SZÁJZÁRT\n");
         }
 
-        if (model.GetEffects().stream().anyMatch(effect -> effect instanceof CoffeeEffect))
+        if (model.GetEffects().stream().anyMatch(CoffeeEffect.class::isInstance))
         {
             info = info.concat("GYORSÍTVA\n");
         }
 
-        if (model.GetEffects().stream().anyMatch(effect -> effect instanceof SlowEffect))
+        if (model.GetEffects().stream().anyMatch(SlowEffect.class::isInstance))
         {
             info = info.concat("LASSÍTVA\n");
         }

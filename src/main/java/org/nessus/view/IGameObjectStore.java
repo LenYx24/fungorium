@@ -30,6 +30,7 @@ public interface IGameObjectStore {
     void AddSpore(Spore spore);
     void AddBug(Bug bug);
     void AddTecton(Tecton tecton);
+    void AddTectonAt(Tecton at, Tecton newTecton);
 
     TectonView FindTectonView(Tecton tecton);
     IEntityView FindEntityView(Object obj);

@@ -73,6 +73,14 @@ public class ObjectStore implements IGameObjectStore {
         tectons.put(tecton, texturer.GetResult());
     }
 
+    public void AddTectonAt(Tecton at, Tecton newTecton) {
+        AddTecton(newTecton);
+        var originalView = tectons.get(at);
+        var view = tectons.get(newTecton);
+        view.setX(originalView.GetX());
+        view.setY(originalView.GetY());
+    }
+
     public List<IEntityView> GetEntityViews() {
         return views;
     }

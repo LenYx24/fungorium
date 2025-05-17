@@ -4,6 +4,7 @@ import org.nessus.controller.*;
 import org.nessus.model.bug.Bug;
 import org.nessus.model.shroom.*;
 import org.nessus.utility.TectonTexturer;
+import org.nessus.view.ObjectStore;
 import org.nessus.view.View;
 
 import java.util.ArrayList;
@@ -33,12 +34,13 @@ public class Tecton implements ITectonController {
      * @param copyTecton
      */
     protected void SpreadEntities(Tecton copyTecton) {
+        // Egyelőre kikapcsoltuk, mert ha kikapcsoljuk, akkor a pálya könnyen átláthatatlanná válik
+        // for (Tecton neighbour : neighbours) {
+        //     copyTecton.neighbours.add(neighbour);
+        //     neighbour.neighbours.add(copyTecton);
+        // }
+            
         copyTecton.SetNeighbour(this);
-        for (Tecton neighbour : neighbours) {
-            copyTecton.neighbours.add(neighbour);
-            neighbour.neighbours.add(copyTecton);
-        }
-
         neighbours.add(copyTecton);
 
         IRandomProvider randProvider = View.GetRandomProvider();
@@ -86,7 +88,7 @@ public class Tecton implements ITectonController {
     public void Split() {
         Tecton copyTecton = Copy();
         SpreadEntities(copyTecton);
-        View.GetGameObjectStore().AddTecton(copyTecton);
+        View.GetGameObjectStore().AddTectonAt(this, copyTecton);
 
         //Konkurens Módosítás Kivétel elkerülése érdekében másolat
         List.copyOf(threads).forEach(ShroomThread::Remove);

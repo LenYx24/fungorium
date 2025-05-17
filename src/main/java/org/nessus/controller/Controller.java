@@ -20,6 +20,7 @@ import org.nessus.view.View;
  */
 public class Controller implements IRandomProvider {
     private static Random rand = new Random();
+    private static final int TECTON_SPLIT_CHANCE = 8;
 
     private IActionController currentAction = null;
     private IShroomController currentShroom = null; // a shroom
@@ -190,6 +191,9 @@ public class Controller implements IRandomProvider {
         }
         playerIndex++;
         view.UpdatePlayerInfo();
+
+        if (RandomNumber(0, 100) < TECTON_SPLIT_CHANCE)
+            tectons.get(RandomNumber(0, tectons.size() - 1)).Split();
     }
 
     public Object GetCurrentPlayer()
@@ -201,11 +205,6 @@ public class Controller implements IRandomProvider {
     }
     public IShroomController GetCurrentShroomController(){
         return currentShroom;
-    }
-
-    public int GetPlayerActionPoints(){
-        // TODO
-        return 0;
     }
 
     /**
