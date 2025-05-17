@@ -58,10 +58,11 @@ public class Spore {
 
         if(rand.RandomBoolean()){
             BugEffect randEffect = rand.RandomBugEffect();
-            bug.AddNutrients(nutrients);
             bug.AddEffect(randEffect);
             randEffect.ApplyOn(bug);
         }
+
+        bug.AddNutrients(nutrients);
 
         View.GetGameObjectStore().RemoveEntity(this);
 

@@ -12,6 +12,7 @@ import org.nessus.model.tecton.*;
 import org.nessus.model.effect.*;
 import org.nessus.view.IGameObjectStore;
 import org.nessus.view.View;
+import org.nessus.view.entityviews.IEntityView;
 
 /**
  * Ez az osztály implementálja a Controllert, amely a játék logikájáért felelős.
@@ -191,6 +192,8 @@ public class Controller implements IRandomProvider {
         }
         playerIndex++;
         view.UpdatePlayerInfo();
+
+        view.GetGamePanel().GetControlPanel().UpdateButtonTexts();
 
         if (RandomNumber(0, 100) < TECTON_SPLIT_CHANCE)
             tectons.get(RandomNumber(0, tectons.size() - 1)).Split();

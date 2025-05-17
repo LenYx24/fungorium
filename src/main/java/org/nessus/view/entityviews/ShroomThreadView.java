@@ -115,8 +115,20 @@ public class ShroomThreadView implements IEntityView {
     }
 
     @Override
-    public String GetEntityInfo() {
-        return "";
+    public String GetEntityInfo()
+    {
+        String info = "Tulajdonos: ";
+
+        info = info.concat(View.GetGameObjectStore().GetShroomName(model.GetShroom()) + "\n");
+
+        info = info.concat("Növekedés állapota: " + model.GetEvolution() + "\n");
+
+        if (model.IsDying())
+        {
+            info = info.concat("HALDOKLIK\n");
+        }
+
+        return info;
     }
 
     public ShroomThread GetModel() {

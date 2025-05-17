@@ -21,6 +21,7 @@ public abstract class BugEffect {
         remainingUses--;
         if (remainingUses == 0) {
             bug.ClearEffect(this);
+            bug.UpdateBug();
         }
     }
 
