@@ -160,7 +160,12 @@ public class Controller implements IRandomProvider {
             tecton.SetShroomBody(shroomBody);
             store.AddShroomBody(shroomBody);
         }
-        NextPlayer();
+
+        bugOwnerRound = false;
+        playerIndex = 0;
+        currentShroom = shrooms.get(playerIndex);
+        view.UpdatePlayerInfo();
+        playerIndex++;
     }
 
     public void StartAction(IActionController action){
