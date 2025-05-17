@@ -1,8 +1,6 @@
-package org.nessus.view.entityviews;
+package org.nessus.view.entities;
 
-import org.nessus.model.shroom.Shroom;
 import org.nessus.model.shroom.ShroomThread;
-import org.nessus.model.tecton.Tecton;
 import org.nessus.utility.EntitySelector;
 import org.nessus.utility.Point;
 import org.nessus.utility.Vec2;
@@ -64,7 +62,7 @@ public class ShroomThreadView implements IEntityView {
 
         if(selection){
             g2d.setColor(Color.YELLOW);
-            g2d.setStroke(new BasicStroke((float)size / 2.0f));
+            g2d.setStroke(new BasicStroke(size / 2.0f));
             var norm = direction.Scale(size).Rotate(Math.PI / 2);
 
             var pBorder1 = p1.Translate(norm);
@@ -76,10 +74,12 @@ public class ShroomThreadView implements IEntityView {
             g2d.drawLine((int)pBorder2.x, (int)pBorder2.y, (int)pEndPoint2.x, (int)pEndPoint2.y);
 
         }
+
         g2d.setColor(color);
-        if(model.IsDying()){
+        
+        if(model.IsDying())
             g2d.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 80));
-        }
+        
         g2d.setStroke(new BasicStroke(size));
         g2d.drawLine((int)p1.x, (int)p1.y, (int)endPoint.x, (int)endPoint.y);
     }
@@ -92,21 +92,22 @@ public class ShroomThreadView implements IEntityView {
 
     @Override
     public boolean ContainsPoint(int x, int y) {
-        Point hit = new Point(x, y);
-        Vec2 p1p2 = new Vec2(p1,p2);
-        double lineLength = p1p2.Length();
-        Vec2 v0 = p1p2.Normalize();
-        Point p = p1;
-        Point r = hit;
-        Vec2 prVec = new Vec2(p,r);
-        double distance = prVec.Dot(v0);
-        if(distance < 0 || distance > lineLength){
-            return false;
-        }
-        Vec2 vProjected = v0.Scale(distance);
-        double dist = prVec.Subtract(vProjected).Length();
+        Point cursor = new Point(x, y);
+        
+        Vec2 p1ToCursor = new Vec2(p1, cursor);
+        Vec2 p1ToP2 = new Vec2(p1, p2);
+        Vec2 p1ToP2Normalized = p1ToP2.Normalize();
+        
+        double lineLength = p1ToP2.Length();
+        double distance = p1ToCursor.Dot(p1ToP2Normalized);
 
-        return dist < (double)size;
+        if(distance < 0 || distance > lineLength)
+            return false;
+
+        Vec2 p1ToP2Projected = p1ToP2Normalized.Scale(distance);
+        double dist = p1ToCursor.Subtract(p1ToP2Projected).Length();
+
+        return dist < size;
     }
 
     @Override
@@ -115,20 +116,17 @@ public class ShroomThreadView implements IEntityView {
     }
 
     @Override
-    public String GetEntityInfo()
-    {
-        String info = "Tulajdonos: ";
-
-        info = info.concat(View.GetGameObjectStore().GetShroomName(model.GetShroom()) + "\n");
-
-        info = info.concat("Növekedés állapota: " + model.GetEvolution() + "\n");
+    public String GetEntityInfo() {
+        StringBuilder info = new StringBuilder();
+        
+        info.append("Tulajdonos: ");
+        info.append(View.GetGameObjectStore().GetShroomName(model.GetShroom()) + "\n");
+        info.append("Növekedés állapota: " + model.GetEvolution() + "\n");
 
         if (model.IsDying())
-        {
-            info = info.concat("HALDOKLIK\n");
-        }
+            info = info.append("Haldoklik\n");
 
-        return info;
+        return info.toString();
     }
 
     public ShroomThread GetModel() {

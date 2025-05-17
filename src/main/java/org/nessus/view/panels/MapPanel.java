@@ -2,17 +2,14 @@ package org.nessus.view.panels;
 import org.nessus.utility.GraphUtil;
 import org.nessus.view.ObjectStore;
 import org.nessus.view.View;
-import org.nessus.view.entityviews.IEntityView;
-import org.nessus.view.entityviews.TectonView;
+import org.nessus.view.entities.IEntityView;
+import org.nessus.view.entities.TectonView;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
-import java.util.Queue;
 
 import javax.swing.*;
 
@@ -25,10 +22,9 @@ public class MapPanel extends JPanel {
     public MapPanel(View view, int width, int height) {
         this.view = view;
         this.graphRenderer = new GraphUtil(width, height, view.GetObjectStore().GetTectonViews());
-        graphRenderer.registerKeyListener(view);
+        
         setPreferredSize(new Dimension(width, height));
         backgroundImage = new ImageIcon("src/main/resources/textures/mapbg.gif").getImage();
-
 
         addMouseListener(new MouseAdapter() {
             @Override
@@ -54,7 +50,7 @@ public class MapPanel extends JPanel {
                 }
 
                 //A játékos sem tektonra sem entitásra nem nyomott
-                view.GetSelection().ClearSelection();
+                view.GetSelection().Clear();
                 view.GetGamePanel().GetControlPanel().ClearInfo();
             }
 

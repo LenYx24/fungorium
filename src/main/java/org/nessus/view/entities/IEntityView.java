@@ -1,4 +1,4 @@
-package org.nessus.view.entityviews;
+package org.nessus.view.entities;
 
 import java.awt.*;
 

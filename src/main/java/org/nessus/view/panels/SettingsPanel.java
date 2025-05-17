@@ -1,10 +1,9 @@
 package org.nessus.view.panels;
 
-import org.nessus.view.BaseButton;
 import org.nessus.view.View;
-import org.nessus.view.factories.*;
-import org.nessus.view.factories.bugfactories.*;
-import org.nessus.view.factories.shroomfactories.*;
+import org.nessus.view.bugowner.*;
+import org.nessus.view.buttons.BaseButton;
+import org.nessus.view.shroom.*;
 import org.nessus.model.shroom.Shroom;
 import org.nessus.model.bug.BugOwner;
 
@@ -18,8 +17,6 @@ import javax.swing.text.AttributeSet;
 import java.awt.*;
 
 public class SettingsPanel extends JPanel {
-    private JButton nextBtn;
-    private View view;
     private Image backgroundImage;
 
     private JCheckBox[] gombaszCheckBoxes = new JCheckBox[3];
@@ -30,7 +27,6 @@ public class SettingsPanel extends JPanel {
     private Color[] rovaraszColors = {Color.WHITE, Color.GRAY, new Color(139, 69, 19)};
 
     public SettingsPanel(View view, JPanel mainPanel) {
-        this.view = view;
         backgroundImage = new ImageIcon("src/main/resources/textures/settingsbg.gif").getImage();
 
         JPanel panel = new JPanel();
@@ -417,8 +413,6 @@ public class SettingsPanel extends JPanel {
 
         
         this.add(panel);
-        
-
     }
 
     @Override

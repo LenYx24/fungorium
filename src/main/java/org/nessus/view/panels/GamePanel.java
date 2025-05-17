@@ -3,14 +3,14 @@ package org.nessus.view.panels;
 import javax.swing.*;
 import org.nessus.view.View;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class GamePanel extends JPanel {
-    private View view;
     private MapPanel mapPanel;
     private ControlPanel controlPanel;
 
     public GamePanel(View view) {
-        this.view = view;
         mapPanel = new MapPanel(view, 1280, 720);         
         controlPanel = new ControlPanel(view);
 

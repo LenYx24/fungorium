@@ -36,6 +36,7 @@ public class Vec2 {
         var length = Length();
         return new Vec2(x / length, y / length);
     }
+    
     public Vec2 Subtract(Vec2 other){
         return new Vec2(x - other.x, y - other.y);
     }

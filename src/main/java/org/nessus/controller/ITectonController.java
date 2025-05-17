@@ -10,7 +10,7 @@ public interface ITectonController {
     void UpdateTecton();
     void Split();
     void SetNeighbour(Tecton tecton);
-    void SetShroomBody(ShroomBody body);
+    boolean SetShroomBody(ShroomBody body);
     void AddBug(Bug bug);
     void ThrowSpore(Spore spore);
     boolean GrowShroomThread(ShroomThread thread);

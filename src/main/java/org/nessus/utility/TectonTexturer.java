@@ -5,16 +5,11 @@ import org.nessus.model.tecton.InfertileTecton;
 import org.nessus.model.tecton.SingleThreadTecton;
 import org.nessus.model.tecton.Tecton;
 import org.nessus.model.tecton.ThreadSustainerTecton;
-import org.nessus.view.entityviews.TectonView;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import org.nessus.view.entities.TectonView;
 
 import static org.nessus.utility.ImageReader.GetImage;
 
-public class TectonTexturer {
+public class TectonTexturer implements ITectonVisitor {
     private TectonView view = null;
 
     public TectonView GetResult() {

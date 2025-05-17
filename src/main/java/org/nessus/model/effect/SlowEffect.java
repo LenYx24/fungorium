@@ -1,6 +1,7 @@
 package org.nessus.model.effect;
 
 import org.nessus.model.bug.Bug;
+import org.nessus.utility.EffectInfoReader;
 
 /**
  * Az osztály a "lassítás" hatását reprezentálja.
@@ -18,5 +19,10 @@ public class SlowEffect extends BugEffect {
     public void ApplyOn(Bug bug) {
         bug.AddMoveCost(+2);
         UpdateState(bug);
+    }
+
+    @Override
+    public void Accept(EffectInfoReader reader) {
+        reader.Visit(this);
     }
 }

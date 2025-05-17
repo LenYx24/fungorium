@@ -1,9 +1,7 @@
-package org.nessus.view.entityviews;
+package org.nessus.view.entities;
 
-import org.nessus.model.shroom.ShroomBody;
 import org.nessus.model.shroom.Spore;
 import org.nessus.utility.EntitySelector;
-import org.nessus.utility.Point;
 import org.nessus.view.View;
 
 import java.awt.*;
@@ -11,22 +9,18 @@ import java.awt.image.BufferedImage;
 
 public class SporeView extends EntitySpriteView{
     private Spore model;
-    int size = 50;
+
     public SporeView(Spore spore, BufferedImage sprite) {
         this.model = spore;
-
-        BufferedImage newImage = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2 = newImage.createGraphics();
-
-        g2.drawImage(sprite, 0, 0,size,size, null);
-        g2.dispose();
-        this.image = newImage;
+        this.size = 50;
+        this.image = sprite;
     }
+
     @Override
     public void Draw(Graphics2D g2d) {
-        if(model.GetTecton() == null){
+        if(model.GetTecton() == null)
             return;
-        }
+
         View.GetGameObjectStore().FindTectonView(model.GetTecton()).InsertEntity(this);
         this.DrawSprite(g2d);
     }
@@ -44,13 +38,13 @@ public class SporeView extends EntitySpriteView{
     @Override
     public String GetEntityInfo()
     {
-        String info = "Tulajdonos: ";
+        StringBuilder info = new StringBuilder();
+        
+        info.append("Tulajdonos: ");
+        info.append(View.GetGameObjectStore().GetShroomName(model.GetShroom()) + "\n");
+        info.append("Tápanyagtartalom: " + model.GetNutrient() + "\n");
 
-        info = info.concat(View.GetGameObjectStore().GetShroomName(model.GetShroom()) + "\n");
-
-        info = info.concat("Tápanyagtartalom: " + model.GetNutrient() + "\n");
-
-        return info;
+        return info.toString();
     }
 
     public Spore GetModel() {

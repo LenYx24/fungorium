@@ -3,8 +3,8 @@ package org.nessus.view.panels;
 import org.nessus.model.bug.BugOwner;
 import org.nessus.model.shroom.Shroom;
 import org.nessus.view.View;
-import org.nessus.view.entityviews.IEntityView;
-import org.nessus.view.factories.ActionButtonFactory;
+import org.nessus.view.buttons.ActionButtonFactory;
+import org.nessus.view.entities.IEntityView;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -31,18 +31,22 @@ public class ControlPanel extends JPanel {
         label.setForeground(Color.WHITE);
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
     }
+
     private void StyleButton(JButton button){
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.setMaximumSize(buttonSize);
         button.setPreferredSize(buttonSize);
         button.setMinimumSize(buttonSize);
     }
+
     private void SetPlayerLabelText(String name){
         playerLabel.setText("Játékos: " + name);
     }
+
     private void SetActionPointsLabelText(String points){
         actionPointsLabel.setText("Akciópontok: " + points);
     }
+
     public ControlPanel(View view) {
         this.view = view;
 
@@ -60,7 +64,7 @@ public class ControlPanel extends JPanel {
         add(actionPointsLabel);
         add(Box.createVerticalStrut(10));
 
-        ActionButtonFactory actionButtonFactory = new ActionButtonFactory(view.GetController());
+        ActionButtonFactory actionButtonFactory = new ActionButtonFactory(view, this);
         buttonPanel = new JPanel(new CardLayout());
         JPanel bugActionPanel = new JPanel();
         bugActionPanel.setLayout(new BoxLayout(bugActionPanel, BoxLayout.Y_AXIS));
@@ -94,9 +98,11 @@ public class ControlPanel extends JPanel {
             shroomActionPanel.add(button);
             shroomActionPanel.add(Box.createVerticalStrut(5));
         }
+
         buttonPanel.add(shroomActionPanel,"shroomButtons");
         buttonPanel.setBackground(new Color(60, 63, 65));
         ((CardLayout)buttonPanel.getLayout()).show(buttonPanel, "bugButtons");
+
         add(buttonPanel);
         add(Box.createVerticalGlue());
 
@@ -104,6 +110,7 @@ public class ControlPanel extends JPanel {
         objectInfoLabel.setForeground(Color.WHITE);
         objectInfoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         objectInfoLabel.setFont(new Font(objectInfoLabel.getFont().getName(), Font.BOLD, objectInfoLabel.getFont().getSize() + 2));
+
         add(objectInfoLabel);
         add(Box.createVerticalStrut(5));
     
@@ -114,6 +121,7 @@ public class ControlPanel extends JPanel {
         infoArea.setAlignmentX(Component.CENTER_ALIGNMENT);
         infoArea.setMaximumSize(new Dimension(180, 250));
         infoArea.setPreferredSize(new Dimension(180, 250));
+
         add(infoArea);
         add(Box.createVerticalGlue());
 
@@ -122,6 +130,7 @@ public class ControlPanel extends JPanel {
             view.GetController().NextPlayer();
             view.requestFocus();
         });
+
         StyleButton(nextPlayerBtn);
 
         endGameBtn = new JButton("Játék vége");
@@ -150,12 +159,14 @@ public class ControlPanel extends JPanel {
     }
 
     public void UpdateActionPoints() {
-        if (view.GetController().IsBugOwnerRound()) {
-            BugOwner bugOwner = (BugOwner)view.GetController().GetCurrentPlayer();
+        var controller = view.GetController();
+        
+        if (controller.IsBugOwnerRound()) {
+            BugOwner bugOwner = (BugOwner)controller.GetCurrentBugOwnerController();
             SetActionPointsLabelText(String.valueOf(bugOwner.GetActionPointCatalog().GetCurrentPoints()));
         }
         else {
-            Shroom current = (Shroom)view.GetController().GetCurrentPlayer();
+            Shroom current = (Shroom)controller.GetCurrentShroomController();
             SetActionPointsLabelText(String.valueOf(current.GetActionPointCatalog().GetCurrentPoints()));
         }
     }
@@ -170,12 +181,16 @@ public class ControlPanel extends JPanel {
     }
 
     public void UpdateButtonTexts() {
-        if (view.GetController().IsBugOwnerRound() && view.GetSelection().GetBug() != null) {
-            BugOwner current = (BugOwner) view.GetController().GetCurrentBugOwnerController();
-            if (current == view.GetSelection().GetBug().GetOwner()) {
-                bugActions.get(0).setText("Rovar mozgás: " + view.GetSelection().GetBug().GetMoveCost());
-                bugActions.get(1).setText("Spóraevés: " + view.GetSelection().GetBug().GetEatCost());
-                bugActions.get(2).setText("Gombafonal elvágása: " + view.GetSelection().GetBug().GetCutCost());
+        var controller = view.GetController();
+
+        if (controller.IsBugOwnerRound() && view.GetSelection().GetBug() != null) {
+            BugOwner current = (BugOwner) controller.GetCurrentBugOwnerController();
+            var bug = view.GetSelection().GetBug();
+            
+            if (current == bug.GetOwner()) {
+                bugActions.get(0).setText("Rovar mozgás: " + bug.GetMoveCost());
+                bugActions.get(1).setText("Spóraevés: " + bug.GetEatCost());
+                bugActions.get(2).setText("Gombafonal elvágása: " + bug.GetCutCost());
             }
             else {
                 bugActions.get(0).setText("---");
@@ -189,7 +204,7 @@ public class ControlPanel extends JPanel {
             shroomActions.get(0).setText("Spóraköpés: " + current.GetSporeThrowCost());
             shroomActions.get(1).setText("Gombatest elhelyezése: " + current.GetShroomBodyCost());
             shroomActions.get(2).setText("Gombatest fejlesztése: " + current.GetUpgradeCost());
-            shroomActions.get(3).setText("Gombafonal növ.: " + current.GetShroomThreadCost());
+            shroomActions.get(3).setText("Gombafonal növesztése: " + current.GetShroomThreadCost());
             shroomActions.get(4).setText("Rovar felfalása fonallal: " + current.GetDevourCost());
         }
     }

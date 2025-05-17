@@ -8,7 +8,6 @@ import org.nessus.model.shroom.ShroomBody;
 import org.nessus.model.shroom.ShroomThread;
 import org.nessus.model.shroom.Spore;
 import org.nessus.model.tecton.Tecton;
-import org.nessus.view.entityviews.IEntityView;
 
 public class SelectionCatalog {
     private List<Tecton> selectedTectons = new ArrayList<>();
@@ -16,30 +15,32 @@ public class SelectionCatalog {
     private Bug selectedBug = null;
     private ShroomThread selectedShroomThread = null;
     private ShroomBody selectedShroomBody = null;
-    private View view;
+    private ObjectStore store;
 
-    public SelectionCatalog(View view) {
-        this.view = view;
+    public SelectionCatalog(ObjectStore store) {
+        this.store = store;
     }
 
     private void SetViewSelection(Object obj){
-        var entityView = view.GetObjectStore().FindEntityView(obj);
+        var entityView = store.FindEntityView(obj);
         if (entityView != null)
             entityView.SetSelected(true);
     }
 
     private void SetViewSelection(Tecton tecton){
-        view.GetObjectStore().FindTectonView(tecton).SetSelected(true);
+        store.FindTectonView(tecton).SetSelected(true);
     }
 
     public void UnsetViewSelection(Object obj){
-        var entityView = view.GetObjectStore().FindEntityView(obj);
+        var entityView = store.FindEntityView(obj);
         if (entityView != null)
-            view.GetObjectStore().FindEntityView(obj).SetSelected(false);
+            store.FindEntityView(obj).SetSelected(false);
     }
 
     private void UnsetViewSelection(Tecton tecton){
-        view.GetObjectStore().FindTectonView(tecton).SetSelected(false);
+        var tectonView = store.FindTectonView(tecton);
+        if (tectonView != null)
+            store.FindTectonView(tecton).SetSelected(false);
     }
 
     public void SelectBug(Bug bug)
@@ -113,7 +114,8 @@ public class SelectionCatalog {
             SetViewSelection(tecton);
         }
     }
-    public void ClearSelection(){
+
+    public void Clear(){
         UnsetViewSelection(selectedBug);
         UnsetViewSelection(selectedShroomBody);
         UnsetViewSelection(selectedShroomThread);

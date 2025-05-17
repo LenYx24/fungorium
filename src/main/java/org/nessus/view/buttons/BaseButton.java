@@ -1,4 +1,4 @@
-package org.nessus.view;
+package org.nessus.view.buttons;
 
 import javax.swing.*;
 import java.awt.*;

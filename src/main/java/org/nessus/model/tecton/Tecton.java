@@ -3,8 +3,7 @@ package org.nessus.model.tecton;
 import org.nessus.controller.*;
 import org.nessus.model.bug.Bug;
 import org.nessus.model.shroom.*;
-import org.nessus.utility.TectonTexturer;
-import org.nessus.view.ObjectStore;
+import org.nessus.utility.ITectonVisitor;
 import org.nessus.view.View;
 
 import java.util.ArrayList;
@@ -34,12 +33,6 @@ public class Tecton implements ITectonController {
      * @param copyTecton
      */
     protected void SpreadEntities(Tecton copyTecton) {
-        // Egyelőre kikapcsoltuk, mert ha kikapcsoljuk, akkor a pálya könnyen átláthatatlanná válik
-        // for (Tecton neighbour : neighbours) {
-        //     copyTecton.neighbours.add(neighbour);
-        //     neighbour.neighbours.add(copyTecton);
-        // }
-            
         copyTecton.SetNeighbour(this);
         neighbours.add(copyTecton);
 
@@ -143,10 +136,12 @@ public class Tecton implements ITectonController {
     /**
      * Gombatest beállítása a tektonra.
      * @param body - A beállítandó gombatest
-     * @return void
+     * @return boolean - A művelet eredményével tér vissza
      */
-    public void SetShroomBody(ShroomBody body) {
+    public boolean SetShroomBody(ShroomBody body) {
         this.body = body;
+        body.SetTecton(this);
+        return true;
     }
 
     /**
@@ -299,9 +294,10 @@ public class Tecton implements ITectonController {
         return threads.contains(thread);
     }
 
-    public void Accept(TectonTexturer texturer) {
-        texturer.Visit(this);
+    public void Accept(ITectonVisitor visitor) {
+        visitor.Visit(this);
     }
+    
     public int GetEntityCount(){
         int count = bugs.size() + spores.size();
         if(body != null){

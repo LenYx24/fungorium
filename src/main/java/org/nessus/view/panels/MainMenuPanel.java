@@ -1,8 +1,9 @@
 package org.nessus.view.panels;
 
-import org.nessus.view.BaseButton;
-
 import javax.swing.*;
+
+import org.nessus.view.buttons.BaseButton;
+
 import java.awt.*;
 
 public class MainMenuPanel extends JPanel {
@@ -34,9 +35,7 @@ public class MainMenuPanel extends JPanel {
         exitButton.setBorderPainted(false);
         exitButton.setFont(new Font("Arial", Font.BOLD, 35));
         exitButton.setForeground(Color.MAGENTA);
-        exitButton.addActionListener(e -> {
-            System.exit(0);
-        });
+        exitButton.addActionListener(e -> System.exit(0));
 
         this.add(Box.createVerticalStrut(410));
         this.add(newGameButton);

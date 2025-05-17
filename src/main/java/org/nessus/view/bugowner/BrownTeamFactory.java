@@ -1,14 +1,13 @@
-package org.nessus.view.factories.bugfactories;
+package org.nessus.view.bugowner;
 
 import org.nessus.model.bug.Bug;
-import org.nessus.view.entityviews.BugView;
-import org.nessus.view.factories.BugViewFactory;
+import org.nessus.view.entities.BugView;
 
 import static org.nessus.utility.ImageReader.GetImage;
 
 public class BrownTeamFactory extends BugViewFactory {
     @Override
     public BugView CreateBugView(Bug bug) {
-        return new BugView(bug,GetImage("brown_bug"));
+        return new BugView(bug, GetImage("brown_bug"));
     }
 }

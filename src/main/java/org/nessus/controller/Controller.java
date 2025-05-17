@@ -1,18 +1,14 @@
 package org.nessus.controller;
 
 import java.util.*;
-import java.util.stream.IntStream;
 
 import org.nessus.model.bug.Bug;
 import org.nessus.model.bug.BugOwner;
 import org.nessus.model.shroom.Shroom;
 import org.nessus.model.shroom.ShroomBody;
 import org.nessus.model.tecton.*;
-
 import org.nessus.model.effect.*;
-import org.nessus.view.IGameObjectStore;
 import org.nessus.view.View;
-import org.nessus.view.entityviews.IEntityView;
 
 /**
  * Ez az osztály implementálja a Controllert, amely a játék logikájáért felelős.
@@ -39,8 +35,7 @@ public class Controller implements IRandomProvider {
      * A Controller osztály konstruktora, amely inicializálja a parancsokat és beállítja a nézetet.
      * @param view A nézet, amelyet a Controller használ.
      */
-    public Controller(View view)
-    {
+    public Controller(View view) {
         this.view = view;
     }
 
@@ -75,6 +70,21 @@ public class Controller implements IRandomProvider {
         AddEdge(t1, t2);
         return List.of(t1, t2);
     }
+    
+    private Tecton RandomTecton(boolean infertileAllowed) {
+        // 0-7 intervallumban generálunk számokat
+        // az első 4 szám egyenként egy típust jelöl
+        // az utolsó 4 szám esetén pedig az egyszerű tektont generáljuk le
+        // így 50% az esély hogy egyszerű tektont kapunk
+
+        return switch(RandomNumber(0, 7)) {
+            case 0 -> new DesertTecton();
+            case 1 -> infertileAllowed ? new InfertileTecton() : new Tecton();
+            case 2 -> new SingleThreadTecton();
+            case 3 -> new ThreadSustainerTecton();
+            default -> new Tecton();
+        };
+    }
 
     public void GenerateMap(int tectonCount)
     {
@@ -82,45 +92,9 @@ public class Controller implements IRandomProvider {
         List<Tecton> connected = new ArrayList<>();
         
         for (int i = 0; i < tectonCount; i++){
-            // 0-7 intervallumban generálunk számokat
-            // az első 4 szám egyenként egy típust jelöl
-            // az utolsó 4 szám esetén pedig az egyszerű tektont generáljuk le
-            // így 50% az esély hogy egyszerű tektont kapunk
-
-            int tectonTypes = 4;
-            int num = RandomNumber(0, tectonTypes * 2);
-            Tecton tecton;
-            
-            switch(num){
-                case 0:
-                    tecton = new DesertTecton();
-                    break;
-                case 1:
-                {
-                    if (disconnected.size() >= shrooms.size())
-                    {
-                        tecton = new InfertileTecton();
-                    }
-                    else
-                    {
-                        tecton = new Tecton();
-                    }
-                    break;
-                }
-                case 2:
-                    tecton = new SingleThreadTecton();
-                    break;
-                case 3:
-                    tecton = new ThreadSustainerTecton();
-                    break;
-                default: 
-                    tecton = new Tecton();
-                    break;
-            }
-
+            Tecton tecton = RandomTecton(tectonCount > shrooms.size());
             disconnected.add(tecton);
         }
-
 
         var pickedTectons = AddRandomEdge(disconnected, disconnected);
         for (var tecton : List.copyOf(pickedTectons)) {
@@ -135,11 +109,12 @@ public class Controller implements IRandomProvider {
             connected.add(lastConnected);
         }
 
-        int additionalEdges = (int)Math.sqrt(tectonCount * (tectonCount - 1) / 4);
+        int additionalEdges = (int)Math.sqrt(tectonCount * (tectonCount - 1) / 4.0);
         for (int i = 0; i < additionalEdges; i++)
             AddRandomEdge(connected, connected);
 
         tectons.addAll(connected);
+
         var store = view.GetObjectStore();
         connected.forEach(store::AddTecton);
 
@@ -151,13 +126,16 @@ public class Controller implements IRandomProvider {
         }
 
         for (var shroom : shrooms) {
-            var tecton = RandomOf(connected);
+            ShroomBody shroomBody = new ShroomBody((Shroom)shroom);
+            Tecton bodyTecton = null;
 
-            while (tecton.GetShroomBody() != null || tecton instanceof InfertileTecton)
-                tecton = RandomOf(connected);
+            while (bodyTecton == null) {
+                var tecton = RandomOf(connected);
+                if (tecton.GetShroomBody() != null)
+                    continue;
+                bodyTecton = tecton.SetShroomBody(shroomBody) ? tecton : null;
+            }
 
-            ShroomBody shroomBody = new ShroomBody((Shroom)shroom, tecton);
-            tecton.SetShroomBody(shroomBody);
             store.AddShroomBody(shroomBody);
         }
 
@@ -169,49 +147,45 @@ public class Controller implements IRandomProvider {
     }
 
     public void StartAction(IActionController action){
-        view.GetSelection().ClearSelection();
+        view.GetSelection().Clear();
         currentAction = action;
     }
 
     public void NextPlayer()
     {
-        if (bugOwnerRound)
-        {
-            if (playerIndex == bugOwners.size())
-            {
+        if (bugOwnerRound) {
+            if (playerIndex == bugOwners.size()) {
                 bugOwnerRound = false;
                 playerIndex = 0;
                 currentShroom = shrooms.get(playerIndex);
             }
             currentBugOwner = bugOwners.get(playerIndex);
         }
-        else
-        {
-            if (playerIndex == shrooms.size())
-            {
+        else {
+            if (playerIndex == shrooms.size()) {
                 bugOwnerRound = true;
                 playerIndex = 0;
                 currentBugOwner = bugOwners.get(playerIndex);
             }
             currentShroom = shrooms.get(playerIndex);
         }
+
         playerIndex++;
         view.UpdatePlayerInfo();
-
         view.GetGamePanel().GetControlPanel().UpdateButtonTexts();
 
         if (RandomNumber(0, 100) < TECTON_SPLIT_CHANCE)
             tectons.get(RandomNumber(0, tectons.size() - 1)).Split();
     }
 
-    public Object GetCurrentPlayer()
-    {
+    public Object GetCurrentPlayer() {
         return bugOwnerRound ? currentBugOwner : currentShroom;
     }
-    public IBugOwnerController GetCurrentBugOwnerController(){
+
+    public IBugOwnerController GetCurrentBugOwnerController() {
         return currentBugOwner;
     }
-    public IShroomController GetCurrentShroomController(){
+    public IShroomController GetCurrentShroomController() {
         return currentShroom;
     }
 
@@ -239,12 +213,10 @@ public class Controller implements IRandomProvider {
         tectons.add(tecton);
     }
 
-    public void ViewSelectionChanged(){
-        if (currentAction != null) {
-            if (currentAction.TryAction(view)) {
-                currentAction = null;
-                view.GetSelection().ClearSelection();
-            }
+    public void ViewSelectionChanged() {
+        if (currentAction != null && currentAction.TryAction()) {
+            currentAction = null;
+            view.GetSelection().Clear();
         }
     }
 

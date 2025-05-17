@@ -7,19 +7,15 @@ import java.util.List;
 import java.util.Map;
 
 import org.nessus.controller.IBugOwnerController;
-import org.nessus.controller.IRandomProvider;
 import org.nessus.controller.IShroomController;
 import org.nessus.model.bug.Bug;
 import org.nessus.model.bug.BugOwner;
-import org.nessus.model.shroom.Shroom;
-import org.nessus.model.shroom.ShroomBody;
-import org.nessus.model.shroom.ShroomThread;
-import org.nessus.model.shroom.Spore;
+import org.nessus.model.shroom.*;
 import org.nessus.model.tecton.Tecton;
 import org.nessus.utility.TectonTexturer;
-import org.nessus.view.entityviews.*;
-import org.nessus.view.factories.BugViewFactory;
-import org.nessus.view.factories.ShroomViewFactory;
+import org.nessus.view.bugowner.BugViewFactory;
+import org.nessus.view.entities.*;
+import org.nessus.view.shroom.ShroomViewFactory;
 
 public class ObjectStore implements IGameObjectStore {
     private Map<BugOwner, SimpleEntry<BugViewFactory, String>> bugOwners = new HashMap<>();
@@ -37,10 +33,10 @@ public class ObjectStore implements IGameObjectStore {
 
     public void AddShroomBody(ShroomBody shroomBody)
     {
-            var shroom = shrooms.get(shroomBody.GetShroom());
-            var factory = shroom.getKey();
-            ShroomBodyView sbview = factory.CreateShroomBodyView(shroomBody);
-            views.add(sbview);
+        var shroom = shrooms.get(shroomBody.GetShroom());
+        var factory = shroom.getKey();
+        ShroomBodyView sbview = factory.CreateShroomBodyView(shroomBody);
+        views.add(sbview);
     }
 
     public void AddShroomThread(ShroomThread shroomThread){
@@ -84,13 +80,14 @@ public class ObjectStore implements IGameObjectStore {
     public List<IEntityView> GetEntityViews() {
         return views;
     }
+
     public IEntityView FindEntityView(Object obj){
-        for(IEntityView e : views){
-            if(e.GetModel() == obj)
-                return e;
-        };
-        return null;
+        return views.stream()
+            .filter(x -> x.GetModel() == obj)
+            .findFirst()
+            .orElse(null);
     }
+
     public TectonView FindTectonView(Tecton tecton){
         return tectons.get(tecton);
     }
@@ -108,9 +105,10 @@ public class ObjectStore implements IGameObjectStore {
     }
 
     public String GetBugOwnerName(IBugOwnerController bugOwner){
-        return bugOwners.get((BugOwner)bugOwner).getValue();
+        return bugOwners.get(bugOwner).getValue();
     }
+    
     public String GetShroomName(IShroomController shroom){
-        return shrooms.get((Shroom) shroom).getValue();
+        return shrooms.get(shroom).getValue();
     }
 }

@@ -4,7 +4,7 @@ import java.awt.*;
 import org.nessus.controller.IRandomProvider;
 import org.nessus.utility.EntitySelector;
 import org.nessus.controller.Controller;
-import org.nessus.view.entityviews.*;
+import org.nessus.view.entities.*;
 import org.nessus.view.panels.*;
 
 import javax.swing.*;
@@ -30,7 +30,7 @@ public class View extends JFrame {
      * A konstruktor privát, mert nem szükséges példányosítani az osztályt.
      */
     private View() {
-        selection = new SelectionCatalog(this);
+        selection = new SelectionCatalog(objectStore);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setSize(new Dimension(1280, 720));
         setLocationRelativeTo(null);
@@ -118,30 +118,20 @@ public class View extends JFrame {
         controlPanel.UpdateButtonTexts();
     }
 
-    public IEntityView FindEntity(Object entity){
-        for(IEntityView view : objectStore.GetEntityViews()) {
-            if(view.equals(entity))
-                return view;
-        }
-        return null;
-    }
-
-    public void UpdatePlayerInfo()
-    {
-        if (controller.IsBugOwnerRound())
-        {
+    public void UpdatePlayerInfo() {
+        if (controller.IsBugOwnerRound()) {
             controller.GetCurrentBugOwnerController().UpdateBugOwner();
             gamePanel.GetControlPanel().UpdatePlayerInfo(objectStore.GetBugOwnerName(controller.GetCurrentBugOwnerController()));
-        }
-        else
-        {
+        } else {
             controller.GetCurrentShroomController().UpdateShroom();
             gamePanel.GetControlPanel().UpdatePlayerInfo(objectStore.GetShroomName(controller.GetCurrentShroomController()));
         }
 
     }
 
-    public GamePanel GetGamePanel() {return gamePanel;}
+    public GamePanel GetGamePanel() {
+        return gamePanel;
+    }
 
     /**
      * A program belépési pontja.

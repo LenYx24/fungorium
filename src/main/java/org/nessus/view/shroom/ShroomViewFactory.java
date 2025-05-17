@@ -1,12 +1,12 @@
-package org.nessus.view.factories;
+package org.nessus.view.shroom;
 
 import org.nessus.model.shroom.Shroom;
 import org.nessus.model.shroom.ShroomBody;
 import org.nessus.model.shroom.ShroomThread;
 import org.nessus.model.shroom.Spore;
-import org.nessus.view.entityviews.ShroomBodyView;
-import org.nessus.view.entityviews.ShroomThreadView;
-import org.nessus.view.entityviews.SporeView;
+import org.nessus.view.entities.ShroomBodyView;
+import org.nessus.view.entities.ShroomThreadView;
+import org.nessus.view.entities.SporeView;
 
 public abstract class ShroomViewFactory {
     protected Shroom shroom;

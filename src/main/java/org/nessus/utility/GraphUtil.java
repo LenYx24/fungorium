@@ -1,38 +1,38 @@
 package org.nessus.utility;
 
 import org.nessus.model.tecton.Tecton;
-import org.nessus.view.entityviews.TectonView;
+import org.nessus.view.entities.TectonView;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import java.awt.Graphics2D;
 import java.awt.Color;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 class Edge {
-    public TectonView a, b;
+    public TectonView t1;
+    public TectonView t2;
 
     public Edge(TectonView a, TectonView b) {
-        this.a = a;
-        this.b = b;
+        this.t1 = a;
+        this.t2 = b;
     }
 
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof Edge edge)) return false;
-        return (edge.a == a && edge.b == b) || (edge.a == b && edge.b == a);
+        return (edge.t1 == t1 && edge.t2 == t2) || (edge.t1 == t2 && edge.t2 == t1);
     }
 
     @Override
     public int hashCode() {
-        return a.hashCode() + b.hashCode();
+        return t1.hashCode() + t2.hashCode();
     }
 }
 
-public class GraphUtil implements KeyListener {
+public class GraphUtil {
     private int width;
     private int height;
 
@@ -45,9 +45,6 @@ public class GraphUtil implements KeyListener {
 
     private Set<Edge> edges = new HashSet<>();
     private Map<Tecton, TectonView> tectons;
-    
-    // Add a flag to track edge visibility
-    private boolean showEdges = true;
 
     public GraphUtil(int width, int height, Map<Tecton, TectonView> tectons) {
         this.width = width;
@@ -57,6 +54,7 @@ public class GraphUtil implements KeyListener {
 
     public void AlignGraph() {
         edges.clear();
+        
         for (var tecton : tectons.values()) {
             var neighbours = tecton.GetModel().GetNeighbours();
             for (var neighbour : neighbours) {
@@ -65,76 +63,83 @@ public class GraphUtil implements KeyListener {
                     edges.add(new Edge(tecton, t2));
             }
         }
-        applyForces();
+
+        ApplyForces();
     }
 
-    private void applyForces() {
-        for (TectonView n : tectons.values()) {
-            if (!n.IsLocked()) {
-                n.setDX(0);
-                n.setDY(0);
-            }
-        }
-
-        // Repulsion
-        for (TectonView a : tectons.values()) {
-            if (a.IsLocked()) continue;
-
+    private void ApplyRepulsion(List<TectonView> unlockedTectons) {
+        for (var tecton : unlockedTectons) {
             for (TectonView b : tectons.values()) {
-                if (a == b) continue;
-
-                double dx = a.X() - b.X();
-                double dy = a.Y() - b.Y();
+                if (tecton == b)
+                    continue;
+                
+                double dx = tecton.X() - b.X();
+                double dy = tecton.Y() - b.Y();
                 double distSq = dx * dx + dy * dy;
-                double dist = Math.sqrt(distSq);
-                if (dist < NODE_RADIUS) dist = NODE_RADIUS;
-
+                double dist = Math.max(Math.sqrt(distSq), NODE_RADIUS);
+                
                 double force = REPULSION_STRENGTH / (dist * dist);
-
-                a.setDX(a.DX() + (dx / dist) * force);
-                a.setDY(a.DY() + (dy / dist) * force);
+                
+                tecton.setDx(tecton.getDx() + (dx / dist) * force);
+                tecton.setDy(tecton.getDy() + (dy / dist) * force);
             }
         }
+    }
 
-        // Spring attraction
-        for (Edge e : edges) {
-            if (e.a.IsLocked() && e.b.IsLocked()) continue;
-
-            double dx = e.b.X() - e.a.X();
-            double dy = e.b.Y() - e.a.Y();
+    private void ApplyAttraction(List<Edge> unlockedEdges) {
+        for (Edge edge : unlockedEdges) {
+            double dx = edge.t2.X() - edge.t1.X();
+            double dy = edge.t2.Y() - edge.t1.Y();
             double dist = Math.sqrt(dx * dx + dy * dy);
-            if (dist == 0) continue;
+            if (dist == 0)
+                continue;
 
             double force = SPRING_STRENGTH * (dist - SPRING_LENGTH);
             double fx = dx / dist * force;
             double fy = dy / dist * force;
 
-            if (!e.a.IsLocked()) {
-                e.a.setDX(e.a.DX() + fx);
-                e.a.setDY(e.a.DY() + fy);
+            if (!edge.t1.IsLocked()) {
+                edge.t1.setDx(edge.t1.getDx() + fx);
+                edge.t1.setDy(edge.t1.getDy() + fy);
             }
-            if (!e.b.IsLocked()) {
-                e.b.setDX(e.b.DX() - fx);
-                e.b.setDY(e.b.DY() - fy);
+
+            if (!edge.t2.IsLocked()) {
+                edge.t2.setDx(edge.t2.getDx() - fx);
+                edge.t2.setDy(edge.t2.getDy() - fy);
             }
         }
+    }
 
-        // Apply motion and bounds
-        for (TectonView n : tectons.values()) {
-            if (n.IsLocked()) continue;
+    private void ApplyMotionAndBounds(List<TectonView> unlockedTectons) {
+        for (TectonView n : unlockedTectons) {
+            n.setDx(n.getDx() * DAMPING);
+            n.setDy(n.getDy() * DAMPING);
 
-            n.setDX(n.DX() * DAMPING);
-            n.setDY(n.DY() * DAMPING);
-            n.setX(n.X() + n.DX());
-            n.setY(n.Y() + n.DY());
+            n.setX(n.X() + n.getDx());
+            n.setY(n.Y() + n.getDy());
 
             n.setX(Math.max(NODE_RADIUS / 2.0 + PADDING, Math.min(width - NODE_RADIUS / 2.0 - PADDING, n.X())));
             n.setY(Math.max(NODE_RADIUS / 2.0 + PADDING, Math.min(height - NODE_RADIUS / 2.0 - PADDING, n.Y())));
         }
     }
 
+    private void ApplyForces() {
+        var unlockedTectons = tectons.values().stream().filter(x -> !x.IsLocked()).toList();
+        var unlockedEdges = edges.stream().filter(x -> !x.t1.IsLocked() || !x.t2.IsLocked()).toList();
+
+        for (var tecton : unlockedTectons) {
+            tecton.setDx(0);
+            tecton.setDy(0);
+        }
+
+        ApplyRepulsion(unlockedTectons);
+        ApplyAttraction(unlockedEdges);
+        ApplyMotionAndBounds(unlockedTectons);
+    }
+
     private boolean ConnectedByGrownShroomThread(TectonView t1, TectonView t2) {
         var t2Model = t2.GetModel();
+
         for (var thread : t1.GetModel().GetShroomThreads()) {
             if (thread.GetEvolution() < 3)
                 continue;
@@ -150,44 +155,10 @@ public class GraphUtil implements KeyListener {
     }
 
     public void DrawNeighbourMarkers(Graphics2D g2d) {
-        // Only draw edges if showEdges is true
-        if (showEdges) {
-            g2d.setColor(Color.LIGHT_GRAY);
-            for (Edge e : edges) {
-                if (ConnectedByGrownShroomThread(e.a, e.b))
-                    continue;
-                g2d.drawLine((int) e.a.X(), (int) e.a.Y(), (int) e.b.X(), (int) e.b.Y());
-            }
-        }
-    }
-    
-    // Toggle edge visibility
-    public void toggleEdgeVisibility() {
-        showEdges = !showEdges;
-    }
-    
-    // Implement KeyListener methods
-    @Override
-    public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_R) {
-            toggleEdgeVisibility();
-        }
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-        // Not needed for this implementation
-    }
-
-    @Override
-    public void keyTyped(KeyEvent e) {
-        // Not needed for this implementation
-    }
-    
-    // Method to register this KeyListener with a component
-    public void registerKeyListener(java.awt.Component component) {
-        component.addKeyListener(this);
-        // Ensure the component can receive focus
-        component.setFocusable(true);
+        g2d.setColor(Color.LIGHT_GRAY);
+        
+        edges.stream()
+            .filter(edge -> !ConnectedByGrownShroomThread(edge.t1, edge.t2))
+            .forEach(edge -> g2d.drawLine((int) edge.t1.X(), (int) edge.t1.Y(), (int) edge.t2.X(), (int) edge.t2.Y()));
     }
 }

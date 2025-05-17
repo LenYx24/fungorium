@@ -1,14 +1,14 @@
-package org.nessus.view.entityviews;
+package org.nessus.view.entities;
 
 import org.nessus.model.tecton.*;
 import org.nessus.utility.EntitySelector;
-import org.nessus.model.shroom.ShroomThread;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.*;
 
 import org.nessus.utility.Point;
+import org.nessus.utility.TectonNameReader;
 import org.nessus.utility.Vec2;
 import org.nessus.view.View;
 
@@ -28,25 +28,21 @@ public class TectonView extends EntitySpriteView{
     private int cellSize = 0;
 
     private static final double BASE_SHROOMTHREAD_OFFSET = 10;
+    private static TectonNameReader tectonNameReader = new TectonNameReader();
 
     public TectonView(Tecton t, BufferedImage sprite) {
         this.model = t;
         this.x = r.nextInt(1280);
         this.y = r.nextInt(720);
-
-        BufferedImage newImage = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2 = newImage.createGraphics();
-
-        g2.drawImage(sprite, 0, 0,size,size, null);
-        g2.dispose();
-        this.image = newImage;
+        this.image = sprite;
     }
 
     public void CalculateEntityPositions()
     {
         pointsForEntites.clear();
         int entityCount = model.GetEntityCount();
-        if (entityCount == 0) return;
+        if (entityCount == 0)
+            return;
 
         int containerSize = size - 30;
         int cols = (int) Math.ceil(Math.sqrt(entityCount));
@@ -92,7 +88,7 @@ public class TectonView extends EntitySpriteView{
 
             var vectorToNeighbour = new Vec2(tectonCenter, neighbourCenter);
             var offsetVector = vectorToNeighbour.Normalize().Rotate(Math.PI / 2);
-            var offset = threadCount / 2 * BASE_SHROOMTHREAD_OFFSET;
+            var offset = threadCount / 2.0 * BASE_SHROOMTHREAD_OFFSET;
             
             Queue<Vec2> offsets = new LinkedList<>();
 
@@ -154,19 +150,8 @@ public class TectonView extends EntitySpriteView{
     @Override
     public String GetEntityInfo()
     {
-        if (model instanceof DesertTecton)
-            return "Sivatagi Tekton";
-
-        else if (model instanceof InfertileTecton)
-            return "Terméketlen Tekton";
-
-        else if (model instanceof ThreadSustainerTecton)
-            return "Fonáltartó Tekton";
-
-        else if (model instanceof SingleThreadTecton)
-            return "Egyfonalas Tekton";
-
-        else return "Tekton";
+        model.Accept(tectonNameReader);
+        return tectonNameReader.GetName();
     }
 
     public Tecton GetModel() {
@@ -183,33 +168,19 @@ public class TectonView extends EntitySpriteView{
         return this.y;
     }
 
-    public void setX(double x)
-    {
-        this.x = x;
-    }
-
-    public void setY(double y)
-    {
-        this.y = y;
-    }
-
-    public double DX()
-    {
+    public double getDx() {
         return dx;
     }
 
-    public double DY()
-    {
+    public double getDy() {
         return dy;
     }
 
-    public void setDX(double dx)
-    {
+    public void setDx(double dx) {
         this.dx = dx;
     }
 
-    public void setDY(double dy)
-    {
+    public void setDy(double dy) {
         this.dy = dy;
     }
 

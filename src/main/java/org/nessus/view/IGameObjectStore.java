@@ -1,16 +1,14 @@
 package org.nessus.view;
 
 import org.nessus.controller.IBugOwnerController;
-import org.nessus.controller.IRandomProvider;
 import org.nessus.controller.IShroomController;
 import org.nessus.model.bug.Bug;
-import org.nessus.model.bug.BugOwner;
 import org.nessus.model.shroom.ShroomBody;
 import org.nessus.model.shroom.ShroomThread;
 import org.nessus.model.shroom.Spore;
 import org.nessus.model.tecton.Tecton;
-import org.nessus.view.entityviews.IEntityView;
-import org.nessus.view.entityviews.TectonView;
+import org.nessus.view.entities.IEntityView;
+import org.nessus.view.entities.TectonView;
 
 /**
  * Az objektumkatalógus interfésze.

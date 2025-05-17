@@ -1,6 +1,7 @@
 package org.nessus.model.effect;
 
 import org.nessus.model.bug.Bug;
+import org.nessus.utility.EffectInfoReader;
 
 /**
  * Az osztály a "felosztás" hatását reprezentálja.
@@ -26,5 +27,10 @@ public class DivisionEffect extends BugEffect {
     public void ApplyOn(Bug bug) {
         bug.ClearEffect(this);
         bug.Split();
+    }
+
+    @Override
+    public void Accept(EffectInfoReader reader) {
+        reader.Visit(this);
     }
 }

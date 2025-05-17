@@ -6,13 +6,17 @@ import java.io.File;
 import java.io.IOException;
 
 public class ImageReader {
-    public static BufferedImage GetImage(String textureName){
+    private ImageReader() {}
+    
+    public static BufferedImage GetImage(String textureName) {
         BufferedImage img = null;
-        try{
+        
+        try {
             img = ImageIO.read(new File("src/main/resources/textures/" + textureName + ".png"));
-        }catch(IOException e){
+        } catch(IOException e) {
             System.err.println("File was not found");
         }
+
         return img;
     }
 }
