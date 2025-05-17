@@ -15,8 +15,7 @@ import java.awt.Graphics2D;
 public class ShroomThreadView implements IEntityView {
     private ShroomThread model;
 
-    private Point p1 = null;
-    private Point p2 = null;
+    private Vec2 offset;
 
     private Color color = null;
     private boolean selection = false;
@@ -26,9 +25,8 @@ public class ShroomThreadView implements IEntityView {
         this.color = color;
     }
 
-    public void SetLocation(Point p1, Point p2) {
-        this.p1 = p1;
-        this.p2 = p2;
+    public void SetOffset(Vec2 offset) {
+        this.offset = offset;
     }
 
     @Override
@@ -50,17 +48,15 @@ public class ShroomThreadView implements IEntityView {
         Point t2Center = new Point(t2View.GetX(), t2View.GetY()); // Center of tecton 2
 
         Vec2 direction = new Vec2(t1Center, t2Center).Normalize();
-
+        
         // Shift from center to edge along direction
-        double offset = 50.0;
-        p1 = p1.Translate(direction.Scale(offset));
-        p2 = p2.Translate(direction.Scale(-offset));
-        //this.p1 = t1Center.Translate(direction.Scale(offset));
-        //this.p2 = t2Center.Translate(direction.Scale(-offset));
+        double tectonEdgeOffset = 50.0;
+        Point p1 = t1Center.Translate(direction.Scale(tectonEdgeOffset)).Translate(offset);
+        Point p2 = t2Center.Translate(direction.Scale(-tectonEdgeOffset)).Translate(offset);
 
         g2d.setStroke(new BasicStroke(2));
         g2d.setColor(color);
-
+        
         var distanceVector = new Vec2(p1, p2);
         var growthRate = (model.GetEvolution() + 1) / 4.0;
         var endPoint = p1.Translate(distanceVector.Scale(growthRate));

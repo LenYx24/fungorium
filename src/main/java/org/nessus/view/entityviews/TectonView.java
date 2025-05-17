@@ -23,7 +23,7 @@ public class TectonView extends EntitySpriteView{
     private Random r = new Random();
     
     private Queue<Point> pointsForEntites = new LinkedList<>();
-    private Map<Tecton, Queue<Point>> shroomThreadOffsets = new HashMap<>();
+    private Map<Tecton, Queue<Vec2>> shroomThreadOffsets = new HashMap<>();
     
     private int cellSize = 0;
 
@@ -94,14 +94,14 @@ public class TectonView extends EntitySpriteView{
             var offsetVector = vectorToNeighbour.Normalize().Rotate(Math.PI / 2);
             var offset = threadCount / 2 * BASE_SHROOMTHREAD_OFFSET;
             
-            Queue<Point> pointQueue = new LinkedList<>();
+            Queue<Vec2> offsets = new LinkedList<>();
 
             for (int i = 0; i < threadCount; i++) {
-                pointQueue.add(tectonCenter.Translate(offsetVector.Scale(offset)));
+                offsets.add(offsetVector.Scale(offset));
                 offset -= BASE_SHROOMTHREAD_OFFSET;
             }
 
-            shroomThreadOffsets.put(neighbour, pointQueue);
+            shroomThreadOffsets.put(neighbour, offsets);
         }
     }
 
@@ -137,16 +137,8 @@ public class TectonView extends EntitySpriteView{
         if (!shroomThreadOffsets.containsKey(neighbour))
             return;
 
-        var neighbourView = View.GetGameObjectStore().FindTectonView(neighbour);
-        
-        var tectonCenter = new Point(x, y);
-        var neighbourCenter = new Point(neighbourView.x, neighbourView.y);
-        var distanceVector = new Vec2(tectonCenter, neighbourCenter);
-        
-        var startPoint = shroomThreadOffsets.get(neighbour).poll();
-        var endPoint = startPoint.Translate(distanceVector);
-
-        shroomThreadView.SetLocation(startPoint, endPoint);
+        var offset = shroomThreadOffsets.get(neighbour).poll();
+        shroomThreadView.SetOffset(offset);
     }
 
     @Override
