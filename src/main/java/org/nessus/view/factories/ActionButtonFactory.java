@@ -51,7 +51,7 @@ public class ActionButtonFactory {
             List<Tecton> tectons = view.GetSelection().GetTectons();
             if(!tectons.isEmpty()){
                 Bug bug = view.GetSelection().GetBug();
-                Tecton destination = tectons.getLast();
+                Tecton destination = tectons.get(tectons.size() - 1);
                 IBugOwnerController bugOwner = controller.GetCurrentBugOwnerController();
                 if(bug != null && bugOwner != null && bugOwner == bug.GetOwner() && bug.GetCanMove()){
                     bugOwner.Move(bug, destination);
@@ -107,7 +107,7 @@ public class ActionButtonFactory {
             ShroomBody body = view.GetSelection().GetShroomBody();
             if(!tectons.isEmpty())
             {
-                Tecton destination = tectons.getLast();
+                Tecton destination = tectons.get(tectons.size() - 1);
                 IShroomController shroomOwner = controller.GetCurrentShroomController();
                 if(shroomOwner != null && body != null)
                 {
@@ -142,7 +142,7 @@ public class ActionButtonFactory {
             List<Tecton> tectons = view.GetSelection().GetTectons();
             if(!tectons.isEmpty())
             {
-                Tecton destination = tectons.getLast();
+                Tecton destination = tectons.get(tectons.size() - 1);
                 IShroomController shroomOwner = controller.GetCurrentShroomController();
                 if(shroomOwner != null)
                 {
