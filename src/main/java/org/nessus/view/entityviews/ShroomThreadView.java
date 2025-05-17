@@ -78,7 +78,7 @@ public class ShroomThreadView implements IEntityView {
         }
         g2d.setColor(color);
         if(model.IsDying()){
-            g2d.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 128));
+            g2d.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 80));
         }
         g2d.setStroke(new BasicStroke(size));
         g2d.drawLine((int)p1.x, (int)p1.y, (int)endPoint.x, (int)endPoint.y);

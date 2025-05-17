@@ -87,9 +87,9 @@ public class MapPanel extends JPanel {
 
         Graphics2D g2d = (Graphics2D) g;
         graphRenderer.AlignGraph();
-        graphRenderer.Draw(g2d);
-        var store = view.GetObjectStore();
+        graphRenderer.DrawNeighbourMarkers(g2d);
         
+        var store = view.GetObjectStore();
         var renderBuffer = new PriorityQueue<IEntityView>((a, b) -> a.GetLayer() - b.GetLayer());
         
         store.GetTectonViews().values().forEach(x -> {
@@ -99,6 +99,7 @@ public class MapPanel extends JPanel {
         });
 
         store.GetEntityViews().forEach(renderBuffer::add);
+
         while(!renderBuffer.isEmpty())
             renderBuffer.poll().Draw(g2d);
     }

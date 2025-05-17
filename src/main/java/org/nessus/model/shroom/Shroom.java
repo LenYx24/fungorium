@@ -81,7 +81,7 @@ public class Shroom implements IShroomController {
 
         if (!connectedToBody) {
             for (ShroomThread thread : tecton1.GetShroomThreads()) {
-                if (thread.GetShroom() == this && thread.connectedToShroomBody) {
+                if (thread.GetShroom() == this && thread.connectedToShroomBody && thread.GetEvolution() == 3) {
                     connectedToBody = true;
                     start = tecton1;
                     end = tecton2;
@@ -90,7 +90,7 @@ public class Shroom implements IShroomController {
             }
 
             for (ShroomThread thread : tecton2.GetShroomThreads()) {
-                if (thread.GetShroom() == this && thread.connectedToShroomBody) {
+                if (thread.GetShroom() == this && thread.connectedToShroomBody && thread.GetEvolution() == 3) {
                     connectedToBody = true;
                     start = tecton2;
                     end = tecton1;

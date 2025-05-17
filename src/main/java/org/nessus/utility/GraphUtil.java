@@ -133,22 +133,31 @@ public class GraphUtil implements KeyListener {
         }
     }
 
-    public void Draw(Graphics2D g2d) {
+    private boolean ConnectedByGrownShroomThread(TectonView t1, TectonView t2) {
+        var t2Model = t2.GetModel();
+        for (var thread : t1.GetModel().GetShroomThreads()) {
+            if (thread.GetEvolution() < 3)
+                continue;
+
+            var threadEnd1 = thread.GetTecton1();
+            var threadEnd2 = thread.GetTecton2();
+            
+            if (threadEnd1 == t2Model || threadEnd2 == t2Model)
+                return true;
+        }
+
+        return false;
+    }
+
+    public void DrawNeighbourMarkers(Graphics2D g2d) {
         // Only draw edges if showEdges is true
         if (showEdges) {
             g2d.setColor(Color.LIGHT_GRAY);
             for (Edge e : edges) {
+                if (ConnectedByGrownShroomThread(e.a, e.b))
+                    continue;
                 g2d.drawLine((int) e.a.X(), (int) e.a.Y(), (int) e.b.X(), (int) e.b.Y());
             }
-        }
-
-        for (TectonView n : tectons.values()) {
-            int x = (int) n.X() - NODE_RADIUS / 2;
-            int y = (int) n.Y() - NODE_RADIUS / 2;
-            g2d.setColor(Color.ORANGE);
-            g2d.fillOval(x, y, NODE_RADIUS, NODE_RADIUS);
-            g2d.setColor(Color.BLACK);
-            g2d.drawOval(x, y, NODE_RADIUS, NODE_RADIUS);
         }
     }
     
