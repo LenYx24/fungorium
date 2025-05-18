@@ -7,9 +7,9 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.*;
 
-import org.nessus.utility.Point;
 import org.nessus.utility.TectonNameReader;
-import org.nessus.utility.Vec2;
+import org.nessus.utility.geometry.Point2;
+import org.nessus.utility.geometry.Vec2;
 import org.nessus.view.View;
 
 /**
@@ -45,7 +45,7 @@ public class TectonView extends EntitySpriteView{
     /**
      * A tektonon lévő entitások pozícióinak tárolója.
      */
-    private Queue<Point> pointsForEntites = new LinkedList<>();
+    private Queue<Point2> pointsForEntites = new LinkedList<>();
     
     /**
      * A tektonhoz kapcsolódó gombafonalak eltolásainak tárolója.
@@ -105,7 +105,7 @@ public class TectonView extends EntitySpriteView{
 
             double _x = px + cellSize / 2.0;
             double _y = py + cellSize / 2.0;
-            pointsForEntites.add(new Point(_x, _y));
+            pointsForEntites.add(new Point2(_x, _y));
         }
     }
 
@@ -132,8 +132,8 @@ public class TectonView extends EntitySpriteView{
             if (neighbourView.shroomThreadOffsets.containsKey(model) || threadCount == 0)
                 continue;
         
-            var tectonCenter = new Point(x, y);
-            var neighbourCenter = new Point(neighbourView.x, neighbourView.y);
+            var tectonCenter = new Point2(x, y);
+            var neighbourCenter = new Point2(neighbourView.x, neighbourView.y);
 
             var vectorToNeighbour = new Vec2(tectonCenter, neighbourCenter);
             var offsetVector = vectorToNeighbour.Normalize().Rotate(Math.PI / 2);
@@ -180,7 +180,7 @@ public class TectonView extends EntitySpriteView{
      * @param entityView Az elhelyezendő entitás nézet
      */
     public void InsertEntity(EntitySpriteView entityView){
-        Point p = pointsForEntites.poll();
+        Point2 p = pointsForEntites.poll();
         if(p == null){
             return;
         }

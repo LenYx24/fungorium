@@ -63,14 +63,13 @@ class Edge {
  * Erő-alapú algoritmusokat használ a csúcsok elrendezéséhez.
  */
 public class GraphUtil {
-    private int width; // a gráf szélessége
-    private int height; // a gráf magassága
-    private static final double PADDING = 10; // a gráf szélén lévő párnázás
     private static final double SPRING_LENGTH = 200; // a rugó hossza
     private static final double SPRING_STRENGTH = 0.01; // a rugó ereje
     private static final double REPULSION_STRENGTH = 30000; // a taszító erő
     private static final double DAMPING = 0.9; // a csillapítás 
     private static final int NODE_RADIUS = 100; // a csúcsok sugara
+    private static final int ALIGNMENT_RATE = 20;
+    
     private Set<Edge> edges = new HashSet<>(); // az élek halmaza
     private Map<Tecton, TectonView> tectons; // a tektonokat és a hozzájuk tartozó nézeteket tároló térkép
     
@@ -92,9 +91,7 @@ public class GraphUtil {
      * @param tectons A tektonokat és a hozzájuk tartozó nézeteket tároló térkép
      * @return void
      */
-    public GraphUtil(int width, int height, Map<Tecton, TectonView> tectons) {
-        this.width = width;
-        this.height = height;
+    public GraphUtil(Map<Tecton, TectonView> tectons) {
         this.tectons = tectons;
         
         // Billentyűzet eseménykezelő inicializálása
@@ -209,21 +206,18 @@ public class GraphUtil {
     }
 
     /**
-     * Alkalmazza a mozgást és a határokat a nem rögzített tektonokra.
+     * Alkalmazza a mozgást a nem rögzített tektonokra.
      * 
      * @param unlockedTectons A nem rögzített tektonok listája
      * @return void
      */
-    private void ApplyMotionAndBounds(List<TectonView> unlockedTectons) {
+    private void ApplyMotion(List<TectonView> unlockedTectons) {
         for (TectonView n : unlockedTectons) {
             n.setDx(n.getDx() * DAMPING);
             n.setDy(n.getDy() * DAMPING);
 
             n.setX(n.X() + n.getDx());
             n.setY(n.Y() + n.getDy());
-
-            n.setX(Math.max(NODE_RADIUS / 2.0 + PADDING, Math.min(width - NODE_RADIUS / 2.0 - PADDING, n.X())));
-            n.setY(Math.max(NODE_RADIUS / 2.0 + PADDING, Math.min(height - NODE_RADIUS / 2.0 - PADDING, n.Y())));
         }
     }
 
@@ -236,14 +230,16 @@ public class GraphUtil {
         var unlockedTectons = tectons.values().stream().filter(x -> !x.IsLocked()).toList();
         var unlockedEdges = edges.stream().filter(x -> !x.t1.IsLocked() || !x.t2.IsLocked()).toList();
 
-        for (var tecton : unlockedTectons) {
-            tecton.setDx(0);
-            tecton.setDy(0);
+        for (int i = 0; i < ALIGNMENT_RATE; i++) {
+            for (var tecton : unlockedTectons) {
+                tecton.setDx(0);
+                tecton.setDy(0);
+            }
+    
+            ApplyRepulsion(unlockedTectons);
+            ApplyAttraction(unlockedEdges);
+            ApplyMotion(unlockedTectons);
         }
-
-        ApplyRepulsion(unlockedTectons);
-        ApplyAttraction(unlockedEdges);
-        ApplyMotionAndBounds(unlockedTectons);
     }
 
     /**

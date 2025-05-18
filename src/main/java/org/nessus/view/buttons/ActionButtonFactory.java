@@ -44,6 +44,7 @@ public class ActionButtonFactory {
             @Override
             public void mouseClicked(MouseEvent e) {
                 controller.StartAction(action);
+                view.requestFocus();
             }
         });
 

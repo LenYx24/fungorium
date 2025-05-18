@@ -1,4 +1,4 @@
-package org.nessus.utility;
+package org.nessus.utility.geometry;
 
 /**
  * A Vec2 osztály egy 2D vektort reprezentál.
@@ -27,7 +27,7 @@ public class Vec2 {
      * @param origin A kezdőpont
      * @param target A célpont
      */
-    public Vec2(Point origin, Point target) {
+    public Vec2(Point2 origin, Point2 target) {
         x = target.x - origin.x;
         y = target.y - origin.y;
     }
