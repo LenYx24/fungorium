@@ -185,7 +185,7 @@ public class ShroomThreadView implements IEntityView {
         
         info.append("Tulajdonos: ");
         info.append(View.GetGameObjectStore().GetShroomName(model.GetShroom()) + "\n");
-        info.append("Növekedés állapota: " + model.GetEvolution() + "\n");
+        info.append("Növekedés állapota: " + model.GetEvolution() * 100 / 3 + "%\n");
 
         if (model.IsDying())
             info = info.append("Haldoklik\n");

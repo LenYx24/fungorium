@@ -97,7 +97,8 @@ public class ControlPanel extends JPanel {
      * @return void
      */
     private void SetPlayerLabelText(String name){
-        playerLabel.setText("Játékos: " + name);
+        var bugOwnerRound = view.GetController().IsBugOwnerRound();
+        playerLabel.setText("Játékos: " + name + " " + (bugOwnerRound ? "(Rovarász)" : "(Gombász)"));
     }
 
     /**
