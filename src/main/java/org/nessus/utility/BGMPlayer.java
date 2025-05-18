@@ -1,22 +1,19 @@
 package org.nessus.utility;
 
 import javax.sound.sampled.*;
-import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
-/**
- * BGM Player osztály, amely a háttérzene lejátszásáért felelős
- */
 public class BGMPlayer {
     private Clip clip; // A zene
 
     /**
-     * Konstruktor, paraméterként megadhatjuk neki a zenét
-     * @param path - A zene elérési útvonala
+     * Konstruktor, amely URL-ből olvassa a zenét
+     * @param audioUrl - A zene elérési URL-je
      */
-    public BGMPlayer(String path) {
+    public BGMPlayer(URL audioUrl) {
         try {
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(new File(path));
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioUrl);
             clip = AudioSystem.getClip();
             clip.open(audioStream);
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
@@ -34,4 +31,3 @@ public class BGMPlayer {
         }
     }
 }
-

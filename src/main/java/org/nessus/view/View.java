@@ -1,6 +1,10 @@
 package org.nessus.view;
 
 import java.awt.*;
+import java.io.InputStream;
+import java.util.Objects;
+import java.net.URL;
+
 import org.nessus.controller.IRandomProvider;
 import org.nessus.utility.BGMPlayer;
 import org.nessus.utility.EntitySelector;
@@ -18,12 +22,14 @@ import com.formdev.flatlaf.FlatDarkLaf;
  */
 public class View extends JFrame {
     private static View instance;
-    
+
+    URL bgmUrl = Objects.requireNonNull(getClass().getResource("/bgm/fields_covered_in_goop.wav"));
+    BGMPlayer bgmPlayer = new BGMPlayer(bgmUrl);
+
     private Controller controller = new Controller(this);
-    private BGMPlayer bgmPlayer = new BGMPlayer("src/main/resources/bgm/fields_covered_in_goop.wav");
     private SelectionCatalog selection;
     private ObjectStore objectStore = new ObjectStore();
-    
+
     private JPanel mainPanel;
     private GamePanel gamePanel;
 
