@@ -143,6 +143,11 @@ public class BugOwner implements IBugOwnerController {
     public ActionPointCatalog GetActionPointCatalog() {
         return actCatalog;
     }
+
+    /**
+     * A rovarok listájának lekérése
+     * @return List<Bug> - a rovarok listája
+     */
     public List<Bug> GetBugs(){
         return bugs;
     }

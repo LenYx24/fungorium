@@ -243,8 +243,7 @@ public class Tecton implements ITectonController {
      * @param shroom
      * @return Boolean - Van-e a tektonon ehhez a gombafajhoz tartozó spóra
      */
-    public boolean HasSporeOfShroom(Shroom shroom)
-    {
+    public boolean HasSporeOfShroom(Shroom shroom) {
         return !GetSporesOfShroom(shroom).isEmpty();
     }
 

@@ -174,20 +174,42 @@ public class ShroomThread {
         this.connectedToShroomBody = connectedToShroomBody;
     }
 
+    /**
+     * Beállítja a fonal fenntartott állapotát.
+     * @return void
+     */
     public void SetSustained() {
         sustained = true;
     }
 
+    /**
+     * Beállítja a fonal vágott állapotát.
+     * @return void
+     */
     public void SetCut() {
         cut = true;
     }
+
+    /**
+     * Beállítja a fonal fejlődési szintjét 3-ra.
+     * @return void
+     */
     public void SetEvolution(){
         evolution = 3;
     }
 
+    /**
+     * Lekérdezi a fonal fejlődési szintjét.
+     * @return int - A fejlődési szint
+     */
     public int GetEvolution() {
         return evolution;
     }
+
+    /**
+     * Lekérdezi, hogy a fonal éppen elhalás közeli állapotban van-e.
+     * @return boolean - Igen, ha a fonal elhalás közeli állapotban van (el van vágva vagy nem kapcsolódik a gomba testéhez és nem fenntartott), különben hamis
+     */
     public boolean IsDying(){
         return cut || (!connectedToShroomBody && !sustained);
     }

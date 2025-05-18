@@ -180,8 +180,7 @@ public class Shroom implements IShroomController {
      */
     @Override
     public void ThrowSpore(ShroomBody body, Tecton tecton) {
-        if (actCatalog.HasEnoughPoints(sporeCost))
-        {
+        if (actCatalog.HasEnoughPoints(sporeCost)) {
             Spore spore = body.FormSpore(tecton);
 
             System.out.println("nemnull: " + spore != null);
@@ -331,28 +330,43 @@ public class Shroom implements IShroomController {
         threads.add(thread);
     }
 
-    public int GetSporeThrowCost()
-    {
+    /**
+     * A spóra dobásának költségének lekérdezése
+     * @return int - A spóra dobásának költsége
+     */
+    public int GetSporeThrowCost() {
         return sporeCost;
     }
 
-    public int GetShroomThreadCost()
-    {
+    /**
+     * A gombafonalak növesztésének költségének lekérdezése
+     * @return int - A gombafonalak növesztésének költsége
+     */
+    public int GetShroomThreadCost() {
         return shroomThreadCost;
     }
 
-    public int GetShroomBodyCost()
-    {
+    /**
+     * A gombatestek elhelyezésének költségének lekérdezése
+     * @return int - A gombatestek elhelyezésének költsége
+     */
+    public int GetShroomBodyCost() {
         return shroomBodyCost;
     }
 
-    public int GetUpgradeCost()
-    {
+    /**
+     * A gombatestek fejlesztésének költségének lekérdezése
+     * @return int - A gombatestek fejlesztésének költsége
+     */
+    public int GetUpgradeCost() {
         return shroomUpgradeCost;
     }
 
-    public int GetDevourCost()
-    {
+    /**
+     * A gombatestek elfogyasztásának költségének lekérdezése
+     * @return int - A gombatestek elfogyasztásának költsége
+     */
+    public int GetDevourCost() {
         return devourCost;
     }
 }

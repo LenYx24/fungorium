@@ -27,6 +27,10 @@ public abstract class BugEffect {
         }
     }
 
+    /**
+     * A hatás hátralévő használatainak lekérdezése.
+     * @return int - A hátralévő használatok száma.
+     */
     public int GetRemainingUses() {
         return remainingUses;
     }
@@ -37,6 +41,11 @@ public abstract class BugEffect {
      */
     public abstract void ApplyOn(Bug bug);
 
-
+    /**
+     * A hatás elfogadása.
+     * @param reader - A hatás információinak olvasója (EffectInfoReader)
+     * @see EffectInfoReader
+     * @return void
+     */
     public abstract void Accept(EffectInfoReader reader);
 }

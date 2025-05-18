@@ -21,6 +21,12 @@ public class SlowEffect extends BugEffect {
         UpdateState(bug);
     }
 
+    /**
+     * A hatás elfogadása.
+     * @param reader - A hatás információinak olvasója (EffectInfoReader)
+     * @see EffectInfoReader
+     * @return void
+     */
     @Override
     public void Accept(EffectInfoReader reader) {
         reader.Visit(this);

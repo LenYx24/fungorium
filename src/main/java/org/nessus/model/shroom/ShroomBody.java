@@ -203,18 +203,27 @@ public class ShroomBody {
         this.sporeMaterials = sporeMaterials;
     }
 
-    public int GetSporeMaterials()
-    {
+    /**
+     * A gombatest spóraanyagainak lekérdezése
+     * @return int - A gombatest spóraanyagainak mennyisége
+     */
+    public int GetSporeMaterials() {
         return sporeMaterials;
     }
 
-    public int GetRemainingThrows()
-    {
+    /**
+     * A gombatest hátralévő dobásainak lekérdezése
+     * @return int - A gombatest hátralévő dobásainak száma
+     */
+    public int GetRemainingThrows() {
         return remainingThrows;
     }
 
-    public int GetLevel()
-    {
+    /**
+     * A gombatest szintjének lekérdezése
+     * @return int - A gombatest szintje
+     */
+    public int GetLevel() {
         return level;
     }
 }
