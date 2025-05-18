@@ -180,7 +180,6 @@ public class Controller implements IRandomProvider {
         playerIndex = 0;
         currentShroom = shrooms.get(playerIndex);
         view.UpdatePlayerInfo();
-        playerIndex++;
     }
 
     /**
@@ -201,29 +200,31 @@ public class Controller implements IRandomProvider {
      * @return void
      */
     public void NextPlayer() {
-        if (bugOwnerRound) {
-            if (playerIndex == bugOwners.size()) {
-                bugOwnerRound = false;
-                playerIndex = 0;
-                currentShroom = shrooms.get(playerIndex);
-            }
-            currentBugOwner = bugOwners.get(playerIndex);
-        }
-        else {
-            if (playerIndex == shrooms.size()) {
-                bugOwnerRound = true;
-                playerIndex = 0;
-                currentBugOwner = bugOwners.get(playerIndex);
-            }
-            currentShroom = shrooms.get(playerIndex);
-        }
-
         playerIndex++;
+
+        if (bugOwnerRound && playerIndex == bugOwners.size()) {
+            bugOwnerRound = false;
+            playerIndex = 0;
+
+            tectons.forEach(ITectonController::UpdateTecton);
+            if (RandomNumber(0, 100) < TECTON_SPLIT_CHANCE)
+                tectons.get(RandomNumber(0, tectons.size() - 1)).Split();
+
+        } else if (!bugOwnerRound && playerIndex == shrooms.size()) {
+            bugOwnerRound = true;
+            playerIndex = 0;
+        }
+        
+        if (bugOwnerRound) {
+            currentBugOwner = bugOwners.get(playerIndex);
+            currentBugOwner.UpdateBugOwner();
+        } else {
+            currentShroom = shrooms.get(playerIndex);
+            currentShroom.UpdateShroom();
+        }
+        
         view.UpdatePlayerInfo();
         view.GetGamePanel().GetControlPanel().UpdateButtonTexts();
-
-        if (RandomNumber(0, 100) < TECTON_SPLIT_CHANCE)
-            tectons.get(RandomNumber(0, tectons.size() - 1)).Split();
     }
 
     /**

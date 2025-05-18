@@ -119,12 +119,14 @@ public class View extends JFrame {
     }
 
     public void UpdatePlayerInfo() {
+        var controlPanel = gamePanel.GetControlPanel();
+        
         if (controller.IsBugOwnerRound()) {
-            controller.GetCurrentBugOwnerController().UpdateBugOwner();
-            gamePanel.GetControlPanel().UpdatePlayerInfo(objectStore.GetBugOwnerName(controller.GetCurrentBugOwnerController()));
+            var bugowner = controller.GetCurrentBugOwnerController();
+            controlPanel.UpdatePlayerInfo(objectStore.GetBugOwnerName(bugowner));
         } else {
-            controller.GetCurrentShroomController().UpdateShroom();
-            gamePanel.GetControlPanel().UpdatePlayerInfo(objectStore.GetShroomName(controller.GetCurrentShroomController()));
+            var shroom = controller.GetCurrentShroomController();
+            controlPanel.UpdatePlayerInfo(objectStore.GetShroomName(shroom));
         }
 
     }
