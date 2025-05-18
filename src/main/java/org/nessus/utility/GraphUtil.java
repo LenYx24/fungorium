@@ -11,47 +11,87 @@ import java.util.Set;
 import java.awt.Graphics2D;
 import java.awt.Color;
 
+/**
+ * Az Edge osztály két TectonView közötti kapcsolatot reprezentál.
+ * A gráf éleit képviseli a GraphUtil osztályban.
+ */
 class Edge {
-    public TectonView t1;
-    public TectonView t2;
+    public TectonView t1; // az első TectonView
 
+    public TectonView t2; // a második TectonView
+
+    /**
+     * Létrehoz egy új élet két TectonView között.
+     * 
+     * @param a Az első TectonView
+     * @param b A második TectonView
+     */
     public Edge(TectonView a, TectonView b) {
         this.t1 = a;
         this.t2 = b;
     }
 
+    /**
+     * Összehasonlítja ezt az élet egy másik objektummal.
+     * Két él egyenlő, ha ugyanazokat a TectonView-kat köti össze, függetlenül a sorrendtől.
+     * 
+     * @param obj Az összehasonlítandó objektum
+     * @return boolean - Igaz, ha a két él egyenlő, hamis egyébként
+     */
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof Edge edge)) return false;
         return (edge.t1 == t1 && edge.t2 == t2) || (edge.t1 == t2 && edge.t2 == t1);
     }
 
+    /**
+     * Kiszámítja az él hash kódját.
+     * A hash kód a két TectonView hash kódjának összege.
+     * 
+     * @return int - Az él hash kódja
+     */
     @Override
     public int hashCode() {
         return t1.hashCode() + t2.hashCode();
     }
 }
 
+/**
+ * A GraphUtil osztály felelős a gráf elrendezéséért és megjelenítéséért.
+ * Erő-alapú algoritmusokat használ a csúcsok elrendezéséhez.
+ */
 public class GraphUtil {
-    private int width;
-    private int height;
+    private int width; // a gráf szélessége
+    private int height; // a gráf magassága
+    private static final double PADDING = 10; // a gráf szélén lévő párnázás
+    private static final double SPRING_LENGTH = 200; // a rugó hossza
+    private static final double SPRING_STRENGTH = 0.01; // a rugó ereje
+    private static final double REPULSION_STRENGTH = 30000; // a taszító erő
+    private static final double DAMPING = 0.9; // a csillapítás 
+    private static final int NODE_RADIUS = 100; // a csúcsok sugara
+    private Set<Edge> edges = new HashSet<>(); // az élek halmaza
+    private Map<Tecton, TectonView> tectons; // a tektonokat és a hozzájuk tartozó nézeteket tároló térkép
 
-    private static final double PADDING = 10;
-    private static final double SPRING_LENGTH = 200;
-    private static final double SPRING_STRENGTH = 0.01;
-    private static final double REPULSION_STRENGTH = 30000;
-    private static final double DAMPING = 0.9;
-    private static final int NODE_RADIUS = 100;
-
-    private Set<Edge> edges = new HashSet<>();
-    private Map<Tecton, TectonView> tectons;
-
+    /**
+     * Létrehoz egy új GraphUtil objektumot a megadott paraméterekkel.
+     * 
+     * @param width A gráf szélessége
+     * @param height A gráf magassága
+     * @param tectons A tektonokat és a hozzájuk tartozó nézeteket tároló térkép
+     * @return void
+     */
     public GraphUtil(int width, int height, Map<Tecton, TectonView> tectons) {
         this.width = width;
         this.height = height;
         this.tectons = tectons;
     }
 
+    /**
+     * Elrendezi a gráfot.
+     * Létrehozza az éleket a tektonok szomszédsági kapcsolatai alapján, majd alkalmazza az erőket.
+     * 
+     * @return void
+     */
     public void AlignGraph() {
         edges.clear();
         
@@ -67,6 +107,12 @@ public class GraphUtil {
         ApplyForces();
     }
 
+    /**
+     * Alkalmazza a taszító erőket a nem rögzített tektonokra.
+     * 
+     * @param unlockedTectons A nem rögzített tektonok listája
+     * @return void
+     */
     private void ApplyRepulsion(List<TectonView> unlockedTectons) {
         for (var tecton : unlockedTectons) {
             for (TectonView b : tectons.values()) {
@@ -86,6 +132,12 @@ public class GraphUtil {
         }
     }
 
+    /**
+     * Alkalmazza a vonzó erőket a nem rögzített élekre.
+     * 
+     * @param unlockedEdges A nem rögzített élek listája
+     * @return void
+     */
     private void ApplyAttraction(List<Edge> unlockedEdges) {
         for (Edge edge : unlockedEdges) {
             double dx = edge.t2.X() - edge.t1.X();
@@ -110,6 +162,12 @@ public class GraphUtil {
         }
     }
 
+    /**
+     * Alkalmazza a mozgást és a határokat a nem rögzített tektonokra.
+     * 
+     * @param unlockedTectons A nem rögzített tektonok listája
+     * @return void
+     */
     private void ApplyMotionAndBounds(List<TectonView> unlockedTectons) {
         for (TectonView n : unlockedTectons) {
             n.setDx(n.getDx() * DAMPING);
@@ -123,6 +181,11 @@ public class GraphUtil {
         }
     }
 
+    /**
+     * Alkalmazza az összes erőt a gráfra.
+     * 
+     * @return void
+     */
     private void ApplyForces() {
         var unlockedTectons = tectons.values().stream().filter(x -> !x.IsLocked()).toList();
         var unlockedEdges = edges.stream().filter(x -> !x.t1.IsLocked() || !x.t2.IsLocked()).toList();
@@ -137,6 +200,13 @@ public class GraphUtil {
         ApplyMotionAndBounds(unlockedTectons);
     }
 
+    /**
+     * Ellenőrzi, hogy két tekton között van-e kifejlett gombafonal.
+     * 
+     * @param t1 Az első TectonView
+     * @param t2 A második TectonView
+     * @return boolean - Igaz, ha van kifejlett gombafonal a két tekton között, hamis egyébként
+     */
     private boolean ConnectedByGrownShroomThread(TectonView t1, TectonView t2) {
         var t2Model = t2.GetModel();
 
@@ -154,6 +224,13 @@ public class GraphUtil {
         return false;
     }
 
+    /**
+     * Kirajzolja a szomszédsági jelölőket.
+     * Csak azokat az éleket rajzolja ki, amelyek között nincs kifejlett gombafonal.
+     * 
+     * @param g2d A Graphics2D objektum, amelyre rajzolni kell
+     * @return void
+     */
     public void DrawNeighbourMarkers(Graphics2D g2d) {
         g2d.setColor(Color.LIGHT_GRAY);
         
