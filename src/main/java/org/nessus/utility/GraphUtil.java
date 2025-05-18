@@ -10,6 +10,8 @@ import java.util.Set;
 
 import java.awt.Graphics2D;
 import java.awt.Color;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 /**
  * Az Edge osztály két TectonView közötti kapcsolatot reprezentál.
@@ -71,6 +73,16 @@ public class GraphUtil {
     private static final int NODE_RADIUS = 100; // a csúcsok sugara
     private Set<Edge> edges = new HashSet<>(); // az élek halmaza
     private Map<Tecton, TectonView> tectons; // a tektonokat és a hozzájuk tartozó nézeteket tároló térkép
+    
+    /**
+     * Jelzi, hogy a szomszédsági vonalak láthatóak-e.
+     */
+    private boolean showNeighbourLines = true;
+    
+    /**
+     * A billentyűzet eseményeket kezelő adapter.
+     */
+    private KeyAdapter keyAdapter;
 
     /**
      * Létrehoz egy új GraphUtil objektumot a megadott paraméterekkel.
@@ -84,6 +96,40 @@ public class GraphUtil {
         this.width = width;
         this.height = height;
         this.tectons = tectons;
+        
+        // Billentyűzet eseménykezelő inicializálása
+        this.keyAdapter = new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_R) {
+                    showNeighbourLines = !showNeighbourLines;
+                    // Újrarajzolás kérése, ha van hozzá kapcsolódó komponens
+                    if (e.getComponent() != null) {
+                        e.getComponent().repaint();
+                    }
+                }
+            }
+        };
+    }
+    
+    /**
+     * Visszaadja a billentyűzet eseménykezelőt.
+     * 
+     * @return KeyAdapter - A billentyűzet eseménykezelő
+     */
+    public KeyAdapter getKeyAdapter() {
+        return keyAdapter;
+    }
+    
+    /**
+     * Regisztrálja a billentyűzet eseménykezelőt egy komponenshez.
+     * 
+     * @param component A komponens, amelyhez a billentyűzet eseménykezelőt regisztráljuk
+     */
+    public void registerKeyListener(java.awt.Component component) {
+        component.addKeyListener(keyAdapter);
+        // Biztosítjuk, hogy a komponens fókuszálható legyen
+        component.setFocusable(true);
     }
 
     /**
@@ -123,9 +169,9 @@ public class GraphUtil {
                 double dy = tecton.Y() - b.Y();
                 double distSq = dx * dx + dy * dy;
                 double dist = Math.max(Math.sqrt(distSq), NODE_RADIUS);
-                
+
                 double force = REPULSION_STRENGTH / (dist * dist);
-                
+
                 tecton.setDx(tecton.getDx() + (dx / dist) * force);
                 tecton.setDy(tecton.getDy() + (dy / dist) * force);
             }
@@ -232,6 +278,10 @@ public class GraphUtil {
      * @return void
      */
     public void DrawNeighbourMarkers(Graphics2D g2d) {
+        if (!showNeighbourLines) {
+            return;
+        }
+        
         g2d.setColor(Color.LIGHT_GRAY);
         
         edges.stream()
