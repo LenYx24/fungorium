@@ -54,4 +54,6 @@ public interface IShroomController {
      * @return void
      */
     void UpdateShroom();
+
+    int GetScore();
 }

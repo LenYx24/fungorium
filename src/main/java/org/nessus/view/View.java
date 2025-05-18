@@ -45,6 +45,7 @@ public class View extends JFrame {
         mainPanel.add(new MainMenuPanel(mainPanel), "menu");
         mainPanel.add(new SettingsPanel(this, mainPanel), "settings");
         mainPanel.add(gamePanel, "game");
+        mainPanel.add(new ScoreBoardPanel(mainPanel, this), "scoreBoard");
 
         add(mainPanel);
         pack();
@@ -106,6 +107,11 @@ public class View extends JFrame {
     
         Timer timer = new Timer(0, e -> gamePanel.repaint());
         timer.start();
+    }
+
+    public void OpenScoreBoard() {
+        CardLayout cardLayout = (CardLayout)mainPanel.getLayout();
+        cardLayout.show(mainPanel,"scoreBoard");
     }
 
     public void HandleSelection(IEntityView entity) {

@@ -40,4 +40,6 @@ public interface IBugOwnerController {
      * @return void
      */
     void UpdateBugOwner();
+
+    int GetScore();
 }
