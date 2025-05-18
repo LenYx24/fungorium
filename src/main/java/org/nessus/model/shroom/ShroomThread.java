@@ -19,6 +19,7 @@ public class ShroomThread {
     boolean connectedToShroomBody = false; // A fonal kapcsolódik-e a gomba testéhez
     int isolationCounter = 0; // Az izoláció számlálója
     boolean cut = false; // A fonal el van-e vágva
+    boolean drying = false; // A fonál szárad-e egy Sivatagi Tekton miatt
 
     int cutDamageTimer = 3; // Megadja, a fonál hány kör után szívódik fel miután elvágták
     boolean sustained = false; // Megadja, hogy a fonált épp életben tartja-e egy ThreadSustainerTecton. Ilyenkor nem szívódik fel.
@@ -175,6 +176,12 @@ public class ShroomThread {
     }
 
     /**
+     * Beállítja a fonal száradó állapotát.
+     * @return void
+     */
+    public void SetDrying(){drying = true;}
+
+    /**
      * Beállítja a fonal fenntartott állapotát.
      * @return void
      */
@@ -211,6 +218,6 @@ public class ShroomThread {
      * @return boolean - Igen, ha a fonal elhalás közeli állapotban van (el van vágva vagy nem kapcsolódik a gomba testéhez és nem fenntartott), különben hamis
      */
     public boolean IsDying(){
-        return cut || (!connectedToShroomBody && !sustained);
+        return cut || (!connectedToShroomBody && !sustained) || drying;
     }
 }
