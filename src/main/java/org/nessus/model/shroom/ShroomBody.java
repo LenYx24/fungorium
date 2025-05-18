@@ -33,6 +33,7 @@ public class ShroomBody {
     public ShroomBody(Shroom shroom, Tecton tecton) {
         this.shroom = shroom;
         this.tecton = tecton;
+        shroom.SetShroomBody(this);
     }
 
     /**
@@ -119,12 +120,13 @@ public class ShroomBody {
         remainingThrows--;
 
         Spore spore = new Spore(shroom, tecton);
-        View.GetObjectStore().AddSpore(spore);
+        View.GetGameObjectStore().AddSpore(spore);
         tecton.ThrowSpore(spore);
 
         if (remainingThrows <= 0) {
             tecton.ClearShroomBody();
             shroom.RemoveShroomBody(this);
+            View.GetGameObjectStore().RemoveEntity(this);
         }
 
         return spore;
@@ -155,9 +157,10 @@ public class ShroomBody {
                 } else {
                     neighbour = thread.GetTecton1();
                 }
+                
+                thread.connectedToShroomBody = true;
 
                 if (!visited.contains(neighbour)) {
-                    thread.connectedToShroomBody = true;
                     visited.add(neighbour);
                     queue.add(neighbour);
                 }
@@ -198,5 +201,29 @@ public class ShroomBody {
      */
     public void SetSporeMaterials(int sporeMaterials) {
         this.sporeMaterials = sporeMaterials;
+    }
+
+    /**
+     * A gombatest spóraanyagainak lekérdezése
+     * @return int - A gombatest spóraanyagainak mennyisége
+     */
+    public int GetSporeMaterials() {
+        return sporeMaterials;
+    }
+
+    /**
+     * A gombatest hátralévő dobásainak lekérdezése
+     * @return int - A gombatest hátralévő dobásainak száma
+     */
+    public int GetRemainingThrows() {
+        return remainingThrows;
+    }
+
+    /**
+     * A gombatest szintjének lekérdezése
+     * @return int - A gombatest szintje
+     */
+    public int GetLevel() {
+        return level;
     }
 }

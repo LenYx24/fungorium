@@ -1,6 +1,7 @@
 package org.nessus.model.effect;
 
 import org.nessus.model.bug.Bug;
+import org.nessus.utility.EffectInfoReader;
 
 /**
  * Az osztály a "bénítás" hatását reprezentálja.
@@ -18,5 +19,16 @@ public class CripplingEffect extends BugEffect {
     public void ApplyOn(Bug bug) {
         bug.SetCanMove(false);
         UpdateState(bug);
+    }
+
+    /**
+     * A hatás elfogadása.
+     * @param reader - A hatás információinak olvasója (EffectInfoReader)
+     * @see EffectInfoReader
+     * @return void
+     */
+    @Override
+    public void Accept(EffectInfoReader reader) {
+        reader.Visit(this);
     }
 }

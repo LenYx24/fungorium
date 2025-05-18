@@ -58,36 +58,55 @@ public class Shroom implements IShroomController {
     public void PlaceShroomThread(Tecton tecton1, Tecton tecton2) {
         boolean enough = actCatalog.HasEnoughPoints(shroomThreadCost);
         boolean neighbours = tecton1.IsNeighbourOf(tecton2);
-
         
         ShroomBody body1 = tecton1.GetShroomBody();
         ShroomBody body2 = tecton2.GetShroomBody();
         
-        boolean connectedToBody = (body1 != null && body1.GetShroom() == this) || (body2 != null && body2.GetShroom() == this);
+        Tecton start = null;
+        Tecton end = null;
 
-        List<ShroomThread> funcThreads = new ArrayList<>();
+        boolean connectedToBody = false;
+        
+        if (body1 != null && body1.GetShroom() == this) {
+            connectedToBody = true;
+            start = tecton1;
+            end = tecton2;
+        }
 
-        funcThreads.addAll(tecton1.GetThreads());
-        funcThreads.addAll(tecton2.GetThreads());
+        if (body2 != null && body2.GetShroom() == this) {
+            connectedToBody = true;
+            start = tecton2;
+            end = tecton1;
+        }
 
         if (!connectedToBody) {
-            for (ShroomThread thread : funcThreads) {
-                if (thread.GetShroom() == this && thread.connectedToShroomBody) {
+            for (ShroomThread thread : tecton1.GetShroomThreads()) {
+                if (thread.GetShroom() == this && thread.connectedToShroomBody && thread.GetEvolution() == 3) {
                     connectedToBody = true;
+                    start = tecton1;
+                    end = tecton2;
                     break;
+                }
+            }
+
+            for (ShroomThread thread : tecton2.GetShroomThreads()) {
+                if (thread.GetShroom() == this && thread.connectedToShroomBody && thread.GetEvolution() == 3) {
+                    connectedToBody = true;
+                    start = tecton2;
+                    end = tecton1;
                 }
             }
         }
 
         if (enough && neighbours && connectedToBody) {
-            ShroomThread newThread = new ShroomThread(this, tecton1, tecton2);
+            ShroomThread newThread = new ShroomThread(this, start, end);
             newThread.SetConnectedToShroomBody(connectedToBody);
 
             boolean t1success = tecton1.GrowShroomThread(newThread);
             boolean t2success = tecton2.GrowShroomThread(newThread);
 
             if (t1success && t2success) {
-                View.GetObjectStore().AddShroomThread(newThread);
+                View.GetGameObjectStore().AddShroomThread(newThread);
                 actCatalog.DecreasePoints(shroomThreadCost);
             } else {
                 newThread.Remove();
@@ -111,7 +130,7 @@ public class Shroom implements IShroomController {
 
             boolean success = tecton.GrowShroomBody(newBody);
             if (success) {
-                View.GetObjectStore().AddShroomBody(newBody);
+                View.GetGameObjectStore().AddShroomBody(newBody);
                 grownShroomBodies++;
                 shroomBodies.add(newBody);
                 actCatalog.DecreasePoints(shroomBodyCost);
@@ -145,6 +164,7 @@ public class Shroom implements IShroomController {
 
             bodyShroom.RemoveSpore(consumedSpore);
             bodyTecton.RemoveSpore(consumedSpore);
+            View.GetGameObjectStore().RemoveEntity(consumedSpore);
             actCatalog.DecreasePoints(shroomUpgradeCost);
         }
     }
@@ -164,6 +184,7 @@ public class Shroom implements IShroomController {
             Spore spore = body.FormSpore(tecton);
 
             System.out.println("nemnull: " + spore != null);
+
             if (spore != null) {
                 spores.add(spore);
                 actCatalog.DecreasePoints(sporeCost);
@@ -307,5 +328,49 @@ public class Shroom implements IShroomController {
      */
     public void SetShroomThread(ShroomThread thread) {
         threads.add(thread);
+    }
+
+    /**
+     * A spóra dobásának költségének lekérdezése
+     * @return int - A spóra dobásának költsége
+     */
+    public int GetSporeThrowCost() {
+        return sporeCost;
+    }
+
+    /**
+     * A gombafonalak növesztésének költségének lekérdezése
+     * @return int - A gombafonalak növesztésének költsége
+     */
+    public int GetShroomThreadCost() {
+        return shroomThreadCost;
+    }
+
+    /**
+     * A gombatestek elhelyezésének költségének lekérdezése
+     * @return int - A gombatestek elhelyezésének költsége
+     */
+    public int GetShroomBodyCost() {
+        return shroomBodyCost;
+    }
+
+    /**
+     * A gombatestek fejlesztésének költségének lekérdezése
+     * @return int - A gombatestek fejlesztésének költsége
+     */
+    public int GetUpgradeCost() {
+        return shroomUpgradeCost;
+    }
+
+    /**
+     * A gombatestek elfogyasztásának költségének lekérdezése
+     * @return int - A gombatestek elfogyasztásának költsége
+     */
+    public int GetDevourCost() {
+        return devourCost;
+    }
+
+    public int GetScore() {
+        return grownShroomBodies;
     }
 }

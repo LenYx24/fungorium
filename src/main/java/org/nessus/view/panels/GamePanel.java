@@ -1,25 +1,30 @@
 package org.nessus.view.panels;
 
-import java.awt.List;
-import java.util.ArrayList;
-
-import org.nessus.model.bug.BugOwner;
-import org.nessus.model.shroom.Shroom;
-
 import javax.swing.*;
-
 import org.nessus.view.View;
-
 import java.awt.*;
 
+/**
+ * A játék fő panele, amely tartalmazza a játékteret és a vezérlőpanelt.
+ * Elrendezi a játék felületének komponenseit.
+ */
 public class GamePanel extends JPanel {
-    private View view;
-    private JPanel mapPanel;
-    private JPanel controlPanel;
+    /**
+     * A játéktér panel.
+     */
+    private MapPanel mapPanel;
+    
+    /**
+     * A vezérlőpanel.
+     */
+    private ControlPanel controlPanel;
 
+    /**
+     * Létrehoz egy új játék panelt.
+     * @param view A nézet, amelyhez a panel tartozik
+     */
     public GamePanel(View view) {
-        this.view = view;
-        mapPanel = new MapPanel(1280, 720);         
+        mapPanel = new MapPanel(view, 1280, 720);         
         controlPanel = new ControlPanel(view);
 
         setLayout(new GridBagLayout());
@@ -35,7 +40,14 @@ public class GamePanel extends JPanel {
         gbc.gridx = 1;
         gbc.weightx = 1;
         add(controlPanel, gbc);
+    }
 
+    /**
+     * Visszaadja a vezérlőpanelt.
+     * @return ControlPanel - A vezérlőpanel
+     */
+    public ControlPanel GetControlPanel() {
+        return controlPanel;
     }
 }
 

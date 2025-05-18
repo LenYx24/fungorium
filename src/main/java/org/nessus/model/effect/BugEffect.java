@@ -1,6 +1,7 @@
 package org.nessus.model.effect;
 
 import org.nessus.model.bug.Bug;
+import org.nessus.utility.EffectInfoReader;
 
 /**
  * Absztrakt osztály, mely a rovarok hatásait reprezentálja.
@@ -18,10 +19,20 @@ public abstract class BugEffect {
      * @param bug
      */
     protected void UpdateState(Bug bug) {
-        remainingUses--;
         if (remainingUses == 0) {
             bug.ClearEffect(this);
+            bug.UpdateBug();
+        } else {
+            remainingUses--;
         }
+    }
+
+    /**
+     * A hatás hátralévő használatainak lekérdezése.
+     * @return int - A hátralévő használatok száma.
+     */
+    public int GetRemainingUses() {
+        return remainingUses;
     }
 
     /**
@@ -29,4 +40,12 @@ public abstract class BugEffect {
      * @param bug
      */
     public abstract void ApplyOn(Bug bug);
+
+    /**
+     * A hatás elfogadása.
+     * @param reader - A hatás információinak olvasója (EffectInfoReader)
+     * @see EffectInfoReader
+     * @return void
+     */
+    public abstract void Accept(EffectInfoReader reader);
 }

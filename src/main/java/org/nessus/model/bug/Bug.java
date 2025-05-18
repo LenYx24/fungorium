@@ -31,7 +31,6 @@ public class Bug {
     int eatCost; // táplálkozás költsége
     int cutThreadCost; // gombafonal vágás költsége
 
-
     /**
      * Konstruktor
      * A rovar tektonját és tulajdonosát beállítja.
@@ -50,6 +49,14 @@ public class Bug {
         owner.AddBug(this);
     }
 
+    /**
+     * Konstruktor
+     * A rovar tektonját és tulajdonosát beállítja.
+     * @param owner - A rovar tulajdonosa
+     * @param tecton - A rovar tektonja
+     * @see BugOwner
+     * @see Tecton
+     */
     public Bug(BugOwner owner, Tecton tecton) {
         this(owner);
         this.tecton = tecton;
@@ -89,6 +96,21 @@ public class Bug {
     public Tecton GetTecton() {
         return tecton;
     }
+
+    /**
+     * Lekérdezi, hogy a rovar tud-e gombafonalat vágni
+     * @return boolean - true, ha a rovar tud gombafonalat vágni, false, ha nem
+     */
+    public boolean GetCanCut() {
+        return canCut;
+    }
+
+    /**
+     * Lekérdezi a rovar hatásait
+     * @see BugEffect
+     * @return List<BugEffect> - A rovar hatásai
+     */
+    public List<BugEffect> GetEffects(){return effects;}
 
     /**
      * Mozgás
@@ -180,7 +202,7 @@ public class Bug {
 
         newBug.tecton = tecton;
         tecton.AddBug(newBug);
-        View.GetObjectStore().AddBug(newBug);
+        View.GetGameObjectStore().AddBug(newBug);
     }
 
     /**
@@ -318,5 +340,6 @@ public class Bug {
             tecton.RemoveBug(this);
         if (bugOwner != null)
             bugOwner.RemoveBug(this);
+        View.GetGameObjectStore().RemoveEntity(this);
     }
 }

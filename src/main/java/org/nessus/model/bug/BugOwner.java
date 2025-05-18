@@ -10,7 +10,6 @@ import org.nessus.model.ActionPointCatalog;
 import org.nessus.model.shroom.ShroomThread;
 import org.nessus.model.shroom.Spore;
 import org.nessus.model.tecton.Tecton;
-import org.nessus.view.View;
 
 /**
  * A rovarok tulajdonosát reprezentáló osztály.
@@ -143,5 +142,17 @@ public class BugOwner implements IBugOwnerController {
      */
     public ActionPointCatalog GetActionPointCatalog() {
         return actCatalog;
+    }
+
+    /**
+     * A rovarok listájának lekérése
+     * @return List<Bug> - a rovarok listája
+     */
+    public List<Bug> GetBugs(){
+        return bugs;
+    }
+
+    public int GetScore() {
+        return bugs.stream().mapToInt(o -> o.GetCollectedNutrients()).sum();
     }
 }

@@ -40,4 +40,16 @@ public class ActionPointCatalog {
     public void ResetPoints() {
         currentActionPoints = defaultActionPoints;
     }
+
+    /**
+     * Visszaadja a cselekvési pontok számát.
+     * @return int - A cselekvési pontok száma.
+     */
+    public int GetCurrentPoints() {return currentActionPoints;}
+
+    /**
+     * Visszaadja az alapértelmezett cselekvési pontok számát.
+     * @return int - Az alapértelmezett cselekvési pontok száma.
+     */
+    public int GetDefaultPoints() {return defaultActionPoints;}
 }

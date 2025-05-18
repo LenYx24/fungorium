@@ -1,7 +1,9 @@
 package org.nessus.controller;
 
-import org.nessus.view.View;
-
+/**
+ * Interface az action controllernek.
+ * Az action controller felelős az akciók végrehajtásáért.
+ */
 public interface IActionController {
-    boolean TryAction(View view);
+    boolean TryAction();
 }

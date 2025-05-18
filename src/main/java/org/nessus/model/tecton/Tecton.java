@@ -3,7 +3,7 @@ package org.nessus.model.tecton;
 import org.nessus.controller.*;
 import org.nessus.model.bug.Bug;
 import org.nessus.model.shroom.*;
-import org.nessus.view.TectonTexturer;
+import org.nessus.utility.ITectonVisitor;
 import org.nessus.view.View;
 
 import java.util.ArrayList;
@@ -34,14 +34,9 @@ public class Tecton implements ITectonController {
      */
     protected void SpreadEntities(Tecton copyTecton) {
         copyTecton.SetNeighbour(this);
-        for (Tecton neighbour : neighbours) {
-            copyTecton.neighbours.add(neighbour);
-            neighbour.neighbours.add(copyTecton);
-        }
-
         neighbours.add(copyTecton);
 
-        IRandomProvider randProvider = View.GetObjectStore().GetRandomProvider();
+        IRandomProvider randProvider = View.GetRandomProvider();
 
         Iterator<Bug> bugIterator = bugs.iterator();
         while (bugIterator.hasNext()) {
@@ -86,7 +81,7 @@ public class Tecton implements ITectonController {
     public void Split() {
         Tecton copyTecton = Copy();
         SpreadEntities(copyTecton);
-        View.GetObjectStore().AddTecton(copyTecton);
+        View.GetGameObjectStore().AddTectonAt(this, copyTecton);
 
         //Konkurens Módosítás Kivétel elkerülése érdekében másolat
         List.copyOf(threads).forEach(ShroomThread::Remove);
@@ -130,6 +125,7 @@ public class Tecton implements ITectonController {
         
         var spore = usableSpores.get(0);
         RemoveSpore(spore);
+        View.GetGameObjectStore().RemoveEntity(spore);
         
         this.body = body;
         body.SetTecton(this);
@@ -140,10 +136,12 @@ public class Tecton implements ITectonController {
     /**
      * Gombatest beállítása a tektonra.
      * @param body - A beállítandó gombatest
-     * @return void
+     * @return boolean - A művelet eredményével tér vissza
      */
-    public void SetShroomBody(ShroomBody body) {
+    public boolean SetShroomBody(ShroomBody body) {
         this.body = body;
+        body.SetTecton(this);
+        return true;
     }
 
     /**
@@ -245,8 +243,7 @@ public class Tecton implements ITectonController {
      * @param shroom
      * @return Boolean - Van-e a tektonon ehhez a gombafajhoz tartozó spóra
      */
-    public boolean HasSporeOfShroom(Shroom shroom)
-    {
+    public boolean HasSporeOfShroom(Shroom shroom) {
         return !GetSporesOfShroom(shroom).isEmpty();
     }
 
@@ -297,14 +294,25 @@ public class Tecton implements ITectonController {
     }
 
     /**
-     * Visszaadja a tektonon található gombatestet.
-     * @return List<ShroomBody> - A tektonon található gombatestek listája
+     * Elfogadja a látogatót.
+     * A látogató a DesertTecton osztályt látogatja meg (ITectonVisitor).
+     * @param visitor - A látogató.
+     * @see org.nessus.utility.ITectonVisitor
+     * @return void
      */
-    public List<ShroomThread> GetThreads() {
-        return threads;
+    public void Accept(ITectonVisitor visitor) {
+        visitor.Visit(this);
     }
 
-    public void accept(TectonTexturer texturer) {
-        texturer.visit(this);
+    /**
+     * Lekérdezi a tektonon található entitások számát.
+     * @return int - A tektonon található entitások száma
+     */
+    public int GetEntityCount(){
+        int count = bugs.size() + spores.size();
+        if(body != null){
+            count++;
+        }
+        return count;
     }
 }

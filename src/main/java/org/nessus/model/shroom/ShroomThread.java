@@ -1,6 +1,7 @@
 package org.nessus.model.shroom;
 
 import org.nessus.model.tecton.Tecton;
+import org.nessus.view.View;
 import org.nessus.model.bug.Bug;
 
 /**
@@ -18,6 +19,7 @@ public class ShroomThread {
     boolean connectedToShroomBody = false; // A fonal kapcsolódik-e a gomba testéhez
     int isolationCounter = 0; // Az izoláció számlálója
     boolean cut = false; // A fonal el van-e vágva
+    boolean drying = false; // A fonál szárad-e egy Sivatagi Tekton miatt
 
     int cutDamageTimer = 3; // Megadja, a fonál hány kör után szívódik fel miután elvágták
     boolean sustained = false; // Megadja, hogy a fonált épp életben tartja-e egy ThreadSustainerTecton. Ilyenkor nem szívódik fel.
@@ -111,6 +113,7 @@ public class ShroomThread {
         tecton1.RemoveShroomThread(this);
         tecton2.RemoveShroomThread(this);
         shroom.RemoveShroomThread(this);
+        View.GetGameObjectStore().RemoveEntity(this);
     }
 
     /**
@@ -172,11 +175,49 @@ public class ShroomThread {
         this.connectedToShroomBody = connectedToShroomBody;
     }
 
+    /**
+     * Beállítja a fonal száradó állapotát.
+     * @return void
+     */
+    public void SetDrying(){drying = true;}
+
+    /**
+     * Beállítja a fonal fenntartott állapotát.
+     * @return void
+     */
     public void SetSustained() {
         sustained = true;
     }
 
+    /**
+     * Beállítja a fonal vágott állapotát.
+     * @return void
+     */
     public void SetCut() {
         cut = true;
+    }
+
+    /**
+     * Beállítja a fonal fejlődési szintjét 3-ra.
+     * @return void
+     */
+    public void SetEvolution(){
+        evolution = 3;
+    }
+
+    /**
+     * Lekérdezi a fonal fejlődési szintjét.
+     * @return int - A fejlődési szint
+     */
+    public int GetEvolution() {
+        return evolution;
+    }
+
+    /**
+     * Lekérdezi, hogy a fonal éppen elhalás közeli állapotban van-e.
+     * @return boolean - Igen, ha a fonal elhalás közeli állapotban van (el van vágva vagy nem kapcsolódik a gomba testéhez és nem fenntartott), különben hamis
+     */
+    public boolean IsDying(){
+        return cut || (!connectedToShroomBody && !sustained) || drying;
     }
 }

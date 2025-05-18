@@ -1,77 +1,68 @@
 package org.nessus.view;
 
 import java.awt.*;
-import java.util.*;
-import java.util.List;
+import java.io.InputStream;
+import java.util.Objects;
+import java.net.URL;
 
 import org.nessus.controller.IRandomProvider;
-import org.nessus.model.shroom.*;
+import org.nessus.utility.BGMPlayer;
+import org.nessus.utility.EntitySelector;
 import org.nessus.controller.Controller;
-import org.nessus.model.bug.*;
-import org.nessus.model.tecton.DesertTecton;
-import org.nessus.model.tecton.InfertileTecton;
-import org.nessus.model.tecton.SingleThreadTecton;
-import org.nessus.model.tecton.Tecton;
-import org.nessus.model.tecton.ThreadSustainerTecton;
-import org.nessus.view.entityviews.IEntityView;
-import org.nessus.view.entityviews.ShroomBodyView;
-import org.nessus.view.entityviews.TectonView;
-import org.nessus.view.factories.BugViewFactory;
-import org.nessus.view.factories.ShroomViewFactory;
-import org.nessus.view.panels.GamePanel;
-import org.nessus.view.panels.MainMenuPanel;
-import org.nessus.view.panels.SettingsPanel;
-import org.nessus.view.panels.ControlPanel;
-
-import java.util.AbstractMap.SimpleEntry;
+import org.nessus.view.entities.*;
+import org.nessus.view.panels.*;
 
 import javax.swing.*;
+import com.formdev.flatlaf.FlatDarkLaf;
 
 /**
  * Ez a singleton View osztály felelős a program futtatásáért.
  * A View osztály a Controller osztályt használja a parancsok feldolgozására.
  * A View osztály a parancsok végrehajtásáért és a felhasználói interakcióért felelős.
  */
-public class View extends JFrame implements IGameObjectStore {
+public class View extends JFrame {
     private static View instance;
-    Map<String, Object> objects = new HashMap<>();
 
-    private Tecton[] selectedTectons;
-    private Spore selectedSpore;
-    private Bug selectedBug;
-    private ShroomThread selectedShroomThread;
-    private ShroomBody selectedShroomBody;
-    private TectonView[] tectons;
-    private Map<BugOwner, SimpleEntry<BugViewFactory, String>> bugOwners = new HashMap<>();
-    private Map<Shroom, SimpleEntry<ShroomViewFactory, String>> shrooms = new HashMap<>();
+    URL bgmUrl = Objects.requireNonNull(getClass().getResource("/bgm/fields_covered_in_goop.wav"));
+    BGMPlayer bgmPlayer = new BGMPlayer(bgmUrl);
 
     private Controller controller = new Controller(this);
-    private List<IEntityView> views = new ArrayList<>();
+    private SelectionCatalog selection;
+    private ObjectStore objectStore = new ObjectStore();
 
     private JPanel mainPanel;
-    private MainMenuPanel mainMenuPanel;
-    private SettingsPanel settingsPanel;
     private GamePanel gamePanel;
+
+    private Timer renderTimer;
 
     /**
      * A {@code View} osztály konstruktora.
      * A konstruktor privát, mert nem szükséges példányosítani az osztályt.
      */
     private View() {
+        selection = new SelectionCatalog(objectStore);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setSize(new Dimension(1280, 720));
         setLocationRelativeTo(null);
+        setTitle("Fungorium");
+        setIconImage(new ImageIcon(getClass().getResource("/textures/icon.png")).getImage());
+        setResizable(false);
         mainPanel = new JPanel(new CardLayout());
+        gamePanel = new GamePanel(this);
 
         // A stringeket egy mapbe lehetne mozgatni, és a viewtől lekérni hogy a MainMenuPanelhez milyen aktivációs
         // string tartozik
         mainPanel.add(new MainMenuPanel(mainPanel), "menu");
         mainPanel.add(new SettingsPanel(this, mainPanel), "settings");
-        mainPanel.add(new GamePanel(this), "game");
+        mainPanel.add(gamePanel, "game");
+
+        mainPanel.add(new ScoreBoardPanel(mainPanel, this), "scoreBoard");
+        renderTimer = new Timer(0, e -> gamePanel.repaint());
 
         add(mainPanel);
         pack();
         setVisible(true);
+        bgmPlayer.playLoop();
     }
 
     /**
@@ -79,66 +70,30 @@ public class View extends JFrame implements IGameObjectStore {
      * Ha a példány még nem létezik, akkor létrehozza azt.
      * @return A {@code View} osztály egy példánya.
      */
-    static View GetInstance() {
+    private static View GetInstance() {
         if (instance == null)
             instance = new View();
         return instance;
     }
 
     /**
+     * Lekérdezi a random generátor példányát
+     * @return IRandomProvider - A randomgenerátor példánya
+     */
+    public static IRandomProvider GetRandomProvider() {
+        return GetInstance().controller;
+    }
+
+    /**
      * Ezzela metódussal kaphatunk vissza egy ObjectStore-t.
      * @return IGameObjectStore - Az objektumok tárolására szolgáló objektum.
      */
-    public static IGameObjectStore GetObjectStore() {
-        return GetInstance();
+    public static IGameObjectStore GetGameObjectStore() {
+        return GetInstance().objectStore;
     }
 
-    /**
-     * Ezzel a metódussal kérhetjük le a programban tárolt objektumokat.
-     * @return Set<String> - Az objektumok tárolására szolgáló térkép.
-     */
-    public Set<String> GetObjects() {
-        return objects.keySet();
-    }
-
-    /**
-     * Ezzel a metódussal törölhetjük az összes objektumot a tárolókból.
-     * @return void
-     */
-    public void ResetObjects() {
-        objects.clear();
-    }
-
-    /**
-     * Visszaadja a paraméterként kapott objektum nevét.
-     * @param object
-     * @return String - Az objektum neve
-     */
-    public String GetName(Object object) {
-        for (Map.Entry<String, Object> entry : objects.entrySet()) {
-            if (entry.getValue() == object) {
-                return entry.getKey();
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Visszaadja azt az objektumot, amelynek a neve megegyezik a paraméterként kapott névvel.
-     * @param name - Az objektum neve
-     * @return Object - Az objektum, amelynek a neve megegyezik a paraméterként kapott névvel
-     */
-    public Object GetObject(String name) {
-        return objects.get(name);
-    }
-
-    /**
-     * Lekér egy random generátort.
-     * @return IRandomProvider - A random generátor
-     */
-    @Override
-    public Controller GetRandomProvider() {
-        return controller;
+    public ObjectStore GetObjectStore() {
+        return objectStore;
     }
 
     /**
@@ -149,94 +104,99 @@ public class View extends JFrame implements IGameObjectStore {
         return controller;
     }
 
-    public void OpenMenu(){
-        CardLayout cardLayout = (CardLayout)mainPanel.getLayout();
-        cardLayout.show(mainPanel,"menu");
+    /**
+     * Visszaadja a SelectionCatalog példányát
+     * @return SelectionCatalog - A SelectionCatalog példánya
+     */
+    public SelectionCatalog GetSelection() {
+        return selection;
     }
 
-    public void OpenSettings(){
+    /**
+     * Megnyitja a menüt
+     * @return void
+     */
+    public void OpenMenu() {
+        CardLayout cardLayout = (CardLayout)mainPanel.getLayout();
+        cardLayout.show(mainPanel,"menu");
+        renderTimer.stop();
+    }
+
+    /**
+     * Megnyitja a játékbeállításokat
+     * @return void
+     */
+    public void OpenSettings() {
         CardLayout cardLayout = (CardLayout)mainPanel.getLayout();
         cardLayout.show(mainPanel,"settings");
     }
 
-    public void OpenGame(){
+    /**
+     * Elindítja a játékot
+     * @return void
+     */
+    public void OpenGame() {
         CardLayout cardLayout = (CardLayout)mainPanel.getLayout();
         cardLayout.show(mainPanel,"game");
+        renderTimer.start();
     }
 
-    public void HandleSelection(IEntityView entity){
-
+    public void OpenScoreBoard() {
+        CardLayout cardLayout = (CardLayout)mainPanel.getLayout();
+        cardLayout.show(mainPanel,"scoreBoard");
     }
-    public void ClearSelection(){
-
-    }
-
-    public void AddShroomBody(ShroomBody shroomBody){
-        var shroom = shrooms.get(shroomBody.GetShroom());
-        var factory = shroom.getKey();
-        views.add(factory.CreateShroomBodyView(shroomBody));
-    }
-
-    public void AddShroomThread(ShroomThread shroomThread){
-        var shroom = shrooms.get(shroomThread.GetShroom());
-        var factory = shroom.getKey();
-        views.add(factory.CreateShroomThreadView(shroomThread));
-    }
-
-    public void AddSpore(Spore spore) {
-        var shroom = shrooms.get(spore.GetShroom());
-        var factory = shroom.getKey();
-        views.add(factory.CreateSporeView(spore));
+    /**
+     * Kiválasztáskezelő függvény, a kiválasztott entitás alapján frissíti a felületet
+     * @param entity - A kiválasztott entitás
+     * @return void
+     */
+    public void HandleSelection(IEntityView entity) {
+        var controlPanel = gamePanel.GetControlPanel();
+        var selector = new EntitySelector(selection);
+        entity.Accept(selector);
+        controller.ViewSelectionChanged();
+        controlPanel.UpdateEntityInfo(entity);
+        controlPanel.UpdateButtonTexts();
     }
 
-    public void AddBug(Bug bug){
-        var bugOwner = bugOwners.get(bug.GetOwner());
-        var factory = bugOwner.getKey();
-        views.add(factory.CreateBugView(bug));
-    }
-    public void AddTecton(Tecton tecton){
-        var texturer = new TectonTexturer();
-        tecton.accept(texturer);
-    }
-
-    public void AddShroom(Shroom shroom, ShroomViewFactory factory, String name) {
-        shrooms.put(shroom, new SimpleEntry<>(factory, name));
-    }
- 
-    public void AddBugOwner(BugOwner bugOwner, BugViewFactory factory, String name) {
-        bugOwners.put(bugOwner, new SimpleEntry<>(factory, name));
-    }
-
-    public IEntityView FindEntity(Object entity){
-        for(IEntityView view : views){
-            if(view.equals(entity))
-                return view;
-        }
-        return null;
-    }
-
-    public void ShowBugActions() {
-
-    }
-
-    public void ShowShroomBodyActions() {
-
-    }
-    public void ShowShroomThreadActions() {
-
-    }
-    public void ShowTectonActions() {
-
-    }
-
+    /**
+     * Frissíti a játékosok információit az adott körtípus alapján
+     * @return void
+     */
     public void UpdatePlayerInfo() {
-
+        var controlPanel = gamePanel.GetControlPanel();
+        
+        if (controller.IsBugOwnerRound()) {
+            var bugowner = controller.GetCurrentBugOwnerController();
+            controlPanel.UpdatePlayerInfo(objectStore.GetBugOwnerName(bugowner));
+        } else {
+            var shroom = controller.GetCurrentShroomController();
+            controlPanel.UpdatePlayerInfo(objectStore.GetShroomName(shroom));
+        }
     }
+
+    /**
+     * Lekérdezi a GamePanel példányát
+     * @return GamePanel - A GamePanel példánya
+     */
+    public GamePanel GetGamePanel() {
+        return gamePanel;
+    }
+
     /**
      * A program belépési pontja.
      * @param args - A parancssori argumentumok
      */
     public static void main(String[] args) {
+        System.setProperty("sun.java2d.opengl", "true");
+        
+        // Set up FlatLaf
+        try {
+            UIManager.setLookAndFeel(new FlatDarkLaf()); // Changed to FlatDarkLaf
+        } catch (Exception ex) {
+            System.err.println("Failed to initialize FlatLaf");
+        }
+        
         System.out.println("Üdv a grafikus fázisban");
 
         SwingUtilities.invokeLater(() -> {

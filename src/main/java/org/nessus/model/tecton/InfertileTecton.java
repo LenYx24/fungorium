@@ -1,7 +1,7 @@
 package org.nessus.model.tecton;
 
 import org.nessus.model.shroom.ShroomBody;
-import org.nessus.view.TectonTexturer;
+import org.nessus.utility.ITectonVisitor;
 
 /**
  * Ezen a tektontípuson nem lehet gombatestet növeszteni.
@@ -27,8 +27,25 @@ public class InfertileTecton extends Tecton {
         return false;
     }
 
+    /**
+     * Beállítja a gombatestet a tektontípuson.
+     * @param body - A gombatest.
+     * @return Boolean - Sikeres volt-e a beállítás. (Ez ebben az esetben mindig false)
+     */
     @Override
-    public void accept(TectonTexturer texturer) {
-        texturer.visit(this);
+    public boolean SetShroomBody(ShroomBody body) {
+        return false;
+    }
+
+    /**
+     * Elfogadja a látogatót.
+     * A látogató a DesertTecton osztályt látogatja meg (ITectonVisitor).
+     * @param visitor - A látogató.
+     * @see org.nessus.utility.ITectonVisitor
+     * @return void
+     */
+    @Override
+    public void Accept(ITectonVisitor visitor) {
+        visitor.Visit(this);
     }
 }

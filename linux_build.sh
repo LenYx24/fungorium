@@ -1,2 +1,2 @@
 #!/bin/sh
-./mvnw package && java -jar ./target/fungorium-prototype-1.0.jar
+./mvnw package && java -jar ./target/fungorium-graphical-1.0-jar-with-dependencies.jar

@@ -1,7 +1,7 @@
 package org.nessus.model.tecton;
 
 import org.nessus.model.shroom.ShroomThread;
-import org.nessus.view.TectonTexturer;
+import org.nessus.utility.ITectonVisitor;
 
 /**
  * Egyfonál tekton, azaz ezen a tektonfajtán csak egy fonál lehet.
@@ -36,8 +36,15 @@ public class SingleThreadTecton extends Tecton {
         return false;
     }
 
+    /**
+     * Elfogadja a látogatót.
+     * A látogató a DesertTecton osztályt látogatja meg (ITectonVisitor).
+     * @param visitor - A látogató.
+     * @see org.nessus.utility.ITectonVisitor
+     * @return void
+     */
     @Override
-    public void accept(TectonTexturer texturer) {
-        texturer.visit(this);
+    public void Accept(ITectonVisitor visitor) {
+        visitor.Visit(this);
     }
 }

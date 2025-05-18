@@ -1,6 +1,5 @@
 package org.nessus.model.shroom;
 
-import org.nessus.controller.Controller;
 import org.nessus.controller.IRandomProvider;
 import org.nessus.model.bug.Bug;
 import org.nessus.model.effect.BugEffect;
@@ -19,19 +18,15 @@ public class Spore {
     private Shroom shroom; // A spóra gomba része
     private Tecton tecton; // A spóra tecton része
 
-    int nutrients = 3; // A spóra tápanyagértéke
+    int nutrients; // A spóra tápanyagértéke
 
-    /**
-     * A spóra konstruktora.
-     */
-    public Spore() {
-    }
     /**
      * A spóra konstruktora.
      * @param shroom
      */
     public Spore(Shroom shroom) {
         this.shroom = shroom;
+        this.nutrients = View.GetRandomProvider().RandomNumber(1, 5);
         shroom.SetSpore(this);
     }
     /**
@@ -55,15 +50,21 @@ public class Spore {
      * @return void
      */
     public void EatenBy(Bug bug) {
-        var objStore = View.GetObjectStore();
-        IRandomProvider rand = objStore.GetRandomProvider();
-        BugEffect randEffect = rand.RandomBugEffect();
-        
+        IRandomProvider rand = View.GetRandomProvider();
+
+        if(rand.RandomBoolean()){
+            BugEffect randEffect = rand.RandomBugEffect();
+            bug.AddEffect(randEffect);
+            randEffect.ApplyOn(bug);
+        }
+
         bug.AddNutrients(nutrients);
-        bug.AddEffect(randEffect);
+
+        View.GetGameObjectStore().RemoveEntity(this);
 
         tecton.RemoveSpore(this);
         shroom.RemoveSpore(this);
+
     }
 
     /**

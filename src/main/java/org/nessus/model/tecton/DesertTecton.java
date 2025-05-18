@@ -1,7 +1,7 @@
 package org.nessus.model.tecton;
 
 import org.nessus.model.shroom.ShroomThread;
-import org.nessus.view.TectonTexturer;
+import org.nessus.utility.ITectonVisitor;
 
 import java.util.*;
 
@@ -34,7 +34,7 @@ public class DesertTecton extends Tecton {
     @Override
     public boolean GrowShroomThread(ShroomThread thread) {
         this.threads.add(thread);
-        this.decayTimers.put(thread, 2);
+        this.decayTimers.put(thread, 3);
         return true;
     }
 
@@ -48,7 +48,12 @@ public class DesertTecton extends Tecton {
      */
     @Override
     public void UpdateTecton() {
-        for (ShroomThread thread : List.copyOf(threads)) {
+        for (ShroomThread thread : List.copyOf(threads))
+        {
+            if (thread.GetEvolution() < 3)
+                continue;
+
+            thread.SetDrying();
             var decayTimer = decayTimers.get(thread);
 
             if (decayTimer <= 0) {
@@ -64,8 +69,15 @@ public class DesertTecton extends Tecton {
         }
     }
 
+    /**
+     * Elfogadja a látogatót.
+     * A látogató a DesertTecton osztályt látogatja meg (ITectonVisitor).
+     * @param visitor - A látogató.
+     * @see org.nessus.utility.ITectonVisitor
+     * @return void
+     */
     @Override
-    public void accept(TectonTexturer texturer) {
-        texturer.visit(this);
+    public void Accept(ITectonVisitor visitor) {
+        visitor.Visit(this);
     }
 }
