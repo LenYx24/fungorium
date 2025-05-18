@@ -2,8 +2,8 @@ package org.nessus.view.entities;
 
 import org.nessus.model.shroom.ShroomThread;
 import org.nessus.utility.EntitySelector;
-import org.nessus.utility.Point;
-import org.nessus.utility.Vec2;
+import org.nessus.utility.geometry.Point2;
+import org.nessus.utility.geometry.Vec2;
 import org.nessus.view.View;
 
 import java.awt.BasicStroke;
@@ -23,12 +23,12 @@ public class ShroomThreadView implements IEntityView {
     /**
      * A gombafonal kezdőpontja.
      */
-    private Point p1;
+    private Point2 p1;
     
     /**
      * A gombafonal végpontja.
      */
-    private Point p2;
+    private Point2 p2;
     
     /**
      * A gombafonal vastagsága.
@@ -90,8 +90,8 @@ public class ShroomThreadView implements IEntityView {
         t1View.InsertShroomThread(this);
         t2View.InsertShroomThread(this);
 
-        Point t1Center = new Point(t1View.GetX(), t1View.GetY()); // Center of tecton 1
-        Point t2Center = new Point(t2View.GetX(), t2View.GetY()); // Center of tecton 2
+        Point2 t1Center = new Point2(t1View.GetX(), t1View.GetY()); // Center of tecton 1
+        Point2 t2Center = new Point2(t2View.GetX(), t2View.GetY()); // Center of tecton 2
 
         Vec2 direction = new Vec2(t1Center, t2Center).Normalize();
         
@@ -147,7 +147,7 @@ public class ShroomThreadView implements IEntityView {
      */
     @Override
     public boolean ContainsPoint(int x, int y) {
-        Point cursor = new Point(x, y);
+        Point2 cursor = new Point2(x, y);
         
         Vec2 p1ToCursor = new Vec2(p1, cursor);
         Vec2 p1ToP2 = new Vec2(p1, p2);

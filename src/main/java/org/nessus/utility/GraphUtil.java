@@ -209,21 +209,18 @@ public class GraphUtil {
     }
 
     /**
-     * Alkalmazza a mozgást és a határokat a nem rögzített tektonokra.
+     * Alkalmazza a mozgást a nem rögzített tektonokra.
      * 
      * @param unlockedTectons A nem rögzített tektonok listája
      * @return void
      */
-    private void ApplyMotionAndBounds(List<TectonView> unlockedTectons) {
+    private void ApplyMotion(List<TectonView> unlockedTectons) {
         for (TectonView n : unlockedTectons) {
             n.setDx(n.getDx() * DAMPING);
             n.setDy(n.getDy() * DAMPING);
 
             n.setX(n.X() + n.getDx());
             n.setY(n.Y() + n.getDy());
-
-            n.setX(Math.max(NODE_RADIUS / 2.0 + PADDING, Math.min(width - NODE_RADIUS / 2.0 - PADDING, n.X())));
-            n.setY(Math.max(NODE_RADIUS / 2.0 + PADDING, Math.min(height - NODE_RADIUS / 2.0 - PADDING, n.Y())));
         }
     }
 
@@ -243,7 +240,7 @@ public class GraphUtil {
 
         ApplyRepulsion(unlockedTectons);
         ApplyAttraction(unlockedEdges);
-        ApplyMotionAndBounds(unlockedTectons);
+        ApplyMotion(unlockedTectons);
     }
 
     /**
