@@ -35,7 +35,7 @@ public class Spore {
      * @param tecton
      */
     public Spore(Shroom shroom, Tecton tecton) {
-        this.shroom = shroom;
+        this(shroom);
         this.tecton = tecton;
     }
 

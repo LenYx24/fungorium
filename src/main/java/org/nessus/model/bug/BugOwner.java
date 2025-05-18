@@ -153,6 +153,6 @@ public class BugOwner implements IBugOwnerController {
     }
 
     public int GetScore() {
-        return bugs.stream().mapToInt(o -> o.GetCollectedNutrients()).sum();
+        return bugs.stream().mapToInt(Bug::GetCollectedNutrients).sum();
     }
 }
