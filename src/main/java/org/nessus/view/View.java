@@ -25,6 +25,8 @@ public class View extends JFrame {
     private JPanel mainPanel;
     private GamePanel gamePanel;
 
+    private Timer renderTimer;
+
     /**
      * A {@code View} osztály konstruktora.
      * A konstruktor privát, mert nem szükséges példányosítani az osztályt.
@@ -45,6 +47,7 @@ public class View extends JFrame {
         mainPanel.add(new MainMenuPanel(mainPanel), "menu");
         mainPanel.add(new SettingsPanel(this, mainPanel), "settings");
         mainPanel.add(gamePanel, "game");
+        renderTimer = new Timer(0, e -> gamePanel.repaint());
 
         add(mainPanel);
         pack();
@@ -93,6 +96,7 @@ public class View extends JFrame {
     public void OpenMenu() {
         CardLayout cardLayout = (CardLayout)mainPanel.getLayout();
         cardLayout.show(mainPanel,"menu");
+        renderTimer.stop();
     }
 
     public void OpenSettings() {
@@ -103,9 +107,7 @@ public class View extends JFrame {
     public void OpenGame() {
         CardLayout cardLayout = (CardLayout)mainPanel.getLayout();
         cardLayout.show(mainPanel,"game");
-    
-        Timer timer = new Timer(0, e -> gamePanel.repaint());
-        timer.start();
+        renderTimer.start();
     }
 
     public void HandleSelection(IEntityView entity) {
