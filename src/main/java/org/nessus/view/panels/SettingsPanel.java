@@ -18,8 +18,6 @@ import java.awt.*;
 
 public class SettingsPanel extends JPanel {
     private Image backgroundImage;
-    private JButton nextBtn;
-    private View view;
 
     private JCheckBox[] gombaszCheckBoxes = new JCheckBox[3];
     private JTextField[] gombaszTextFields = new JTextField[3];
@@ -29,7 +27,6 @@ public class SettingsPanel extends JPanel {
     private Color[] rovaraszColors = {Color.WHITE, Color.GRAY, new Color(139, 69, 19)};
 
     public SettingsPanel(View view, JPanel mainPanel) {
-        this.view = view;
         backgroundImage = new ImageIcon(getClass().getResource("/textures/settingsbg.gif")).getImage();
 
         JPanel panel = new JPanel();
