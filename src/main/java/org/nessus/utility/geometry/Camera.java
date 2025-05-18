@@ -5,15 +5,26 @@ import java.awt.event.KeyEvent;
 import java.util.EnumMap;
 import java.util.Map;
 
+/**
+ * Enum a kamera mozgási irányaihoz
+ */
 enum CameraAction {
     UP, DOWN, RIGHT, LEFT, ZOOM_IN, ZOOM_OUT
 }
 
+/**
+ * Camera osztály, a KeyAdapterből származtatjuk, ez az osztály felel a térkép nézetének mozgatásáért, nagyításáért
+ */
 public class Camera extends KeyAdapter {
-    private Vec2 cameraPos;
-    private Map<CameraAction, Boolean> movement = new EnumMap<>(CameraAction.class);
-    private double zoom = 1.0;
+    private Vec2 cameraPos; // a kamera helyzete
+    private Map<CameraAction, Boolean> movement = new EnumMap<>(CameraAction.class); // a mozgások listája
+    private double zoom = 1.0; // a nagyítás mértéke
 
+    /**
+     * Konstruktor, létrehozzuk a nézetet
+     * @param centerX - X középkoordináta
+     * @param centerY - Y középkoordináta
+     */
     public Camera(double centerX, double centerY) {
         cameraPos = new Vec2(centerX, centerY);
 
@@ -25,14 +36,26 @@ public class Camera extends KeyAdapter {
         movement.put(CameraAction.ZOOM_OUT, false);
     }
 
+    /**
+     * Lekérjük a kamera helyzetét
+     * @return Vec2 - A kamera helyzete
+     */
     public Vec2 GetPos() {
         return cameraPos;
     }
 
+    /**
+     * Lekérjük a nagyítás mértékét
+     * @return Double - a nagyítás értéke
+     */
     public double GetZoom() {
         return zoom;
     }
 
+    /**
+     * Frissítő függvény, aktualizálja a nézet megjelenítését
+     * @return void
+     */
     public void Update() {
         double moveStep = 10;
         double zoomStep = 0.05;
@@ -54,6 +77,11 @@ public class Camera extends KeyAdapter {
             zoom = Math.max(zoom - zoomStep, minZoom);
     }
 
+    /**
+     * Gomblenyomást kezelő függvény
+     * @param e - KeyEvent, a lenyomott gomb eventje
+     * @return void
+     */
     @Override
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyCode()) {
@@ -67,6 +95,11 @@ public class Camera extends KeyAdapter {
         }
     }
 
+    /**
+     * Gombfelengedést kezelő függvény
+     * @param e - KeyEvent, a felengedett gomb eventje
+     * @return void
+     */
     @Override public void keyReleased(KeyEvent e) {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_A -> movement.replace(CameraAction.LEFT, false);

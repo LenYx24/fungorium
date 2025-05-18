@@ -48,6 +48,12 @@ public class MapPanel extends JPanel {
 
     private Camera camera;
 
+    /**
+     * Konvertálja a kurzor helyzetét a map helyeztéhez
+     * @param x - A kurzor x koordinátája
+     * @param y - A kurzor y koordinátája
+     * @return Point2 - A kurzor mapon lévő helyzete
+     */
     private Point2 CursorToWorld(int x, int y) {
         double worldX = (x - getWidth() / 2.0) / camera.GetZoom() + camera.GetPos().x;
         double worldY = (y - getHeight() / 2.0) / camera.GetZoom() + camera.GetPos().y;

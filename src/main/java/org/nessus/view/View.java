@@ -8,7 +8,7 @@ import org.nessus.view.entities.*;
 import org.nessus.view.panels.*;
 
 import javax.swing.*;
-import com.formdev.flatlaf.FlatDarkLaf; // Changed from FlatLightLaf to FlatDarkLaf
+import com.formdev.flatlaf.FlatDarkLaf;
 
 /**
  * Ez a singleton View osztály felelős a program futtatásáért.
@@ -65,6 +65,10 @@ public class View extends JFrame {
         return instance;
     }
 
+    /**
+     * Lekérdezi a random generátor példányát
+     * @return IRandomProvider - A randomgenerátor példánya
+     */
     public static IRandomProvider GetRandomProvider() {
         return GetInstance().controller;
     }
@@ -89,27 +93,48 @@ public class View extends JFrame {
         return controller;
     }
 
+    /**
+     * Visszaadja a SelectionCatalog példányát
+     * @return SelectionCatalog - A SelectionCatalog példánya
+     */
     public SelectionCatalog GetSelection() {
         return selection;
     }
 
+    /**
+     * Megnyitja a menüt
+     * @return void
+     */
     public void OpenMenu() {
         CardLayout cardLayout = (CardLayout)mainPanel.getLayout();
         cardLayout.show(mainPanel,"menu");
         renderTimer.stop();
     }
 
+    /**
+     * Megnyitja a játékbeállításokat
+     * @return void
+     */
     public void OpenSettings() {
         CardLayout cardLayout = (CardLayout)mainPanel.getLayout();
         cardLayout.show(mainPanel,"settings");
     }
 
+    /**
+     * Elindítja a játékot
+     * @return void
+     */
     public void OpenGame() {
         CardLayout cardLayout = (CardLayout)mainPanel.getLayout();
         cardLayout.show(mainPanel,"game");
         renderTimer.start();
     }
 
+    /**
+     * Kiválasztáskezelő függvény, a kiválasztott entitás alapján frissíti a felületet
+     * @param entity - A kiválasztott entitás
+     * @return void
+     */
     public void HandleSelection(IEntityView entity) {
         var controlPanel = gamePanel.GetControlPanel();
         var selector = new EntitySelector(selection);
@@ -119,6 +144,10 @@ public class View extends JFrame {
         controlPanel.UpdateButtonTexts();
     }
 
+    /**
+     * Frissíti a játékosok információit az adott körtípus alapján
+     * @return void
+     */
     public void UpdatePlayerInfo() {
         var controlPanel = gamePanel.GetControlPanel();
         
@@ -129,9 +158,12 @@ public class View extends JFrame {
             var shroom = controller.GetCurrentShroomController();
             controlPanel.UpdatePlayerInfo(objectStore.GetShroomName(shroom));
         }
-
     }
 
+    /**
+     * Lekérdezi a GamePanel példányát
+     * @return GamePanel - A GamePanel példánya
+     */
     public GamePanel GetGamePanel() {
         return gamePanel;
     }
