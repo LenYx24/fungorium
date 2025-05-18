@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * BGMP Player osztály, amely a háttérzene lejátszásáért felelős
+ * BGM Player osztály, amely a háttérzene lejátszásáért felelős
  */
 public class BGMPlayer {
     private Clip clip; // A zene
