@@ -12,24 +12,66 @@ import org.nessus.utility.TectonNameReader;
 import org.nessus.utility.Vec2;
 import org.nessus.view.View;
 
+/**
+ * A tekton mezők megjelenítéséért felelős osztály.
+ * Kezeli a tektonon lévő entitások és gombafonalak elhelyezését és megjelenítését.
+ */
 public class TectonView extends EntitySpriteView{
+    /**
+     * A tekton modell, amelyet ez a nézet megjelenít.
+     */
     private Tecton model;
     
+    /**
+     * Az x irányú elmozdulás a grafikus elrendezéshez.
+     */
     private double dx;
+    
+    /**
+     * Az y irányú elmozdulás a grafikus elrendezéshez.
+     */
     private double dy;
     
+    /**
+     * Jelzi, hogy a tekton zárolva van-e (pl. húzás közben).
+     */
     private boolean locked = false;
     
+    /**
+     * Véletlenszám generátor a kezdeti pozíció meghatározásához.
+     */
     private Random r = new Random();
     
+    /**
+     * A tektonon lévő entitások pozícióinak tárolója.
+     */
     private Queue<Point> pointsForEntites = new LinkedList<>();
+    
+    /**
+     * A tektonhoz kapcsolódó gombafonalak eltolásainak tárolója.
+     */
     private Map<Tecton, Queue<Vec2>> shroomThreadOffsets = new HashMap<>();
     
+    /**
+     * Az entitások cellájának mérete a tektonon belül.
+     */
     private int cellSize = 0;
 
+    /**
+     * A gombafonalak alapértelmezett eltolása.
+     */
     private static final double BASE_SHROOMTHREAD_OFFSET = 10;
+    
+    /**
+     * A tekton nevének olvasásához használt segédosztály.
+     */
     private static TectonNameReader tectonNameReader = new TectonNameReader();
 
+    /**
+     * Létrehoz egy új tekton nézetet.
+     * @param t A tekton modell
+     * @param sprite A tekton képe
+     */
     public TectonView(Tecton t, BufferedImage sprite) {
         this.model = t;
         this.x = r.nextInt(1280);
@@ -37,8 +79,11 @@ public class TectonView extends EntitySpriteView{
         this.image = sprite;
     }
 
-    public void CalculateEntityPositions()
-    {
+    /**
+     * Kiszámítja az entitások pozícióit a tektonon belül.
+     * Az entitásokat egy rácsos elrendezésben helyezi el.
+     */
+    public void CalculateEntityPositions() {
         pointsForEntites.clear();
         int entityCount = model.GetEntityCount();
         if (entityCount == 0)
@@ -64,6 +109,10 @@ public class TectonView extends EntitySpriteView{
         }
     }
 
+    /**
+     * Kiszámítja a gombafonalak pozícióit a tektonok között.
+     * Biztosítja, hogy a párhuzamos fonalak ne fedjék egymást.
+     */
     public void CalculateShroomThreadPositions() {
         shroomThreadOffsets.clear();
         var store = View.GetGameObjectStore();
@@ -101,19 +150,35 @@ public class TectonView extends EntitySpriteView{
         }
     }
 
+    /**
+     * Beállítja a tekton zárolási állapotát.
+     * @param locked Igaz, ha a tekton zárolva van
+     */
     public void SetLocked(boolean locked) {
         this.locked = locked;
     }
 
+    /**
+     * Lekérdezi a tekton zárolási állapotát.
+     * @return Igaz, ha a tekton zárolva van
+     */
     public boolean IsLocked() {
         return locked;
     }
 
+    /**
+     * Kirajzolja a tekton nézetet.
+     * @param g2d A grafikus kontextus
+     */
     @Override
     public void Draw(Graphics2D g2d) {
         this.DrawSprite(g2d);
     }
 
+    /**
+     * Elhelyez egy entitás nézetet a tektonon.
+     * @param entityView Az elhelyezendő entitás nézet
+     */
     public void InsertEntity(EntitySpriteView entityView){
         Point p = pointsForEntites.poll();
         if(p == null){
@@ -124,6 +189,10 @@ public class TectonView extends EntitySpriteView{
         entityView.size = cellSize;
     }
 
+    /**
+     * Elhelyez egy gombafonal nézetet a tektonok között.
+     * @param shroomThreadView Az elhelyezendő gombafonal nézet
+     */
     public void InsertShroomThread(ShroomThreadView shroomThreadView) {
         var threadModel = shroomThreadView.GetModel();
         var t1 = threadModel.GetTecton1();
@@ -137,53 +206,95 @@ public class TectonView extends EntitySpriteView{
         shroomThreadView.SetOffset(offset);
     }
 
+    /**
+     * Visszaadja a tekton nézet rétegét.
+     * @return A réteg száma
+     */
     @Override
     public int GetLayer() {
         return 1;
     }
 
+    /**
+     * Ellenőrzi, hogy ez a nézet az adott objektumhoz tartozik-e.
+     * @param obj Az ellenőrizendő objektum
+     * @return Igaz, ha a nézet az adott objektumhoz tartozik
+     */
     @Override
     public boolean IsViewing(Object obj) {
         return model == obj;
     }
 
+    /**
+     * Visszaadja a tekton információit szöveges formában.
+     * @return A tekton információi
+     */
     @Override
-    public String GetEntityInfo()
-    {
+    public String GetEntityInfo() {
         model.Accept(tectonNameReader);
         return tectonNameReader.GetName();
     }
 
+    /**
+     * Visszaadja a tekton modellt.
+     * @return A tekton modell
+     */
     public Tecton GetModel() {
         return model;
     }
 
-    public double X()
-    {
+    /**
+     * Visszaadja a tekton x koordinátáját.
+     * @return Az x koordináta
+     */
+    public double X() {
         return this.x;
     }
 
-    public double Y()
-    {
+    /**
+     * Visszaadja a tekton y koordinátáját.
+     * @return Az y koordináta
+     */
+    public double Y() {
         return this.y;
     }
 
+    /**
+     * Visszaadja az x irányú elmozdulást.
+     * @return Az x irányú elmozdulás
+     */
     public double getDx() {
         return dx;
     }
 
+    /**
+     * Visszaadja az y irányú elmozdulást.
+     * @return Az y irányú elmozdulás
+     */
     public double getDy() {
         return dy;
     }
 
+    /**
+     * Beállítja az x irányú elmozdulást.
+     * @param dx Az új x irányú elmozdulás
+     */
     public void setDx(double dx) {
         this.dx = dx;
     }
 
+    /**
+     * Beállítja az y irányú elmozdulást.
+     * @param dy Az új y irányú elmozdulás
+     */
     public void setDy(double dy) {
         this.dy = dy;
     }
 
+    /**
+     * Fogadja a látogatót a Visitor tervezési minta szerint.
+     * @param selector A látogató objektum
+     */
     @Override
     public void Accept(EntitySelector selector) {
         selector.Visit(this);

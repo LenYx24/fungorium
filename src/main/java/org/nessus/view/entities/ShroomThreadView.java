@@ -10,26 +10,71 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+/**
+ * A gombafonalak megjelenítéséért felelős osztály.
+ * A gombafonalak két tekton között húzódó vonalként jelennek meg.
+ */
 public class ShroomThreadView implements IEntityView {
+    /**
+     * A gombafonal modell, amelyet ez a nézet megjelenít.
+     */
     private ShroomThread model;
+    
+    /**
+     * A gombafonal kezdőpontja.
+     */
     private Point p1;
+    
+    /**
+     * A gombafonal végpontja.
+     */
     private Point p2;
+    
+    /**
+     * A gombafonal vastagsága.
+     */
     private int size = 5;
 
+    /**
+     * A gombafonal eltolása a párhuzamos fonalak megkülönböztetéséhez.
+     */
     private Vec2 offset;
 
+    /**
+     * A gombafonal színe.
+     */
     private Color color = null;
+    
+    /**
+     * A gombafonal kijelölési állapota.
+     */
     private boolean selection = false;
 
+    /**
+     * Létrehoz egy új gombafonal nézetet.
+     * @param shroomThread A gombafonal modell
+     * @param color A gombafonal színe
+     * @return void
+     */
     public ShroomThreadView(ShroomThread shroomThread, Color color) {
         this.model = shroomThread;
         this.color = color;
     }
 
+    /**
+     * Beállítja a gombafonal eltolását.
+     * @param offset Az eltolás vektora
+     * @return void
+     */
     public void SetOffset(Vec2 offset) {
         this.offset = offset;
     }
 
+    /**
+     * Kirajzolja a gombafonal nézetet.
+     * @param g2d A grafikus kontextus
+     * @return void
+     */
     @Override
     public void Draw(Graphics2D g2d) {
         if (model.GetTecton1() == model.GetTecton2()) {
@@ -85,11 +130,21 @@ public class ShroomThreadView implements IEntityView {
     }
 
 
+    /**
+     * Visszaadja a gombafonal nézet rétegét.
+     * @return int - A réteg száma
+     */
     @Override
     public int GetLayer() {
         return 0;
     }
 
+    /**
+     * Ellenőrzi, hogy az adott pont a gombafonalon belül van-e.
+     * @param x A pont x koordinátája
+     * @param y A pont y koordinátája
+     * @return Boolean - Igaz, ha a pont a gombafonalon belül van
+     */
     @Override
     public boolean ContainsPoint(int x, int y) {
         Point cursor = new Point(x, y);
@@ -110,11 +165,20 @@ public class ShroomThreadView implements IEntityView {
         return dist < size;
     }
 
+    /**
+     * Ellenőrzi, hogy ez a nézet az adott objektumhoz tartozik-e.
+     * @param obj Az ellenőrizendő objektum
+     * @return Boolean - Igaz, ha a nézet az adott objektumhoz tartozik
+     */
     @Override
     public boolean IsViewing(Object obj) {
         return model == obj;
     }
 
+    /**
+     * Visszaadja a gombafonal információit szöveges formában.
+     * @return String - A gombafonal információi
+     */
     @Override
     public String GetEntityInfo() {
         StringBuilder info = new StringBuilder();
@@ -129,16 +193,30 @@ public class ShroomThreadView implements IEntityView {
         return info.toString();
     }
 
+    /**
+     * Visszaadja a gombafonal modellt.
+     * @return ShroomThread - A gombafonal modell
+     */
     public ShroomThread GetModel() {
         return model;
     }
 
+    /**
+     * Fogadja a látogatót a Visitor tervezési minta szerint.
+     * @param selector A látogató objektum
+     * @return void
+     */
     @Override
     public void Accept(EntitySelector selector) {
         selector.Visit(this);
     }
+    
+    /**
+     * Beállítja a gombafonal kijelölési állapotát.
+     * @param selected Igaz, ha a gombafonal ki van jelölve
+     * @return void
+     */
     public void SetSelected(boolean selected){
         selection = selected;
     }
-
 }

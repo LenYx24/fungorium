@@ -329,14 +329,12 @@ public class SettingsPanel extends JPanel {
 
             int gombaszok = 0;
 
-            for (int i = 0; i < 3; i++)
-            {
+            for (int i = 0; i < 3; i++) {
                 if (gombaszCheckBoxes[i].isSelected())
                     gombaszok++;
             }
 
-            if (gombaszok > tectonCount)
-            {
+            if (gombaszok > tectonCount) {
                 JOptionPane.showMessageDialog(this,
                         "Legalább annyi tekton legyen, ahány gombász játszik!",
                         "Nincs elég tekton",
@@ -419,8 +417,7 @@ public class SettingsPanel extends JPanel {
     }
 
     @Override
-    protected void paintComponent(Graphics g)
-    {
+    protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
     }

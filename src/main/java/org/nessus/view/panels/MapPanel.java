@@ -13,12 +13,37 @@ import java.util.PriorityQueue;
 
 import javax.swing.*;
 
+/**
+ * A játéktér megjelenítéséért felelős panel.
+ * Kezeli a játéktér kirajzolását és a felhasználói interakciókat.
+ */
 public class MapPanel extends JPanel {
+    /**
+     * A nézet, amelyhez a panel tartozik.
+     */
     private View view;
+    
+    /**
+     * A gráf megjelenítéséért felelős segédosztály.
+     */
     private GraphUtil graphRenderer;
+    
+    /**
+     * Az éppen húzott tekton nézet.
+     */
     private TectonView dragged = null;
+    
+    /**
+     * A háttérkép.
+     */
     private Image backgroundImage;
 
+    /**
+     * Létrehoz egy új játéktér panelt.
+     * @param view A nézet, amelyhez a panel tartozik
+     * @param width A panel szélessége
+     * @param height A panel magassága
+     */
     public MapPanel(View view, int width, int height) {
         this.view = view;
         this.graphRenderer = new GraphUtil(width, height, view.GetObjectStore().GetTectonViews());
@@ -28,8 +53,7 @@ public class MapPanel extends JPanel {
 
         addMouseListener(new MouseAdapter() {
             @Override
-            public void mousePressed(java.awt.event.MouseEvent e)
-            {
+            public void mousePressed(java.awt.event.MouseEvent e) {
                 var cursor = e.getPoint();
                 ObjectStore objectStore = view.GetObjectStore();
                 List<IEntityView> entityViews = objectStore.GetEntityViews();
@@ -75,9 +99,13 @@ public class MapPanel extends JPanel {
         });
     }
 
+    /**
+     * Kirajzolja a panel tartalmát.
+     * @param g A grafikus kontextus
+     * @return void
+     */
     @Override
-    protected void paintComponent(Graphics g)
-    {
+    protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
 

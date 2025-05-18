@@ -14,24 +14,76 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * A játék vezérlőpanelje, amely tartalmazza a játékos akcióit és információit.
+ * Kezeli a játékos interakcióit és megjeleníti a játék állapotát.
+ */
 public class ControlPanel extends JPanel {
+    /**
+     * A nézet, amelyhez a panel tartozik.
+     */
     private View view;
+    
+    /**
+     * A rovar akciógombok listája.
+     */
     private List<JButton> bugActions;
+    
+    /**
+     * A gomba akciógombok listája.
+     */
     private List<JButton> shroomActions;
+    
+    /**
+     * A következő játékos gomb.
+     */
     private JButton nextPlayerBtn;
+    
+    /**
+     * A játék vége gomb.
+     */
     private JButton endGameBtn;
+    
+    /**
+     * Az információs szövegmező.
+     */
     private JTextArea infoArea;
+    
+    /**
+     * A játékos nevét megjelenítő címke.
+     */
     private JLabel playerLabel;
+    
+    /**
+     * Az akciópontokat megjelenítő címke.
+     */
     private JLabel actionPointsLabel;
+    
+    /**
+     * A gombok panele.
+     */
     private JPanel buttonPanel;
 
+    /**
+     * A gombok mérete.
+     */
     Dimension buttonSize = new Dimension(250, 30);
 
+    /**
+     * Beállítja egy címke stílusát.
+     * @param label A formázandó címke
+     * @return void
+     */
     private void StyleLabel(JLabel label) {
         label.setForeground(Color.WHITE);
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
     }
 
+    /**
+     * Beállítja egy gomb stílusát.
+     * @param button A formázandó gomb
+     * @return void
+     */
     private void StyleButton(JButton button){
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.setMaximumSize(buttonSize);
@@ -39,14 +91,28 @@ public class ControlPanel extends JPanel {
         button.setMinimumSize(buttonSize);
     }
 
+    /**
+     * Beállítja a játékos nevét megjelenítő címke szövegét.
+     * @param name A játékos neve
+     * @return void
+     */
     private void SetPlayerLabelText(String name){
         playerLabel.setText("Játékos: " + name);
     }
 
+    /**
+     * Beállítja az akciópontokat megjelenítő címke szövegét.
+     * @param points Az akciópontok száma
+     * @return void
+     */
     private void SetActionPointsLabelText(String points){
         actionPointsLabel.setText("Akciópontok: " + points);
     }
 
+    /**
+     * Létrehoz egy új vezérlőpanelt.
+     * @param view A nézet, amelyhez a panel tartozik
+     */
     public ControlPanel(View view) {
         this.view = view;
 
@@ -142,10 +208,19 @@ public class ControlPanel extends JPanel {
         add(endGameBtn);
     }
     
+    /**
+     * Befejezi a játékot és visszatér a menübe.
+     * @return void
+     */
     private void EndGame() {
         view.OpenMenu();
     }
 
+    /**
+     * Frissíti a játékos információit.
+     * @param name A játékos neve
+     * @return void
+     */
     public void UpdatePlayerInfo(String name) {
         SetPlayerLabelText(name);
         UpdateActionPoints();
@@ -158,6 +233,10 @@ public class ControlPanel extends JPanel {
         }
     }
 
+    /**
+     * Frissíti az akciópontok megjelenítését.
+     * @return void
+     */
     public void UpdateActionPoints() {
         var controller = view.GetController();
         
@@ -171,15 +250,28 @@ public class ControlPanel extends JPanel {
         }
     }
 
+    /**
+     * Frissíti az entitás információit.
+     * @param view Az entitás nézet
+     * @return void
+     */
     public void UpdateEntityInfo(IEntityView view) {
         if (view != null)
             infoArea.setText(view.GetEntityInfo());
     }
 
+    /**
+     * "Kitisztítja" az információs szövegmezőt.
+     * @return void
+     */
     public void ClearInfo() {
         infoArea.setText("");
     }
 
+    /**
+     * Frissíti a gombok szövegét.
+     * @return void
+     */
     public void UpdateButtonTexts() {
         var controller = view.GetController();
 

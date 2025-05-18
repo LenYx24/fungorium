@@ -12,8 +12,7 @@ public class MainMenuPanel extends JPanel {
     private Image backgroundImage;
 
     // Ezt majd ki lehet mozgatni egy külső button factoryba
-    public MainMenuPanel(JPanel mainPanel)
-    {
+    public MainMenuPanel(JPanel mainPanel) {
         backgroundImage = new ImageIcon(getClass().getResource("/textures/menu.gif")).getImage();
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -44,8 +43,7 @@ public class MainMenuPanel extends JPanel {
     }
 
     @Override
-    protected void paintComponent(Graphics g)
-    {
+    protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
     }
