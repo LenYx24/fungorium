@@ -26,7 +26,7 @@ public class Controller implements IRandomProvider {
     private boolean bugOwnerRound = false; // Bug owner köre
     private List<IBugOwnerController> bugOwners = new ArrayList<>(); // Bug owner lista
     private List<IShroomController> shrooms = new ArrayList<>(); // Shroom lista
-    private List<ITectonController> tectons = new ArrayList<>();
+    private List<ITectonController> tectons = new ArrayList<>(); // Tecton lista
 
     private View view; // static lett
     private int playerIndex = 0;
@@ -34,26 +34,52 @@ public class Controller implements IRandomProvider {
     /**
      * A Controller osztály konstruktora, amely inicializálja a parancsokat és beállítja a nézetet.
      * @param view A nézet, amelyet a Controller használ.
+     * @return void
      */
     public Controller(View view) {
         this.view = view;
     }
 
+    /**
+     * Törli az összes játékelemet a térképről.
+     * Eltávolítja az összes bug ownert, shroomot és tektont a megfelelő listákból.
+     * @return void
+     */
     public void ClearMap() {
         bugOwners.clear();
         shrooms.clear();
         tectons.clear();
     }
 
+    /**
+     * Kétirányú kapcsolatot hoz létre két tekton között.
+     * @param t1 Az első tekton a kapcsolathoz
+     * @param t2 A második tekton a kapcsolathoz
+     * @return void
+     */
     private void AddEdge(Tecton t1, Tecton t2) {
         t1.SetNeighbour(t2);
         t2.SetNeighbour(t1);
     }
 
+    /**
+     * Visszaad egy véletlenszerű elemet a megadott listából.
+     * @param <T> A lista elemeinek típusa
+     * @param list A lista, amelyből véletlenszerű elemet választunk
+     * @return <T> Egy véletlenszerűen kiválasztott elem a listából
+     */
     private <T> T RandomOf(List<T> list) {
         return list.get(RandomNumber(0, list.size() - 1));
     }
 
+    /**
+     * Véletlenszerű élet hoz létre két tekton lista között.
+     * Kiválaszt egy véletlenszerű tektont mindkét listából, és összeköti őket, ha még nincsenek összekötve.
+     * 
+     * @param list1 Az első tekton lista
+     * @param list2 A második tekton lista
+     * @return List<Tecton> - Egy lista, amely tartalmazza a két összekötött tektont
+     */
     private List<Tecton> AddRandomEdge(List<Tecton> list1, List<Tecton> list2) {
         Tecton t1 = null;
         Tecton t2 = null;
@@ -71,6 +97,12 @@ public class Controller implements IRandomProvider {
         return List.of(t1, t2);
     }
     
+    /**
+     * Létrehoz egy véletlenszerű tektont különböző típusokból.
+     * 50% eséllyel hoz létre egy alap Tektont, és egyenlő esélyekkel a speciális tekton típusokat.
+     * @param infertileAllowed Meghatározza, hogy a terméketlen tektonok létrehozhatók-e
+     * @return Tecton - Egy újonnan létrehozott véletlenszerű tekton
+     */
     private Tecton RandomTecton(boolean infertileAllowed) {
         // 0-7 intervallumban generálunk számokat
         // az első 4 szám egyenként egy típust jelöl
@@ -86,8 +118,13 @@ public class Controller implements IRandomProvider {
         };
     }
 
-    public void GenerateMap(int tectonCount)
-    {
+    /**
+     * Generál egy térképet a megadott számú tektonnal.
+     * Létrehoz egy összefüggő gráfot tektonokból, és elhelyez rajtuk rovarokat és gombatesteket.
+     * @param tectonCount A generálandó tektonok száma
+     * @return void
+     */
+    public void GenerateMap(int tectonCount) {
         List<Tecton> disconnected = new ArrayList<>();
         List<Tecton> connected = new ArrayList<>();
         
@@ -146,13 +183,24 @@ public class Controller implements IRandomProvider {
         playerIndex++;
     }
 
+    /**
+     * Elindít egy új akciót a megadott akció vezérlővel.
+     * Törli az aktuális kijelölést és beállítja az aktuális akciót.
+     * @param action Az akció vezérlő, amelyet el kell indítani
+     * @return void
+     */
     public void StartAction(IActionController action){
         view.GetSelection().Clear();
         currentAction = action;
     }
 
-    public void NextPlayer()
-    {
+    /**
+     * Továbblép a következő játékos körére.
+     * Kezeli az átmenetet a rovarász és a gombász körök között.
+     * Frissíti a játékos információkat és esélyt ad egy tekton hasadásra.
+     * @return void
+     */
+    public void NextPlayer() {
         if (bugOwnerRound) {
             if (playerIndex == bugOwners.size()) {
                 bugOwnerRound = false;
@@ -178,13 +226,28 @@ public class Controller implements IRandomProvider {
             tectons.get(RandomNumber(0, tectons.size() - 1)).Split();
     }
 
+    /**
+     * Visszaadja az aktuális játékost (vagy egy rovarászt vagy egy gombászt).
+     * @return Object - Az aktuális játékos objektumként
+     */
     public Object GetCurrentPlayer() {
         return bugOwnerRound ? currentBugOwner : currentShroom;
     }
 
+    /**
+     * Visszaadja az aktuális rovarász vezérlőt.
+     * 
+     * @return IBugOwnerController - Az aktuális rovarász vezérlő
+     */
     public IBugOwnerController GetCurrentBugOwnerController() {
         return currentBugOwner;
     }
+    
+    /**
+     * Visszaadja az aktuális gombász vezérlőt.
+     * 
+     * @return IShroomController - Az aktuális gombász vezérlő
+     */
     public IShroomController GetCurrentShroomController() {
         return currentShroom;
     }
@@ -209,10 +272,20 @@ public class Controller implements IRandomProvider {
         currentShroom = shroom;
     }
 
+    /**
+     * Hozzáad egy új tekton vezérlőt a tektonok listájához.
+     * @param tecton A hozzáadandó tekton vezérlő
+     * @return void
+     */
     public void AddTecton(ITectonController tecton) {
         tectons.add(tecton);
     }
 
+    /**
+     * Kezeli a nézet kijelölésének változásait.
+     * Ha van aktuális akció és az végrehajtható, végrehajtja és törli a kijelölést.
+     * @return void
+     */
     public void ViewSelectionChanged() {
         if (currentAction != null && currentAction.TryAction()) {
             currentAction = null;
@@ -246,7 +319,7 @@ public class Controller implements IRandomProvider {
 
     /**
      * Ez a metódus egy random boolean értéket generál.
-     * @return boolean - A generált random boolean érték
+     * @return Boolean - A generált random boolean érték
      */
     public boolean RandomBoolean() {
         return rand.nextBoolean();
@@ -261,7 +334,17 @@ public class Controller implements IRandomProvider {
         rand.setSeed(seed);
     }
 
+    /**
+     * Ellenőrzi, hogy jelenleg rovarász köre van-e.
+     * 
+     * @return Boolean - igaz, ha rovarász köre van, hamis, ha gombász köre van
+     */
     public boolean IsBugOwnerRound() {return bugOwnerRound;}
 
+    /**
+     * Visszaadja a vezérlőhöz tartozó nézetet.
+     * 
+     * @return View - A nézet objektum
+     */
     public View GetView() {return view;}
 }
