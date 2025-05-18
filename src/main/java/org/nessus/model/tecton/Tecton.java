@@ -293,10 +293,21 @@ public class Tecton implements ITectonController {
         return threads.contains(thread);
     }
 
+    /**
+     * Elfogadja a látogatót.
+     * A látogató a DesertTecton osztályt látogatja meg (ITectonVisitor).
+     * @param visitor - A látogató.
+     * @see org.nessus.utility.ITectonVisitor
+     * @return void
+     */
     public void Accept(ITectonVisitor visitor) {
         visitor.Visit(this);
     }
-    
+
+    /**
+     * Lekérdezi a tektonon található entitások számát.
+     * @return int - A tektonon található entitások száma
+     */
     public int GetEntityCount(){
         int count = bugs.size() + spores.size();
         if(body != null){

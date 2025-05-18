@@ -64,6 +64,13 @@ public class DesertTecton extends Tecton {
         }
     }
 
+    /**
+     * Elfogadja a látogatót.
+     * A látogató a DesertTecton osztályt látogatja meg (ITectonVisitor).
+     * @param visitor - A látogató.
+     * @see org.nessus.utility.ITectonVisitor
+     * @return void
+     */
     @Override
     public void Accept(ITectonVisitor visitor) {
         visitor.Visit(this);
