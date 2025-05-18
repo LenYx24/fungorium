@@ -1,14 +1,19 @@
 package org.nessus.view;
 
 import java.awt.*;
+import java.io.InputStream;
+import java.util.Objects;
+import java.net.URL;
+
 import org.nessus.controller.IRandomProvider;
+import org.nessus.utility.BGMPlayer;
 import org.nessus.utility.EntitySelector;
 import org.nessus.controller.Controller;
 import org.nessus.view.entities.*;
 import org.nessus.view.panels.*;
 
 import javax.swing.*;
-import com.formdev.flatlaf.FlatDarkLaf; // Changed from FlatLightLaf to FlatDarkLaf
+import com.formdev.flatlaf.FlatDarkLaf;
 
 /**
  * Ez a singleton View osztály felelős a program futtatásáért.
@@ -17,13 +22,18 @@ import com.formdev.flatlaf.FlatDarkLaf; // Changed from FlatLightLaf to FlatDark
  */
 public class View extends JFrame {
     private static View instance;
-    
+
+    URL bgmUrl = Objects.requireNonNull(getClass().getResource("/bgm/fields_covered_in_goop.wav"));
+    BGMPlayer bgmPlayer = new BGMPlayer(bgmUrl);
+
     private Controller controller = new Controller(this);
     private SelectionCatalog selection;
     private ObjectStore objectStore = new ObjectStore();
-    
+
     private JPanel mainPanel;
     private GamePanel gamePanel;
+
+    private Timer renderTimer;
 
     /**
      * A {@code View} osztály konstruktora.
@@ -45,11 +55,14 @@ public class View extends JFrame {
         mainPanel.add(new MainMenuPanel(mainPanel), "menu");
         mainPanel.add(new SettingsPanel(this, mainPanel), "settings");
         mainPanel.add(gamePanel, "game");
+
         mainPanel.add(new ScoreBoardPanel(mainPanel, this), "scoreBoard");
+        renderTimer = new Timer(0, e -> gamePanel.repaint());
 
         add(mainPanel);
         pack();
         setVisible(true);
+        bgmPlayer.playLoop();
     }
 
     /**
@@ -63,6 +76,10 @@ public class View extends JFrame {
         return instance;
     }
 
+    /**
+     * Lekérdezi a random generátor példányát
+     * @return IRandomProvider - A randomgenerátor példánya
+     */
     public static IRandomProvider GetRandomProvider() {
         return GetInstance().controller;
     }
@@ -87,33 +104,52 @@ public class View extends JFrame {
         return controller;
     }
 
+    /**
+     * Visszaadja a SelectionCatalog példányát
+     * @return SelectionCatalog - A SelectionCatalog példánya
+     */
     public SelectionCatalog GetSelection() {
         return selection;
     }
 
+    /**
+     * Megnyitja a menüt
+     * @return void
+     */
     public void OpenMenu() {
         CardLayout cardLayout = (CardLayout)mainPanel.getLayout();
         cardLayout.show(mainPanel,"menu");
+        renderTimer.stop();
     }
 
+    /**
+     * Megnyitja a játékbeállításokat
+     * @return void
+     */
     public void OpenSettings() {
         CardLayout cardLayout = (CardLayout)mainPanel.getLayout();
         cardLayout.show(mainPanel,"settings");
     }
 
+    /**
+     * Elindítja a játékot
+     * @return void
+     */
     public void OpenGame() {
         CardLayout cardLayout = (CardLayout)mainPanel.getLayout();
         cardLayout.show(mainPanel,"game");
-    
-        Timer timer = new Timer(0, e -> gamePanel.repaint());
-        timer.start();
+        renderTimer.start();
     }
 
     public void OpenScoreBoard() {
         CardLayout cardLayout = (CardLayout)mainPanel.getLayout();
         cardLayout.show(mainPanel,"scoreBoard");
     }
-
+    /**
+     * Kiválasztáskezelő függvény, a kiválasztott entitás alapján frissíti a felületet
+     * @param entity - A kiválasztott entitás
+     * @return void
+     */
     public void HandleSelection(IEntityView entity) {
         var controlPanel = gamePanel.GetControlPanel();
         var selector = new EntitySelector(selection);
@@ -123,6 +159,10 @@ public class View extends JFrame {
         controlPanel.UpdateButtonTexts();
     }
 
+    /**
+     * Frissíti a játékosok információit az adott körtípus alapján
+     * @return void
+     */
     public void UpdatePlayerInfo() {
         var controlPanel = gamePanel.GetControlPanel();
         
@@ -133,9 +173,12 @@ public class View extends JFrame {
             var shroom = controller.GetCurrentShroomController();
             controlPanel.UpdatePlayerInfo(objectStore.GetShroomName(shroom));
         }
-
     }
 
+    /**
+     * Lekérdezi a GamePanel példányát
+     * @return GamePanel - A GamePanel példánya
+     */
     public GamePanel GetGamePanel() {
         return gamePanel;
     }

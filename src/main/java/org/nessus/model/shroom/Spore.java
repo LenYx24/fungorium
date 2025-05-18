@@ -18,19 +18,15 @@ public class Spore {
     private Shroom shroom; // A spóra gomba része
     private Tecton tecton; // A spóra tecton része
 
-    int nutrients = 3; // A spóra tápanyagértéke
+    int nutrients; // A spóra tápanyagértéke
 
-    /**
-     * A spóra konstruktora.
-     */
-    public Spore() {
-    }
     /**
      * A spóra konstruktora.
      * @param shroom
      */
     public Spore(Shroom shroom) {
         this.shroom = shroom;
+        this.nutrients = View.GetRandomProvider().RandomNumber(1, 5);
         shroom.SetSpore(this);
     }
     /**

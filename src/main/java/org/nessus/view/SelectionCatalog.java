@@ -57,7 +57,7 @@ public class SelectionCatalog {
 
     public void SelectShroomThread(ShroomThread thread) {
         if (selectedShroomThread == thread) {
-            SetViewSelection(thread);
+            UnsetViewSelection(thread);
             selectedShroomThread = null;
         }
         else {

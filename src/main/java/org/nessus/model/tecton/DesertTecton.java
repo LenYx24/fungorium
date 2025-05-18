@@ -48,10 +48,12 @@ public class DesertTecton extends Tecton {
      */
     @Override
     public void UpdateTecton() {
-        for (ShroomThread thread : List.copyOf(threads)) {
+        for (ShroomThread thread : List.copyOf(threads))
+        {
             if (thread.GetEvolution() < 3)
                 continue;
 
+            thread.SetDrying();
             var decayTimer = decayTimers.get(thread);
 
             if (decayTimer <= 0) {

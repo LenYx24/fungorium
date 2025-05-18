@@ -188,6 +188,7 @@ public class ControlPanel extends JPanel {
         infoArea.setAlignmentX(Component.CENTER_ALIGNMENT);
         infoArea.setMaximumSize(new Dimension(180, 250));
         infoArea.setPreferredSize(new Dimension(180, 250));
+        infoArea.setFocusable(false);
 
         add(infoArea);
         add(Box.createVerticalGlue());

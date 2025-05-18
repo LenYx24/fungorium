@@ -14,42 +14,74 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
+/**
+ * Ez az osztály felel a felel a gombok létrehozásáért, illetve azok kezeléésért, frissítéséért
+ * Lekezeli azok funkcióit, meghívja a megfelelő függvényeket
+ */
 public class ActionButtonFactory {
-    private View view;
-    private Controller controller;
-    private ControlPanel controlPanel;
+    private View view; // a nézet
+    private Controller controller; // a controller példánya
+    private ControlPanel controlPanel; // a controlpanel példánya
 
+    /**
+     * A konstruktor
+     * @param view - A nézet
+     * @param controlPanel - A ControlPanel
+     */
     public ActionButtonFactory(View view, ControlPanel controlPanel) {
         this.view = view;
         this.controller = view.GetController();
         this.controlPanel = controlPanel;
     }
 
+    /**
+     * Frissíti az akciópontokat a ControlPanelen belül
+     * @return void
+     */
     private void UpdateActionPoints() {
         controlPanel.UpdateActionPoints();
     }
 
+    /**
+     * Frissíti a gombokon megjelenített szöveget
+     * @return void
+     */
     private void UpdateButtonTexts() {
         controlPanel.UpdateButtonTexts();
     }
 
+    /**
+     * Frissíti a megadott entitás információit
+     * @param e - Az entitás
+     * @return void
+     */
     private void UpdateEntityInfo(IEntityView e) {
         controlPanel.UpdateEntityInfo(e);
     }
 
+    /**
+     * Létrehoz egy ActionButton-t
+     * @param name - A gomb neve
+     * @param action - A gomb funkciója (IActionController)
+     * @return JButton - A létrehozott akciógomb példánya
+     */
     private JButton CreateActionButton(String name, IActionController action){
         JButton button = new JButton(name);
-
         button.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 controller.StartAction(action);
+                view.requestFocus();
             }
         });
 
         return button;
     }
 
+    /**
+     * Létrehozza a rovar mozgatása gombot
+     * @return JButton - A létrehozott akciógomb példánya
+     */
     public JButton CreateBugMoveButton(){
         return CreateActionButton("Rovar mozgás" , () -> {
             List<Tecton> tectons = view.GetSelection().GetTectons();
@@ -69,6 +101,11 @@ public class ActionButtonFactory {
             return false;
         });
     }
+
+    /**
+     * Létrehozza a rovar elfogyasztása gombot
+     * @return JButton - A létrehozott akciógomb példánya
+     */
     public JButton CreateBugEatButton() {
         return CreateActionButton("Spóraevés", () -> {
             Bug bug = view.GetSelection().GetBug();
@@ -86,9 +123,15 @@ public class ActionButtonFactory {
                     return true;
                 }
             }
+
             return false;
         });
     }
+
+    /**
+     * Létrehozza a gombafonal elvágása gombot
+     * @return JButton - A létrehozott akciógomb példánya
+     */
     public JButton CreateBugCutButton(){
         return CreateActionButton("Gombafonal elvágása", () -> {
             var bug = view.GetSelection().GetBug();
@@ -101,9 +144,15 @@ public class ActionButtonFactory {
                     return true;
                 }
             }
+
             return false;
         });
     }
+
+    /**
+     * Létrehozza a spóra köpése gombot
+     * @return JButton - A létrehozott akciógomb példánya
+     */
     public JButton CreateThrowSporeButton() {
         return CreateActionButton("Spóraköpés", () -> {
             List<Tecton> tectons = view.GetSelection().GetTectons();
@@ -124,6 +173,11 @@ public class ActionButtonFactory {
             return false;
         });
     }
+
+    /**
+     * Létrehozza a rovar gombafonallal való elfogyasztása gombot
+     * @return JButton - A létrehozott akciógomb példánya
+     */
     public JButton CreateShroomThreadDevourButton(){
         return CreateActionButton("Rovar elfogyasztása gombafonallal", () -> {
             var shroomThread = view.GetSelection().GetShroomThread();
@@ -145,6 +199,11 @@ public class ActionButtonFactory {
             return false;
         });
     }
+
+    /**
+     * Létrehozza a gombatest elhelyezése gombot
+     * @return JButton - A létrehozott akciógomb példánya
+     */
     public JButton CreatePlaceShroomBodyButton() {
         return CreateActionButton("Gombatest elhelyezése", () -> {
             List<Tecton> tectons = view.GetSelection().GetTectons();
@@ -163,6 +222,11 @@ public class ActionButtonFactory {
             return false;
         });
     }
+
+    /**
+     * Létrehozza a gombatest fejlesztése gombot
+     * @return JButton - A létrehozott akciógomb példánya
+     */
     public JButton CreateUpgradeShroomBodyButton(){
         return CreateActionButton("Gombatest fejlesztése", () -> {
             var shroomBody = view.GetSelection().GetShroomBody();
@@ -183,6 +247,11 @@ public class ActionButtonFactory {
             return false;
         });
     }
+
+    /**
+     * Létrehozza a gombafonal növesztése gombot
+     * @return JButton - A létrehozott akciógomb példánya
+     */
     public JButton CreatePlaceShroomThreadButton(){
         return CreateActionButton("Gombafonal növesztése", () -> {
             var tectons = view.GetSelection().GetTectons();
@@ -199,7 +268,7 @@ public class ActionButtonFactory {
                     return true;
                 }
             }
-            
+
             return false;
         });
     }
