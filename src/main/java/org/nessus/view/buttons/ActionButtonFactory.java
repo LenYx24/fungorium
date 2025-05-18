@@ -69,13 +69,11 @@ public class ActionButtonFactory {
             return false;
         });
     }
-    public JButton CreateBugEatButton()
-    {
+    public JButton CreateBugEatButton() {
         return CreateActionButton("Spóraevés", () -> {
             Bug bug = view.GetSelection().GetBug();
             Spore spore = view.GetSelection().GetSpore();
-            if(bug != null && spore != null)
-            {
+            if(bug != null && spore != null) {
                 IBugOwnerController bugOwner = controller.GetCurrentBugOwnerController();
                 if(bugOwner != null && bugOwner == bug.GetOwner()) {
                     view.GetSelection().SelectSpore(null);
@@ -95,8 +93,7 @@ public class ActionButtonFactory {
         return CreateActionButton("Gombafonal elvágása", () -> {
             var bug = view.GetSelection().GetBug();
             var shroomThread = view.GetSelection().GetShroomThread();
-            if(bug != null && shroomThread != null)
-            {
+            if(bug != null && shroomThread != null) {
                 IBugOwnerController bugOwner = controller.GetCurrentBugOwnerController();
                 if(bugOwner != null && bugOwner == bug.GetOwner() && bug.GetCanCut()) {
                     bugOwner.CutThread(bug, shroomThread);
@@ -107,8 +104,7 @@ public class ActionButtonFactory {
             return false;
         });
     }
-    public JButton CreateThrowSporeButton()
-    {
+    public JButton CreateThrowSporeButton() {
         return CreateActionButton("Spóraköpés", () -> {
             List<Tecton> tectons = view.GetSelection().GetTectons();
             ShroomBody body = view.GetSelection().GetShroomBody();
@@ -149,8 +145,7 @@ public class ActionButtonFactory {
             return false;
         });
     }
-    public JButton CreatePlaceShroomBodyButton()
-    {
+    public JButton CreatePlaceShroomBodyButton() {
         return CreateActionButton("Gombatest elhelyezése", () -> {
             List<Tecton> tectons = view.GetSelection().GetTectons();
 

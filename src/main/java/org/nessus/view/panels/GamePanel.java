@@ -4,10 +4,25 @@ import javax.swing.*;
 import org.nessus.view.View;
 import java.awt.*;
 
+/**
+ * A játék fő panele, amely tartalmazza a játékteret és a vezérlőpanelt.
+ * Elrendezi a játék felületének komponenseit.
+ */
 public class GamePanel extends JPanel {
+    /**
+     * A játéktér panel.
+     */
     private MapPanel mapPanel;
+    
+    /**
+     * A vezérlőpanel.
+     */
     private ControlPanel controlPanel;
 
+    /**
+     * Létrehoz egy új játék panelt.
+     * @param view A nézet, amelyhez a panel tartozik
+     */
     public GamePanel(View view) {
         mapPanel = new MapPanel(view, 1280, 720);         
         controlPanel = new ControlPanel(view);
@@ -27,6 +42,10 @@ public class GamePanel extends JPanel {
         add(controlPanel, gbc);
     }
 
+    /**
+     * Visszaadja a vezérlőpanelt.
+     * @return ControlPanel - A vezérlőpanel
+     */
     public ControlPanel GetControlPanel() {
         return controlPanel;
     }

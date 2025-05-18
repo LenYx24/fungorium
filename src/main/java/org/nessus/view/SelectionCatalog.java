@@ -43,30 +43,24 @@ public class SelectionCatalog {
             store.FindTectonView(tecton).SetSelected(false);
     }
 
-    public void SelectBug(Bug bug)
-    {
-        if (selectedBug == bug)
-        {
+    public void SelectBug(Bug bug) {
+        if (selectedBug == bug) {
             UnsetViewSelection(bug);
             selectedBug = null;
         }
-        else
-        {
+        else {
             UnsetViewSelection(selectedBug);
             selectedBug = bug;
             SetViewSelection(bug);
         }
     }
 
-    public void SelectShroomThread(ShroomThread thread)
-    {
-        if (selectedShroomThread == thread)
-        {
+    public void SelectShroomThread(ShroomThread thread) {
+        if (selectedShroomThread == thread) {
             SetViewSelection(thread);
             selectedShroomThread = null;
         }
-        else
-        {
+        else {
             UnsetViewSelection(selectedShroomThread);
             selectedShroomThread = thread;
             SetViewSelection(thread);
@@ -74,13 +68,11 @@ public class SelectionCatalog {
     }
 
     public void SelectShroomBody(ShroomBody body) {
-        if (selectedShroomBody == body)
-        {
+        if (selectedShroomBody == body) {
             UnsetViewSelection(body);
             selectedShroomBody = null;
         }
-        else
-        {
+        else {
             UnsetViewSelection(selectedShroomBody);
             selectedShroomBody = body;
             SetViewSelection(body);
@@ -88,13 +80,11 @@ public class SelectionCatalog {
     }
 
     public void SelectSpore(Spore spore) {
-        if (selectedSpore == spore)
-        {
+        if (selectedSpore == spore) {
             UnsetViewSelection(spore);
             selectedSpore = null;
         }
-        else
-        {
+        else {
             UnsetViewSelection(selectedSpore);
             selectedSpore = spore;
             SetViewSelection(spore);

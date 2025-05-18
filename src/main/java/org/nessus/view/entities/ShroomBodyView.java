@@ -17,8 +17,7 @@ public class ShroomBodyView extends EntitySpriteView{
     }
 
     @Override
-    public void Draw(Graphics2D g2d)
-    {
+    public void Draw(Graphics2D g2d) {
         if(model.GetTecton() == null){
             return;
         }
@@ -37,8 +36,7 @@ public class ShroomBodyView extends EntitySpriteView{
     }
 
     @Override
-    public String GetEntityInfo()
-    {
+    public String GetEntityInfo() {
         String info = "Tulajdonos: ";
         
         info = info.concat(View.GetGameObjectStore().GetShroomName(model.GetShroom()) + "\n");

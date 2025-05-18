@@ -38,8 +38,7 @@ public class BugView extends EntitySpriteView{
     }
 
     @Override
-    public String GetEntityInfo()
-    {
+    public String GetEntityInfo() {
         StringBuilder info = new StringBuilder();
         
         info.append("Tulajdonos: ");

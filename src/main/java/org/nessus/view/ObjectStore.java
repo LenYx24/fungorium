@@ -31,8 +31,7 @@ public class ObjectStore implements IGameObjectStore {
         tectons.clear();
     }
 
-    public void AddShroomBody(ShroomBody shroomBody)
-    {
+    public void AddShroomBody(ShroomBody shroomBody) {
         var shroom = shrooms.get(shroomBody.GetShroom());
         var factory = shroom.getKey();
         ShroomBodyView sbview = factory.CreateShroomBodyView(shroomBody);

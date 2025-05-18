@@ -108,8 +108,7 @@ public class View extends JFrame {
         timer.start();
     }
 
-    public void HandleSelection(IEntityView entity)
-    {
+    public void HandleSelection(IEntityView entity) {
         var controlPanel = gamePanel.GetControlPanel();
         var selector = new EntitySelector(selection);
         entity.Accept(selector);
