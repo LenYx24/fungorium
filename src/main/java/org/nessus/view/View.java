@@ -35,7 +35,7 @@ public class View extends JFrame {
         setSize(new Dimension(1280, 720));
         setLocationRelativeTo(null);
         setTitle("Fungorium");
-        setIconImage(new ImageIcon("src/main/resources/textures/icon.png").getImage());
+        setIconImage(new ImageIcon(getClass().getResource("/textures/icon.png")).getImage());
         setResizable(false);
         mainPanel = new JPanel(new CardLayout());
         gamePanel = new GamePanel(this);

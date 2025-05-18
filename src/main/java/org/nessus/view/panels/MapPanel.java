@@ -24,7 +24,7 @@ public class MapPanel extends JPanel {
         this.graphRenderer = new GraphUtil(width, height, view.GetObjectStore().GetTectonViews());
         
         setPreferredSize(new Dimension(width, height));
-        backgroundImage = new ImageIcon("src/main/resources/textures/mapbg.gif").getImage();
+        backgroundImage = new ImageIcon(getClass().getResource("/textures/mapbg.gif")).getImage();
 
         addMouseListener(new MouseAdapter() {
             @Override

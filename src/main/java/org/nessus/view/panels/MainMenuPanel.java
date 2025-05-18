@@ -14,7 +14,7 @@ public class MainMenuPanel extends JPanel {
     // Ezt majd ki lehet mozgatni egy külső button factoryba
     public MainMenuPanel(JPanel mainPanel)
     {
-        backgroundImage = new ImageIcon("src/main/resources/textures/menu.gif").getImage();
+        backgroundImage = new ImageIcon(getClass().getResource("/textures/menu.gif")).getImage();
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         JButton newGameButton = new BaseButton("");
