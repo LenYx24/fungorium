@@ -2,6 +2,7 @@ package org.nessus.view;
 
 import java.awt.*;
 import org.nessus.controller.IRandomProvider;
+import org.nessus.utility.BGMPlayer;
 import org.nessus.utility.EntitySelector;
 import org.nessus.controller.Controller;
 import org.nessus.view.entities.*;
@@ -19,6 +20,7 @@ public class View extends JFrame {
     private static View instance;
     
     private Controller controller = new Controller(this);
+    private BGMPlayer bgmPlayer = new BGMPlayer("src/main/resources/bgm/fields_covered_in_goop.wav");
     private SelectionCatalog selection;
     private ObjectStore objectStore = new ObjectStore();
     
@@ -52,6 +54,7 @@ public class View extends JFrame {
         add(mainPanel);
         pack();
         setVisible(true);
+        bgmPlayer.playLoop();
     }
 
     /**
