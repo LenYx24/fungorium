@@ -151,4 +151,8 @@ public class BugOwner implements IBugOwnerController {
     public List<Bug> GetBugs(){
         return bugs;
     }
+
+    public int GetScore() {
+        return bugs.stream().mapToInt(o -> o.GetCollectedNutrients()).sum();
+    }
 }

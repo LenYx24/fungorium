@@ -369,4 +369,8 @@ public class Shroom implements IShroomController {
     public int GetDevourCost() {
         return devourCost;
     }
+
+    public int GetScore() {
+        return grownShroomBodies;
+    }
 }

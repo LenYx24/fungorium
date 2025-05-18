@@ -348,4 +348,12 @@ public class Controller implements IRandomProvider {
      * @return View - A nézet objektum
      */
     public View GetView() {return view;}
+
+    public List<IShroomController> GetShrooms() {
+        return this.shrooms;
+    }
+
+    public List<IBugOwnerController> GetBugOwners() {
+        return this.bugOwners;
+    }
 }

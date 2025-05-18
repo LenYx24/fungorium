@@ -202,7 +202,7 @@ public class ControlPanel extends JPanel {
         StyleButton(nextPlayerBtn);
 
         endGameBtn = new JButton("Játék vége");
-        endGameBtn.addActionListener(e -> EndGame());
+        endGameBtn.addActionListener(e -> view.OpenScoreBoard());
         StyleButton(endGameBtn);
 
         add(nextPlayerBtn);
@@ -210,13 +210,6 @@ public class ControlPanel extends JPanel {
         add(endGameBtn);
     }
     
-    /**
-     * Befejezi a játékot és visszatér a menübe.
-     * @return void
-     */
-    private void EndGame() {
-        view.OpenMenu();
-    }
 
     /**
      * Frissíti a játékos információit.
