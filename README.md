@@ -57,8 +57,8 @@ java -jar .\target\fungorium-graphical-1.0-jar-with-dependencies.jar
 
 ## Tipikus hibák:
 
-Ha linuxon ezt az errort kapod: "-bash: ./mvnw: /bin/sh^M: bad interpreter: No such file or directory",\
-akkor lehet a line endings-el van baj, futtasd ezt a parancsot: "sed -i 's/\r$//' mvnw"
+Ha linuxon ezt az errort kapod: `"-bash: ./mvnw: /bin/sh^M: bad interpreter: No such file or directory"`,\
+akkor lehet a line endings-el van baj, futtasd ezt a parancsot: `"sed -i 's/\r$//' mvnw"`
 
 # A játék leírása, ismertetése
 
