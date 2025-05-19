@@ -25,7 +25,28 @@ Ekkor megjelenik egy új lista, ahova a "New" gomba segítségével adja hozzá 
 Ezután mentse el a változtatásokat az "Ok" és "Apply" gombokkal.\
 A terminálokat újra kell indítani, hogy érvényesüljenek a változtatások.
 
-## Futtatás
+## Fordítás és futtatás
+
+A fordítás és a grafikus futtatása részekben leírt parancsokat egyszerre adja ki a win_build.bat szkript.
+
+
+### Csak fordítás
+Adja ki a következő parancsot, amellyel a maven lefordítja a kódot és készít egy jar fájlt a target könyvtárba:
+```bash
+.\mvnw package
+```
+
+Amennyiben a következőhöz hasonló hibát kap:
+```“ERROR: JAVA_HOME not found in your environment...”```, akkor a következőképpen tudja megoldani a problémát:
+
+Adja ki a következő két parancsot egy terminál ablakban, ha nem a kari felhőben lévő gépet
+használja, akkor a JAVA_HOME utáni útvonalat cserélje le az eszközén található JDK elérési útvonalára.
+```bash
+setx JAVA_HOME "C:\Program Files\Java\jdk-20"
+setx PATH "%PATH%;%JAVA_HOME%\bin"
+```
+
+Ezen a ponton próbálja újra a fordítást.
 
 Nyisson egy terminál ablakot (windowson pl. powershell), és navigáljon a projekt főkönyvtárába (fungorium-graphical).
 Ezután adja ki a következő parancsot:
