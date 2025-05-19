@@ -8,7 +8,10 @@ A projekt jelenlegi állapota:
 
 ## Követelmények
 
-java verzió: java 23.0.2 2025-01-21\
+Java verzió: java 20
+
+A kari felhő által szabott követelményeket írjuk elő
+
 A maven build szoftver lokálisan elérhető, nem kell külön telepíteni.
 
 ### JAVA_HOME beállítása.
@@ -42,3 +45,67 @@ java -jar .\target\fungorium-prototype-1.0.jar
 
 Ha linuxon ezt az errort kapod: "-bash: ./mvnw: /bin/sh^M: bad interpreter: No such file or directory",\
 akkor lehet a line endings-el van baj, futtasd ezt a parancsot: "sed -i 's/\r$//' mvnw"
+
+# A játék leírása, ismertetése
+
+## Fungorium
+
+Egy stratégiai ökoszisztéma-játék gombákról, rovarokról és egy különös bolygóról.
+
+---
+
+### 🪐 A világ
+
+A **Fungorium** bolygón gombák és rovarok élnek, és a felszínét különböző alakú kéregdarabok, úgynevezett **tektonok** borítják. Ezek a tektonok egy puhább, viszkózus rétegen "úsznak", és közöttük keskeny rések húzódnak. Időnként ketté is törhetnek, és az így keletkező darabok egymástól függetlenül fejlődnek tovább.
+
+### 🍄 Gombák
+
+A gombák **gombafonalakból** és **gombatestekből** állnak:
+
+- Egy tektonon egyszerre csak egy gombatest nőhet.
+- A gombatestek idővel spórákat szórhatnak a szomszédos tektonokra (vagy fejlettebb esetekben még távolabbra is).
+- A gombafonalak elágazhatnak, átnőhetnek a réseken, és képesek új gombatesteket növeszteni elegendő spóra jelenlétében.
+- Egy gombatest csak véges számú alkalommal tud spórát szórni, utána elpusztul.
+
+### 🐜 Rovarok
+
+A rovarok:
+
+- A gombafonalakat követve mozognak, önállóan nem képesek átkelni a réseken.
+- A spórákból táplálkoznak, amelyek eltérő hatást gyakorolnak rájuk:
+  - Gyorsító, lassító, bénító, fonalvágást gátló stb. hatások.
+- Egyes rovarok el tudják vágni a fonalakat a tektonok szélén.
+
+### 🌋 Tektonok
+
+A tektonok változatosak:
+
+- Egyeseken több gombafonal is nőhet, máshol csak egy, vagy épp gombatest nem fejlődhet.
+- Bizonyos tektonokon a fonalak idővel eltűnnek.
+- A tekton kettétörése megszakítja a rajta levő fonalakat.
+
+### 🧠 Játékosok szerepe
+
+Két fő játékostípus létezik:
+
+### Gombászok
+
+A gombák terjedését irányítják:
+
+- Meghatározzák a fonalak növekedésének irányát.
+- Indítják a spóraszórást.
+- Dönthetnek új gombatestek növesztéséről.
+
+### Rovarászok
+
+A rovarok mozgását és viselkedését befolyásolják:
+
+- Irányítják a rovarokat.
+- Eldönthetik, hogy egy rovar elvág-e egy adott fonalat.
+
+### 🧬 Speciális mechanikák
+
+- Egyes spórák **osztódásra kényszerítik** a rovarokat, így új, önálló példány jön létre ugyanazzal a rovarásszal.
+- Létezik olyan **tekton-típus**, amely életben tartja a már elszakított fonalakat is.
+- Az **elrágott fonalak** nem pusztulnak el azonnal – ez típusfüggő.
+- A fonalak **fogyasztják a bénult rovarokat**, és ennek hatására gombatestet növeszthetnek.
