@@ -27,18 +27,11 @@ A terminálokat újra kell indítani, hogy érvényesüljenek a változtatások.
 
 ## Futtatás
 
-Először nyisson egy terminált, és navigáljon a projekt főkönyvtárába (fungorium-prototype).\
-Ezután adja ki a következő parancsot, amellyel a maven lefordítja a kódot és készít egy jar fájlt a target könyvtárban:
+Nyisson egy terminál ablakot (windowson pl. powershell), és navigáljon a projekt főkönyvtárába (fungorium-graphical).
+Ezután adja ki a következő parancsot:
 
-```
-.\mvnw package
-```
-
-Lehet linuxon előbb a "chmod +x mvnw" parancsot ki kell adni.\
-Ezután futtassa a jar fájlt:
-
-```
-java -jar .\target\fungorium-prototype-1.0.jar
+```bash
+java -jar .\target\fungorium-graphical-1.0-jar-with-dependencies.jar
 ```
 
 ## Tipikus hibák:
