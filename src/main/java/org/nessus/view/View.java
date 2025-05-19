@@ -1,7 +1,6 @@
 package org.nessus.view;
 
 import java.awt.*;
-import java.io.InputStream;
 import java.util.Objects;
 import java.net.URL;
 
