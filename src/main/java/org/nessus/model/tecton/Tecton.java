@@ -120,7 +120,14 @@ public class Tecton implements ITectonController {
             .filter(x -> x.GetShroom() == body.GetShroom())
             .toList();
 
+        var usableThreads = threads.stream()
+                .filter(x -> x.GetShroom() == body.GetShroom() && x.GetEvolution() == 3)
+                .toList();
+
         if (usableSpores.size() < 2)
+            return false;
+
+        if (usableThreads.isEmpty())
             return false;
         
         var spore = usableSpores.get(0);

@@ -214,6 +214,12 @@ public class ShroomThread {
     }
 
     /**
+     * Lekérdezi a fonal fenntartott állapotát.
+     * @return boolean - Igen, ha a fonalat eltartja egy ThreadSustainerTecton
+     */
+    public boolean IsSustained() {return sustained;}
+
+    /**
      * Lekérdezi, hogy a fonal éppen elhalás közeli állapotban van-e.
      * @return boolean - Igen, ha a fonal elhalás közeli állapotban van (el van vágva vagy nem kapcsolódik a gomba testéhez és nem fenntartott), különben hamis
      */

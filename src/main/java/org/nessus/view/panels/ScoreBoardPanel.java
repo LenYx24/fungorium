@@ -10,6 +10,8 @@ import org.nessus.view.View;
 import java.awt.*;
 
 public class ScoreBoardPanel extends JPanel {
+    private Image backgroundImage;
+
     private final JLabel titleLabel;
     private final JLabel scoreLabel;
     private final JPanel bugPanel;
@@ -18,16 +20,16 @@ public class ScoreBoardPanel extends JPanel {
 
     public ScoreBoardPanel(JPanel mainPanel, View view) {
         this.view = view;
+        backgroundImage = new ImageIcon(getClass().getResource("/textures/scoreboardbg.png")).getImage();
         
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS)); 
         // Dark background with purple tint
-        setBackground(new Color(30, 10, 30));
         
         // Spacer
         add(Box.createVerticalStrut(80));
 
         // Glowing title
-        titleLabel = new JLabel("GAME OVER", SwingConstants.CENTER);
+        titleLabel = new JLabel(" ", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 52));
         titleLabel.setForeground(new Color(218, 0, 218)); // Purple glow
         titleLabel.setAlignmentX(CENTER_ALIGNMENT);
@@ -36,7 +38,7 @@ public class ScoreBoardPanel extends JPanel {
         add(Box.createVerticalStrut(20));
 
         // Subtitle with tech feel
-        scoreLabel = new JLabel("FINAL SCORES", SwingConstants.CENTER);
+        scoreLabel = new JLabel(" ", SwingConstants.CENTER);
         scoreLabel.setFont(new Font("Arial", Font.PLAIN, 36));
         scoreLabel.setForeground(new Color(230, 180, 230)); // Lighter purple
         scoreLabel.setAlignmentX(CENTER_ALIGNMENT);
@@ -57,7 +59,7 @@ public class ScoreBoardPanel extends JPanel {
         bugPanel.setPreferredSize(new Dimension(250, 200)); // Set larger preferred size
         bugPanel.setBorder(BorderFactory.createTitledBorder(
             glowBorder, 
-            "ROVARÁSZOK", 
+            "",
             TitledBorder.CENTER, 
             TitledBorder.TOP,
             new Font("Arial", Font.BOLD, 16), 
@@ -71,7 +73,7 @@ public class ScoreBoardPanel extends JPanel {
         shPanel.setPreferredSize(new Dimension(250, 200)); // Set larger preferred size
         shPanel.setBorder(BorderFactory.createTitledBorder(
             glowBorder, 
-            "GOMBÁSZOK", 
+            "",
             TitledBorder.CENTER, 
             TitledBorder.TOP,
             new Font("Arial", Font.BOLD, 16), 
@@ -80,35 +82,20 @@ public class ScoreBoardPanel extends JPanel {
         
         // Side panel with futuristic styling
         JPanel sidePanel = new JPanel();
-        sidePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 30, 10)); 
-        sidePanel.setBackground(new Color(30, 10, 30)); // Match main background
-        sidePanel.add(bugPanel);
+        sidePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 10));
+        sidePanel.setOpaque(false);
         sidePanel.add(shPanel);
+        sidePanel.add(bugPanel);
 
         add(sidePanel);  
         add(Box.createVerticalStrut(40));
 
         // Futuristic button
-        JButton backButton = new JButton("Vissza a főmenübe");
-        backButton.setFont(new Font("Arial", Font.BOLD, 18));
-        backButton.setForeground(Color.WHITE);
-        backButton.setBackground(new Color(150, 0, 150));
+        JButton backButton = new JButton();
         backButton.setFocusPainted(false);
-        backButton.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(218, 0, 218), 2),
-            BorderFactory.createEmptyBorder(10, 20, 10, 20)
-        ));
         backButton.setAlignmentX(CENTER_ALIGNMENT);
-        
-        // Hover effect
-        backButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                backButton.setBackground(new Color(200, 0, 200));
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                backButton.setBackground(new Color(150, 0, 150));
-            }
-        });
+        backButton.setContentAreaFilled(false);
+        backButton.setBorderPainted(false);
         
         backButton.addActionListener(e -> {
             CardLayout layout = (CardLayout) mainPanel.getLayout();
@@ -116,6 +103,8 @@ public class ScoreBoardPanel extends JPanel {
         });
 
         add(backButton);
+        backButton.setPreferredSize(new Dimension(400, 50));
+        backButton.setMaximumSize(new Dimension(400, 50));
         add(Box.createVerticalStrut(40));
     }
     
@@ -145,7 +134,7 @@ public class ScoreBoardPanel extends JPanel {
             
         // Add bug owners
         for (var item : bugOwners) {
-            JLabel label = new JLabel(store.GetBugOwnerName(item) + ": " + item.GetScore());
+            JLabel label = new JLabel(store.GetBugOwnerName(item) + ": " + item.GetScore() + " megevett tápanyag");
             label.setFont(new Font("Arial", Font.PLAIN, 14));
             label.setForeground(new Color(255, 220, 255));
             label.setAlignmentX(CENTER_ALIGNMENT);
@@ -159,7 +148,7 @@ public class ScoreBoardPanel extends JPanel {
         
         // Add shrooms
         for (var item : shrooms) { 
-            JLabel label = new JLabel(store.GetShroomName(item) + ": " + item.GetScore()); 
+            JLabel label = new JLabel(store.GetShroomName(item) + ": " + item.GetScore() + " növesztett test");
             label.setFont(new Font("Arial", Font.PLAIN, 14));
             label.setForeground(new Color(255, 220, 255));
             label.setAlignmentX(CENTER_ALIGNMENT);
@@ -180,5 +169,11 @@ public class ScoreBoardPanel extends JPanel {
         shPanel.revalidate();
         bugPanel.repaint();
         shPanel.repaint();
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
     }
 }

@@ -205,6 +205,20 @@ public class ControlPanel extends JPanel {
         endGameBtn.addActionListener(e -> view.OpenScoreBoard());
         StyleButton(endGameBtn);
 
+        JLabel helpKeys1 = new JLabel("W, A, S, D: Mozgás a térképen");
+        helpKeys1.setForeground(Color.WHITE);
+        helpKeys1.setAlignmentX(Component.CENTER_ALIGNMENT);
+        helpKeys1.setFont(new Font(helpKeys1.getFont().getName(), Font.BOLD, helpKeys1.getFont().getSize()));
+
+        JLabel helpKeys2 = new JLabel("Q, E: Kicsinyítés/Nagyítás");
+        helpKeys2.setForeground(Color.WHITE);
+        helpKeys2.setAlignmentX(Component.CENTER_ALIGNMENT);
+        helpKeys2.setFont(new Font(helpKeys2.getFont().getName(), Font.BOLD, helpKeys2.getFont().getSize()));
+
+        add(helpKeys1);
+        add(Box.createVerticalStrut(5));
+        add(helpKeys2);
+        add(Box.createVerticalStrut(5));
         add(nextPlayerBtn);
         add(Box.createVerticalStrut(5));
         add(endGameBtn);
