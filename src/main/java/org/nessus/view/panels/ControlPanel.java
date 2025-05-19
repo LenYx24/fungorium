@@ -215,9 +215,16 @@ public class ControlPanel extends JPanel {
         helpKeys2.setAlignmentX(Component.CENTER_ALIGNMENT);
         helpKeys2.setFont(new Font(helpKeys2.getFont().getName(), Font.BOLD, helpKeys2.getFont().getSize()));
 
+        JLabel helpKeys3 = new JLabel("R: Szomszédság mutatása/Elrejtése");
+        helpKeys3.setForeground(Color.WHITE);
+        helpKeys3.setAlignmentX(Component.CENTER_ALIGNMENT);
+        helpKeys3.setFont(new Font(helpKeys3.getFont().getName(), Font.BOLD, helpKeys3.getFont().getSize()));
+
         add(helpKeys1);
         add(Box.createVerticalStrut(5));
         add(helpKeys2);
+        add(Box.createVerticalStrut(5));
+        add(helpKeys3);
         add(Box.createVerticalStrut(5));
         add(nextPlayerBtn);
         add(Box.createVerticalStrut(5));
