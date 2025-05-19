@@ -56,7 +56,7 @@ public class ScoreBoardPanel extends JPanel {
         bugPanel = new JPanel();
         bugPanel.setLayout(new BoxLayout(bugPanel, BoxLayout.Y_AXIS));
         bugPanel.setBackground(new Color(40, 15, 40));
-        bugPanel.setPreferredSize(new Dimension(250, 200)); // Set larger preferred size
+        bugPanel.setPreferredSize(new Dimension(300, 200)); // Set larger preferred size
         bugPanel.setBorder(BorderFactory.createTitledBorder(
             glowBorder, 
             "",
@@ -70,7 +70,7 @@ public class ScoreBoardPanel extends JPanel {
         shPanel = new JPanel();
         shPanel.setLayout(new BoxLayout(shPanel, BoxLayout.Y_AXIS));
         shPanel.setBackground(new Color(40, 15, 40));
-        shPanel.setPreferredSize(new Dimension(250, 200)); // Set larger preferred size
+        shPanel.setPreferredSize(new Dimension(300, 200)); // Set larger preferred size
         shPanel.setBorder(BorderFactory.createTitledBorder(
             glowBorder, 
             "",
