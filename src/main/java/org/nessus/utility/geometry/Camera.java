@@ -111,4 +111,11 @@ public class Camera extends KeyAdapter {
             default -> {}
         }
     }
+
+    /**
+     * Kiüríti a regisztrált billentyűket.
+     */
+    public void FlushKeys() {
+        movement.replaceAll((k, v) -> false);
+    }
 }

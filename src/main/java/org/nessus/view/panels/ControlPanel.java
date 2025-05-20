@@ -197,6 +197,7 @@ public class ControlPanel extends JPanel {
         nextPlayerBtn.addActionListener(e -> {
             view.GetController().NextPlayer();
             view.requestFocus();
+            view.GetGamePanel().GetMapPanel().GetCamera().FlushKeys();
         });
 
         StyleButton(nextPlayerBtn);

@@ -127,6 +127,14 @@ public class MapPanel extends JPanel {
     }
 
     /**
+     * Visszaadja a nézethez tartozó kamerát
+     * @return Camera
+     */
+    public Camera GetCamera() {
+        return camera;
+    }
+
+    /**
      * Kirajzolja a panel tartalmát.
      * @param g A grafikus kontextus
      * @return void

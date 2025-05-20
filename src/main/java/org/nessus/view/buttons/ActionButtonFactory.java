@@ -72,6 +72,7 @@ public class ActionButtonFactory {
             public void mouseClicked(MouseEvent e) {
                 controller.StartAction(action);
                 view.requestFocus();
+                view.GetGamePanel().GetMapPanel().GetCamera().FlushKeys();
             }
         });
 

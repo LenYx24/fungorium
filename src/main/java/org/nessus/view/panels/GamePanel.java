@@ -49,5 +49,13 @@ public class GamePanel extends JPanel {
     public ControlPanel GetControlPanel() {
         return controlPanel;
     }
+
+    /**
+     * Visszaadja a vezérlőpanelt.
+     * @return MapPanel - A pálya megjelenítéséért felelős panel
+     */
+    public MapPanel GetMapPanel() {
+        return mapPanel;
+    }
 }
 
