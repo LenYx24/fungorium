@@ -124,7 +124,7 @@ public class ShroomBody {
         tecton.ThrowSpore(spore);
 
         if (remainingThrows <= 0) {
-            tecton.ClearShroomBody();
+            this.tecton.ClearShroomBody();
             shroom.RemoveShroomBody(this);
             View.GetGameObjectStore().RemoveEntity(this);
         }
