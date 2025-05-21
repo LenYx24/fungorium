@@ -6,6 +6,28 @@ A projekt jelenlegi állapota:
 
 [![Java CI with Maven (SzoftProjLab)](https://github.com/LenYx24/fungorium-graphical/actions/workflows/maven.yml/badge.svg)](https://github.com/LenYx24/fungorium-graphical/actions/workflows/maven.yml)
 
+
+Projektre kapott pontok:
+
+| Szakasz neve | Kapott pontszám |
+| ----------- | --------------- |
+| Követelmény, projekt, funkcionalitás | 5/10 |
+| Analízis modell (I. változat) | 10/20 |
+| Analízis modell (II. változat) | 28/30 |
+| Szkeleton tervezése | 17/20 |
+| Szkeleton elkészítése | 20/20 |
+| Prototípus koncepciója | 20/20 |
+| Részletes tervek | 40/45 |
+| Prototípus elkészítése | 35/35 |
+| Grafikus változat tervei | 29/30 |
+| Grafikus változat elkészítése | -------- |
+| Egyesített dokumentáció | -------- |
+
+> [!TIP]
+> A projekthez készített dokumentációt feltöltöttük a repo gyökérmappájába, a link a következő:
+> [Dokumentáció](https://github.com/LenYx24/fungorium-graphical/blob/c7e73e0acd5915e6418321a10047ad77afe749d1/Fungorium-docs-redacted.pdf)
+> A dokumentációban találhatóak a projekt részletes leírásai, a tervezési és fejlesztési folyamatok, valamint a tesztelési eredmények. Használjátok egészséggel, sok szerencsét kívánunk a Ti projektetekhez is, reméljük, hogy hasznosnak találjátok!
+
 ## Követelmények
 
 Java verzió: java 20
