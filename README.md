@@ -1,5 +1,6 @@
 # Fungorium monorepo
 A BME VIK 4. féléves szoftver projekt laboratórium tárgy összes fázisát egybefogó monorepo.
+
 Használjátok egészséggel mintaként 😉
 
 A projekt jelenlegi állapota:
