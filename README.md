@@ -25,7 +25,7 @@ Projektre kapott pontok:
 
 > [!TIP]
 > A projekthez készített dokumentációt feltöltöttük a repo gyökérmappájába, a link a következő:
-> [Dokumentáció](https://github.com/LenYx24/fungorium-graphical/blob/c7e73e0acd5915e6418321a10047ad77afe749d1/Fungorium-docs-redacted.pdf)
+> [Dokumentáció](https://github.com/LenYx24/fungorium/blob/master/vegso%20redacted.pdf)
 > A dokumentációban találhatóak a projekt részletes leírásai, a tervezési és fejlesztési folyamatok, valamint a tesztelési eredmények. Használjátok egészséggel, sok szerencsét kívánunk a Ti projektetekhez is, reméljük, hogy hasznosnak találjátok!
 
 ### 🪐 A világ
