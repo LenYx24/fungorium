@@ -1,0 +1,37 @@
+arrange
+create Tecton tecton1
+create Tecton tecton2
+create Tecton tecton3
+
+neighbour tecton1 tecton2
+neighbour tecton2 tecton3
+
+create BugOwner bugOwner
+create Bug bug bugOwner
+
+create Shroom shroom
+create ShroomThread thread1 shroom
+create ShroomThread thread2 shroom
+
+place bug tecton1
+
+placethread thread1 tecton1 tecton2
+placethread thread2 tecton2 tecton3
+
+setval thread1 evolution 3
+setval thread2 evolution 3
+
+create SlowEffect slowEffect
+addeffect bug slowEffect
+
+currentplayer bugOwner
+
+act
+updatebugs bugOwner
+move bug tecton2
+move bug tecton3
+
+assert
+save output.txt
+
+resetobjects

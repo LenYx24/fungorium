@@ -1,0 +1,58 @@
+# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Java CI with Maven (SzoftProjLab)
+
+on:
+  push:
+    paths:
+      - 'src/**'
+      - '.github/workflows/maven.yml'
+
+jobs:
+  build:
+    permissions: write-all
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up JDK 20
+      uses: actions/setup-java@v4
+      with:
+        java-version: '20'
+        distribution: 'temurin'
+        cache: maven
+    - name: Verify Maven installation
+      run: mvn --version
+    - name: Build with Maven
+      run: mvn -B package --file pom.xml clean install
+
+    - name: Generate dependecy graph
+      run: mvn -f pom.xml com.github.ferstl:depgraph-maven-plugin:4.0.1:graph
+
+    - name: Create GitHub Release
+      id: create_release
+      uses: actions/create-release@v1
+      with:
+          tag_name: "v1.0.${{ github.run_number }}"
+          release_name: "Release v1.0.${{ github.run_number }}"
+          body: "Automated release for commit ${{ github.sha }}"
+          draft: false
+          prerelease: false
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Upload JAR to Release
+      uses: actions/upload-release-asset@v1
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: src/target/fungorium-prototype-1.0.jar
+          asset_name: fungorium-prototype-1.0.jar
+          asset_content_type: application/java-archive

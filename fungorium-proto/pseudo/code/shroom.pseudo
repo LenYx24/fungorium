@@ -1,0 +1,120 @@
+METHOD PlaceShroomThread(tecton1, tecton2) -> implemented
+    enough := actCatalog.HasEnoughPoints(shroomThreadCost)
+    neighbours := tecton1.IsNeighbourOf(tecton2)
+
+    connectedToBody := FALSE
+
+    IF tecton1.GetShroomBody().GetShroom() == this THEN
+        connectedToBody := TRUE
+    END IF
+
+    IF tecton2.GetShroomBody().GetShroom() == this THEN
+        connectedToBody := TRUE
+    END IF
+
+    IF NOT connectedToBody THEN
+        FOR EACH thread IN tecton1.GetShroomThreads() UNION tecton2.GetShroomThreads() DO
+            IF thread.GetShroom() == this AND thread.IsConnectedToShroomBody()
+                connectedToBody = TRUE
+            END IF
+        END FOR
+    END IF
+    
+    IF enough AND neighbours AND connectedToBody THEN
+        thread := NEW ShroomThread(this, tecton1, tecton2)
+
+        t1Success := tecton1.GrowShroomThread(thread)
+        t2Success := tecton2.GrowShroomThread(thread)
+
+        IF t1Success AND t2Success THEN
+            threads.Add(thread)
+            actCatalog.DecreasePoints(shroomThreadCost)
+        ELSE
+            thread.Remove()
+        END IF
+    END IF
+
+END METHOD
+
+METHOD PlaceShroomBody(tecton) -> implemented
+    IF actCatalog.HasEnoughPoints(shroomBodyCost) THEN
+        newBody := NEW ShroomBody(this, tecton)
+        success := tecton.GrowShroomBody(newBody)
+
+        IF success THEN
+            grownShroomBodies := grownShroomBodies + 1
+            shroomBodies.Add(newBody)
+            actCatalog.DecreasePoints(shroomBodyCost)
+        END IF
+    END IF
+
+END METHOD
+
+METHOD UpgradeShroomBody(body) -> implemented
+    enough := actCatalog.HasEnoughPoints(shroomUpgradeCost)
+    hasSpore := body.GetTecton().GetSpores() > 2;
+
+    IF enough AND hasSpore THEN
+        body.Upgrade()
+        tecton := body.GetTecton()
+        consumedSpore := FIRST spore IN spores WHERE spore.GetTecton() == tecton
+
+        IF consumedSpore IS NOT NULL THEN
+            tecton.RemoveSpore(consumedSpore)
+        END IF
+
+        actCatalog.DecreasePoints(shroomUpgradeCost)
+    END IF
+
+END METHOD
+
+METHOD ThrowSpore(body, tecton) -> implemented
+    IF actCatalog.HasEnoughPoints(sporeCost) THEN
+        spore := body.FormSpore(tecton)
+
+        IF spore IS NOT NULL THEN
+            spores.Add(spore)
+            actCatalog.DecreasePoints(sporeCost)
+        END IF
+    END IF
+
+END METHOD
+
+METHOD ShroomThreadDevourBug(thread, bug) -> implemented
+    IF actCatalog.HasEnoughPoints(devourCost) THEN
+        success := thread.DevourCrippledBug(bug)
+
+        IF success THEN
+            actCatalog.DecreasePoints(devourCost)
+        END IF
+        
+    END IF
+
+END METHOD
+
+METHOD UpdateShroom() -> implemented
+    LoadDefaultCosts()
+    actCatalog.ResetPoints()
+
+    FOR EACH thread IN threads DO
+        thread.SetConnectedToBody(FALSE)
+    END FOR
+
+    FOR EACH body IN shroomBodies DO
+        body.ValidateThreadConnections()
+        body.ProduceSporeMaterial()
+    END FOR
+    
+    FOR EACH thread IN threads DO
+        thread.ValidateLife()
+    END FOR
+
+END METHOD
+
+METHOD LoadDefaultCosts() -> implemented
+    shroomBodyCost := 3
+    shroomThreadCost := 2
+    shroomUpgradeCost := 3
+    sporeCost := 2
+    devourCost := 3
+END METHOD
