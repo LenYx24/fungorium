@@ -20,13 +20,15 @@ Projektre kapott pontok:
 | Részletes tervek | 40/45 |
 | Prototípus elkészítése | 35/35 |
 | Grafikus változat tervei | 29/30 |
-| Grafikus változat elkészítése | -------- |
-| Egyesített dokumentáció | -------- |
+| Grafikus változat elkészítése | 40/40 |
+| Egyesített dokumentáció | 30/30 |
+| Összes pont | 91,3/100 (5) |
 
 > [!TIP]
 > A projekthez készített dokumentációt feltöltöttük a repo gyökérmappájába, a link a következő:
 > [Dokumentáció](https://github.com/LenYx24/fungorium/blob/master/vegso%20redacted.pdf)
 > A dokumentációban találhatóak a projekt részletes leírásai, a tervezési és fejlesztési folyamatok, valamint a tesztelési eredmények. Használjátok egészséggel, sok szerencsét kívánunk a Ti projektetekhez is, reméljük, hogy hasznosnak találjátok!
+> Teszteléshez a dokumentáció 257. oldalán találhatjátok meg a fordítási és futtatási instrukciókat.
 
 ### 🪐 A világ
 
